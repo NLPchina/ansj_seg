@@ -21,15 +21,12 @@ public class NameDicPaser {
 		int all = 0 ;
 		while((temp=reader.readLine())!=null){
 			all ++ ;
-//			System.out.print(temp);
 			toAnalysis = new ToAnalysis(new StringReader(temp));
 			while((term=toAnalysis.next())!=null){
-//				System.out.print(","+term.getName());
 				if(temp.length()==term.getName().length()){
 					count ++ ;
 				}
 			}
-//			System.out.println();
 		}
 		
 		System.out.println(count+"/"+all);
