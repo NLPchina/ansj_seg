@@ -76,7 +76,7 @@ public class Test {
 //					if(term.getTermNatures().personAttr.flag)
 					all.add(term) ;
 				}
-				System.out.println("===========\t"+all);
+				System.out.println(all);
 //				System.out.println(NumRecognition.recognition(all));
 			}
 		}
