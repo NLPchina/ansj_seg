@@ -93,4 +93,10 @@ public class TermUtil {
 			}
 		}
 	}
+
+	public static void insertTermNum(Term[] terms, Term term) {
+		// TODO Auto-generated method stub
+		terms[term.getOffe()] = term ;
+		
+	}
 }

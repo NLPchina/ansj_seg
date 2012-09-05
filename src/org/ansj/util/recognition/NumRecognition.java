@@ -5,7 +5,7 @@ import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
 
 public class NumRecognition {
-	
+
 	/**
 	 * 数字+数字合并
 	 * 
@@ -25,14 +25,14 @@ public class NumRecognition {
 				}
 			} else {
 				if (sb != null) {
-					TermUtil.insertTerm(terms, new Term(sb.toString(), begin, TermNatures.NB));
+					TermUtil.insertTermNum(terms, new Term(sb.toString(), begin, TermNatures.NB));
 					sb = null;
 				}
 			}
 		}
 
 		if (sb != null) {
-			TermUtil.insertTerm(terms, new Term(sb.toString(), begin, TermNatures.NB));
+			TermUtil.insertTermNum(terms, new Term(sb.toString(), begin, TermNatures.NB));
 		}
 	}
 
@@ -41,14 +41,15 @@ public class NumRecognition {
 	 */
 	public static void recogntionNQ(Term[] terms) {
 		Term term = null;
+		Term to = null;
 
 		for (int i = 0; i < terms.length - 1; i++) {
 			term = terms[i];
-			if (term != null && term.getTo() != null) {
-				if (term.getTermNatures().numAttr.flag && term.getTo().getTermNatures().numAttr.numEndFreq > -1) {
-					terms[i] = TermUtil.makeNewTermNum(term, term.getTo(), TermNatures.NB);
-					terms[term.getTo().getOffe()] = null;
-					i = term.getToValue();
+			if (term != null && (to = terms[term.getToValue()]) != null) {
+				if (term.getTermNatures().numAttr.flag && to.getTermNatures().numAttr.numEndFreq > -1) {
+					terms[i] = TermUtil.makeNewTermNum(term, to, TermNatures.NB);
+					terms[to.getOffe()] = null;
+					i = to.getOffe();
 				}
 
 			}
