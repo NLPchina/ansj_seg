@@ -257,8 +257,7 @@ public class ToAnalysis implements Analysis {
 //		String str = " 第二通道（通道组织的一个分支。因为掌握了一个奇点，称为第二通道。通道组织500年前，越1500年前后从神山分裂，原因是滥用神山的光能力。通道组织在全球和神山对抗，穿着是黑色紧身制服。基地位于地下，用管道互相连接，有的管道长达数公里。他们的目的是用火焰毁灭整个世界，再创造新的秩序。）";
 //		 String str = "长春市长春药店" ;
 		// String str = "长春市长春药店" ;
-		 String str = "每一天都要祝你快快乐乐 每一分钟都盼望你平平安安,一年有三百六十五个日出,我送你三百六十五个祝福 时钟每天转了一千四百四十圈我的心每天都藏着,一千四百四十多个思念 每一天都要祝你快快乐乐 每一分钟都盼望你平平安安,吉祥的光永远环绕着你 像那旭日东升灿烂无比 " ;
-		// ;
+		 String str = "欢迎使用ansj_seg,(ansj中文分词)在这里如果你遇到什么问题都可以联系我.我一定尽我所能.帮助大家.ansj_seg更快,更准,更自由!" ;
 		System.out.println(ToAnalysis.paser(str));
 		System.out.println(ToAnalysis.paser(str));
 		System.out.println(ToAnalysis.paser(str));
