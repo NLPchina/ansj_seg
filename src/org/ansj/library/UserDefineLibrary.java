@@ -15,26 +15,32 @@ public class UserDefineLibrary {
 	static {
 		try {
 			long start = System.currentTimeMillis();
-			FOREST = new Forest() ; 
-					//Library.makeForest();
-			BufferedReader br = IOUtil.getReader(MyStaticValue.rb.getString("userLibrary"), "UTF-8") ;
-			String temp = null ;
-			while((temp=br.readLine())!=null){
-				if(StringUtil.isBlank(temp)) continue ;
-				
-				String[] strs = temp.split("\t") ;
-				
-				/**
-				 * 排除用户词典和核心词典重复的词
-				 */
-//				if(!InitDictionary.isInSystemDic(strs[0])){
-					Library.insertWord(FOREST, temp) ;
-//				}
+			FOREST = new Forest();
+
+			BufferedReader br = MyStaticValue.getUserDefineReader();
+			String temp = null;
+			while ((temp = br.readLine()) != null) {
+				if (StringUtil.isBlank(temp)) {
+					continue;
+				} else {
+					Library.insertWord(FOREST, temp);
+				}
+			}
+
+			if ((temp = MyStaticValue.rb.getString("userLibrary")) != null) {
+				br = IOUtil.getReader(temp, "UTF-8");
+				while ((temp = br.readLine()) != null) {
+					if (StringUtil.isBlank(temp)) {
+						continue;
+					} else {
+						Library.insertWord(FOREST, temp);
+					}
+				}
 			}
 			System.out.println("加载用户自定义词典完成用时:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("加载用户自定义词典加载失败:");
 		}
 	}
 

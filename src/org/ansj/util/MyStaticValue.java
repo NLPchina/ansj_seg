@@ -1,20 +1,83 @@
 package org.ansj.util;
 
+import java.io.BufferedReader;
 import java.util.ResourceBundle;
 
+import org.ansj.dic.DicReader;
+
+/**
+ * 这个类储存一些公用变量.
+ * @author ansj
+ *
+ */
 public class MyStaticValue {
-	public final static ResourceBundle rb = ResourceBundle.getBundle("library") ; 
-	public static final String ENGLISH = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJK" +
-		"LMNOPQRSTUVWXYZ'ａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚＡＢ" +
-		"ＣＤＥＦＧＨＩＪＫＭＬＮＯＰＱＲＳＴＵＶＷＸＹＺ" ;
-	public static final String NUMBER = "0123456789０１２３４５６７８９.%" ;
-	public static final String NUMBERALLSTR = "0123456789０１２３４５６７８９零一二三四五六七八九十百千万亿兆零壹贰叁肆伍陆柒捌玖拾佰仟." ;
-	public static final char[] NUMBERALL = getSortChars(NUMBERALLSTR) ;
-	public static final String NAMESTOPSTR ="不也了仍从以使则却又及对就并很或把是的着给而被让说.,:\";，。 ：“、" ;
-	public static final char[] NAMESTOPALL = getSortChars(NAMESTOPSTR) ;
-	public static char[] getSortChars(String str) {
-		char[] chars = str.toCharArray() ;
-		java.util.Arrays.sort(chars) ;
-		return chars ;
+	
+	/**
+	 * 配置文件变量
+	 */
+	public final static ResourceBundle rb = ResourceBundle.getBundle("library");
+
+	/**
+	 * 人名词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getPersonReader() {
+		return DicReader.getReader("person/person.dic");
+	}
+
+	/**
+	 * 核心词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getArraysReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("arrays.dic");
+	}
+
+	/**
+	 * 数字词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getNumberReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("numberLibrary.dic");
+	}
+
+	/**
+	 * 英文词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getEnglishReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("englishLibrary.dic");
+	}
+
+	/**
+	 * 词与词的关系词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getBigramReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("bigramdict.dic");
+	}
+
+	public static BufferedReader getNatureMapReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("nature/nature.map");
+	}
+	
+	public static BufferedReader getNatureTableReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("nature/nature.table");
+	}
+	
+	public static BufferedReader getUserDefineReader() {
+		// TODO Auto-generated method stub
+		return DicReader.getReader("userLibrary.dic");
 	}
 }

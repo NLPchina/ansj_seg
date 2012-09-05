@@ -52,7 +52,7 @@ public class PersonLibrary {
 				return pnMap;
 			}
 			pnMap = new HashMap<String, PersonNatureAttr>();
-			br = IOUtil.getReader(MyStaticValue.rb.getString("person"), "UTF-8");
+			br = MyStaticValue.getPersonReader();
 			String temp = null;
 			String[] strs = null;
 			PersonNatureAttr pna = null;

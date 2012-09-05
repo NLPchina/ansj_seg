@@ -32,6 +32,9 @@ public class UserDefineRecognition {
 	}
 
 	public void recongnitionTerm() {
+		if (FOREST == null) {
+			return;
+		}
 		int length = terms.length - 1;
 
 		for (int i = 0; i < length; i++) {
@@ -91,8 +94,8 @@ public class UserDefineRecognition {
 			// terms[j] = null;
 		}
 
-		Term term = new Term(sb.toString(), offe, new TermNatures(new TermNature(tempNature, tempFreq))) ;
-		TermUtil.insertTerm(terms, term) ;
+		Term term = new Term(sb.toString(), offe, new TermNatures(new TermNature(tempNature, tempFreq)));
+		TermUtil.insertTerm(terms, term);
 		reset();
 	}
 

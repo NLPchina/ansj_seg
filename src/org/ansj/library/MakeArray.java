@@ -26,20 +26,6 @@ public class MakeArray {
 	private static final HashMap<String, Integer> NB = new HashMap<String, Integer>();
 	private static final HashMap<String, Integer> PO = new HashMap<String, Integer>();
 
-	/**
-	 * arraysNumberPath: 数字词典硬盘位置
-	 */
-	public static String arraysNumberPath = MyStaticValue.rb.getString("number");
-	/**
-	 * arraysEnglishPath: 英语词典的硬盘位置
-	 */
-	public static String arraysEnglishPath = MyStaticValue.rb.getString("english");
-
-	/**
-	 * arraysStopPath: 标点符号截断词词典
-	 */
-	public static String arraysStopPath = MyStaticValue.rb.getString("stop");
-
 	static {
 		EN.put("en", 1);
 		NB.put("nb", 1);
@@ -63,12 +49,12 @@ public class MakeArray {
 
 	public static void makeArray(List<Branch> all) throws Exception {
 		// 加载数字词典
-		BufferedReader reader = IOUtil.getReader(arraysNumberPath, charEncoding);
+		BufferedReader reader = MyStaticValue.getNumberReader();
 		makeASCIIArray(reader);
 		reader.close();
 
 		// 加载英语词典
-		reader = IOUtil.getReader(arraysEnglishPath, charEncoding);
+		reader = MyStaticValue.getEnglishReader();
 		makeASCIIArray(reader);
 		reader.close();
 
@@ -166,7 +152,8 @@ public class MakeArray {
 				sb.append("\n");
 			}
 		}
-		IOUtil.Writer(InitDictionary.arraysPath, charEncoding, sb.toString());
+		System.out.println("write ok in ./arrays.dic");
+		IOUtil.Writer("./arrays.dic", charEncoding, sb.toString());
 	}
 
 	/**

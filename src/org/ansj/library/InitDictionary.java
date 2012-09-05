@@ -39,10 +39,6 @@ public class InitDictionary {
 	 */
 	public static TermNatures[] termNatures = null;
 
-	/**
-	 * arraysPath: base编码的硬盘位置
-	 */
-	public static String arraysPath = MyStaticValue.rb.getString("arrays");
 
 	/**
 	 * 两本词典的字符编码
@@ -74,10 +70,10 @@ public class InitDictionary {
 	 * @throws Exception
 	 */
 	public static void initArrays() throws Exception {
-		BufferedReader reader = IOUtil.getReader(arraysPath, charEncoding);
+		BufferedReader reader = MyStaticValue.getArraysReader();
 		initArraySize(reader);
 		reader.close();
-		reader = IOUtil.getReader(arraysPath, charEncoding);
+		reader = MyStaticValue.getArraysReader();
 		initArrays(reader);
 		reader.close();
 	}

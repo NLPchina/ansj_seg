@@ -12,7 +12,7 @@ public class TwoWordLibrary {
 	static{
 		try {
 			long start = System.currentTimeMillis() ;
-			FOREST = Library.makeForest(MyStaticValue.rb.getString("bigramdict"));
+			FOREST = Library.makeForest(MyStaticValue.getBigramReader());
 			System.out.println("加载关联词典完成用时:"+(System.currentTimeMillis()-start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -8,6 +8,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.Path;
 import org.ansj.domain.Term;
 import org.ansj.util.IOUtil;
+import org.ansj.util.MyStaticValue;
 import org.ansj.util.StringUtil;
 
 /**
@@ -45,7 +46,7 @@ public class NatureLibrary {
 	private static void init() throws IOException {
 		String split = "\t";
 		// 加载词对照性表
-		BufferedReader reader = IOUtil.getReader("library/nature/nature.map", "UTF-8");
+		BufferedReader reader = MyStaticValue.getNatureMapReader();
 		String temp = null;
 		String[] strs = null;
 		int maxLength = 0;
@@ -67,7 +68,7 @@ public class NatureLibrary {
 
 		// 加载词性关系
 		NATURETABLE = new int[maxLength + 1][maxLength + 1];
-		reader = IOUtil.getReader("library/nature/nature.table", "UTF-8");
+		reader = MyStaticValue.getNatureTableReader();
 		int j = 0;
 		while ((temp = reader.readLine()) != null) {
 			if (StringUtil.isBlank(temp))
