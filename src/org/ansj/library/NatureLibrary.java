@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.ansj.domain.Nature;
-import org.ansj.domain.Path;
-import org.ansj.domain.Term;
-import org.ansj.util.IOUtil;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.StringUtil;
 
@@ -19,7 +16,8 @@ import org.ansj.util.StringUtil;
  */
 public class NatureLibrary {
 
-	private static final int LING = 0;
+	private static final int YI = 1;
+	private static final int FYI = -1;
 	/**
 	 * 词性的字符串对照索引位的hashmap(我发现我又效率狂了.不能这样啊)
 	 */
@@ -60,8 +58,8 @@ public class NatureLibrary {
 
 			p0 = Integer.parseInt(strs[0]);
 			p1 = Integer.parseInt(strs[1]);
-			p2 = Integer.parseInt(strs[3]) ;
-			NATUREMAP.put(strs[2], new Nature(strs[2], p0, p1,p2));
+			p2 = Integer.parseInt(strs[3]);
+			NATUREMAP.put(strs[2], new Nature(strs[2], p0, p1, p2));
 			maxLength = Math.max(maxLength, p1);
 		}
 		reader.close();
@@ -82,38 +80,17 @@ public class NatureLibrary {
 		reader.close();
 	}
 
-
 	/**
 	 * 获得两个词性之间的频率
-	 * 
-	 * @param ntf
-	 *            起始位置的词性
-	 * @param ntt
-	 *            结束位置的词性
-	 * @return 词性的频率
+	 * @param from
+	 * @param to
+	 * @return
 	 */
-	public static int getTwoNatureFreq(Path from, Path to) {
-		// TODO Auto-generated method stub
-		int ntf = from.getTermNature().nature.natureIndex;
-		int ntt = to.getTermNature().nature.natureIndex;
-		if (ntf < 0 || ntt < 0) {
+	public static int getTwoNatureFreq(Nature from, Nature to) {
+		if (from.index < 0 || to.index < 0) {
 			return 0;
 		}
-		return NATURETABLE[ntf][ntt];
-	}
-	
-	/**
-	 * 获得两个词之间的频率
-	 * 
-	 * @param ntf
-	 *            起始位置的词性
-	 * @param ntt
-	 *            结束位置的词性
-	 * @return 词性的频率
-	 */
-	public static int getTwoWordsFreq(Term from, Term to) {
-		// TODO Auto-generated method stub
-		return TwoWordLibrary.getTwoWordFreq(from, to);
+		return NATURETABLE[from.index][to.index];
 	}
 
 	/**
@@ -125,7 +102,7 @@ public class NatureLibrary {
 	public static Nature getNature(String natureStr) {
 		Nature nature = NATUREMAP.get(natureStr);
 		if (nature == null) {
-			nature = new Nature(natureStr, LING, LING,LING);
+			nature = new Nature(natureStr, FYI, FYI, YI);
 			NATUREMAP.put(natureStr, nature);
 			return nature;
 		}
@@ -133,8 +110,8 @@ public class NatureLibrary {
 	}
 
 	public static void main(String[] args) throws IOException {
-//		System.out.println(NATURETABLE[NATUREMAP.get("nr").natureIndex][NATUREMAP.get("mq").natureIndex]);
-		
+		// System.out.println(NATURETABLE[NATUREMAP.get("nr").natureIndex][NATUREMAP.get("mq").natureIndex]);
+
 	}
 
 }

@@ -254,8 +254,4 @@ public class ToAnalysis implements Analysis {
 
 	}
 
-	public static void main(String[] args) throws IOException {
-		String str = "费孝通向人大常委会提交书面报告之处第一百零三条数据有问题";
-		System.out.println(ToAnalysis.paser(str));
-	}
 }

@@ -1,6 +1,7 @@
 package org.ansj.library;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.util.ArrayList;
 
 import love.cq.domain.Forest;
@@ -17,6 +18,7 @@ public class UserDefineLibrary {
 			long start = System.currentTimeMillis();
 			FOREST = new Forest();
 
+			//先加载系统内置补充词典
 			BufferedReader br = MyStaticValue.getUserDefineReader();
 			String temp = null;
 			while ((temp = br.readLine()) != null) {
@@ -27,7 +29,8 @@ public class UserDefineLibrary {
 				}
 			}
 
-			if ((temp = MyStaticValue.rb.getString("userLibrary")) != null) {
+			//加载用户自定义词典
+			if ((temp = MyStaticValue.rb.getString("userLibrary")) != null&&new File(temp).isFile()) {
 				br = IOUtil.getReader(temp, "UTF-8");
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isBlank(temp)) {
@@ -36,6 +39,8 @@ public class UserDefineLibrary {
 						Library.insertWord(FOREST, temp);
 					}
 				}
+			}else{
+				System.err.println("用户自定义词典:"+temp+", 没有这个文件!");
 			}
 			System.out.println("加载用户自定义词典完成用时:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {

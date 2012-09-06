@@ -9,8 +9,6 @@ public class Term implements Comparable<Term> {
 	// 当前词的起始位置
 	private int offe;
 	// 词性列表
-	private Path[] paths = null;
-	// 词性列表
 	private TermNatures termNatures = null;
 	// 最大路径
 	// private Path maxPath = Path.NULLPATH;
@@ -20,9 +18,12 @@ public class Term implements Comparable<Term> {
 	public double score = 0;
 	// 本身分数
 	public double selfScore = 1;
-
+	// 起始位置
 	private Term from;
+	// 到达位置
 	private Term to;
+	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
+	private Nature natrue = TermNature.NULL.nature;
 
 	public Term(String name, int offe, TermNatures termNatures) {
 		super();
@@ -74,7 +75,7 @@ public class Term implements Comparable<Term> {
 		double score = this.selfScore + from.getScore();
 		// 维特比进行最优路径的构建
 		if (this.from == null || this.getScore() < score) {
-//System.out.println(from+"@"+this+"\t"+score);
+			// System.out.println(from+"@"+this+"\t"+score);
 			this.setFromAndScore(from, score);
 		}
 	}
@@ -96,10 +97,6 @@ public class Term implements Comparable<Term> {
 		// TODO Auto-generated method stub
 		this.from = from;
 		this.score = score;
-	}
-
-	public String toString() {
-		return this.name + "/";
 	}
 
 	/**
@@ -179,4 +176,12 @@ public class Term implements Comparable<Term> {
 		}
 	}
 
+	public void setNature(Nature nature) {
+		// TODO Auto-generated method stub
+		this.natrue = nature;
+	}
+
+	public String toString() {
+		return this.name + "/" + natrue.natureStr;
+	}
 }

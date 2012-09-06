@@ -46,6 +46,6 @@ public class TermNature {
 	}
 	
 	public String toString(){
-		return this.nature+"/"+frequency ;
+		return this.nature.natureStr+"/"+frequency ;
 	}
 }

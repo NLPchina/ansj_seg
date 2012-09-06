@@ -8,6 +8,7 @@ import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.recognition.NatureRecognition;
 
 public class Test {
 
@@ -51,7 +52,7 @@ public class Test {
 		strs[36] = "北京理工大学办事处";
 		strs[0] = "上海大学城";
 		strs[0] = "脚下的一大块方砖地面";
-		strs[99] = "祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪";
+		strs[99] = "程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪";
 
 		strs[98] = "h欢h迎help使用";
 
@@ -75,6 +76,7 @@ public class Test {
 				while ((term = udf.next()) != null) {
 					all.add(term);
 				}
+				new NatureRecognition(all).recogntion();
 				System.out.println(all);
 			}
 		}

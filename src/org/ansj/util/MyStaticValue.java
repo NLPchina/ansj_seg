@@ -66,16 +66,28 @@ public class MyStaticValue {
 		return DicReader.getReader("bigramdict.dic");
 	}
 
+	/**
+	 * 磁性表
+	 * @return
+	 */
 	public static BufferedReader getNatureMapReader() {
 		// TODO Auto-generated method stub
 		return DicReader.getReader("nature/nature.map");
 	}
 	
+	/**
+	 * 词性关联表
+	 * @return
+	 */
 	public static BufferedReader getNatureTableReader() {
 		// TODO Auto-generated method stub
 		return DicReader.getReader("nature/nature.table");
 	}
-	
+
+	/**
+	 * 系统集成的补充词典
+	 * @return
+	 */
 	public static BufferedReader getUserDefineReader() {
 		// TODO Auto-generated method stub
 		return DicReader.getReader("userLibrary.dic");
