@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import org.ansj.util.MathUtil;
+import org.ansj.util.recognition.NatureRecognition.NatureTerm;
 
 public class Term implements Comparable<Term> {
 	public static final Term NULL = new Term("NULL", 0, TermNatures.NULL);
@@ -182,6 +183,10 @@ public class Term implements Comparable<Term> {
 	}
 
 	public String toString() {
-		return this.name + "/" + natrue.natureStr;
+		if(natrue!=null&&!"null".equals(natrue.natureStr)){
+			return this.name + "/" + natrue.natureStr;
+		}else{
+			return this.name ;
+		}
 	}
 }

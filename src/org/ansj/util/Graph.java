@@ -156,10 +156,10 @@ public class Graph {
 		 * @return
 		 */
 		public Merger merger() {
-			
+
 			// 最短路径
 			walkPath();
-			
+
 			// 数字发现
 			NumRecognition.recogntionNM(terms);
 			rmLittlePath();
@@ -167,14 +167,14 @@ public class Graph {
 			// 数字+量词的识别
 			NumRecognition.recogntionNQ(terms);
 
+			// 人名识别
+			new PersonRecognition().recognition(terms);
+			walkPathByScore();
+
 			// 用户自定义词典的识别
 			new UserDefineRecognition(terms).recongnitionTerm();
 			rmLittlePath();
 			walkPathByFreq();
-
-			// 人名识别
-			new PersonRecognition().recognition(terms);
-			walkPathByScore();
 
 			return this;
 		}

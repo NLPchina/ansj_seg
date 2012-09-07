@@ -13,7 +13,7 @@ import org.ansj.util.recognition.NatureRecognition;
  */
 public class NatureRecognitionTest {
 	public static void main(String[] args) {
-		String str = "他从马上掉了下来.我马上就下来了" ;
+		String str = "展品中有二十六幅被评为优秀作品，" ;
 		List<Term> terms = ToAnalysis.paser(str) ;
 		new NatureRecognition(terms).recogntion() ;
 		System.out.println(terms);

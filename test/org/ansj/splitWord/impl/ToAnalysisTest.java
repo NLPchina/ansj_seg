@@ -29,7 +29,8 @@ public class ToAnalysisTest {
 				// sb.append(next.getName()+":"+next.maxNature+"/ ") ;
 				// sb.append("\n") ;
 //				System.out.println(next.getName() + "/"+next.getMaxPath().getNatureStr());
-//				System.out.println(next.getName());
+				if(next.getTermNatures().termNatures[0] == TermNature.NR)
+				System.out.println(next.getName());
 			}
 //			IOUtil.Writer("/Users/ansj/Documents/快盘/冒死.txt", "UTF-8", sb.toString()) ;
 		}
