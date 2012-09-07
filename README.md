@@ -1,6 +1,8 @@
 Ansj中文分词
 ==================
 
+在线测试地址<a href="http://www.ansj.org/demo/seg.jsp">在线测试地址!</href>
+
 这是一个ictclas的java实现.基本上重写了所有的数据结构和算法.词典是用的开源版的ictclas所提供的.并且进行了部分的人工优化
 
 内存中中文分词每秒钟大约100万字(速度上已经超越ictclas)
