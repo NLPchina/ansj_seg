@@ -58,15 +58,4 @@ public class TwoWordLibrary {
 		return Integer.parseInt(branch.getParams()[0]) ;
 	}
 	
-	public static void main(String[] args) {
-		WoodInterface branch = FOREST ;
-		String content = "福建@万利达"  ;
-		for (int i = 0; i < content.length(); i++) {
-			branch = branch.get(content.charAt(i)) ;
-			if(branch==null){
-				return ;
-			}
-		}
-		System.out.println(Integer.parseInt(branch.getParams()[0]));
-	}
 }
