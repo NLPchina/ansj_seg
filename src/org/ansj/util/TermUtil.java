@@ -1,7 +1,5 @@
 package org.ansj.util;
 
-import org.ansj.domain.NumNatureAttr;
-import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 
@@ -96,7 +94,30 @@ public class TermUtil {
 
 	public static void insertTermNum(Term[] terms, Term term) {
 		// TODO Auto-generated method stub
-		terms[term.getOffe()] = term ;
-		
+		terms[term.getOffe()] = term;
+
 	}
+
+//	public static Term makeNewTermPerson(int offe, int index, int startName, List<Term> terms) {
+//		// TODO Auto-generated method stub
+//		StringBuilder sb = new StringBuilder();
+//		Term term = null;
+//		double v1 = 1;
+//		double v2 = 1;
+//		double p = 0;
+//		String name = null;
+//		for (int i = offe; i <= index; i++) {
+//			term = terms.get(i);
+//			name = term.getName();
+//			sb.append(name);
+//			p = PersonLibrary.getIndexFreqTF(name, i - startName);
+//			//贝叶斯概率公式
+//			v1 *= p;
+//			v2 *= (1 - p);
+//		}
+//		p = v1/(v1+v2) ;
+//		term = new Term(sb.toString(), offe, TermNatures.NR) ;
+//		term.selfScore = p ;
+//		return term;
+//	}
 }

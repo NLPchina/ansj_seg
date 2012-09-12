@@ -53,17 +53,23 @@ public class Test {
 		strs[0] = "上海大学城";
 		strs[0] = "脚下的一大块方砖地面";
 		strs[99] = "程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪";
+//		strs[99] = "中文分词 是一个实现,中文分词是一个实现";
+//		strs[99] = "吃葡萄牙酸";
+//		strs[99] = "葡萄牙的进攻";
+		
+		
 
 		strs[98] = "凭医生处方才可购买";
 		strs[0] = "工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作" ;
 		strs[0] = "门把手坏了,门把手夹了" ;
+		strs[0] = "一个和尚挑水喝,两个和尚抬水喝,三个和尚无水喝 , 一次性交易就毁了施水才" ;
 
 		strs[37] = "审讯室里一直陪着我们的两个警察";
 		strs[38] = "一只胳膊两个警察";
 		strs[39] = "c语言怎么读写ini文件";
 		strs[40] = "关卡编辑器";
 		strs[41] = "eclipse 多项目依赖";
-		strs[42] = "苍老师是一个好人";
+		strs[42] = "张媛:猩猩的娃叫陈美希吗？不知为什么让我突然想起了林明美";
 
 		List all = null;
 		long start = System.currentTimeMillis();
@@ -84,5 +90,18 @@ public class Test {
 		}
 		System.out.println(System.currentTimeMillis() - start);
 
+		
+		
+//		strs[99] = "程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪";
+//		start = System.currentTimeMillis();
+//		for (int i = 0; i < 100000; i++) {
+//			ToAnalysis.paser(strs[99]) ;
+//			// for (SegToken segToken : process) {
+//			// System.out.print(new String(segToken.charArray));
+//			// System.out.print(" ");
+//			// }
+//			// System.out.println();
+//		}
+//		System.out.println(System.currentTimeMillis() - start);
 	}
 }

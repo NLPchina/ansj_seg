@@ -7,10 +7,10 @@ import java.util.HashMap;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.name.PersonLibrary;
-import org.ansj.util.IOUtil;
+import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.StringUtil;
+import org.ansj.util.recognition.PersonRecognition;
 
 public class InitDictionary {
 	/**
@@ -98,7 +98,6 @@ public class InitDictionary {
 
 		words = new String[arrayLength];
 
-		// 恶心的java数组泛型
 		termNatures = new TermNatures[arrayLength];
 
 	}
@@ -107,7 +106,7 @@ public class InitDictionary {
 		/**
 		 * 人名识别必备的 
 		 */
-		HashMap<String, PersonNatureAttr> personMap = new PersonLibrary().getPersonMap() ;
+		HashMap<String, PersonNatureAttr> personMap =  PersonAttrLibrary.getPersonMap() ;
 		PersonNatureAttr personAttr = null ;
 		
 		/**
@@ -138,6 +137,7 @@ public class InitDictionary {
 				termNatures[num] = tn ;
 			}
 		}
+		
 		reader.close();
 	}
 

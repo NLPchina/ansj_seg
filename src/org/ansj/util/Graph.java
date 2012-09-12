@@ -1,11 +1,9 @@
 package org.ansj.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.util.recognition.NumRecognition;
 import org.ansj.util.recognition.PersonRecognition;
@@ -157,6 +155,7 @@ public class Graph {
 		 */
 		public Merger merger() {
 
+			rmLittlePath();
 			// 最短路径
 			walkPath();
 
@@ -167,16 +166,17 @@ public class Graph {
 			// 数字+量词的识别
 			NumRecognition.recogntionNQ(terms);
 
-			// 人名识别
-			new PersonRecognition().recognition(terms);
+			// 姓名识别
+			new PersonRecognition(terms).recogntion();
 			walkPathByScore();
-
+						
 			// 用户自定义词典的识别
 			new UserDefineRecognition(terms).recongnitionTerm();
 			rmLittlePath();
 			walkPathByFreq();
 
 			return this;
+
 		}
 
 		private void walkPathByScore() {
@@ -274,7 +274,7 @@ public class Graph {
 		}
 
 		/**
-		 * 根据词长打分方法
+		 * 人名打分方法
 		 * 
 		 * @param i
 		 *            起始位置

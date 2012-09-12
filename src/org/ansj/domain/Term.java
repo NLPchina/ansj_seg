@@ -76,7 +76,6 @@ public class Term implements Comparable<Term> {
 		double score = this.selfScore + from.getScore();
 		// 维特比进行最优路径的构建
 		if (this.from == null || this.getScore() < score) {
-			// System.out.println(from+"@"+this+"\t"+score);
 			this.setFromAndScore(from, score);
 		}
 	}

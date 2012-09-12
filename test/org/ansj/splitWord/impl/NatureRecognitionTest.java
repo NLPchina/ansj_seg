@@ -13,9 +13,8 @@ import org.ansj.util.recognition.NatureRecognition;
  */
 public class NatureRecognitionTest {
 	public static void main(String[] args) {
-		String str = "展品中有二十六幅被评为优秀作品，" ;
+		String str = "结婚的和尚未结婚的孙建是一个好人" ;
 		List<Term> terms = ToAnalysis.paser(str) ;
 		new NatureRecognition(terms).recogntion() ;
-		System.out.println(terms);
 	}
 }

@@ -21,4 +21,10 @@ public class DicReader {
 		}
 		return null ;
 	}
+	
+	public static InputStream getInputStream(String name){
+		InputStream in = DicReader.class.getResourceAsStream(name) ;
+		
+		return in ;
+	}
 }
