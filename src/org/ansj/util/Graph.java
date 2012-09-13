@@ -169,7 +169,7 @@ public class Graph {
 			// 姓名识别
 			new PersonRecognition(terms).recogntion();
 			walkPathByScore();
-						
+			
 			// 用户自定义词典的识别
 			new UserDefineRecognition(terms).recongnitionTerm();
 			rmLittlePath();

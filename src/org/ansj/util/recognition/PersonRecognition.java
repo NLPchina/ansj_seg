@@ -15,9 +15,9 @@ import org.ansj.util.TermUtil;
  * 
  */
 public class PersonRecognition {
-
+	private boolean skip = false ; 
 	private Term[] terms;
-
+	// 名称是否有歧异
 	// public int B = -1;//0 姓氏
 	// public int C = -1;//1 双名的首字
 	// public int D = -1;//2 双名的末字
@@ -46,21 +46,29 @@ public class PersonRecognition {
 			}
 			term.score = 0;
 			term.selfScore = 0;
-			for (int j = 0; j < 4; j++) {
-				if (term.getTermNatures().personAttr.getFreq(j, 0) > 300) {
+			for (int j = 3; j > -1; j--) {
+				if (term.getTermNatures().personAttr.getFreq(j, 0) > 500||(j>1&&term.getName().length()==2&&term.getTermNatures().personAttr.getFreq(j, 0) > 0)) {
 					tempTerm = nameFind(i, beginFreq, j);
-					if (tempTerm != null)
+					if (tempTerm != null) {
 						termList.add(tempTerm);
-				} else if (term.getName().length() > 2 && term.getTermNatures().personAttr.getFreq(j, 0) > 0) {
-					j = 3;
-					tempTerm = nameFind(i, beginFreq, j);
+						//如果是无争议性识别
+						if (tempTerm.getName().length() > 4 && skip) {
+							for (int j2 = i; j2 < tempTerm.getToValue(); j2++) {
+								if (terms[j2] != null) {
+									terms[j2].score = 0;
+									terms[j2].selfScore = 0;
+								}
+							}
+							i = tempTerm.getToValue() - 1;
+							break ;
+						}
+					}
 				}
 			}
-
-			for (Term term2 : termList) {
-				TermUtil.insertTerm(terms, term2);
-			}
 			beginFreq = term.getTermNatures().personAttr.begin + 1;
+		}
+		for (Term term2 : termList) {
+			TermUtil.insertTerm(terms, term2);
 		}
 	}
 
@@ -74,14 +82,14 @@ public class PersonRecognition {
 
 	private Term nameFind(int offe, int beginFreq, int size) {
 		// TODO Auto-generated method stub
-
 		StringBuilder sb = new StringBuilder();
+		boolean undefinite = false;
+		skip = false ;
 		PersonNatureAttr pna = null;
 		int index = 0;
 		int freq = 0;
 		double allFreq = 0;
 		Term term = null;
-		boolean undefinite = false;
 		int i = offe;
 		for (; i < terms.length; i++) {
 			// 走到结尾处识别出来一个名字.
@@ -102,7 +110,7 @@ public class PersonRecognition {
 				undefinite = true;
 			}
 			sb.append(terms[i]);
-			allFreq += freq;
+			allFreq += Math.log(freq);
 			index++;
 
 			if (size < 3 && index == size + 2) {
@@ -110,12 +118,14 @@ public class PersonRecognition {
 			}
 		}
 
-		double score = Math.log(allFreq) * factory[size];
+		double score = allFreq * factory[size];
 		double endFreq = 0;
 		// 开始寻找结尾词
 		boolean flag = true;
 		while (flag) {
-			i++;
+			if (size < 3) {
+				i++;
+			}
 			if (i >= terms.length) {
 				endFreq = 10;
 				flag = false;
@@ -125,22 +135,26 @@ public class PersonRecognition {
 			}
 		}
 
+		if (undefinite && (beginFreq < 3 || endFreq < 3))
+			return null;
+		
+		skip = !undefinite ;
+
 		score += Math.log(endFreq);
 		score += Math.log(beginFreq);
 		term = new Term(sb.toString(), offe, TermNatures.NR);
 		term.selfScore = score;
+		
 
-		if (undefinite && (beginFreq < 3 || endFreq < 3))
-			return null;
 		// 找到一个词插入进去
-		 System.out.print(term + "\t");
-		 System.out.print((size + 2) + "\t");
-		 System.out.print(Math.log(allFreq) * factory[size] + "\t");
-		 System.out.print(beginFreq + "\t");
-		 System.out.print(endFreq + "\t");
-		 System.out.print(term.selfScore + "\t");
-		 System.out.print(undefinite + "\t");
-		 System.out.println();
+//		System.out.print(term + "\t");
+//		System.out.print((size + 2) + "\t");
+//		System.out.print(Math.log(allFreq) * factory[size] + "\t");
+//		System.out.print(beginFreq + "\t");
+//		System.out.print(endFreq + "\t");
+//		System.out.print(term.selfScore + "\t");
+//		System.out.print(undefinite + "\t");
+//		System.out.println();
 		return term;
 
 	}

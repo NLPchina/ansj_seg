@@ -29,11 +29,15 @@ public class PersonRecognitionTest {
 		list.add("@新华社中国网事：#聚焦钓鱼岛#外交部长杨洁篪10日在外交部紧急召见日本驻华大使丹羽宇一郎，就日本政府非法“购买”钓鱼岛提出严正交涉和强烈抗议。当日，中国驻日本大使程永华也向日本外务省负责人提出严正交涉并递交了抗议照会。");
 		list.add("阿米尔汗，8岁时出演一部轰动印度的电影，是公认的童星，长大后却一心打网球并获得过网球冠军。21岁爱上邻居家女孩，由于宗教原因两人决定私奔，现在过着幸福美满的生活。81届奥斯卡最佳影片《贫民窟的百万富翁》，他担任制片。2009年一部《三个白痴》震惊全球，他47岁");
 		list.add("老郭动粗 师徒揭相声虚假繁荣");
+		list.add("Facebook CEO 扎克伯格极少公开露面") ;
+		list.add("徐德有说这是个错误!") ;
 		for (String string : list) {
 			List<Term> paser = ToAnalysis.paser(string);
 			System.out.println(paser);
 		}
+//		makeFile() ;
 //		initWordFreq() ;
+		
 	}
 
 	public static void makeFile() throws IOException {
@@ -45,7 +49,7 @@ public class PersonRecognitionTest {
 			List<Term> terms = ToAnalysis.paser(str);
 			if (terms.size() == 1 || terms.size() > 11)
 				continue;
-			sb.append(terms);
+			sb.append(terms.toString().replace(", ", " ").replace("[", "").replace("]", ""));
 			sb.append("\n");
 		}
 		reader.close();
