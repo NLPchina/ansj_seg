@@ -10,7 +10,6 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.StringUtil;
-import org.ansj.util.recognition.PersonRecognition;
 
 public class InitDictionary {
 	/**

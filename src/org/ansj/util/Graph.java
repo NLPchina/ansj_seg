@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.util.recognition.AsianPersonRecognition;
 import org.ansj.util.recognition.NumRecognition;
-import org.ansj.util.recognition.PersonRecognition;
 import org.ansj.util.recognition.UserDefineRecognition;
 
 /**
@@ -155,19 +155,18 @@ public class Graph {
 		 */
 		public Merger merger() {
 
-			rmLittlePath();
+			
 			// 最短路径
 			walkPath();
-
+			
 			// 数字发现
 			NumRecognition.recogntionNM(terms);
 			rmLittlePath();
-
 			// 数字+量词的识别
 			NumRecognition.recogntionNQ(terms);
 
 			// 姓名识别
-			new PersonRecognition(terms).recogntion();
+			new AsianPersonRecognition(terms).recogntion();
 			walkPathByScore();
 			
 			// 用户自定义词典的识别

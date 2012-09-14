@@ -123,7 +123,7 @@ public class MyStaticValue {
 		ObjectInputStream objectInputStream = null;
 		Map<String, int[][]> map = new HashMap<String, int[][]>(0);
 		try {
-			inputStream = DicReader.getInputStream("person/name_freq.data");
+			inputStream = DicReader.getInputStream("person/asian_name_freq.data");
 			objectInputStream = new ObjectInputStream(inputStream);
 			map = (Map<String, int[][]>) objectInputStream.readObject();
 		} catch (IOException e) {

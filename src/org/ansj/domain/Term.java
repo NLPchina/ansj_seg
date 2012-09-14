@@ -75,7 +75,7 @@ public class Term implements Comparable<Term> {
 	public void setPathPersonScore(Term from) {
 		double score = this.selfScore + from.getScore();
 		// 维特比进行最优路径的构建
-		if (this.from == null || this.getScore() < score) {
+		if (this.from == null || this.getScore() > score) {
 			this.setFromAndScore(from, score);
 		}
 	}
