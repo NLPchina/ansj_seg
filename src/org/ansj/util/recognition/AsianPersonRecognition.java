@@ -106,11 +106,7 @@ public class AsianPersonRecognition {
 			pna = term.getTermNatures().personAttr;
 			// 在这个长度的这个位置的词频,如果没有可能就干掉,跳出循环
 			if ((freq = pna.getFreq(size, index)) == 0) {
-				if (size == 3 && sb.length() > 4) {
-					break;
-				} else {
 					return null;
-				}
 			}
 
 			if (pna.allFreq > 0 ) {

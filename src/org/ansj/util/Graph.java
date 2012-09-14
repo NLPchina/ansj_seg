@@ -1,6 +1,7 @@
 package org.ansj.util;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.ansj.domain.Term;
@@ -118,7 +119,7 @@ public class Graph {
 				temp = terms[j];
 				if (temp != null && temp.getToValue() > maxTo) {
 					flag = true;
-					i = temp.getToValue();
+					i = temp.getToValue()-1;
 					break;
 				}
 			}
@@ -154,7 +155,8 @@ public class Graph {
 		 * @return
 		 */
 		public List<Term> merger() {
-
+			
+			rmLittlePath();
 			// 最短路径
 			walkPath();
 
@@ -179,6 +181,7 @@ public class Graph {
 
 		/**
 		 * 针对索引写的分词
+		 * 
 		 * @return
 		 */
 		public List<Term> indexMerger() {
@@ -199,8 +202,6 @@ public class Graph {
 			return getIndexResult();
 
 		}
-
-	
 
 		private void walkPathByScore() {
 			// TODO Auto-generated method stub
@@ -331,15 +332,28 @@ public class Graph {
 			}
 			return result;
 		}
-		
-		
+
 		/**
 		 * 检索的分词
+		 * 
 		 * @return
 		 */
 		private List<Term> getIndexResult() {
 			// TODO Auto-generated method stub
-			return null;
+			List<Term> all = new LinkedList<Term>();
+			Term term = null;
+			int length = terms.length -1 ;
+			for (int i = 0; i < length; i++) {
+				term = terms[i];
+				if (term == null) {
+					continue;
+				}
+				all.add(term) ;
+//				while((term=term.getNext())!=null){
+//					all.add(term) ;
+//				}
+			}
+			return all;
 		}
 	}
 }

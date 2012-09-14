@@ -126,11 +126,11 @@ public class WordAlert {
 		StringBuilder sb = new StringBuilder() ;
 		for (int i = start; i < start+end; i++) {
 			c = temp.charAt(i) ;
-			if(c>=MIN_UPPER_N&&c<=MAX_UPPER_N){
-				sb.append((char)(c-UPPER_GAP_N)) ;
-			}else{
+//			if(c>=MIN_UPPER_N&&c<=MAX_UPPER_N){
+//				sb.append((char)(c-UPPER_GAP_N)) ;
+//			}else{
 				sb.append(c) ;
-			}
+//			}
 		}
 		return sb.toString() ;
 	}

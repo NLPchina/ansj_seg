@@ -22,7 +22,7 @@ public class RightRate {
 	 */
 	public static void main(String[] args) throws Exception {
 		// 读取分词文本
-		BufferedReader br = IOUtil.getReader("data/28288句标准分词.txt", "GBK");
+		BufferedReader br = IOUtil.getReader("data/1998年人民日报分词语料.txt", "GBK");
 
 		String temp_str = null;
 
@@ -63,7 +63,7 @@ public class RightRate {
 				} else if (had_words_array[term.getOffe()].equalsIgnoreCase(term.getName())) {
 					success++;
 				} else {
-					success++;
+					error++;
 				}
 			}
 
@@ -77,8 +77,8 @@ public class RightRate {
 			allSuccess += success;
 
 			if(error>0){
-				System.out.println("example:"+temp_str);
-				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(",", ""));
+//				System.out.println("example:"+temp_str);
+//				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(",", ""));
 			}
 //			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			line_number++;

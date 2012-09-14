@@ -250,8 +250,7 @@ public class IndexAnalysis implements Analysis {
 				break;
 			}
 		}
-		return gp.getPath().merger();
-
+		return gp.getPath().indexMerger();
 	}
 
 }

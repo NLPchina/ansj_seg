@@ -59,10 +59,9 @@ public class MakeArray {
 		reader.close();
 
 		// 加载主词典
-		// reader = IOUtil.getReader(path, charEncoding);
 		makeBaseArray(all);
 		writeLibrary();
-		// reader.close() ;
+		reader.close() ;
 	}
 
 	/**
