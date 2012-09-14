@@ -178,7 +178,7 @@ public class ToAnalysis implements Analysis {
 				break;
 			}
 		}
-		List<Term> result = gp.getPath().merger().getResult();
+		List<Term> result = gp.getPath().merger();
 
 		terms.addAll(result);
 	}
@@ -250,7 +250,7 @@ public class ToAnalysis implements Analysis {
 				break;
 			}
 		}
-		return gp.getPath().merger().getResult();
+		return gp.getPath().merger();
 
 	}
 

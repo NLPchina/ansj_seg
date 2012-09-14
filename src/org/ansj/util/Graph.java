@@ -153,12 +153,11 @@ public class Graph {
 		 * @param yuan
 		 * @return
 		 */
-		public Merger merger() {
+		public List<Term> merger() {
 
-			
 			// 最短路径
 			walkPath();
-			
+
 			// 数字发现
 			NumRecognition.recogntionNM(terms);
 			rmLittlePath();
@@ -168,15 +167,40 @@ public class Graph {
 			// 姓名识别
 			new AsianPersonRecognition(terms).recogntion();
 			walkPathByScore();
-			
+
 			// 用户自定义词典的识别
 			new UserDefineRecognition(terms).recongnitionTerm();
 			rmLittlePath();
 			walkPathByFreq();
 
-			return this;
+			return getResult();
 
 		}
+
+		/**
+		 * 针对索引写的分词
+		 * @return
+		 */
+		public List<Term> indexMerger() {
+
+			rmLittlePath();
+
+			// 数字发现
+			NumRecognition.recogntionNM(terms);
+			rmLittlePath();
+
+			// 姓名识别
+			new AsianPersonRecognition(terms).recogntion();
+
+			// 用户自定义词典的识别
+			new UserDefineRecognition(terms).recongnitionTerm();
+			rmLittlePath();
+
+			return getIndexResult();
+
+		}
+
+	
 
 		private void walkPathByScore() {
 			// TODO Auto-generated method stub
@@ -297,7 +321,7 @@ public class Graph {
 		/**
 		 * 将最终结果放到Term数组中
 		 */
-		public List<Term> getResult() {
+		private List<Term> getResult() {
 			List<Term> result = new ArrayList<Term>();
 			int length = terms.length - 1;
 			for (int i = 0; i < length; i++) {
@@ -306,6 +330,16 @@ public class Graph {
 				}
 			}
 			return result;
+		}
+		
+		
+		/**
+		 * 检索的分词
+		 * @return
+		 */
+		private List<Term> getIndexResult() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 }

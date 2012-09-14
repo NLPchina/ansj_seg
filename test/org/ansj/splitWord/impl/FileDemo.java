@@ -2,8 +2,6 @@ package org.ansj.splitWord.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import love.cq.util.IOUtil;
 
 import org.ansj.splitWord.analysis.ToAnalysis;
