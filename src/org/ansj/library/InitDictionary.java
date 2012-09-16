@@ -4,12 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import love.cq.util.StringUtil;
+
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
-import org.ansj.util.StringUtil;
 
 public class InitDictionary {
 	/**
@@ -38,11 +39,6 @@ public class InitDictionary {
 	 */
 	public static TermNatures[] termNatures = null;
 
-
-	/**
-	 * 两本词典的字符编码
-	 */
-	private static String charEncoding = "UTF-8";
 
 	/**
 	 * 判断词典是否加载过

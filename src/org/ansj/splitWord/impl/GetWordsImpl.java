@@ -6,10 +6,6 @@ import static org.ansj.library.InitDictionary.status;
 import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.InitDictionary;
 import org.ansj.splitWord.GetWords;

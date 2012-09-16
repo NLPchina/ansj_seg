@@ -1,13 +1,12 @@
 package org.ansj.util.recognition;
 
-import love.cq.domain.WoodInterface;
-
 import static org.ansj.library.UserDefineLibrary.FOREST;
+import love.cq.domain.WoodInterface;
+import love.cq.util.ObjectBean;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.util.ObjectBean;
 import org.ansj.util.TermUtil;
 
 /**

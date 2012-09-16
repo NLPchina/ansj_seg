@@ -5,11 +5,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
+import love.cq.util.IOUtil;
+
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-
-import love.cq.util.IOUtil;
 
 public class NameDicPaser {
 	public static void main(String[] args) throws IOException {

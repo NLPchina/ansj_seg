@@ -27,7 +27,6 @@ public class PersonAttrLibrary {
 			return pnMap;
 		}
 		init1();
-		PersonNatureAttr personNatureAttr = pnMap.get("和") ;
 		init2();
 		return pnMap;
 	}
@@ -75,10 +74,5 @@ public class PersonAttrLibrary {
 			if (br != null)
 				br.close();
 		}
-	}
-
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
-		System.out.println(personMap.size());
 	}
 }

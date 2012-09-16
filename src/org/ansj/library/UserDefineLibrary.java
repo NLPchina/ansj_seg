@@ -2,14 +2,13 @@ package org.ansj.library;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.util.ArrayList;
 
 import love.cq.domain.Forest;
 import love.cq.library.Library;
 import love.cq.util.IOUtil;
+import love.cq.util.StringUtil;
 
 import org.ansj.util.MyStaticValue;
-import org.ansj.util.StringUtil;
 
 public class UserDefineLibrary {
 	public static Forest FOREST = null;

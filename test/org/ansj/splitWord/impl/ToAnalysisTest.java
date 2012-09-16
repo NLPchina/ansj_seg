@@ -35,7 +35,7 @@ public class ToAnalysisTest {
 				// "/"+next.getMaxPath().getNatureStr());
 				if (next.getTermNatures().termNatures[0] == TermNature.NR) {
 					System.out.println(next.getName() + "\t" + next.selfScore);
-					count++ ;
+					count++;
 				}
 			}
 			// IOUtil.Writer("/Users/ansj/Documents/快盘/冒死.txt", "UTF-8",

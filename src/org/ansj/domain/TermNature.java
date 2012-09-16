@@ -1,8 +1,5 @@
 package org.ansj.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.library.NatureLibrary;
 
 /**

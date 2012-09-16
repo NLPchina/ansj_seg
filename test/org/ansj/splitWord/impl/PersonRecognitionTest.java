@@ -1,18 +1,10 @@
 package org.ansj.splitWord.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
-
-import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.StringUtil;
 
 public class PersonRecognitionTest {
 	public static void main(String[] args) throws Exception {

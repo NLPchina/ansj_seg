@@ -2,16 +2,15 @@ package org.ansj.training.name;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import love.cq.util.IOUtil;
+import love.cq.util.StringUtil;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.StringUtil;
 
 /**
  * 亚洲人名模型训练.训练的时候需要分词.记得屏蔽姓名识别
@@ -33,12 +32,12 @@ public class AsianName {
 
 	/**
 	 * 对人名词表进行分词
+	 * 
 	 * @throws IOException
 	 */
 	public static void makeFile() throws IOException {
 		String str = null;
 		BufferedReader reader = IOUtil.getReader(base + "/asian_name.dic", "UTF-8");
-		HashMap<String, Integer> hm = new HashMap();
 		StringBuilder sb = new StringBuilder();
 		while ((str = reader.readLine()) != null) {
 			List<Term> terms = ToAnalysis.paser(str);
@@ -53,6 +52,7 @@ public class AsianName {
 
 	/**
 	 * 词频概率表
+	 * 
 	 * @throws IOException
 	 */
 	public static void initWordFreq() throws IOException {
@@ -60,7 +60,6 @@ public class AsianName {
 		HashMap<String, Entry> hm = new HashMap<String, Entry>();
 		String temp = null;
 		String[] strs = null;
-		int min = 0;
 		Entry entry = null;
 		while ((temp = reader.readLine()) != null) {
 			strs = temp.split(" ");
@@ -82,18 +81,15 @@ public class AsianName {
 		}
 
 		IOUtil.WriterObj(base + "/asian_name_freq.data", result);
-		System.out.println(result.get("和"));
-		System.out.println(result.get("的"));
-
 	}
 
 	/**
 	 * 统计词频
+	 * 
 	 * @throws IOException
 	 */
 	public static void staticFreq() throws IOException {
 		BufferedReader reader = IOUtil.getReader(base + "/asian_name_split.dic", "UTF-8");
-		HashMap<String, int[]> hm = new HashMap<String, int[]>();
 		String temp = null;
 		int C2 = 0, C3 = 0, C4 = 0;
 
@@ -123,7 +119,7 @@ public class AsianName {
 
 	}
 
-	static class Entry implements Serializable {
+	static class Entry {
 		int[][] ints = new int[3][0];
 
 		public Entry() {

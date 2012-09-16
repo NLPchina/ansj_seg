@@ -2,10 +2,8 @@ package org.ansj.util.recognition;
 
 import java.util.List;
 
-import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.MathUtil;
 
 /**
@@ -64,14 +62,14 @@ public class NatureRecognition {
 		}
 	}
 
-	private void print() {
-		for (int i = 0; i < natureTermTable.length; i++) {
-			for (int j = 0; j < natureTermTable[i].length; j++) {
-				System.out.print(natureTermTable[i][j] + "\t");
-			}
-			System.out.println();
-		}
-	}
+//	private void print() {
+//		for (int i = 0; i < natureTermTable.length; i++) {
+//			for (int j = 0; j < natureTermTable[i].length; j++) {
+//				System.out.print(natureTermTable[i][j] + "\t");
+//			}
+//			System.out.println();
+//		}
+//	}
 
 	private NatureTerm[] getNatureTermArr(TermNature[] termNatures) {
 		NatureTerm[] natureTerms = new NatureTerm[termNatures.length];

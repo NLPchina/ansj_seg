@@ -1,10 +1,5 @@
 package org.ansj.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
 
 /**
  * 人名标注pojo类
