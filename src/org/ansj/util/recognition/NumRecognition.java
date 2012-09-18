@@ -40,7 +40,7 @@ public class NumRecognition {
 				} while (i < length && (terms[i] == null || terms[i].getTermNatures().numAttr.flag));
 
 				//合并最后的量词
-				if (i < length && terms[i].getTermNatures().numAttr.numEndFreq > -1) {
+				if (i < length && terms[i].getTermNatures().numAttr.numEndFreq > 0) {
 					sb.append(terms[i].getName());
 					to = terms[i].getTo() ;
 					terms[i] = null;
