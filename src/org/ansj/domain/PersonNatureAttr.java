@@ -1,6 +1,5 @@
 package org.ansj.domain;
 
-
 /**
  * 人名标注pojo类
  * 
@@ -31,6 +30,9 @@ public class PersonNatureAttr {
 
 	public int allFreq;
 
+	// 是否有可能是名字的第一个字
+	public boolean flag;
+
 	/**
 	 * 设置
 	 * 
@@ -57,17 +59,20 @@ public class PersonNatureAttr {
 
 	/**
 	 * 得道某一个位置的词频
+	 * 
 	 * @param length
 	 * @param loc
 	 * @return
 	 */
 	public int getFreq(int length, int loc) {
-		if(locFreq==null) return 0 ;
-		if (length > 3) length = 3;
-		if(loc>4) loc =4 ;
+		if (locFreq == null)
+			return 0;
+		if (length > 3)
+			length = 3;
+		if (loc > 4)
+			loc = 4;
 		return locFreq[length][loc];
 	}
-	
 
 	/**
 	 * 词频记录表
@@ -75,9 +80,13 @@ public class PersonNatureAttr {
 	 * @param ints
 	 */
 	public void setlocFreq(int[][] ints) {
+		for (int i = 0; i < ints.length; i++) {
+			if (ints[i][0] > 0) {
+				flag = true;
+			}
+		}
 		locFreq = ints;
 	}
-
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

@@ -41,7 +41,7 @@ public class AsianPersonRecognition {
 		int beginFreq = 10;
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			if (term == null) {
+			if (term == null||term.getTermNatures().personAttr.flag) {
 				continue;
 			}
 			term.score = 0;

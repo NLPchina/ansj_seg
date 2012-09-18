@@ -19,6 +19,10 @@ public class Graph {
 	protected Term root = null;
 	protected static final String E = "末##末";
 	protected static final String B = "始##始";
+	// 是否有人名
+	public boolean hasPerson;
+	// 是否有数字
+	public boolean hasNum;
 
 	public Graph(String str) {
 		this.str = str;
@@ -42,6 +46,13 @@ public class Graph {
 	 * @param term
 	 */
 	public void addTerm(Term term) {
+		// 是否有数字
+		if (hasNum || term.getTermNatures().numAttr.numFreq > 0) {
+			hasNum = true;
+		}
+		if (hasPerson || term.getTermNatures().personAttr.flag) {
+			hasPerson = true;
+		}
 		// 将词放到图的位置
 		if (terms[term.getOffe()] == null) {
 			terms[term.getOffe()] = term;
@@ -71,6 +82,7 @@ public class Graph {
 		}
 		return root;
 	}
+
 
 	public void rmLittlePath() {
 		int maxTo = -1;

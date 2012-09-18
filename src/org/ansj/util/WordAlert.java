@@ -113,11 +113,11 @@ public class WordAlert {
 		return sb.toString() ;
 	}
 	public static String alertNumber(char[] chars , int start , int end){
-//		for (int i = start; i < start+end; i++) {
-//			if(chars[i]>=MIN_UPPER_N&&chars[i]<=MAX_UPPER_N){
-//				chars[i] = (char)(chars[i]-UPPER_GAP_N) ;
-//			}
-//		}
+		for (int i = start; i < start + end; i++) {
+			if (chars[i] >= MIN_UPPER_N && chars[i] <= MAX_UPPER_N) {
+				chars[i] = (char) (chars[i] - UPPER_GAP_N);
+			}
+		}
 		return new String(chars,start,end) ;
 	}
 	

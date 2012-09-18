@@ -12,12 +12,14 @@ import org.ansj.util.MyStaticValue;
 
 public class UserDefineLibrary {
 	public static Forest FOREST = null;
+	
 	static {
 		try {
+			
 			long start = System.currentTimeMillis();
 			FOREST = new Forest();
 
-			//先加载系统内置补充词典
+			// 先加载系统内置补充词典
 			BufferedReader br = MyStaticValue.getUserDefineReader();
 			String temp = null;
 			while ((temp = br.readLine()) != null) {
@@ -28,8 +30,10 @@ public class UserDefineLibrary {
 				}
 			}
 
-			//加载用户自定义词典
-			if ((temp = MyStaticValue.rb.getString("userLibrary")) != null&&new File(temp).isFile()) {
+			//如果系统设置了用户词典.那么..呵呵
+			temp = MyStaticValue.userDefinePath ; 
+			// 加载用户自定义词典
+			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null) && new File(temp).isFile()) {
 				br = IOUtil.getReader(temp, "UTF-8");
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isBlank(temp)) {
@@ -38,8 +42,8 @@ public class UserDefineLibrary {
 						Library.insertWord(FOREST, temp);
 					}
 				}
-			}else{
-				System.err.println("用户自定义词典:"+temp+", 没有这个文件!");
+			} else {
+				System.err.println("用户自定义词典:" + temp + ", 没有这个文件!");
 			}
 			System.out.println("加载用户自定义词典完成用时:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {

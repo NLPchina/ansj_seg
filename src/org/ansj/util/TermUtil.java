@@ -32,20 +32,6 @@ public class TermUtil {
 		to.setFrom(from);
 	}
 
-	/**
-	 * 将多个term合并为一个全新的term
-	 * 
-	 * @param termNatures
-	 * @return
-	 */
-	// public static Term makeNewTerm(TermNatures termNatures, Term... terms) {
-	// StringBuilder sb = new StringBuilder();
-	// for (int i = 0; i < terms.length; i++) {
-	// sb.append(terms[i].getName());
-	// }
-	// Term term = new Term(sb.toString(), terms[0].getOffe(), termNatures);
-	// return term;
-	// }
 
 	/**
 	 * 将一个term插入到链表中的对应位置中,此处如果有效率问题我就调优.不怕
@@ -98,26 +84,4 @@ public class TermUtil {
 
 	}
 
-//	public static Term makeNewTermPerson(int offe, int index, int startName, List<Term> terms) {
-//		// TODO Auto-generated method stub
-//		StringBuilder sb = new StringBuilder();
-//		Term term = null;
-//		double v1 = 1;
-//		double v2 = 1;
-//		double p = 0;
-//		String name = null;
-//		for (int i = offe; i <= index; i++) {
-//			term = terms.get(i);
-//			name = term.getName();
-//			sb.append(name);
-//			p = PersonLibrary.getIndexFreqTF(name, i - startName);
-//			//贝叶斯概率公式
-//			v1 *= p;
-//			v2 *= (1 - p);
-//		}
-//		p = v1/(v1+v2) ;
-//		term = new Term(sb.toString(), offe, TermNatures.NR) ;
-//		term.selfScore = p ;
-//		return term;
-//	}
 }

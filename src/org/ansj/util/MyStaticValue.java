@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.ansj.dic.DicReader;
+import org.ansj.library.UserDefineLibrary;
 
 /**
  * 这个类储存一些公用变量.
@@ -17,6 +18,8 @@ import org.ansj.dic.DicReader;
  * 
  */
 public class MyStaticValue {
+	
+	public static String userDefinePath = null;
 
 	/**
 	 * 配置文件变量
