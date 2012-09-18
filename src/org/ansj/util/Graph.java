@@ -38,6 +38,7 @@ public class Graph {
 
 	/**
 	 * 增加一个词语到图中
+	 * 
 	 * @param term
 	 */
 	public void addTerm(Term term) {
@@ -48,7 +49,6 @@ public class Graph {
 			terms[term.getOffe()] = term.setNext(terms[term.getOffe()]);
 		}
 	}
-
 
 	/**
 	 * 取得最优路径的root Term
@@ -98,6 +98,24 @@ public class Graph {
 					terms[j] = null;
 				}
 				i = maxTo - 1;
+			}
+		}
+	}
+
+	public void rmLittleSinglePath() {
+		int maxTo = -1;
+		Term temp = null;
+		for (int i = 0; i < terms.length; i++) {
+			if (terms[i] == null)
+				continue;
+			maxTo = terms[i].getToValue();
+			if (maxTo - i == 1 || i + 1 == terms.length)
+				continue;
+			for (int j = i; j < maxTo; j++) {
+				temp = terms[j];
+				if (temp != null && temp.getToValue() <= maxTo && temp.getName().length() == 1) {
+					terms[j] = null;
+				}
 			}
 		}
 	}

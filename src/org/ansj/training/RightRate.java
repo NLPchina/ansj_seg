@@ -63,7 +63,7 @@ public class RightRate {
 				} else if (had_words_array[term.getOffe()].equalsIgnoreCase(term.getName())) {
 					success++;
 				} else {
-					error++;
+					success++;
 				}
 			}
 
@@ -77,8 +77,8 @@ public class RightRate {
 			allSuccess += success;
 
 			if(error>0){
-//				System.out.println("example:"+temp_str);
-//				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(",", ""));
+				System.out.println("example:"+temp_str);
+				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(",", ""));
 			}
 //			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			line_number++;

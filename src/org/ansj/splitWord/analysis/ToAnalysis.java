@@ -33,12 +33,8 @@ public class ToAnalysis extends Analysis {
 				// TODO Auto-generated method stub
 				// 最短路径
 				graph.walkPath();
-
 				// 数字发现
 				NumRecognition.recogntionNM(graph.terms);
-				graph.rmLittlePath();
-				// 数字+量词的识别
-				NumRecognition.recogntionNQ(graph.terms);
 
 				// 姓名识别
 				new AsianPersonRecognition(graph.terms).recogntion();

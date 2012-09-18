@@ -40,7 +40,7 @@ public class IndexAnalysis extends Analysis {
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recongnitionTerm();
-				graph.rmLittlePath();
+				graph.rmLittleSinglePath();
 
 				return result();
 			}
@@ -57,15 +57,18 @@ public class IndexAnalysis extends Analysis {
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
-					if (term == null) {
-						continue;
+					while (term != null) {
+						all.add(term);
+						term = term.getNext();
+						if (term == null || term.getName().length() == 1) {
+							break;
+						}
 					}
-					all.add(term);
 				}
 				return all;
 			}
 		};
-		
+
 		return merger.merger();
 	}
 

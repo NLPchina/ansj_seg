@@ -16,6 +16,7 @@ import org.ansj.util.TermUtil;
  * 
  */
 public class AsianPersonRecognition {
+	private static final double[] FACTORY = { 0.16271366224044456, 0.8060521860870434, 0.031234151672511947 };
 	private boolean skip = false;
 	private Term[] terms;
 	// 名称是否有歧异
@@ -28,8 +29,6 @@ public class AsianPersonRecognition {
 	// public int M = -1;//12 两个中国人名之间的成分
 	// public int m = -1;//44 可拆分的姓名
 	// double[] factory = {"BC", "BCD", "BCDE"}
-
-	double[] factory = { 0.16271366224044456, 0.8060521860870434, 0.031234151672511947 };
 
 	public AsianPersonRecognition(Term[] terms) {
 		this.terms = terms;
@@ -121,7 +120,7 @@ public class AsianPersonRecognition {
 			}
 		}
 
-		double score = -Math.log(factory[size]);
+		double score = -Math.log(FACTORY[size]);
 		score += allFreq ;
 		double endFreq = 0;
 		// 开始寻找结尾词

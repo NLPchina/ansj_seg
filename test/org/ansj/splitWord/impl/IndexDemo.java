@@ -9,21 +9,24 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 
 /**
  * 针对索引的分词方式
+ * 
  * @author ansj
- *
+ * 
  */
 public class IndexDemo {
 	public static void main(String[] args) throws IOException {
-		int all =0 ;
-		String str = "今天应该已经改完所有的东西了,下周上线!" ;
-		long start = System.currentTimeMillis() ;
-		
+		int all = 0;
+		String str = "上海市长江大桥近日到职";
+		long start = System.currentTimeMillis();
+
 		for (int i = 0; i < 1; i++) {
-			all += str.length() ;
+			all += str.length();
 			List<Term> paser = IndexAnalysis.paser(str);
-			
-			System.out.println(paser);
+
+			for (Term term : paser) {
+				System.out.println(term + "\t" + term.getOffe());
+			}
 		}
-		System.out.println("每秒处理了:"+(all*1000.0/(System.currentTimeMillis()-start)));
+		System.out.println("每秒处理了:" + (all * 1000.0 / (System.currentTimeMillis() - start)));
 	}
 }

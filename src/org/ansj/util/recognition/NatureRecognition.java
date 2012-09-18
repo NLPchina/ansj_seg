@@ -62,14 +62,6 @@ public class NatureRecognition {
 		}
 	}
 
-//	private void print() {
-//		for (int i = 0; i < natureTermTable.length; i++) {
-//			for (int j = 0; j < natureTermTable[i].length; j++) {
-//				System.out.print(natureTermTable[i][j] + "\t");
-//			}
-//			System.out.println();
-//		}
-//	}
 
 	private NatureTerm[] getNatureTermArr(TermNature[] termNatures) {
 		NatureTerm[] natureTerms = new NatureTerm[termNatures.length];
