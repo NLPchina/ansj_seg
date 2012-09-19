@@ -14,7 +14,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
  */
 public class Demo {
 	public static void main(String[] args) throws IOException {
-		Analysis udf = new ToAnalysis(new StringReader("通过收购Fulcrum Microsystems和SDN服务商WindRiver，Intel建立了自己的SDN架构，SDN被视为下一代数据中心不可或缺的技术。此外，Intel积极加入开源社区和联盟，巩固了自己在数据中心的地位。"));
+		Analysis udf = new ToAnalysis(new StringReader("孙健用java重写了张华平老师的分词."));
 		Term term = null ;
 		while((term=udf.next())!=null){
 			System.out.print(term.getName()+" ");

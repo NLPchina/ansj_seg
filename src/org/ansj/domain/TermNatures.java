@@ -4,14 +4,14 @@ public class TermNatures {
 	public static final TermNatures NULL = new TermNatures(TermNature.NULL);
 
 	public static final TermNatures NB = new TermNatures(TermNature.NB);
-	
+
 	public static final TermNatures NR = new TermNatures(TermNature.NR);
 
 	public static final TermNatures EN = new TermNatures(TermNature.EN);
 
-	public static final TermNatures END = new TermNatures(TermNature.END, 50610);
+	public static final TermNatures END = new TermNatures(TermNature.END, 50610, -1);
 
-	public static final TermNatures BEGIN = new TermNatures(TermNature.BEGIN, 50610);
+	public static final TermNatures BEGIN = new TermNatures(TermNature.BEGIN, 50610, 0);
 
 	/**
 	 * 关于这个term的所有词性
@@ -28,15 +28,23 @@ public class TermNatures {
 	 */
 	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
 
-	// 所有的词频
+	/**
+	 * 所有的词频
+	 */
 	public int allFreq = 0;
+
+	/**
+	 * 词的id
+	 */
+	public int id = -2;
 
 	/**
 	 * 构造方法.一个词对应这种玩意
 	 * 
 	 * @param termNatures
 	 */
-	public TermNatures(TermNature[] termNatures) {
+	public TermNatures(TermNature[] termNatures, int id) {
+		this.id = id;
 		this.termNatures = termNatures;
 		serAttribute();
 	}
@@ -47,7 +55,8 @@ public class TermNatures {
 		serAttribute();
 	}
 
-	public TermNatures(TermNature termNature, int allFreq) {
+	public TermNatures(TermNature termNature, int allFreq, int id) {
+		this.id = id;
 		termNatures = new TermNature[1];
 		termNature.frequency = allFreq;
 		this.termNatures[0] = termNature;
@@ -84,9 +93,9 @@ public class TermNatures {
 			this.numAttr = numNatureAttr;
 		}
 	}
-	
-	public void setPersonNatureAttr(PersonNatureAttr personAttr){
-		this.personAttr = personAttr ;
+
+	public void setPersonNatureAttr(PersonNatureAttr personAttr) {
+		this.personAttr = personAttr;
 	}
 
 }

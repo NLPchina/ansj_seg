@@ -39,23 +39,18 @@ public class InitDictionary {
 	 */
 	public static TermNatures[] termNatures = null;
 
+	static {
+		init();
+	}
 
-	/**
-	 * 判断词典是否加载过
-	 */
-	private static boolean isInit = false;
-
-	public static void init() {
-		if (!isInit) {
-			long start = System.currentTimeMillis();
-			try {
-				initArrays();
-				isInit = true;
-				System.out.println("词典加载完成用时:" + (System.currentTimeMillis() - start) + "毫秒");
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.err.print("词典加载出错");
-			}
+	private static void init() {
+		long start = System.currentTimeMillis();
+		try {
+			initArrays();
+			System.out.println("词典加载完成用时:" + (System.currentTimeMillis() - start) + "毫秒");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.print("词典加载出错");
 		}
 	}
 
@@ -99,11 +94,11 @@ public class InitDictionary {
 
 	public static void initArrays(BufferedReader reader) throws Exception {
 		/**
-		 * 人名识别必备的 
+		 * 人名识别必备的
 		 */
-		HashMap<String, PersonNatureAttr> personMap =  PersonAttrLibrary.getPersonMap() ;
-		PersonNatureAttr personAttr = null ;
-		
+		HashMap<String, PersonNatureAttr> personMap = PersonAttrLibrary.getPersonMap();
+		PersonNatureAttr personAttr = null;
+
 		/**
 		 * 下面开始加载词典
 		 */
@@ -123,16 +118,16 @@ public class InitDictionary {
 						IN_SYSTEM[strs[1].charAt(i)] = true;
 					}
 				}
-				//加载词性
-				TermNatures tn = new TermNatures(TermNature.setNatureStrToArray(strs[5]));
-				//判断是否是人名属性
-				if((personAttr = personMap.get(strs[1]))!=null){
-					tn.setPersonNatureAttr(personAttr) ;
+				// 加载词性
+				TermNatures tn = new TermNatures(TermNature.setNatureStrToArray(strs[5]), num);
+				// 判断是否是人名属性
+				if ((personAttr = personMap.get(strs[1])) != null) {
+					tn.setPersonNatureAttr(personAttr);
 				}
-				termNatures[num] = tn ;
+				termNatures[num] = tn;
 			}
 		}
-		
+
 		reader.close();
 	}
 
@@ -143,7 +138,6 @@ public class InitDictionary {
 	 * @return
 	 */
 	public static boolean isInSystemDic(String str) {
-		init();
 		if (StringUtil.isBlank(str)) {
 			return true;
 		}
@@ -152,11 +146,36 @@ public class InitDictionary {
 		for (int i = 1; i < str.length(); i++) {
 			checkValue = baseValue;
 			baseValue = base[baseValue] + str.charAt(i);
-			if(baseValue>check.length-1) return false ;
+			if (baseValue > check.length - 1)
+				return false;
 			if (check[baseValue] != -1 && check[baseValue] != checkValue) {
 				return false;
 			}
 		}
 		return status[baseValue] > 1;
+	}
+
+	/**
+	 * 判断一个词是否在词典中存在
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public static int getWordId(String str) {
+		if (StringUtil.isBlank(str)) {
+			return 0;
+		}
+		int baseValue = str.charAt(0);
+		int checkValue = 0;
+		for (int i = 1; i < str.length(); i++) {
+			checkValue = baseValue;
+			baseValue = base[baseValue] + str.charAt(i);
+			if (baseValue > check.length - 1)
+				return 0;
+			if (check[baseValue] != -1 && check[baseValue] != checkValue) {
+				return 0;
+			}
+		}
+		return baseValue;
 	}
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.ansj.dic.DicReader;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.domain.BigramEntry;
 
 /**
  * 这个类储存一些公用变量.
@@ -18,7 +18,7 @@ import org.ansj.library.UserDefineLibrary;
  * 
  */
 public class MyStaticValue {
-	
+
 	public static String userDefinePath = null;
 
 	/**
@@ -66,17 +66,7 @@ public class MyStaticValue {
 	}
 
 	/**
-	 * 词与词的关系词典
-	 * 
-	 * @return
-	 */
-	public static BufferedReader getBigramReader() {
-		// TODO Auto-generated method stub
-		return DicReader.getReader("bigramdict.dic");
-	}
-
-	/**
-	 * 磁性表
+	 * 词性表
 	 * 
 	 * @return
 	 */
@@ -148,4 +138,64 @@ public class MyStaticValue {
 		}
 		return map;
 	}
+
+	/**
+	 * 词与词之间的关联表数据
+	 * 
+	 * @return
+	 */
+	public static BigramEntry[][] getBigramTables() {
+		InputStream inputStream = null;
+		ObjectInputStream objectInputStream = null;
+		BigramEntry[][] bigramTables = new BigramEntry[0][0];
+		try {
+			inputStream = DicReader.getInputStream("bigramdict.data");
+			objectInputStream = new ObjectInputStream(inputStream);
+			bigramTables = (BigramEntry[][]) objectInputStream.readObject();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			try {
+				if (objectInputStream != null)
+					objectInputStream.close();
+				if (inputStream != null)
+					inputStream.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return bigramTables;
+	}
+//	public static BigramTable[] getBigramTables() {
+//		InputStream inputStream = null;
+//		ObjectInputStream objectInputStream = null;
+//		BigramTable[] bigramTables = new BigramTable[0];
+//		try {
+//			inputStream = DicReader.getInputStream("bigramdict.data");
+//			objectInputStream = new ObjectInputStream(inputStream);
+//			bigramTables = (BigramTable[]) objectInputStream.readObject();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				if (objectInputStream != null)
+//					objectInputStream.close();
+//				if (inputStream != null)
+//					inputStream.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		return bigramTables;
+//	}
 }

@@ -41,7 +41,7 @@ public class AsianPersonRecognition {
 		int beginFreq = 10;
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			if (term == null||term.getTermNatures().personAttr.flag) {
+			if (term == null||!term.getTermNatures().personAttr.flag) {
 				continue;
 			}
 			term.score = 0;
@@ -49,9 +49,7 @@ public class AsianPersonRecognition {
 			int freq = 0;
 			for (int j = 2; j > -1; j--) {
 				freq = term.getTermNatures().personAttr.getFreq(j, 0);
-				if ((freq > 10) || (term.getName().length() == 2 && term.getTermNatures().personAttr.getFreq(j, 0) > 10)) {
-					// System.out.println(term + ":"
-					// +term.getTermNatures().personAttr.allFreq + ":" + freq);
+				if ((freq > 10) || (term.getName().length() == 2 && freq > 10)) {
 					tempTerm = nameFind(i, beginFreq, j);
 					if (tempTerm != null) {
 						termList.add(tempTerm);
@@ -132,7 +130,6 @@ public class AsianPersonRecognition {
 				flag = false;
 			} else if (terms[i] != null) {
 				int twoWordFreq = TwoWordLibrary.getTwoWordFreq(term, terms[i]) ;
-//				System.out.println(term+"@"+terms[i]+"\t"+twoWordFreq);
 				if(twoWordFreq>2){
 					return null;
 				}

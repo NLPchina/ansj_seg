@@ -21,7 +21,6 @@ public class GetWordsImpl implements GetWords {
 	 * 构造方法，同时加载词典,传入词语相当于同时调用了setStr() ;
 	 */
 	public GetWordsImpl(String str) {
-		InitDictionary.init();
 		setStr(str);
 	}
 
@@ -29,7 +28,6 @@ public class GetWordsImpl implements GetWords {
 	 * 构造方法，同时加载词典
 	 */
 	public GetWordsImpl() {
-		InitDictionary.init();
 	}
 
 	int charsLength = 0;

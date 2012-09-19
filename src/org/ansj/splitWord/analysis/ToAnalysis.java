@@ -24,6 +24,7 @@ public class ToAnalysis extends Analysis {
 		// TODO Auto-generated constructor stub
 	}
 
+	
 	@Override
 	protected List<Term> getResult(final Graph graph) {
 		// TODO Auto-generated method stub
@@ -31,7 +32,7 @@ public class ToAnalysis extends Analysis {
 			@Override
 			public List<Term> merger() {
 				// TODO Auto-generated method stub
-				// 最短路径
+				// 最短路径?我奇怪加上这个应该快了.但是相反.我按照常理处理吧...*
 				graph.walkPath();
 
 				// 数字发现

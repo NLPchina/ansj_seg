@@ -23,6 +23,7 @@ public class Graph {
 	public boolean hasPerson;
 	// 是否有数字
 	public boolean hasNum;
+	// 是否需有歧异
 
 	public Graph(String str) {
 		this.str = str;
@@ -47,10 +48,11 @@ public class Graph {
 	 */
 	public void addTerm(Term term) {
 		// 是否有数字
-		if (hasNum || term.getTermNatures().numAttr.numFreq > 0) {
+		if (!hasNum && term.getTermNatures().numAttr.numFreq > 0) {
 			hasNum = true;
 		}
-		if (hasPerson || term.getTermNatures().personAttr.flag) {
+		// 是否有人名
+		if (!hasPerson && term.getTermNatures().personAttr.flag) {
 			hasPerson = true;
 		}
 		// 将词放到图的位置
@@ -82,7 +84,6 @@ public class Graph {
 		}
 		return root;
 	}
-
 
 	public void rmLittlePath() {
 		int maxTo = -1;
@@ -172,7 +173,6 @@ public class Graph {
 		}
 		optimalRoot();
 	}
-
 	public void walkPath() {
 		Term term = null;
 		// BEGIN先行打分
