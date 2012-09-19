@@ -17,6 +17,7 @@ public class NumRecognition {
 		int begin = -1;
 		Term from = null;
 		Term to = null;
+		Term temp = null;
 		for (int i = 0; i < length; i++) {
 			if (terms[i] == null) {
 				continue;
@@ -34,6 +35,7 @@ public class NumRecognition {
 						to = terms[i].getTo();
 					}
 					sb.append(terms[i].getName());
+					temp = terms[i];
 					terms[i] = null;
 					i++;
 				} while (i < length && (terms[i] == null || terms[i].getTermNatures().numAttr.flag));
@@ -50,6 +52,8 @@ public class NumRecognition {
 					TermUtil.termLink(from, term);
 					TermUtil.termLink(term, to);
 					TermUtil.insertTermNum(terms, term);
+				} else {
+					terms[temp.getOffe()] = temp;
 				}
 			}
 		}

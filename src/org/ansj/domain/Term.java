@@ -179,6 +179,15 @@ public class Term implements Comparable<Term> {
 		// TODO Auto-generated method stub
 		this.natrue = nature;
 	}
+	
+	
+	/**
+	 * 获得这个词的词性.词性计算后才可生效
+	 * @return
+	 */
+	public Nature getNatrue() {
+		return natrue;
+	}
 
 	public String toString() {
 		if(natrue!=null&&!"null".equals(natrue.natureStr)){
