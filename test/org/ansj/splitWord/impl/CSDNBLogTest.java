@@ -1,14 +1,22 @@
 package org.ansj.splitWord.impl;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeSet;
 
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.newWordFind.NewTerm;
+import org.ansj.util.newWordFind.NewWordFind;
 
 public class CSDNBLogTest {
 	public static void main(String[] args) throws IOException {
@@ -28,15 +36,20 @@ public class CSDNBLogTest {
 		long length = 0;
 		int i = 0;
 		List<Term> all = null;
+		HashMap<String, Integer> hm = new HashMap<String, Integer>();
+		Integer num = null;
 		while ((content = reader.readLine()) != null) {
 			i++;
 			length += content.length();
-			all = ToAnalysis.paser(content);
-			size += all.size();
+			// all = ToAnalysis.paser(content);
+			// size += all.size();
+			TreeSet<NewTerm> newWords = NewWordFind.getNewWords(content);
 
-			for (Term term : all) {
-				if (!hs.contains(term.getName())) {
-					resultSize++;
+			for (NewTerm newTerm : newWords) {
+				if ((num = hm.get(newTerm.getName())) != null) {
+					hm.put(newTerm.getName(), ++num);
+				} else {
+					hm.put(newTerm.getName(), 1);
 				}
 			}
 
@@ -44,7 +57,16 @@ public class CSDNBLogTest {
 				break;
 			}
 		}
-		System.out.println(size+"\t"+resultSize);
+
+		Set<Entry<String, Integer>> entrySet = hm.entrySet();
+		StringBuilder sb = new StringBuilder();
+		for (Entry<String, Integer> entry : entrySet) {
+			sb.append(entry.getKey()+"\t"+entry.getValue()) ;
+			sb.append("\n") ;
+		}
+		IOUtil.Writer("/Users/ansj/Documents/temp/newWord.txt", "UTF-8", sb.toString()); 
+
+		System.out.println(size + "\t" + resultSize);
 		System.out.println((length * (long) 1000) / (System.currentTimeMillis() - start));
 		System.out.println(System.currentTimeMillis() - start);
 

@@ -13,10 +13,6 @@ import org.ansj.util.recognition.NatureRecognition;
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		String str = null;
-
-		// BufferedReader br =
-		// IOUtil.getReader("C://Users//ansj//Desktop//新建文本文档.txt", "GBK") ;
 		String[] strs = new String[100];
 //		strs[0] = "他说的确实在理";
 //		strs[1] = "长春市长春节讲话";

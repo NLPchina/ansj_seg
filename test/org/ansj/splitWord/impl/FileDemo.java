@@ -14,7 +14,7 @@ public class FileDemo {
 		while((temp=reader.readLine())!=null){
 			sb.append(temp) ;
 		}
-		ToAnalysis.paser("test") ;
+		ToAnalysis.paser("test 123 孙") ;
 		String str = sb.toString() ;
 		long start = System.currentTimeMillis()  ;
 		int allCount =0 ;
