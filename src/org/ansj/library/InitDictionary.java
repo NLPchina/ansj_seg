@@ -3,6 +3,8 @@ package org.ansj.library;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import love.cq.util.StringUtil;
 
@@ -128,6 +130,34 @@ public class InitDictionary {
 			}
 		}
 
+		// 人名词性补录
+		Set<Entry<String, PersonNatureAttr>> entrySet = personMap.entrySet();
+		char c = 0;
+		TermNatures tn = null;
+		for (Entry<String, PersonNatureAttr> entry : entrySet) {
+			if (entry.getKey().length() == 1) {
+				c = entry.getKey().charAt(0);
+				if (status[c] > 1) {
+					continue;
+				}
+				if (status[c] == 0) {
+					base[c] = c;
+					check[c] = -1;
+					status[c] = 3;
+					words[c] = entry.getKey();
+				}
+				if (status[c] == 1) {
+					status[c] = 2;
+					words[c] = entry.getKey();
+				}
+				if ((tn = termNatures[c]) == null) {
+					tn = new TermNatures(TermNature.NR);
+				}
+				tn.setPersonNatureAttr(entry.getValue());
+				termNatures[c] = tn;
+			}
+		}
+
 		reader.close();
 	}
 
@@ -156,7 +186,7 @@ public class InitDictionary {
 	}
 
 	/**
-	 * 判断一个词是否在词典中存在
+	 *一个词在词典中的id
 	 * 
 	 * @param str
 	 * @return

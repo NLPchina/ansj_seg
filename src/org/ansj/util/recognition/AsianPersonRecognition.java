@@ -130,7 +130,7 @@ public class AsianPersonRecognition {
 				flag = false;
 			} else if (terms[i] != null) {
 				int twoWordFreq = TwoWordLibrary.getTwoWordFreq(term, terms[i]) ;
-				if(twoWordFreq>2){
+				if(twoWordFreq>3){
 					return null;
 				}
 				endFreq = terms[i].getTermNatures().personAttr.end + 1;
@@ -166,11 +166,6 @@ public class AsianPersonRecognition {
 
 		return term;
 
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(Math.log(397));
-		System.out.println(Math.log(949));
 	}
 	
 }

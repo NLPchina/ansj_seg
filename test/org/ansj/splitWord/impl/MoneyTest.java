@@ -1,5 +1,7 @@
 package org.ansj.splitWord.impl;
 
+import org.ansj.library.InitDictionary;
+import org.ansj.library.TwoWordLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class MoneyTest {
@@ -11,7 +13,9 @@ public class MoneyTest {
 		long begin = (Runtime.getRuntime().freeMemory() / 1000000);
 
 		//分词内存占用
-		ToAnalysis.paser("内存测试123,张三") ;
+//		ToAnalysis.paser("内存测试123,张三") ;
+//		InitDictionary.initArrays();
+		new TwoWordLibrary() ;
 
 		
 		System.out.println("分词系统使用了的内存" + (begin - Runtime.getRuntime().freeMemory() / 1000000));

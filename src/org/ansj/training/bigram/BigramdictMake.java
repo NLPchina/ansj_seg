@@ -88,7 +88,7 @@ public class BigramdictMake {
 		BufferedReader reader = IOUtil.getReader("data/bigramdict/bigramdict.dic", "UTF-8");
 		String temp = null;
 		String[] strs = null;
-		BigramEntry[][] result = new BigramEntry[423151][0];
+		BigramEntry[][] result = new BigramEntry[423152][0];
 		int fromId = 0;
 		int toId = 0;
 		int freq = 0;

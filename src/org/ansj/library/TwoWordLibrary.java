@@ -44,7 +44,6 @@ public class TwoWordLibrary {
 		if (from.getTermNatures().id < 0) {
 			return 0;
 		}
-
 		BigramEntry[] be = bigramTables[from.getTermNatures().id];
 
 		int index = binarySearch(be, to.getTermNatures().id);

@@ -9,7 +9,7 @@ public class NewTerm  implements Comparable<NewTerm> , Cloneable {
 	// 当前词的起始位置
 	private int offe;
 	//权重
-	private int weight = 0;
+	public int weight = 0;
 	//最可能词性
 	public Nature maxNature;
 	// term的版本号.不同的版本不可以合并

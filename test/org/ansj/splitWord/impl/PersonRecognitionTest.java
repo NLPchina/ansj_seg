@@ -22,7 +22,9 @@ public class PersonRecognitionTest {
 //		list.add("而如今Facebook的CEO马克·扎克伯格表示，押在HTML5上是Facebook最大的错误。由于HTML5应用性能差到不能忍受") ;
 //		list.add("本报讯（记者胡笑红）已经过期的牛奶被销售经理修改日期,照样投放市场销售，记者昨天从蒙牛公司得到证实，蒙牛驻义乌经理王孙富和同伙赵宝峰因涉嫌生产销售伪劣产品罪已被当地批捕。");
 //		list.add("白玉萍是一个好人") ;
-		list.add("张三同李四是好朋友") ;
+//		list.add("张三同李四是好朋友") ;
+		list.add("钟子期的名字能够被认出来么") ;
+		list.add("綦玉冰") ;
 		for (String string : list) {
 			List<Term> paser = ToAnalysis.paser(string);
 			System.out.println(paser);
