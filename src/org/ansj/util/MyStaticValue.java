@@ -171,31 +171,4 @@ public class MyStaticValue {
 		}
 		return bigramTables;
 	}
-//	public static BigramTable[] getBigramTables() {
-//		InputStream inputStream = null;
-//		ObjectInputStream objectInputStream = null;
-//		BigramTable[] bigramTables = new BigramTable[0];
-//		try {
-//			inputStream = DicReader.getInputStream("bigramdict.data");
-//			objectInputStream = new ObjectInputStream(inputStream);
-//			bigramTables = (BigramTable[]) objectInputStream.readObject();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} finally {
-//			try {
-//				if (objectInputStream != null)
-//					objectInputStream.close();
-//				if (inputStream != null)
-//					inputStream.close();
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		return bigramTables;
-//	}
 }
