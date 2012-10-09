@@ -12,10 +12,10 @@ import org.ansj.util.MyStaticValue;
 
 public class UserDefineLibrary {
 	public static Forest FOREST = null;
-	
+
 	static {
 		try {
-			
+
 			long start = System.currentTimeMillis();
 			FOREST = new Forest();
 
@@ -30,8 +30,8 @@ public class UserDefineLibrary {
 				}
 			}
 
-			//如果系统设置了用户词典.那么..呵呵
-			temp = MyStaticValue.userDefinePath ; 
+			// 如果系统设置了用户词典.那么..呵呵
+			temp = MyStaticValue.userDefinePath;
 			// 加载用户自定义词典
 			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null) && new File(temp).isFile()) {
 				br = IOUtil.getReader(temp, "UTF-8");
@@ -52,4 +52,18 @@ public class UserDefineLibrary {
 		}
 	}
 
+	/**
+	 * 增加关键词
+	 */
+	public static void insertWord(String temp) {
+		Library.insertWord(FOREST, temp);
+	}
+
+	/**
+	 * 删除关键词
+	 */
+
+	public static void removeWord(String word) {
+		Library.removeWord(FOREST, word);
+	}
 }
