@@ -1,7 +1,7 @@
 Ansj中文分词
 ==================
 
-在线测试地址<a href="http://www.ansj.org/demo/seg.jsp">在线测试地址!</href>,
+在线测试地址<a href="http://ansj.sdapp.cn/demo/seg.jsp">在线测试地址!</href>,
 
 增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/ansj_seg/tree/master/contrib 这里下载jar包!
 
@@ -72,7 +72,4 @@ Ansj中文分词
 [关卡/n, 编辑器/n]
 [eclipse/en,  /null, 多/m, 项目/n, 依赖/v]
 [苍/nr, 老师/n, 是/v, 一个/m, 好/a, 人/n]
-[h/en, 欢/a, h/en, 迎/v, help/en, 使用/v]
-[程序员/n, 祝/v, 海林/ns, 和/c, 朱会震/nr, 是/v, 在/p, 孙健/nrfg, 的/uj, 左面/f, 和/c, 右面/f, ./m, 范凯/nr, 在/p, 最/d, 右面/f, ./m, 再/d, 往/p, 左/f, 是/v, 李松/nrfg, 洪/nr]
-
 <code></pre>
