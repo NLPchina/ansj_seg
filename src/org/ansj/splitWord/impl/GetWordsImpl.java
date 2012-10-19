@@ -133,7 +133,7 @@ public class GetWordsImpl implements GetWords {
 
 	public static void main(String[] args) {
 		GetWords gwi = new GetWordsImpl();
-		gwi.setStr("——");
+		gwi.setStr("井冈山：党建信息化服务新平台");
 		String temp = null;
 		while ((temp = gwi.allWords()) != null) {
 			System.out.println(temp+ gwi.getOffe());

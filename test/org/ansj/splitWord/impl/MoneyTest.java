@@ -15,7 +15,8 @@ public class MoneyTest {
 		//分词内存占用
 //		ToAnalysis.paser("内存测试123,张三") ;
 //		InitDictionary.initArrays();
-		new TwoWordLibrary() ;
+//		new TwoWordLibrary() ;
+		UserDefinedAnalysisTest.main(null) ;
 
 		
 		System.out.println("分词系统使用了的内存" + (begin - Runtime.getRuntime().freeMemory() / 1000000));

@@ -4,14 +4,18 @@ import java.io.BufferedReader;
 import java.io.File;
 
 import love.cq.domain.Forest;
+import love.cq.domain.Value;
 import love.cq.library.Library;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
+import org.ansj.domain.TermNature;
+import org.ansj.domain.TermNatures;
 import org.ansj.util.MyStaticValue;
 
 public class UserDefineLibrary {
 	public static Forest FOREST = null;
+	private static final String[] PARAMER = { "userDefine", "1000" };
 
 	static {
 		try {
@@ -29,17 +33,25 @@ public class UserDefineLibrary {
 					Library.insertWord(FOREST, temp);
 				}
 			}
-
 			// 如果系统设置了用户词典.那么..呵呵
 			temp = MyStaticValue.userDefinePath;
 			// 加载用户自定义词典
+			Value value = null;
+			String[] strs = null;
 			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null) && new File(temp).isFile()) {
 				br = IOUtil.getReader(temp, "UTF-8");
 				while ((temp = br.readLine()) != null) {
+
 					if (StringUtil.isBlank(temp)) {
 						continue;
 					} else {
-						Library.insertWord(FOREST, temp);
+						strs = temp.split("\t");
+						if (strs.length != 3) {
+							value = new Value(strs[0], PARAMER);
+						} else {
+							value = new Value(strs[0], strs[1], strs[2]);
+						}
+						Library.insertWord(FOREST, value);
 					}
 				}
 			} else {
@@ -53,10 +65,21 @@ public class UserDefineLibrary {
 	}
 
 	/**
-	 * 增加关键词
+	 * 关键词增加
+	 * 
+	 * @param keyWord
+	 *            所要增加的关键词
+	 * @param nature
+	 *            关键词的词性
+	 * @param freq
+	 *            关键词的词频
 	 */
-	public static void insertWord(String temp) {
-		Library.insertWord(FOREST, temp);
+	public static void insertWord(String keyword, String nature, int freq) {
+		String[] paramers = new String[2];
+		paramers[0] = nature;
+		paramers[1] = String.valueOf(freq);
+		Value value = new Value(keyword, paramers);
+		Library.insertWord(FOREST, value);
 	}
 
 	/**
