@@ -1,5 +1,7 @@
 package org.ansj.util;
 
+import java.util.List;
+
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 
@@ -31,7 +33,6 @@ public class TermUtil {
 		from.setTo(to);
 		to.setFrom(from);
 	}
-
 
 	/**
 	 * 将一个term插入到链表中的对应位置中,此处如果有效率问题我就调优.不怕
@@ -82,6 +83,18 @@ public class TermUtil {
 		// TODO Auto-generated method stub
 		terms[term.getOffe()] = term;
 
+	}
+
+	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures nr) {
+		// TODO Auto-generated method stub
+		StringBuilder sb = new StringBuilder();
+		int offe = tempList.get(0).getOffe();
+		for (Term term : tempList) {
+			sb.append(term.getName());
+			terms[term.getOffe()] = null;
+		}
+		Term term = new Term(sb.toString(), offe, TermNatures.NR);
+		insertTermNum(terms, term);
 	}
 
 }

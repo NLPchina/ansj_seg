@@ -34,7 +34,7 @@ public class ToAnalysisTest {
 				// System.out.println(next.getName() +
 				// "/"+next.getMaxPath().getNatureStr());
 				if (next.getTermNatures().termNatures[0] == TermNature.NR) {
-					System.out.println(next.getName() + "\t" + next.selfScore);
+//					System.out.println(next.getName() + "\t" + next.selfScore);
 					count++;
 				}
 			}

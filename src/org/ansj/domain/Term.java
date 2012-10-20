@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import org.ansj.util.MathUtil;
+import org.ansj.util.recognition.ForeignPersonRecognition;
 
 public class Term implements Comparable<Term> {
 	public static final Term NULL = new Term("NULL", 0, TermNatures.NULL);
@@ -25,11 +26,17 @@ public class Term implements Comparable<Term> {
 	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
 	private Nature natrue = TermNature.NULL.nature;
 
+	// 是否是外国人名
+	public boolean isFName = false;
+
 	public Term(String name, int offe, TermNatures termNatures) {
 		super();
 		this.name = name;
 		this.offe = offe;
 		this.termNatures = termNatures;
+		if (termNatures == TermNatures.NR || termNatures == TermNatures.NULL || termNatures.personAttr != PersonNatureAttr.NULL) {
+			isFName = ForeignPersonRecognition.isFName(this.name);
+		}
 	}
 
 	// 可以到达的位置
@@ -179,10 +186,10 @@ public class Term implements Comparable<Term> {
 		// TODO Auto-generated method stub
 		this.natrue = nature;
 	}
-	
-	
+
 	/**
 	 * 获得这个词的词性.词性计算后才可生效
+	 * 
 	 * @return
 	 */
 	public Nature getNatrue() {
@@ -190,10 +197,10 @@ public class Term implements Comparable<Term> {
 	}
 
 	public String toString() {
-		if(natrue!=null&&!"null".equals(natrue.natureStr)){
+		if (natrue != null && !"null".equals(natrue.natureStr)) {
 			return this.name + "/" + natrue.natureStr;
-		}else{
-			return this.name ;
+		} else {
+			return this.name;
 		}
 	}
 }

@@ -8,6 +8,7 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.recognition.AsianPersonRecognition;
+import org.ansj.util.recognition.ForeignPersonRecognition;
 import org.ansj.util.recognition.NumRecognition;
 import org.ansj.util.recognition.UserDefineRecognition;
 
@@ -24,7 +25,6 @@ public class ToAnalysis extends Analysis {
 		// TODO Auto-generated constructor stub
 	}
 
-	
 	@Override
 	protected List<Term> getResult(final Graph graph) {
 		// TODO Auto-generated method stub
@@ -41,8 +41,11 @@ public class ToAnalysis extends Analysis {
 
 				// 姓名识别
 				if (graph.hasPerson) {
+					// 亚洲人名识别
 					new AsianPersonRecognition(graph.terms).recogntion();
 					graph.walkPathByScore();
+					// 外国人名识别
+					new ForeignPersonRecognition(graph.terms).recogntion();
 				}
 
 				// 用户自定义词典的识别
