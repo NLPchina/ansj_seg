@@ -30,13 +30,13 @@ public class ForeignPersonRecognition {
 		NameChar trans_russian = new NameChar(
 				StringUtil
 						.sortCharArray("·-阿安奥巴比彼波布察茨大德得丁杜尔法夫伏甫盖格哈基加坚捷金卡科可克库拉莱兰勒雷里历利连列卢鲁罗洛马梅蒙米姆娜涅宁诺帕泼普奇齐乔切日萨色山申什斯索塔坦特托娃维文乌西希谢亚耶叶依伊以扎佐柴达登蒂戈果海赫华霍吉季津柯理琳玛曼穆纳尼契钦丘桑沙舍泰图瓦万雅卓兹"));
-		//注释掉了日本人名.表面上是抵制日货.背地里是处理不好..
-//		NameChar trans_japanese = new NameChar(
-//				StringUtil
-//						.sortCharArray("安奥八白百邦保北倍本比滨博步部彩菜仓昌长朝池赤川船淳次村大代岛稻道德地典渡尔繁饭风福冈高工宫古谷关广桂贵好浩和合河黑横恒宏后户荒绘吉纪佳加见健江介金今进井静敬靖久酒菊俊康可克口梨理里礼栗丽利立凉良林玲铃柳隆鹿麻玛美萌弥敏木纳南男内鸟宁朋片平崎齐千前浅桥琴青清庆秋丘曲泉仁忍日荣若三森纱杉山善上伸神圣石实矢世市室水顺司松泰桃藤天田土万望尾未文武五舞西细夏宪相小孝新星行雄秀雅亚岩杨洋阳遥野也叶一伊衣逸义益樱永由有佑宇羽郁渊元垣原远月悦早造则泽增扎宅章昭沼真政枝知之植智治中忠仲竹助椎子佐阪坂堀荻菅薰浜濑鸠筱"));
+		// 注释掉了日本人名.表面上是抵制日货.背地里是处理不好..
+		// NameChar trans_japanese = new NameChar(
+		// StringUtil
+		// .sortCharArray("安奥八白百邦保北倍本比滨博步部彩菜仓昌长朝池赤川船淳次村大代岛稻道德地典渡尔繁饭风福冈高工宫古谷关广桂贵好浩和合河黑横恒宏后户荒绘吉纪佳加见健江介金今进井静敬靖久酒菊俊康可克口梨理里礼栗丽利立凉良林玲铃柳隆鹿麻玛美萌弥敏木纳南男内鸟宁朋片平崎齐千前浅桥琴青清庆秋丘曲泉仁忍日荣若三森纱杉山善上伸神圣石实矢世市室水顺司松泰桃藤天田土万望尾未文武五舞西细夏宪相小孝新星行雄秀雅亚岩杨洋阳遥野也叶一伊衣逸义益樱永由有佑宇羽郁渊元垣原远月悦早造则泽增扎宅章昭沼真政枝知之植智治中忠仲竹助椎子佐阪坂堀荻菅薰浜濑鸠筱"));
 		PRLIST.add(trans_english);
 		PRLIST.add(trans_russian);
-//		PRLIST.add(trans_japanese);
+		// PRLIST.add(trans_japanese);
 
 		INNAME = new NameChar(
 				StringUtil
@@ -61,6 +61,7 @@ public class ForeignPersonRecognition {
 	private List<Term> tempList = new ArrayList<Term>();
 	private LinkedList<NameChar> prList = null;
 	private Term[] terms = null;
+	private int nameLength = 0;
 
 	public ForeignPersonRecognition(Term[] terms) {
 		this.terms = terms;
@@ -75,24 +76,23 @@ public class ForeignPersonRecognition {
 			if (terms[i] == null) {
 				continue;
 			}
-			
+
 			term = terms[i];
-			//如果名字的开始是人名的前缀.那么忽略
-			if(tempList.size()==0&&term.getTermNatures().personAttr.end>10){
-				continue ;
+			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
+			if (tempList.size() == 0 && term.getTermNatures().personAttr.end > 10) {
+				continue;
 			}
-			
-			
+
 			name = term.getName();
 			if (term.isFName) {
 				boolean flag = validate(name);
 				if (flag) {
+					nameLength += name.length();
 					tempList.add(term);
 				}
 			} else if (tempList.size() == 1) {
 				reset();
 			} else if (tempList.size() > 1) {
-				System.out.println(tempList);
 				TermUtil.insertTerm(terms, tempList, TermNatures.NR);
 				reset();
 			}
@@ -119,6 +119,7 @@ public class ForeignPersonRecognition {
 		// TODO Auto-generated method stub
 		tempList.clear();
 		prList = (LinkedList<NameChar>) PRLIST.clone();
+		nameLength = 0;
 	}
 
 	public static boolean isFName(String name) {

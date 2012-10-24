@@ -29,6 +29,9 @@ public class PersonNatureAttr {
 	public int end;
 
 	public int allFreq;
+	
+	//是否是外国人名 1.任意位置. 2.词前 3.词中 4.词尾
+	public int foreign ;
 
 	// 是否有可能是名字的第一个字
 	public boolean flag;

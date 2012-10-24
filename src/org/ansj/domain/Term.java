@@ -34,7 +34,7 @@ public class Term implements Comparable<Term> {
 		this.name = name;
 		this.offe = offe;
 		this.termNatures = termNatures;
-		if (termNatures == TermNatures.NR || termNatures == TermNatures.NULL || termNatures.personAttr != PersonNatureAttr.NULL) {
+		if (termNatures == TermNatures.NR || termNatures == TermNatures.NULL||name.length()==1) {
 			isFName = ForeignPersonRecognition.isFName(this.name);
 		}
 	}

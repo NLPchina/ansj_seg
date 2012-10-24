@@ -47,7 +47,6 @@ public class ToAnalysis extends Analysis {
 					// 外国人名识别
 					new ForeignPersonRecognition(graph.terms).recogntion();
 				}
-
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recongnitionTerm();
 				graph.rmLittlePath();
