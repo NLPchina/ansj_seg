@@ -27,7 +27,7 @@ public class UserDefineLibrary {
 			BufferedReader br = MyStaticValue.getUserDefineReader();
 			String temp = null;
 			while ((temp = br.readLine()) != null) {
-				if (StringUtil.isBlank(temp)) {
+				if (StringUtil.isBlank(temp) || InitDictionary.isInSystemDic(temp.split("\t")[0])) {
 					continue;
 				} else {
 					Library.insertWord(FOREST, temp);
@@ -41,7 +41,6 @@ public class UserDefineLibrary {
 			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null) && new File(temp).isFile()) {
 				br = IOUtil.getReader(temp, "UTF-8");
 				while ((temp = br.readLine()) != null) {
-
 					if (StringUtil.isBlank(temp)) {
 						continue;
 					} else {
@@ -51,7 +50,10 @@ public class UserDefineLibrary {
 						} else {
 							value = new Value(strs[0], strs[1], strs[2]);
 						}
-						Library.insertWord(FOREST, value);
+
+						if (!InitDictionary.isInSystemDic(value.getKeyword())) {
+							Library.insertWord(FOREST, value);
+						}
 					}
 				}
 			} else {

@@ -12,7 +12,7 @@ import org.ansj.util.MyStaticValue;
 
 public class MakeLibrary {
 	private static String charEncoding = "UTF-8";
-	private static String path = MyStaticValue.rb.getString("library");
+	private static String path = "data/library.dic";
 
 	public static void main(String[] args) throws Exception {
 		long start = System.currentTimeMillis();
