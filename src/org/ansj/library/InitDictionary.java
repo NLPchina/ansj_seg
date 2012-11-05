@@ -146,10 +146,7 @@ public class InitDictionary {
 					status[c] = 3;
 					words[c] = entry.getKey();
 				}
-				if (status[c] == 1) {
-					status[c] = 2;
-					words[c] = entry.getKey();
-				}
+				
 				if ((tn = termNatures[c]) == null) {
 					tn = new TermNatures(TermNature.NR);
 				}

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 
 /**
  * 针对索引的分词方式
@@ -16,7 +15,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 public class IndexDemo {
 	public static void main(String[] args) throws IOException {
 		int all = 0;
-		String str = "上海市长江大桥近日到职";
+		String str = "中国人民";
 		long start = System.currentTimeMillis();
 
 		for (int i = 0; i < 1; i++) {
