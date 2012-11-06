@@ -29,7 +29,7 @@ public class IndexAnalysis extends Analysis {
 		Merger merger = new Merger() {
 
 			public List<Term> merger() {
-				graph.rmLittlePath();
+				graph.walkPath();
 
 				// 数字发现
 				NumRecognition.recogntionNM(graph.terms);
@@ -40,7 +40,6 @@ public class IndexAnalysis extends Analysis {
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recongnitionTerm();
-				graph.rmLittleSinglePath();
 
 				return result();
 			}

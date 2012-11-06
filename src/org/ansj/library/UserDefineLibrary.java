@@ -2,20 +2,30 @@ package org.ansj.library;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import love.cq.domain.Forest;
 import love.cq.domain.Value;
 import love.cq.library.Library;
+import love.cq.splitWord.GetWord;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.MyStaticValue;
 
 public class UserDefineLibrary {
 	public static Forest FOREST = null;
 	private static final String[] PARAMER = { "userDefine", "1000" };
+	
+	public static void main(String[] args) throws Exception {
+		List<Value> values = new ArrayList<Value>() ;
+		values.add(new Value("安全措施", "userDefine","1000")) ;
+		Forest makeForest = Library.makeForest(values) ;
+		GetWord word = makeForest.getWord("安全措施") ;
+		
+		System.out.println(word.getFrontWords());
+	}
 
 	static {
 		try {
