@@ -22,8 +22,11 @@ public class RightRate {
 	 */
 	public static void main(String[] args) throws Exception {
 		// 读取分词文本
-		BufferedReader br = IOUtil.getReader("data/1998年人民日报分词语料.txt", "GBK");
-
+//		BufferedReader br = IOUtil.getReader("data/right_rate/gold_shanxi.txt", "UTF-8");
+//		BufferedReader br = IOUtil.getReader("data/right_rate/msr_test_gold.txt", "UTF-8");
+		BufferedReader br = IOUtil.getReader("data/right_rate/pku_test_gold.txt", "UTF-8");
+		
+		
 		String temp_str = null;
 
 		int line_number = 0;// 记录行数
@@ -44,16 +47,20 @@ public class RightRate {
 		while ((temp_str = br.readLine()) != null) {
 			int error = 0;
 			int success = 0;
-			body = temp_str.replace(" ", "");
-			result = temp_str.split(" ");
+			body = temp_str.replace("  ", "");
+			result = temp_str.split("  ");
 			had_words_array = new String[body.length()];
 
 			int offe = 0;
 
 			// 填充result
 			for (int i = 0; i < result.length; i++) {
-				had_words_array[offe] = result[i];
-				offe += result[i].length();
+				try {
+					had_words_array[offe] = result[i];
+					offe += result[i].length();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+				}
 			}
 
 			List<Term> paser = ToAnalysis.paser(body);
@@ -78,7 +85,7 @@ public class RightRate {
 
 			if(error>0){
 				System.out.println("example:"+temp_str);
-				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(",", ""));
+				System.out.println(" result:"+paser.toString().replace("[", "").replace("]", "").replace(", ", "  "));
 			}
 //			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			line_number++;
@@ -88,7 +95,6 @@ public class RightRate {
 		// 正确数/标注文本中的词数
 		R = allSuccess / (double) result_num;
 
-		R = 0.9626488103178712 ;
 		F = (2 * P * R) / (P + R);
 		System.out.println("P:" + P);
 		System.out.println("R:" + R);

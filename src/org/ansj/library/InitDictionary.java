@@ -8,6 +8,7 @@ import java.util.Set;
 
 import love.cq.util.StringUtil;
 
+import org.ansj.dic.DicReader;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
@@ -16,9 +17,9 @@ import org.ansj.util.MyStaticValue;
 
 public class InitDictionary {
 	/**
-	 * 所有在词典中出现的词
+	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
 	 */
-	public static final boolean[] IN_SYSTEM = new boolean[65536];
+	public static final char[] IN_SYSTEM = new char[65536];
 	/**
 	 * base: 数组用来存放单词的转换..其实就是一个DFA转换过程
 	 */
@@ -117,7 +118,7 @@ public class InitDictionary {
 				words[num] = strs[1];
 				if (status[num] < 4) {
 					for (int i = 0; i < strs[1].length(); i++) {
-						IN_SYSTEM[strs[1].charAt(i)] = true;
+						IN_SYSTEM[strs[1].charAt(i)] = strs[1].charAt(i);
 					}
 				}
 				// 加载词性
@@ -146,7 +147,7 @@ public class InitDictionary {
 					status[c] = 3;
 					words[c] = entry.getKey();
 				}
-				
+
 				if ((tn = termNatures[c]) == null) {
 					tn = new TermNatures(TermNature.NR);
 				}
@@ -155,7 +156,19 @@ public class InitDictionary {
 			}
 		}
 
+		// 简繁体字体转换
+		BufferedReader reader2 = DicReader.getReader("jianFan.dic");
+		while ((temp = reader2.readLine()) != null) {
+			if (StringUtil.isBlank(temp)) {
+				continue;
+			}
+			if (IN_SYSTEM[temp.charAt(0)] == 0) {
+				IN_SYSTEM[temp.charAt(0)] = temp.charAt(2);
+			}
+		}
+
 		reader.close();
+		reader2.close();
 	}
 
 	/**
@@ -183,7 +196,7 @@ public class InitDictionary {
 	}
 
 	/**
-	 *一个词在词典中的id
+	 * 一个词在词典中的id
 	 * 
 	 * @param str
 	 * @return
@@ -204,5 +217,20 @@ public class InitDictionary {
 			}
 		}
 		return baseValue;
+	}
+
+	/**
+	 * 简繁体转换,
+	 * 
+	 * @param c
+	 *            输入'孫'
+	 * @return 输出'孙'
+	 */
+	public static char conversion(char c) {
+		char value = IN_SYSTEM[c];
+		if (value == 0) {
+			return c;
+		}
+		return value;
 	}
 }

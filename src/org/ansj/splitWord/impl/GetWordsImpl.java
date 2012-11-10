@@ -2,6 +2,7 @@ package org.ansj.splitWord.impl;
 
 import static org.ansj.library.InitDictionary.base;
 import static org.ansj.library.InitDictionary.check;
+import static org.ansj.library.InitDictionary.conversion;
 import static org.ansj.library.InitDictionary.status;
 import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
@@ -50,7 +51,7 @@ public class GetWordsImpl implements GetWords {
 
 	public String allWords() {
 		for (; i < charsLength; i++) {
-			charHashCode = chars.charAt(i);
+			charHashCode = conversion(chars.charAt(i));
 			end++;
 			switch (getStatement()) {
 			case 0:

@@ -19,6 +19,8 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.recognition.NatureRecognition;
 
 public class NewWordFind {
+	
+	public static HashSet<String> entryName = new HashSet<String>() ;
 
 	public static TreeSet<NewTerm> getNewWords(String content) throws IOException {
 		TreeSet<NewTerm> score = new TreeSet<NewTerm>();
@@ -199,6 +201,9 @@ public class NewWordFind {
 				iterator.remove();
 				continue;
 			} else {
+				if(natureStr.equals("nr")){
+					entryName.add(term.getName()) ;
+				}
 				all.add(new NewTerm(term));
 			}
 		}
@@ -209,11 +214,11 @@ public class NewWordFind {
 	
 	static{
 		try {
-			BufferedReader filter = IOUtil.getReader("library/stop/stopLibrary.dic", "UTF-8");
+			BufferedReader filter = IOUtil.getReader("library/stopwords.dic", "UTF-8");
 			String temp = null;
 			while ((temp = filter.readLine()) != null) {
 				temp = temp.trim().toLowerCase();
-				hs.add(temp);
+				hs.add(temp.split("\t")[0]);
 			}
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

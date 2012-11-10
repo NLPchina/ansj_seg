@@ -1,6 +1,6 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.InitDictionary.IN_SYSTEM;
+import static org.ansj.library.InitDictionary.*;
 import static org.ansj.library.InitDictionary.status;
 
 import java.io.BufferedReader;
@@ -114,7 +114,7 @@ public abstract class Analysis {
 		String str = null;
 		char c = 0;
 		for (int i = 0; i < length; i++) {
-			switch (status[temp.charAt(i)]) {
+			switch (status[conversion(temp.charAt(i))]) {
 			case 0:
 				gp.addTerm(new Term(temp.charAt(i) + "", i, TermNatures.NULL));
 				break;
@@ -142,7 +142,7 @@ public abstract class Analysis {
 				start = i;
 				end = i;
 				c = temp.charAt(start);
-				while (IN_SYSTEM[c]) {
+				while (IN_SYSTEM[c]>0) {
 					end++;
 					if (++i >= length)
 						break;
@@ -157,7 +157,7 @@ public abstract class Analysis {
 				/**
 				 * 如果未分出词.以未知字符加入到gp中
 				 */
-				if (IN_SYSTEM[c] || status[c] > 3) {
+				if (IN_SYSTEM[c]>0 || status[c] > 3) {
 					i -= 1;
 				} else {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
