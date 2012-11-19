@@ -13,6 +13,8 @@ public class TermNatures {
 
 	public static final TermNatures BEGIN = new TermNatures(TermNature.BEGIN, 50610, 0);
 
+	public static final TermNatures NT = new TermNatures(TermNature.NT);
+
 	/**
 	 * 关于这个term的所有词性
 	 */
@@ -27,6 +29,11 @@ public class TermNatures {
 	 * 人名词性
 	 */
 	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
+	
+	/**
+	 * 机构名词性
+	 */
+	public CompanyNatureAttr companyAttr = CompanyNatureAttr.NULL;
 
 	/**
 	 * 所有的词频
@@ -43,7 +50,7 @@ public class TermNatures {
 	 * 
 	 * @param termNatures
 	 */
-	public TermNatures(TermNature[] termNatures, int id) {
+	public TermNatures(TermNature[] termNatures, int id ) {
 		this.id = id;
 		this.termNatures = termNatures;
 		serAttribute();
@@ -98,4 +105,8 @@ public class TermNatures {
 		this.personAttr = personAttr;
 	}
 
+	public void setCompanyAttr(CompanyNatureAttr companyAttr) {
+		this.companyAttr = companyAttr;
+	}
+	
 }

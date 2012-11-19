@@ -17,12 +17,12 @@ import org.ansj.util.MyStaticValue;
  */
 
 public class PersonAttrLibrary {
-	private static HashMap<String, PersonNatureAttr> pnMap = null;
+	private HashMap<String, PersonNatureAttr> pnMap = null;
 
-	private PersonAttrLibrary() {
+	public PersonAttrLibrary() {
 	}
 
-	public static HashMap<String, PersonNatureAttr> getPersonMap() throws NumberFormatException, IOException {
+	public HashMap<String, PersonNatureAttr> getPersonMap() throws NumberFormatException, IOException {
 		if (pnMap != null) {
 			return pnMap;
 		}
@@ -32,7 +32,7 @@ public class PersonAttrLibrary {
 	}
 
 	// name_freq
-	private static void init2() throws NumberFormatException, IOException {
+	private void init2() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		Map<String, int[][]> personFreqMap = MyStaticValue.getPersonFreqMap();
 		Set<Entry<String, int[][]>> entrySet = personFreqMap.entrySet();
@@ -51,7 +51,7 @@ public class PersonAttrLibrary {
 	}
 
 	// person.dic
-	private static void init1() throws NumberFormatException, IOException {
+	private void init1() throws NumberFormatException, IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = null;
 		try {

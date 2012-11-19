@@ -36,7 +36,7 @@ public class NatureRecognition {
 	/**
 	 * 进行最佳词性查找,引用赋值.所以不需要有返回值
 	 */
-	public void recogntion() {
+	public void recognition() {
 		int length = terms.size();
 		for (int i = 0; i < length; i++) {
 			natureTermTable[i] = getNatureTermArr(terms.get(i).getTermNatures().termNatures);

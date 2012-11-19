@@ -34,6 +34,16 @@ public class MyStaticValue {
 	public static BufferedReader getPersonReader() {
 		return DicReader.getReader("person/person.dic");
 	}
+	
+	
+	/**
+	 * 机构名词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getCompanReader() {
+		return DicReader.getReader("company/company.data");
+	}
 
 	/**
 	 * 核心词典
@@ -90,9 +100,9 @@ public class MyStaticValue {
 	 * 
 	 * @return
 	 */
-	public static BufferedReader getUserDefineReader() {
+	public static BufferedReader getSystemLibraryReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("userLibrary.dic");
+		return DicReader.getReader("systemLibrary.dic");
 	}
 
 	/**

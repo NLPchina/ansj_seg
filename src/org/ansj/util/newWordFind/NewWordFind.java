@@ -185,7 +185,7 @@ public class NewWordFind {
 		List<Term> resultList = new ArrayList<Term>();
 		List<Term> terms = ToAnalysis.paser(content);
 
-		new NatureRecognition(terms).recogntion();
+		new NatureRecognition(terms).recognition();
 
 		resultList.addAll(terms);
 

@@ -20,12 +20,12 @@ public class UserDefinedAnalysisTest {
 		String format = "%s\tuserDefine\t1000";
 		List<String> dic = new ArrayList<String>();
 		
-		dic.add("我是特种兵") ;
+		dic.add("菊花台") ;
 		for (int i = 0; i < dic.size(); i++) {
 			Library.insertWord(UserDefineLibrary.FOREST, String.format(format, new Object[] { dic.get(i) }));
 		}
 		
-		System.out.println(ToAnalysis.paser("我是特种兵是一部很好看的电影!"));
+		System.out.println(ToAnalysis.paser("菊花台,"));
 
 	}
 }

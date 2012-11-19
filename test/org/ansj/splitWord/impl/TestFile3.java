@@ -21,7 +21,7 @@ public class TestFile3 {
 		while((temp=reader.readLine())!=null){
 			Term term = null;
 			List terms = ToAnalysis.paser(temp) ;
-			new NatureRecognition(terms).recogntion();
+			new NatureRecognition(terms).recognition();
 			for (int i = 0; i < terms.size(); i++) {
 				if (((Term) terms.get(i)).getNatrue().natureStr.equals("nr")) {
 					if (i != 0) {

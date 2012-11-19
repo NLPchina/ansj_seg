@@ -3,7 +3,7 @@ package org.ansj.domain;
 import org.ansj.library.NatureLibrary;
 
 /**
- * 一个词里面会有一谢词性
+ * 一个词里面会有一些词性
  * @author ansj
  */
 public class TermNature {
@@ -17,6 +17,7 @@ public class TermNature {
 	public static final TermNature END = new TermNature("末##末", 1) ;
 	public static final TermNature USER_DEFINE = new TermNature("userDefine", 1) ;
 	public static final TermNature NR = new TermNature("nr", 1) ;
+	public static final TermNature NT = new TermNature("nt", 1);
 	
 	public Nature nature;
 

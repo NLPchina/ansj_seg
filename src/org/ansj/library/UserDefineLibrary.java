@@ -34,7 +34,7 @@ public class UserDefineLibrary {
 			FOREST = new Forest();
 
 			// 先加载系统内置补充词典
-			BufferedReader br = MyStaticValue.getUserDefineReader();
+			BufferedReader br = MyStaticValue.getSystemLibraryReader();
 			String temp = null;
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isBlank(temp) || InitDictionary.isInSystemDic(temp.split("\t")[0])) {

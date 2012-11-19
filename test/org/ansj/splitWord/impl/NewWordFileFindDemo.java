@@ -22,7 +22,7 @@ public class NewWordFileFindDemo {
 		String title = "中国使馆收到“野田”装有子弹的来信 日网友乐开花" ;
 		List<Term> paser = ToAnalysis.paser(title) ;
 		
-		new NatureRecognition(paser).recogntion() ;
+		new NatureRecognition(paser).recognition() ;
 		
 		for (Term term : paser) {
 			String natureStr = term.getNatrue().natureStr ;

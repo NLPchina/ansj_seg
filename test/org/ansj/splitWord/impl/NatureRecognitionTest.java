@@ -16,6 +16,6 @@ public class NatureRecognitionTest {
 	public static void main(String[] args) {
 		String str = "结婚的和尚未结婚的孙建是一个好人";
 		List<Term> terms = ToAnalysis.paser(str);
-		new NatureRecognition(terms).recogntion();
+		new NatureRecognition(terms).recognition();
 	}
 }

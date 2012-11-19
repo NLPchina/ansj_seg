@@ -31,7 +31,7 @@ public class PersonRecognitionTest {
 		list.add("中新网10月20日电 据日本共同社报道，日本民主党代理干事长安住淳20日表示，首相野田佳彦将履行“近期”解散众院举行大选的承诺，预计在“公债发行特例法案”获得通过等条件具备时解散众院。");
 		for (String string : list) {
 			List<Term> paser = ToAnalysis.paser(string);
-			new NatureRecognition(paser).recogntion();
+			new NatureRecognition(paser).recognition();
 			System.out.println(paser);
 		}
 		// makeFile() ;

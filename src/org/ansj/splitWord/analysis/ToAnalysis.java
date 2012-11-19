@@ -8,6 +8,7 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.recognition.AsianPersonRecognition;
+import org.ansj.util.recognition.CompanyRecogntion;
 import org.ansj.util.recognition.ForeignPersonRecognition;
 import org.ansj.util.recognition.NumRecognition;
 import org.ansj.util.recognition.UserDefineRecognition;
@@ -47,6 +48,8 @@ public class ToAnalysis extends Analysis {
 					// 外国人名识别
 					new ForeignPersonRecognition(graph.terms).recogntion();
 				}
+				
+				
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recongnitionTerm();
 				graph.rmLittlePath();
