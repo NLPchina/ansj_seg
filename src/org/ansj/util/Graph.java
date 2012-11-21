@@ -226,9 +226,10 @@ public class Graph {
 		Term term = null;
 		if (terms[to] != null) {
 			term = terms[to];
-			if (term != null) {
+			while (term != null) {
 				// 关系式to.set(from)
 				term.setPathScoreByFreq(fromTerm);
+				term = term.getNext() ;
 			}
 		}
 	}

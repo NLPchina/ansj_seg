@@ -38,17 +38,17 @@ public class CompanyRecogntion {
 			if (term == null) {
 				continue;
 			}
-			term.selfScore = 100;
+			term.selfScore = 0;
 			term.score = 0;
 			if (term.getTermNatures().companyAttr.b > 100) {
 				double tempScore = term.getTermNatures().companyAttr.bb;
 				offe = term.getOffe();
 				tempTerm = null;
 				beginTerm = term.getFrom();
-				recogntion(term, tempScore, 1 - tempScore);
+				recogntion(term, Math.log(tempScore), 1 - Math.log(tempScore));
 				if (maxTerm != null) {
 					TermUtil.insertTerm(terms, maxTerm);
-					 System.out.println(maxTerm+"\t"+maxTerm.selfScore);
+					System.out.println(maxTerm + "\t" + maxTerm.selfScore);
 					maxTerm = null;
 				}
 			}
@@ -67,13 +67,12 @@ public class CompanyRecogntion {
 			companyName += term.getName();
 
 			if (companyAttr.e > 50) {
-				score1 *= term.getTermNatures().companyAttr.eb;
-				score2 *= (1 - term.getTermNatures().companyAttr.eb);
+				score1 += Math.log(term.getTermNatures().companyAttr.eb);
+				score2 += Math.log(1 - term.getTermNatures().companyAttr.eb);
 
 				tempTerm = new Term(companyName, offe, TermNatures.NT);
 
 				{
-
 					tempTerm.selfScore = (score1 / (score1 + score2));
 					if (tempTerm.selfScore > 0) {
 						// 前缀分数
@@ -91,28 +90,23 @@ public class CompanyRecogntion {
 							tempTerm.selfScore += to.getTermNatures().companyAttr.sb;
 						}
 						// 计算分数
-						int length = companyName.length() > 50 ? 50 : companyName.length();
-						tempTerm.selfScore += Math.log(FACTORY[length]);// *
+//						int length = companyName.length() > 50 ? 50 : companyName.length();
+//						tempTerm.selfScore *= Math.log(FACTORY[length]);// *
 																		// length;
-						tempTerm.selfScore = 10 + tempTerm.selfScore;
-						if (maxTerm == null || maxTerm.selfScore < tempTerm.selfScore) {
+						if (maxTerm == null || maxTerm.selfScore > tempTerm.selfScore) {
 							maxTerm = tempTerm;
 						}
 					}
 				}
 
-				if (companyAttr.m > 50) {
-					score1 *= term.getTermNatures().companyAttr.mb;
-					score2 *= (1 - term.getTermNatures().companyAttr.mb);
+				if (companyAttr.mb > 0.02) {
+					score1 += Math.log(term.getTermNatures().companyAttr.mb);
+					score2 += Math.log((1 - term.getTermNatures().companyAttr.mb));
+				}else{
+					return ;
 				}
 
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		System.out.println(Math.log(0.4));
-		System.out.println(Math.log(0.2));
-		System.out.println(Math.log(0.1));
 	}
 }
