@@ -157,6 +157,7 @@ public class Test {
 		all.add("两块五一套，三块八一斤，四块七一本，五块六一条");
 		all.add("小和尚留了一个像大和尚一样的和尚头");
 		all.add("我是中华人民共和国公民;我爸爸是共和党党员; 地铁和平门站");
+		all.add("二次元乳量，养眼美女，我在泰国用微信");
 
 		long start = System.currentTimeMillis();
 		int count = 0;
