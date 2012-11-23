@@ -17,25 +17,24 @@ import org.ansj.util.MyStaticValue;
 public class UserDefineLibrary {
 	public static Forest FOREST = null;
 	private static final String[] PARAMER = { "userDefine", "1000" };
-	
+
 	public static void main(String[] args) throws Exception {
-		List<Value> values = new ArrayList<Value>() ;
-		values.add(new Value("安全措施", "userDefine","1000")) ;
-		Forest makeForest = Library.makeForest(values) ;
-		GetWord word = makeForest.getWord("安全措施") ;
-		
+		List<Value> values = new ArrayList<Value>();
+		values.add(new Value("安全措施", "userDefine", "1000"));
+		Forest makeForest = Library.makeForest(values);
+		GetWord word = makeForest.getWord("安全措施");
+
 		System.out.println(word.getFrontWords());
 	}
 
 	static {
+		String temp = null;
 		try {
-
 			long start = System.currentTimeMillis();
 			FOREST = new Forest();
-
 			// 先加载系统内置补充词典
 			BufferedReader br = MyStaticValue.getSystemLibraryReader();
-			String temp = null;
+
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isBlank(temp) || InitDictionary.isInSystemDic(temp.split("\t")[0])) {
 					continue;
@@ -72,7 +71,7 @@ public class UserDefineLibrary {
 			System.out.println("加载用户自定义词典完成用时:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.out.println("加载用户自定义词典加载失败:");
+			System.err.println("加载用户自定义词典没有加载,因为配置的路径为"+temp);
 		}
 	}
 

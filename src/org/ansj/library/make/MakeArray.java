@@ -62,11 +62,12 @@ public class MakeArray {
 		// 加载主词典
 		makeBaseArray(all);
 		writeLibrary();
-		reader.close() ;
+		reader.close();
 	}
 
 	/**
 	 * 数组的生成
+	 * 由词典生成的tire树
 	 */
 	private static void makeBaseArray(List<Branch> all) throws Exception {
 		char[] chars = null;
@@ -75,11 +76,14 @@ public class MakeArray {
 		int tempBase = 0;
 		String temp = null;
 		Branch branch = null;
+		// all 就是tire树中没一个前缀集合
 		for (int i = 0; i < all.size(); i++) {
 			branch = all.get(i);
+			//每个节点中的词.
 			temp = branch.getValue();
 			chars = temp.toCharArray();
 			length = chars.length;
+			//如果词长度为一.直接放置到ascii码的位置上.并且保证此字的值大于65536
 			if (length == 1) {
 				base[chars[0]] = 65536;
 				check[chars[0]] = -1;
@@ -87,7 +91,10 @@ public class MakeArray {
 				words[chars[0]] = temp;
 				natures[chars[0]] = branch.getNatures();
 			} else {
+				//得道除了尾字啊外的位置,比如 "中国人" 此时返回的是"中国"的base值
 				int previousCheck = getBaseNum(chars);
+				
+				//前缀是否相同,如果相同保存在临时map中.直到不同
 				if (previous == previousCheck) {
 					tempStringMap.put(temp, branch);
 					continue;
@@ -95,6 +102,8 @@ public class MakeArray {
 				if (tempStringMap.size() > 0) {
 					setBaseValue(tempStringMap, previous);
 					it = tempStringMap.values().iterator();
+					
+					//处理完冲突后将这些值填充到双数组中
 					while (it.hasNext()) {
 						tempValueResult = it.next();
 						chars = tempValueResult.getValue().toCharArray();
@@ -106,12 +115,32 @@ public class MakeArray {
 						natures[tempBase] = tempValueResult.getNatures();
 					}
 				}
+				
+				//将处理冲突的归于初始状态
 				previous = previousCheck;
 				tempStringMap = new HashMap<String, Branch>();
 				tempStringMap.put(temp, branch);
 
 			}
 		}
+
+		//上面循环有可能.也许会漏掉最后一组冲突所以进行一次补录...^_^!
+		if (tempStringMap.size() > 0) {
+			setBaseValue(tempStringMap, previous);
+			it = tempStringMap.values().iterator();
+			while (it.hasNext()) {
+				tempValueResult = it.next();
+				chars = tempValueResult.getValue().toCharArray();
+				tempBase = base[previous] + chars[chars.length - 1];
+				base[tempBase] = tempBase;
+				check[tempBase] = previous;
+				status[tempBase] = tempValueResult.getStatus();
+				words[tempBase] = tempValueResult.getValue();
+				natures[tempBase] = tempValueResult.getNatures();
+			}
+		}
+		
+		
 	}
 
 	public static void makeASCIIArray(BufferedReader reader) throws IOException {
@@ -165,6 +194,11 @@ public class MakeArray {
 	private static Iterator<Branch> it;
 	private static char[] chars = null;;
 
+	/**
+	 * 设置上一个节点的base值,如果重复那么重新迭代
+	 * @param tempStringMap
+	 * @param tempBase
+	 */
 	public static void setBaseValue(Map<String, Branch> tempStringMap, int tempBase) {
 		Iterator<String> it = tempStringMap.keySet().iterator();
 		while (it.hasNext()) {
