@@ -39,17 +39,7 @@ public class NlpAnalysis extends Analysis {
 				if (graph.hasNum) {
 					NumRecognition.recogntionNM(graph.terms);
 				}
-
-				// 姓名识别
-				if (graph.hasPerson) {
-					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recogntion();
-					graph.walkPathByScore();
-					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recogntion();
-				}
 				
-				graph.walkPathByScore();
 				
 				//机构名识别
 				new CompanyRecogntion(graph.terms).recogntion() ;
@@ -63,8 +53,20 @@ public class NlpAnalysis extends Analysis {
 //					}
 //					System.out.println();
 //				}
+				graph.walkPathByScore();
+
+				// 姓名识别
+				if (graph.hasPerson) {
+					// 亚洲人名识别
+					new AsianPersonRecognition(graph.terms).recogntion();
+					graph.walkPathByScore();
+					// 外国人名识别
+					new ForeignPersonRecognition(graph.terms).recogntion();
+				}
 				
 				graph.walkPathByScore();
+				
+				
 				
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recongnitionTerm();

@@ -15,6 +15,11 @@ import org.ansj.util.TermUtil;
  */
 public class CompanyRecogntion {
 
+	// private static final char[] open = {'(','（'} ;
+	// private static final char[] close = {')','）'} ;
+	//
+	// private boolean isOpen ;
+
 	/**
 	 * 2-n词概率
 	 */
@@ -40,12 +45,16 @@ public class CompanyRecogntion {
 			}
 			term.selfScore = 0;
 			term.score = 0;
-			if (term.getTermNatures().companyAttr.b > 100) {
+			if (term.getName().equals("东华")) {
+				System.out.println(12);
+			}
+			if (term.getTermNatures().companyAttr.bb < -0.005 && term.getTermNatures().companyAttr.b > 1000) {
+				System.out.println("----" + term + "\t" + term.getTermNatures().companyAttr.bb);
 				double tempScore = term.getTermNatures().companyAttr.bb;
 				offe = term.getOffe();
 				tempTerm = null;
 				beginTerm = term.getFrom();
-				recogntion(term, Math.log(tempScore), 1 - Math.log(tempScore));
+				recogntion(term, tempScore);
 				if (maxTerm != null) {
 					TermUtil.insertTerm(terms, maxTerm);
 					System.out.println(maxTerm + "\t" + maxTerm.selfScore);
@@ -57,55 +66,46 @@ public class CompanyRecogntion {
 
 	private Term maxTerm = null;
 
-	private void recogntion(Term term, double score1, double score2) {
+	private void recogntion(Term term, double score) {
 		// TODO Auto-generated method stub
 		String companyName = term.getName();
 		CompanyNatureAttr companyAttr = null;
-
 		while ((term = term.getTo()) != null && (companyAttr = term.getTermNatures().companyAttr) != CompanyNatureAttr.NULL) {
 
 			companyName += term.getName();
-
-			if (companyAttr.e > 50) {
-				score1 += Math.log(term.getTermNatures().companyAttr.eb);
-				score2 += Math.log(1 - term.getTermNatures().companyAttr.eb);
+			if (companyAttr.eb < -0.005 && companyAttr.e > 200) {
+				score += term.getTermNatures().companyAttr.eb;
 
 				tempTerm = new Term(companyName, offe, TermNatures.NT);
 
-				{
-					tempTerm.selfScore = (score1 / (score1 + score2));
-					if (tempTerm.selfScore > 0) {
-						// 前缀分数
-						if (beginTerm == null || beginTerm.getTermNatures() == TermNatures.BEGIN) {
-							tempTerm.selfScore += CompanyNatureAttr.BEGIN;
-						} else {
-							tempTerm.selfScore += beginTerm.getTermNatures().companyAttr.pb;
-						}
-
-						// 后缀分数
-						Term to = term.getTo();
-						if (to == null || to.getTermNatures() == TermNatures.END) {
-							tempTerm.selfScore += CompanyNatureAttr.END;
-						} else {
-							tempTerm.selfScore += to.getTermNatures().companyAttr.sb;
-						}
-						// 计算分数
-//						int length = companyName.length() > 50 ? 50 : companyName.length();
-//						tempTerm.selfScore *= Math.log(FACTORY[length]);// *
-																		// length;
-						if (maxTerm == null || maxTerm.selfScore > tempTerm.selfScore) {
-							maxTerm = tempTerm;
-						}
-					}
+				tempTerm.selfScore = score;
+				// 前缀分数
+				if (beginTerm == null || beginTerm.getTermNatures() == TermNatures.BEGIN) {
+					System.out.println(tempTerm + "\t" + beginTerm + "\t" + beginTerm.getTermNatures().companyAttr.sb);
+					tempTerm.selfScore += beginTerm.getTermNatures().companyAttr.pb;
 				}
 
-				if (companyAttr.mb > 0.02) {
-					score1 += Math.log(term.getTermNatures().companyAttr.mb);
-					score2 += Math.log((1 - term.getTermNatures().companyAttr.mb));
-				}else{
-					return ;
+				// 后缀分数
+				Term to = term.getTo();
+				if (to == null || to.getTermNatures() == TermNatures.END) {
+					System.out.println(tempTerm + "\t" + to + "\t" + to.getTermNatures().companyAttr.sb);
+					tempTerm.selfScore += to.getTermNatures().companyAttr.sb;
 				}
+				// 计算分数
+				int length = companyName.length() > 50 ? 50 : companyName.length();
+				tempTerm.selfScore *= -Math.log(1 - FACTORY[length]);// *
 
+				System.out.println(tempTerm + "\t" + tempTerm.selfScore);
+				// length;
+				if (maxTerm == null || maxTerm.selfScore > tempTerm.selfScore) {
+					maxTerm = tempTerm;
+				}
+			}
+
+			if (companyAttr.mb < -0.005 && companyAttr.m > 50) {
+				score += term.getTermNatures().companyAttr.mb;
+			} else {
+				return;
 			}
 		}
 	}
