@@ -67,7 +67,7 @@ public class ForeignPersonRecognition {
 		this.terms = terms;
 	}
 
-	public void recogntion() {
+	public void recognition() {
 		// TODO Auto-generated method stub
 		String name = null;
 		Term term = null;

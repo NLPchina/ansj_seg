@@ -8,19 +8,20 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.recognition.AsianPersonRecognition;
+import org.ansj.util.recognition.CompanyRecogntion;
 import org.ansj.util.recognition.ForeignPersonRecognition;
 import org.ansj.util.recognition.NumRecognition;
 import org.ansj.util.recognition.UserDefineRecognition;
 
 /**
- * 标准分词
+ * 基本的分词.只做了.ngram模型.和数字发现.其他一律不管
  * 
  * @author ansj
  * 
  */
-public class ToAnalysis extends Analysis {
+public class BaseAnalysis extends Analysis {
 
-	public ToAnalysis(Reader reader) {
+	public BaseAnalysis(Reader reader) {
 		super(reader);
 		// TODO Auto-generated constructor stub
 	}
@@ -38,21 +39,6 @@ public class ToAnalysis extends Analysis {
 				if (graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
 				}
-
-				// 姓名识别
-				if (graph.hasPerson) {
-					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recognition();
-					graph.walkPathByScore();
-					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
-				}
-				
-				
-				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recognition();
-				graph.rmLittlePath();
-				graph.walkPathByFreq();
 
 				return getResult();
 			}
@@ -72,10 +58,10 @@ public class ToAnalysis extends Analysis {
 		return merger.merger();
 	}
 
-	private ToAnalysis() {
+	private BaseAnalysis() {
 	};
 
 	public static List<Term> paser(String str) {
-		return new ToAnalysis().paserStr(str);
+		return new BaseAnalysis().paserStr(str);
 	}
 }

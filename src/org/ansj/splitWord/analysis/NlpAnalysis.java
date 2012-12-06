@@ -7,9 +7,11 @@ import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
+import org.ansj.util.newWordFind.LearnTool;
 import org.ansj.util.recognition.AsianPersonRecognition;
-import org.ansj.util.recognition.CompanyRecogntion;
 import org.ansj.util.recognition.ForeignPersonRecognition;
+import org.ansj.util.recognition.NatureRecognition;
+import org.ansj.util.recognition.NewWordRecognition;
 import org.ansj.util.recognition.NumRecognition;
 import org.ansj.util.recognition.UserDefineRecognition;
 
@@ -21,10 +23,12 @@ import org.ansj.util.recognition.UserDefineRecognition;
  */
 public class NlpAnalysis extends Analysis {
 
-	public NlpAnalysis(Reader reader) {
+	public NlpAnalysis(Reader reader, LearnTool learn) {
 		super(reader);
-		// TODO Auto-generated constructor stub
+		this.learn = learn;
 	}
+
+	private LearnTool learn = null;
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -37,43 +41,36 @@ public class NlpAnalysis extends Analysis {
 
 				// 数字发现
 				if (graph.hasNum) {
-					NumRecognition.recogntionNM(graph.terms);
+					NumRecognition.recognition(graph.terms);
 				}
-				
-				
-				//机构名识别
-				new CompanyRecogntion(graph.terms).recogntion() ;
-//System.out.println("-----------");				
-//				for (Term term : graph.terms) {
-//					if(term==null)continue ;
-//					System.out.print(term.getName()+":"+term.selfScore);
-//					
-//					while((term=term.getNext())!=null){
-//						System.out.print("\t"+term.getName()+":"+term.selfScore);
-//					}
-//					System.out.println();
-//				}
-				graph.walkPathByScore();
+
+				// 新词发现训练
+				learn.learn(graph);
 
 				// 姓名识别
 				if (graph.hasPerson) {
 					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recogntion();
+					new AsianPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
 					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recogntion();
+					new ForeignPersonRecognition(graph.terms).recognition();
 				}
-				
 				graph.walkPathByScore();
-				
-				
-				
+
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recongnitionTerm();
+				new UserDefineRecognition(graph.terms).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByFreq();
 
-				return getResult();
+				// 进行新词发现
+				new NewWordRecognition(graph.terms, learn).recognition();
+				graph.rmLittlePath();
+				graph.walkPathByScore();
+
+				// 词性标注
+				List<Term> result = getResult();
+				new NatureRecognition(result);
+				return result;
 			}
 
 			private List<Term> getResult() {
@@ -91,10 +88,16 @@ public class NlpAnalysis extends Analysis {
 		return merger.merger();
 	}
 
-	private NlpAnalysis() {
+	/**
+	 * 传入学习机
+	 * 
+	 * @param learnRecognition
+	 */
+	private NlpAnalysis(LearnTool learn) {
+		this.learn = learn;
 	};
 
-	public static List<Term> paser(String str) {
-		return new NlpAnalysis().paserStr(str);
+	public static List<Term> paser(String str, LearnTool learn) {
+		return new NlpAnalysis(learn).paserStr(str);
 	}
 }

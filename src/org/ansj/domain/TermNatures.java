@@ -15,6 +15,8 @@ public class TermNatures {
 
 	public static final TermNatures NT = new TermNatures(TermNature.NT);
 
+	public static final TermNatures NW = new TermNatures(TermNature.NW);;
+
 	/**
 	 * 关于这个term的所有词性
 	 */

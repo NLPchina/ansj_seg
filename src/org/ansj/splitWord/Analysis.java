@@ -182,4 +182,12 @@ public abstract class Analysis {
 	public abstract class Merger {
 		public abstract List<Term> merger();
 	}
+	
+	/**
+	 * 重置分词器
+	 * @param br
+	 */
+	public void resetContent(BufferedReader br){
+		this.br = br ;
+	}
 }

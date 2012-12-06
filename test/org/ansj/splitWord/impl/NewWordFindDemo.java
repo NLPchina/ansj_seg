@@ -1,18 +1,18 @@
 package org.ansj.splitWord.impl;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map.Entry;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.util.newWordFind.LearnTool;
 import org.ansj.util.newWordFind.NewTerm;
 import org.ansj.util.newWordFind.NewWordFind;
 
@@ -25,37 +25,25 @@ import org.ansj.util.newWordFind.NewWordFind;
 public class NewWordFindDemo {
 	public static void main(String[] args) throws IOException {
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/《西游记》全集完整版TXT电子书.txt", "GBK");
-		String content = null;
-		Integer i = null;
-		while ((content = reader.readLine()) != null) {
-			TreeSet<NewTerm> newWords = NewWordFind.getNewWords(content);
-			for (NewTerm newTerm : newWords) {
-				if ((i = hm.get(newTerm.getName())) != null) {
-					i++;
-				} else {
-					i = 1;
-				}
-				hm.put(newTerm.getName(), i) ;
+		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/冒死记录中国神秘事件（真全本）.txt", "GBK");
+		LearnTool learn = new LearnTool();
+long start = System.currentTimeMillis()  ;
+		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn) ;
+		Term term = null ;
+		while((term=nlpAnalysis.next())!=null){
+			if(hm.containsKey(term.getName())){
+				hm.put(term.getName(), hm.get(term.getName())+1) ;
+			}else{
+				hm.put(term.getName(), 1) ;
 			}
 		}
-		
-		TreeSet<NewTerm> ts = new TreeSet<NewTerm>() ;
+System.out.println(System.currentTimeMillis()-start);
 		Set<Entry<String, Integer>> entrySet = hm.entrySet() ;
-		
+		StringBuilder sb = new StringBuilder() ;
 		for (Entry<String, Integer> entry : entrySet) {
-			Term term = new Term(entry.getKey(), 0, null) ;
-			NewTerm newTerm = new NewTerm(term) ;
-			newTerm.weight = entry.getValue() ;
-			ts.add(newTerm) ;
+			sb.append(entry.getKey()+"\t"+entry.getValue()+"\n") ;
 		}
-		int m = 0 ;
-		for (NewTerm newTerm : ts) {
-			m++ ;
-			if(m==50){
-				break ;
-			}
-			System.out.println(newTerm);
-		}
+		
+		IOUtil.Writer("/Users/ansj/Desktop/result.txt", "UTF-8", sb.toString()) ;
 	}
 }

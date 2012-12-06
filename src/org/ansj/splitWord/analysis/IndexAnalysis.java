@@ -32,14 +32,14 @@ public class IndexAnalysis extends Analysis {
 				graph.walkPath();
 
 				// 数字发现
-				NumRecognition.recogntionNM(graph.terms);
+				NumRecognition.recognition(graph.terms);
 				graph.rmLittlePath();
 
 				// 姓名识别
-				new AsianPersonRecognition(graph.terms).recogntion();
+				new AsianPersonRecognition(graph.terms).recognition();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recongnitionTerm();
+				new UserDefineRecognition(graph.terms).recognition();
 
 				return result();
 			}

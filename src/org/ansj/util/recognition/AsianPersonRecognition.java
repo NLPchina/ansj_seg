@@ -34,7 +34,7 @@ public class AsianPersonRecognition {
 		this.terms = terms;
 	}
 
-	public void recogntion() {
+	public void recognition() {
 		Term term = null;
 		Term tempTerm = null;
 		List<Term> termList = new ArrayList<Term>();

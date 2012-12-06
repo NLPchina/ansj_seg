@@ -11,7 +11,7 @@ public class NumRecognition {
 	 * 
 	 * @param terms
 	 */
-	public static void recogntionNM(Term[] terms) {
+	public static void recognition(Term[] terms) {
 		StringBuilder sb = null;
 		int length = terms.length - 1;
 		int begin = -1;

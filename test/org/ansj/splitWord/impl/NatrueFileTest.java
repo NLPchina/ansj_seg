@@ -2,15 +2,13 @@ package org.ansj.splitWord.impl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import love.cq.util.IOUtil;
+
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.recognition.NatureRecognition;
-
-import love.cq.util.IOUtil;
 
 public class NatrueFileTest {
 	public static void main(String[] args) throws IOException {
@@ -21,7 +19,7 @@ public class NatrueFileTest {
 			sb.append(temp) ;
 		}
 		
-		List<Term> paser = NlpAnalysis.paser(sb.toString()) ;
+		List<Term> paser = ToAnalysis.paser(sb.toString()) ;
 		
 		new NatureRecognition(paser).recognition() ;
 		

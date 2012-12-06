@@ -1,33 +1,35 @@
 package org.ansj.util.recognition;
 
-import static org.ansj.library.UserDefineLibrary.FOREST;
-import love.cq.domain.WoodInterface;
-import love.cq.util.ObjectBean;
+import love.cq.domain.SmartForest;
 
+import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
+import org.ansj.util.newWordFind.LearnTool;
 
 /**
- * 用户自定义词典.又称补充词典
+ * 新词识别
  * 
  * @author ansj
  * 
  */
-public class UserDefineRecognition {
+public class NewWordRecognition {
 
 	private Term[] terms = null;
 
-	private WoodInterface branch = FOREST;
+	private SmartForest<NewWord> forest = null;
+
+	private SmartForest<NewWord> branch = null;
 
 	private int offe = -1;
 	private int endOffe = -1;
-	private int tempFreq = 50;
-	private String tempNature;
+	private TermNatures tempNatures;
 
-	public UserDefineRecognition(Term[] terms) {
+	public NewWordRecognition(Term[] terms, LearnTool learn) {
 		this.terms = terms;
+		forest = learn.getForest();
+		branch = learn.getForest();
 	}
 
 	public void recognition() {
@@ -39,7 +41,7 @@ public class UserDefineRecognition {
 		for (int i = 0; i < length; i++) {
 			if (terms[i] == null)
 				continue;
-			branch = termStatus(branch, terms[i]);
+			branch = branch.getBranch(terms[i].getName());
 			if (branch == null) {
 				if (offe != -1 && offe < endOffe) {
 					i = offe;
@@ -52,8 +54,7 @@ public class UserDefineRecognition {
 				}
 			} else if (branch.getStatus() == 3) {
 				endOffe = i;
-				tempNature = branch.getParams()[0];
-				tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+				tempNatures = branch.getParam().getNature();
 				if (offe != -1 && offe < endOffe) {
 					i = offe;
 					makeNewTerm();
@@ -65,8 +66,7 @@ public class UserDefineRecognition {
 				if (offe == -1) {
 					offe = i;
 				} else {
-					tempNature = branch.getParams()[0];
-					tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+					tempNatures = branch.getParam().getNature();
 				}
 			} else if (branch.getStatus() == 1) {
 				if (offe == -1) {
@@ -93,7 +93,7 @@ public class UserDefineRecognition {
 			// terms[j] = null;
 		}
 
-		Term term = new Term(sb.toString(), offe, new TermNatures(new TermNature(tempNature, tempFreq)));
+		Term term = new Term(sb.toString(), offe, tempNatures);
 		TermUtil.insertTerm(terms, term);
 		reset();
 	}
@@ -104,27 +104,8 @@ public class UserDefineRecognition {
 	private void reset() {
 		offe = -1;
 		endOffe = -1;
-		tempFreq = 50;
-		tempNature = null;
-		branch = FOREST;
-	}
-
-	/**
-	 * 传入一个term 返回这个term的状态
-	 * 
-	 * @param branch
-	 * @param term
-	 * @return
-	 */
-	private WoodInterface termStatus(WoodInterface branch, Term term) {
-		String name = term.getName();
-		for (int j = 0; j < name.length(); j++) {
-			branch = branch.get(name.charAt(j));
-			if (branch == null) {
-				return null;
-			}
-		}
-		return branch;
+		tempNatures = null;
+		branch = forest;
 	}
 
 }

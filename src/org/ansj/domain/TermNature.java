@@ -18,6 +18,7 @@ public class TermNature {
 	public static final TermNature USER_DEFINE = new TermNature("userDefine", 1) ;
 	public static final TermNature NR = new TermNature("nr", 1) ;
 	public static final TermNature NT = new TermNature("nt", 1);
+	public static final TermNature NW = new TermNature("nw", 1);
 	
 	public Nature nature;
 
