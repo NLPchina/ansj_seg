@@ -54,7 +54,7 @@ public class LibraryToTree {
 					nature.put(temps[0], Integer.parseInt(temps[2])) ;
 				}
 				branch.add(new Branch(chars[i], status,nature,new String(chars,0,i+1)));
-				branch = (Branch) branch.get(chars[i]);
+				branch = branch.get(chars[i]);
 			}
 			branch = head;
 		}
@@ -161,6 +161,7 @@ class Branch {
 		}
 	}
 	
+	@Override
 	public String toString(){
 		return this.value +"	"+status+"	"+natures ;
 	}
@@ -238,7 +239,7 @@ class AnsjArrays {
 	}
 
 	public static void sort(Branch[] a) {
-		Branch[] aux = (Branch[]) a.clone();
+		Branch[] aux = a.clone();
 		mergeSort(aux, a, 0, a.length, 0);
 	}
 

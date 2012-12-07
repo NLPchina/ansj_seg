@@ -44,6 +44,7 @@ public class TermNature {
 		return all;
 	}
 	
+	@Override
 	public String toString(){
 		return this.nature.natureStr+"/"+frequency ;
 	}

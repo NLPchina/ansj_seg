@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.TreeSet;
-
 import love.cq.domain.SmartForest;
 
 import org.ansj.domain.NewWord;
@@ -151,6 +149,7 @@ public class LearnTool {
 		if (num == 0) {
 			return sortMapByValue;
 		} else {
+			num = Math.min(num, sortMapByValue.size()) ;
 			return sortMapByValue.subList(0, num);
 		}
 	}

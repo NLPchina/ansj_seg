@@ -8,8 +8,6 @@ import java.util.List;
 
 import love.cq.util.IOUtil;
 
-import org.ansj.util.MyStaticValue;
-
 public class MakeLibrary {
 	private static String charEncoding = "UTF-8";
 	private static String path = "data/library.dic";

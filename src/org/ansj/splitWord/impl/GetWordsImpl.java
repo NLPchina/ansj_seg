@@ -8,7 +8,6 @@ import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
 
 import org.ansj.domain.TermNatures;
-import org.ansj.library.InitDictionary;
 import org.ansj.splitWord.GetWords;
 
 public class GetWordsImpl implements GetWords {
@@ -33,6 +32,7 @@ public class GetWordsImpl implements GetWords {
 
 	int charsLength = 0;
 
+	@Override
 	public void setStr(String chars) {
 		this.chars = chars;
 		charsLength = chars.length();
@@ -49,6 +49,7 @@ public class GetWordsImpl implements GetWords {
 	public int i = 0;
 	private String str = null;
 
+	@Override
 	public String allWords() {
 		for (; i < charsLength; i++) {
 			charHashCode = conversion(chars.charAt(i));

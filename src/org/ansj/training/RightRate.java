@@ -1,15 +1,11 @@
 package org.ansj.training;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class RightRate {

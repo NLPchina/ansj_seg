@@ -60,6 +60,7 @@ public class CompanyNatureAttr {
 	// 所有词频idf
 	public double allFreqb;
 
+	@Override
 	public String toString() {
 		return "p" + ":" + p + "\t" + "b" + ":" + b + "\t" + "m" + ":" + m + "\t" + "e" + ":" + e + "\t" + "s" + ":" + s;
 	}

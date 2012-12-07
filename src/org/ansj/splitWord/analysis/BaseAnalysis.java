@@ -7,11 +7,7 @@ import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
-import org.ansj.util.recognition.AsianPersonRecognition;
-import org.ansj.util.recognition.CompanyRecogntion;
-import org.ansj.util.recognition.ForeignPersonRecognition;
 import org.ansj.util.recognition.NumRecognition;
-import org.ansj.util.recognition.UserDefineRecognition;
 
 /**
  * 基本的分词.只做了.ngram模型.和数字发现.其他一律不管

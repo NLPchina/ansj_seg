@@ -110,7 +110,7 @@ public class AsianPersonRecognition {
 			}
 			sb.append(term.getName());
 			allFreq += Math.log(term.getTermNatures().allFreq+1) ;
-			allFreq += -Math.log((double) (freq));
+			allFreq += -Math.log((freq));
 			index++;
 
 			if (index == size + 2) {

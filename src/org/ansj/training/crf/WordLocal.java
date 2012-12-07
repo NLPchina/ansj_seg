@@ -1,12 +1,8 @@
 package org.ansj.training.crf;
 
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import org.ansj.library.InitDictionary;
 
-import love.cq.library.Library;
 import love.cq.util.IOUtil;
 
 public class WordLocal {

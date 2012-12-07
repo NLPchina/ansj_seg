@@ -28,6 +28,7 @@ public class IndexAnalysis extends Analysis {
 	protected List<Term> getResult(final Graph graph) {
 		Merger merger = new Merger() {
 
+			@Override
 			public List<Term> merger() {
 				graph.walkPath();
 

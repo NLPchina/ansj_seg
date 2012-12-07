@@ -196,6 +196,7 @@ public class Term implements Comparable<Term> {
 		return natrue;
 	}
 
+	@Override
 	public String toString() {
 		if (natrue != null && !"null".equals(natrue.natureStr)) {
 			return this.name + "/" + natrue.natureStr;

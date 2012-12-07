@@ -3,7 +3,6 @@ package org.ansj.training.name;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -43,6 +42,7 @@ public class ForeignName {
 			local[index]++;
 		}
 
+		@Override
 		public String toString() {
 			return local[0] + "\t" + local[1] + "\t" + local[2];
 		}

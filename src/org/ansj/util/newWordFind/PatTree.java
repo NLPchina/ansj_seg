@@ -10,8 +10,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
-import love.cq.domain.SmartForest;
-
 import org.ansj.domain.Term;
 
 /**
@@ -143,7 +141,7 @@ public class PatTree {
 		boolean flag = false;
 		// 迭代替代重复子节点
 		for (Iterator<Node> iterator = result.iterator(); iterator.hasNext();) {
-			Node value = (Node) iterator.next();
+			Node value = iterator.next();
 			flag = false;
 			for (Node node : all) {
 				if (node.name.contains(value.name)) {

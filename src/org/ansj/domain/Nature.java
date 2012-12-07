@@ -23,6 +23,7 @@ public class Nature {
 		this.allFrequency = allFrequency ;
 	}
 
+	@Override
 	public String toString() {
 		return natureStr + ":" + index + ":" + natureIndex;
 	}

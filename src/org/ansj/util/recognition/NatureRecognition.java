@@ -114,6 +114,7 @@ public class NatureRecognition {
 			}
 		}
 
+		@Override
 		public String toString() {
 			return termNature.nature.natureStr + "/" + selfScore;
 		}
