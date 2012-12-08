@@ -47,16 +47,6 @@ public class NlpAnalysis extends Analysis {
 				// 新词发现训练
 				learn.learn(graph);
 
-				// 姓名识别
-				if (graph.hasPerson) {
-					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recognition();
-					graph.walkPathByScore();
-					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
-				}
-				graph.walkPathByScore();
-
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recognition();
 				graph.rmLittlePath();
@@ -69,7 +59,7 @@ public class NlpAnalysis extends Analysis {
 
 				// 词性标注
 				List<Term> result = getResult();
-				new NatureRecognition(result);
+				new NatureRecognition(result).recognition();
 				return result;
 			}
 

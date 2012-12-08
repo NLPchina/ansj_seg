@@ -1,7 +1,6 @@
 package org.ansj.util.recognition;
 
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
 
 public class NumRecognition {
@@ -12,51 +11,51 @@ public class NumRecognition {
 	 * @param terms
 	 */
 	public static void recognition(Term[] terms) {
-		StringBuilder sb = null;
 		int length = terms.length - 1;
-		int begin = -1;
 		Term from = null;
 		Term to = null;
 		Term temp = null;
 		for (int i = 0; i < length; i++) {
 			if (terms[i] == null) {
 				continue;
-			}
-			// 发现数字进行模式匹配找到numEndFreq
-			if (terms[i].getTermNatures().numAttr.flag) {
+			} else if (".".equals(terms[i].getName())) {
+				// 如果是.前后都为数字进行特殊处理
+				to = terms[i].getTo();
 				from = terms[i].getFrom();
-				sb = new StringBuilder();
-				begin = i;
-				do {
-					if (terms[i] == null) {
-						i++;
-						continue;
-					} else {
-						to = terms[i].getTo();
-					}
-					sb.append(terms[i].getName());
-					temp = terms[i];
+				if (from.getTermNatures().numAttr.flag && to.getTermNatures().numAttr.flag) {
+					from.setName(from.getName() + "." + to.getName());
+					TermUtil.termLink(from, to.getTo());
+					terms[to.getOffe()] = null;
 					terms[i] = null;
-					i++;
-				} while (i < length && (terms[i] == null || terms[i].getTermNatures().numAttr.flag));
-
-				// 合并最后的量词
-				if (i < length && terms[i].getTermNatures().numAttr.numEndFreq > 0) {
-					sb.append(terms[i].getName());
-					to = terms[i].getTo();
-					terms[i] = null;
+					i = from.getOffe() - 1;
 				}
+				continue;
+			} else if (!terms[i].getTermNatures().numAttr.flag) {
+				continue;
+			}
 
-				if (sb.length() > 1) {
-					Term term = new Term(sb.toString(), begin, TermNatures.NB);
-					TermUtil.termLink(from, term);
-					TermUtil.termLink(term, to);
-					TermUtil.insertTermNum(terms, term);
-				} else {
-					terms[temp.getOffe()] = temp;
+			temp = terms[i];
+			// 将所有的数字合并
+			while ((temp = temp.getTo()).getTermNatures().numAttr.flag) {
+				terms[i].setName(terms[i].getName() + temp.getName());
+			}
+			// 如果是数字结尾
+			if (temp.getTermNatures().numAttr.numEndFreq > 0) {
+				terms[i].setName(terms[i].getName() + temp.getName());
+				temp = temp.getTo() ;
+			}
+
+			// 如果不等,说明terms[i]发生了改变
+			if (terms[i].getTo() != temp) {
+				TermUtil.termLink(terms[i], temp);
+				// 将中间无用元素设置为null
+				for (int j = i + 1; j < temp.getOffe(); j++) {
+					terms[j] = null;
 				}
+				i = temp.getOffe()-1 ;
 			}
 		}
 
 	}
+
 }

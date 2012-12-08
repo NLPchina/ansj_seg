@@ -13,7 +13,9 @@ import org.ansj.domain.TermNatures;
 import org.ansj.util.CollectionUtil;
 import org.ansj.util.Graph;
 import org.ansj.util.newWordFind.PatTree.Node;
+import org.ansj.util.recognition.AsianPersonRecognition;
 import org.ansj.util.recognition.CompanyRecogntion;
+import org.ansj.util.recognition.ForeignPersonRecognition;
 
 /**
  * 新词发现,这是个线程安全的.所以可以多个对象公用一个
@@ -28,9 +30,13 @@ public class LearnTool {
 	 */
 	public boolean isLearn = true;
 
-	public boolean isCompany = false;
+	public boolean isCompany = true;
 
 	public boolean isNewWord = true;
+
+	public boolean isAsianName = true;
+
+	public boolean isForeignName = true;
 
 	/**
 	 * 告诉大家你学习了多少个词了
@@ -54,7 +60,7 @@ public class LearnTool {
 			return;
 		NewWord newWord = null;
 		for (Node node : newWords) {
-			newWord = new NewWord(node.getName(), -0.002 * (node.getCount() + 1), node.getCount() + 1, TermNatures.NW);
+			newWord = new NewWord(node.getName(), node.getCount() + 1, TermNatures.NW);
 			addTerm(newWord);
 		}
 	}
@@ -65,13 +71,36 @@ public class LearnTool {
 	 * @param graph
 	 */
 	public void learn(Graph graph) {
+		// 机构名识别
 		if (isCompany) {
 			findCompany(graph);
 		}
+
+		// 亚洲人名识别
+		if (isAsianName) {
+			findAsianPerson(graph);
+		}
+
+		// 外国人名识别
+		if (isForeignName) {
+			findForeignPerson(graph);
+		}
+
+		// 新词发现
 		if (isNewWord) {
 			findNewWord(graph);
 		}
 
+	}
+
+	private void findAsianPerson(Graph graph) {
+		List<NewWord> newWords = new AsianPersonRecognition(graph.terms).getNewWords();
+		addListToTerm(newWords);
+	}
+
+	private void findForeignPerson(Graph graph) {
+		List<NewWord> newWords = new ForeignPersonRecognition(graph.terms).getNewWords();
+		addListToTerm(newWords);
 	}
 
 	/**
@@ -81,8 +110,11 @@ public class LearnTool {
 	 */
 	private void findCompany(Graph graph) {
 		List<NewWord> newWords = new CompanyRecogntion(graph.terms).getNewWords();
-		if (newWords.size() > 0)
-			System.out.println(newWords);
+		addListToTerm(newWords);
+	}
+
+	// 批量将新词加入到词典中
+	private void addListToTerm(List<NewWord> newWords) {
 		for (NewWord newWord : newWords) {
 			addTerm(newWord);
 		}
@@ -117,14 +149,18 @@ public class LearnTool {
 	 * @param newWord
 	 */
 	public void addTerm(NewWord newWord) {
+		NewWord temp = null ;
 		SmartForest<NewWord> smartForest = null;
 		if ((smartForest = sf.getBranch(newWord.getName())) != null && smartForest.getParam() != null) {
-			newWord = smartForest.getParam();
-			newWord.update(newWord.getScore(), 1, newWord.getNature());
+			temp = smartForest.getParam();
+			temp.update(newWord.getFreq(), newWord.getNature());
 		} else {
 			count++;
+			newWord.explainScore();
+			//设置名字为空,节省内存空间
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
+				newWord.setName(null);
 			}
 		}
 	}
@@ -145,11 +181,11 @@ public class LearnTool {
 		for (int i = 0; i < sf.branches.length; i++) {
 			valueResult(sf.branches[i], hm);
 		}
-		List<Entry<String, Double>> sortMapByValue = CollectionUtil.sortMapByValue(hm,-1);
+		List<Entry<String, Double>> sortMapByValue = CollectionUtil.sortMapByValue(hm, -1);
 		if (num == 0) {
 			return sortMapByValue;
 		} else {
-			num = Math.min(num, sortMapByValue.size()) ;
+			num = Math.min(num, sortMapByValue.size());
 			return sortMapByValue.subList(0, num);
 		}
 	}

@@ -57,7 +57,7 @@ public class GetWordsImpl implements GetWords {
 			switch (getStatement()) {
 			case 0:
 				if (baseValue == chars.charAt(i)) {
-					str = "" + chars.charAt(i);
+					str = String.valueOf(chars.charAt(i));
 					offe = i;
 					start = ++i;
 					end = 0;
@@ -89,7 +89,7 @@ public class GetWordsImpl implements GetWords {
 		}
 		if (start++ != i) {
 			i = start;
-			baseValue = 0 ;
+			baseValue = 0;
 			return allWords();
 		}
 		start = 0;
@@ -138,7 +138,7 @@ public class GetWordsImpl implements GetWords {
 		gwi.setStr("井冈山：党建信息化服务新平台");
 		String temp = null;
 		while ((temp = gwi.allWords()) != null) {
-			System.out.println(temp+ gwi.getOffe());
+			System.out.println(temp + gwi.getOffe());
 		}
 	}
 

@@ -142,12 +142,17 @@ public abstract class Analysis {
 				start = i;
 				end = i;
 				c = temp.charAt(start);
-				while (IN_SYSTEM[c]>0) {
+				while (IN_SYSTEM[c] > 0) {
 					end++;
 					if (++i >= length)
 						break;
 					c = temp.charAt(i);
 				}
+
+				if (start == end) {
+					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
+				}
+
 				str = temp.substring(start, end);
 				gwi.setStr(str);
 				while ((str = gwi.allWords()) != null) {
@@ -157,7 +162,7 @@ public abstract class Analysis {
 				/**
 				 * 如果未分出词.以未知字符加入到gp中
 				 */
-				if (IN_SYSTEM[c]>0 || status[c] > 3) {
+				if (IN_SYSTEM[c] > 0 || status[c] > 3) {
 					i -= 1;
 				} else {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
@@ -182,12 +187,13 @@ public abstract class Analysis {
 	public abstract class Merger {
 		public abstract List<Term> merger();
 	}
-	
+
 	/**
 	 * 重置分词器
+	 * 
 	 * @param br
 	 */
-	public void resetContent(BufferedReader br){
-		this.br = br ;
+	public void resetContent(BufferedReader br) {
+		this.br = br;
 	}
 }

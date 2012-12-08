@@ -1,5 +1,10 @@
 package org.ansj.domain;
 
+/**
+ * 没一个term都拥有一个词性集合
+ * @author ansj
+ *
+ */
 public class TermNatures {
 	public static final TermNatures NULL = new TermNatures(TermNature.NULL);
 

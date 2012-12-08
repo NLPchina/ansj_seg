@@ -142,7 +142,6 @@ public class InitDictionary {
 				termNatures[num] = tn;
 			}
 		}
-
 		// 人名词性补录
 		Set<Entry<String, PersonNatureAttr>> entrySet = personMap.entrySet();
 		char c = 0;
@@ -190,7 +189,6 @@ public class InitDictionary {
 				termNatures[c] = tn;
 			}
 		}
-
 		// 简繁体字体转换
 		BufferedReader reader2 = DicReader.getReader("jianFan.dic");
 		while ((temp = reader2.readLine()) != null) {
@@ -202,7 +200,6 @@ public class InitDictionary {
 				IN_SYSTEM[temp.charAt(0)] = temp.charAt(2);
 			}
 		}
-
 		reader.close();
 		reader2.close();
 	}
@@ -269,4 +266,5 @@ public class InitDictionary {
 		}
 		return value;
 	}
+	
 }

@@ -12,18 +12,18 @@ import org.ansj.util.newWordFind.LearnTool;
 
 public class NlpDemo {
 	public static void main(String[] args) throws IOException {
-		//学习机器是有状态的
-		long start = System.currentTimeMillis() ;
-		LearnTool learn = new LearnTool() ;
+		// 学习机器是有状态的
+		long start = System.currentTimeMillis();
+		LearnTool learn = new LearnTool();
 		BufferedReader materialsReader = IOUtil.getReader("/Users/ansj/Downloads/红楼梦.txt", "GBK");
-		String temp = null ;
-		while((temp=materialsReader.readLine())!=null){
-			List<Term> paser = NlpAnalysis.paser(temp, learn) ;
+		String temp = null;
+		while ((temp = materialsReader.readLine()) != null) {
+			List<Term> paser = NlpAnalysis.paser(temp, learn);
 //			System.out.println(paser);
 		}
-		
-		System.out.println("这次训练已经学到了: "+learn.count+" 个词!");
-		System.out.println(System.currentTimeMillis()-start);
-		System.out.println(learn.getTopTree(100));
+
+		System.out.println("这次训练已经学到了: " + learn.count + " 个词!");
+		System.out.println(System.currentTimeMillis() - start);
+		System.out.println(learn.getTopTree(0));
 	}
 }

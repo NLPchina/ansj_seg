@@ -3,6 +3,7 @@ package org.ansj.util.recognition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.NewWord;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
@@ -19,6 +20,7 @@ public class AsianPersonRecognition {
 	private static final double[] FACTORY = { 0.16271366224044456, 0.8060521860870434, 0.031234151672511947 };
 	private boolean skip = false;
 	private Term[] terms;
+
 	// 名称是否有歧异
 	// public int B = -1;//0 姓氏
 	// public int C = -1;//1 双名的首字
@@ -35,13 +37,20 @@ public class AsianPersonRecognition {
 	}
 
 	public void recognition() {
+		List<Term> termList = recogntion_();
+		for (Term term2 : termList) {
+			TermUtil.insertTerm(terms, term2);
+		}
+	}
+
+	private List<Term> recogntion_() {
 		Term term = null;
 		Term tempTerm = null;
 		List<Term> termList = new ArrayList<Term>();
 		int beginFreq = 10;
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			if (term == null||!term.getTermNatures().personAttr.flag) {
+			if (term == null || !term.getTermNatures().personAttr.flag) {
 				continue;
 			}
 			term.score = 0;
@@ -69,9 +78,7 @@ public class AsianPersonRecognition {
 			}
 			beginFreq = term.getTermNatures().personAttr.begin + 1;
 		}
-		for (Term term2 : termList) {
-			TermUtil.insertTerm(terms, term2);
-		}
+		return termList;
 	}
 
 	/**
@@ -98,18 +105,18 @@ public class AsianPersonRecognition {
 			if (terms[i] == null) {
 				continue;
 			}
-			term = terms[i] ;
+			term = terms[i];
 			pna = term.getTermNatures().personAttr;
 			// 在这个长度的这个位置的词频,如果没有可能就干掉,跳出循环
 			if ((freq = pna.getFreq(size, index)) == 0) {
-					return null;
+				return null;
 			}
 
-			if (pna.allFreq > 0 ) {
+			if (pna.allFreq > 0) {
 				undefinite++;
 			}
 			sb.append(term.getName());
-			allFreq += Math.log(term.getTermNatures().allFreq+1) ;
+			allFreq += Math.log(term.getTermNatures().allFreq + 1);
 			allFreq += -Math.log((freq));
 			index++;
 
@@ -119,7 +126,7 @@ public class AsianPersonRecognition {
 		}
 
 		double score = -Math.log(FACTORY[size]);
-		score += allFreq ;
+		score += allFreq;
 		double endFreq = 0;
 		// 开始寻找结尾词
 		boolean flag = true;
@@ -129,8 +136,8 @@ public class AsianPersonRecognition {
 				endFreq = 10;
 				flag = false;
 			} else if (terms[i] != null) {
-				int twoWordFreq = TwoWordLibrary.getTwoWordFreq(term, terms[i]) ;
-				if(twoWordFreq>3){
+				int twoWordFreq = TwoWordLibrary.getTwoWordFreq(term, terms[i]);
+				if (twoWordFreq > 3) {
 					return null;
 				}
 				endFreq = terms[i].getTermNatures().personAttr.end + 1;
@@ -138,34 +145,34 @@ public class AsianPersonRecognition {
 			}
 		}
 
-		
 		score -= Math.log(endFreq);
 		score -= Math.log(beginFreq);
-		
-		if(score>-3){
-			return null ;
-		}
-		
-		if (allFreq >0 && undefinite > 0 ) {
+
+		if (score > -3) {
 			return null;
 		}
-		
+
+		if (allFreq > 0 && undefinite > 0) {
+			return null;
+		}
+
 		skip = undefinite == 0;
-		
+
 		term = new Term(sb.toString(), offe, TermNatures.NR);
 		term.selfScore = score;
-
-		// 找到一个词插入进去
-//		System.out.print(term + "\t");
-//		System.out.print(allFreq + "\t");
-//		System.out.print(beginFreq + "\t");
-//		System.out.print(endFreq + "\t");
-//		System.out.print(term.selfScore + "\t");
-//		System.out.print(undefinite + "\t");
-//		System.out.println();
 
 		return term;
 
 	}
-	
+
+	public List<NewWord> getNewWords() {
+		// TODO Auto-generated method stub
+		List<NewWord> all = new ArrayList<NewWord>();
+		List<Term> termList = recogntion_();
+		for (Term term2 : termList) {
+			all.add(new NewWord(term2.getName(), 1, TermNatures.NR));
+		}
+		return all;
+	}
+
 }

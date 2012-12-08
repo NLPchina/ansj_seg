@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import love.cq.util.StringUtil;
 
+import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
@@ -61,7 +62,6 @@ public class ForeignPersonRecognition {
 	private List<Term> tempList = new ArrayList<Term>();
 	private LinkedList<NameChar> prList = null;
 	private Term[] terms = null;
-	private int nameLength = 0;
 
 	public ForeignPersonRecognition(Term[] terms) {
 		this.terms = terms;
@@ -87,7 +87,6 @@ public class ForeignPersonRecognition {
 			if (term.isFName) {
 				boolean flag = validate(name);
 				if (flag) {
-					nameLength += name.length();
 					tempList.add(term);
 				}
 			} else if (tempList.size() == 1) {
@@ -119,7 +118,6 @@ public class ForeignPersonRecognition {
 		// TODO Auto-generated method stub
 		tempList.clear();
 		prList = (LinkedList<NameChar>) PRLIST.clone();
-		nameLength = 0;
 	}
 
 	public static boolean isFName(String name) {
@@ -147,4 +145,39 @@ public class ForeignPersonRecognition {
 		}
 	}
 
+	public List<NewWord> getNewWords() {
+		List<NewWord> all = new ArrayList<NewWord>();
+		String name = null;
+		Term term = null;
+		reset();
+		for (int i = 0; i < terms.length; i++) {
+			if (terms[i] == null) {
+				continue;
+			}
+
+			term = terms[i];
+			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
+			if (tempList.size() == 0 && term.getTermNatures().personAttr.end > 10) {
+				continue;
+			}
+
+			name = term.getName();
+			if (term.isFName) {
+				boolean flag = validate(name);
+				if (flag) {
+					tempList.add(term);
+				}
+			} else if (tempList.size() == 1) {
+				reset();
+			} else if (tempList.size() > 1) {
+				StringBuilder sb = new StringBuilder();
+				for (Term temp : tempList) {
+					sb.append(temp.getName());
+				}
+				all.add(new NewWord(sb.toString(), 1, TermNatures.NR));
+				reset();
+			}
+		}
+		return all;
+	}
 }

@@ -9,7 +9,7 @@ public class NumNatureAttr {
 
 	// 数字的结尾
 	public int numEndFreq = -1;
-
+	
 	// 最大词性是否是数字
 	public boolean flag = false;
 

@@ -1,5 +1,7 @@
 package org.ansj.domain;
 
+import org.ansj.util.MathUtil;
+
 /**
  * 新词发现,实体名
  * 
@@ -11,14 +13,14 @@ public class NewWord {
 	private String name;
 	// 分数
 	private double score;
+	private double selfScore;
 	// 出现次数
 	private int freq;
 	// 词性
 	private TermNatures nature;
 
-	public NewWord(String name, double score, int freq, TermNatures nature) {
+	public NewWord(String name, int freq, TermNatures nature) {
 		this.name = name;
-		this.score = score;
 		this.freq = freq;
 		this.nature = nature;
 	}
@@ -62,20 +64,27 @@ public class NewWord {
 	 * @param i
 	 * @param nw
 	 */
-	public void update(double version, int i, TermNatures nw) {
+	public void update(int i, TermNatures nw) {
 		// TODO Auto-generated method stub
-		this.score += version;
 		this.freq += i;
-		if (nw != null && !TermNatures.NW.equals(nw)) {
+		if (nw == null || !TermNatures.NW.equals(nw)) {
 			this.nature = nw;
 		}
+		this.score += selfScore * i;
+	}
+
+	/**
+	 * 计算分数
+	 */
+	public void explainScore() {
+		this.selfScore = MathUtil.scoreWord(this.name, this.nature);
+		this.score = selfScore;
 	}
 
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.name+"\t"+this.score+"\t"+this.freq+"\t"+this.getNature().termNatures[0];
+		return this.name + "\t" + this.score + "\t" + this.freq + "\t" + this.getNature().termNatures[0];
 	}
 
-	
 }
