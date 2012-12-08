@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.MathUtil;
 
 /**
