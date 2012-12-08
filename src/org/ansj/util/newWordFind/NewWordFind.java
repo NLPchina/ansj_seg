@@ -147,7 +147,6 @@ public class NewWordFind {
 //		 +
 //		 "江苏张家港农村商业银行股份有限公司申请的流动资金贷款提供担保，股权质押登记日为2012年11月8日，质押期限至2014年11月5日止。上述质押登记手续已在中国证券登记结算有限责任公司深圳分公司办理完毕。";
 //		content = "微博是最新的交流方式新浪微博,微博很好微博很大微博!";
-		content = "欢迎来到 Ansj 中文分词       Ansj中文分词是一款纯java的主要应用于自然语言处理的高精度的中文分词.我们追求的目标.是--准确-高效-自由.      中文分词 . 人名识别、地名识别、组织机构名识别、多级词性标注、关键词提取、指纹提取支持行业词典、用户自定义词典" ;
 		List<Node> newWords = new NewWordFind().getNewWords(BaseAnalysis.paser(content));
 		for (int i = 0; i < newWords.size(); i++) {
 			System.out.print(newWords.get(i).getName() + ":" + newWords.get(i).getCount() + " , ");
