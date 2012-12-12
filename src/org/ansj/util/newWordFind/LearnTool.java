@@ -54,16 +54,16 @@ public class LearnTool {
 	 * @param content
 	 * @throws IOException
 	 */
-	private void learn(List<Term> list) throws IOException {
-		List<Node> newWords = new NewWordFind().getNewWords(list);
-		if (newWords == null)
-			return;
-		NewWord newWord = null;
-		for (Node node : newWords) {
-			newWord = new NewWord(node.getName(), node.getCount() + 1, TermNatures.NW);
-			addTerm(newWord);
-		}
-	}
+//	private void learn(List<Term> list) throws IOException {
+//		List<Node> newWords = new NewWordFind().getNewWords(list);
+//		if (newWords == null)
+//			return;
+//		NewWord newWord = null;
+//		for (Node node : newWords) {
+//			newWord = new NewWord(node.getName(), node.getCount() + 1, TermNatures.NW);
+//			addTerm(newWord);
+//		}
+//	}
 
 	/**
 	 * 公司名称学习.
@@ -88,7 +88,7 @@ public class LearnTool {
 
 		// 新词发现
 		if (isNewWord) {
-			findNewWord(graph);
+			findNewWord2(graph);
 		}
 
 	}
@@ -125,22 +125,34 @@ public class LearnTool {
 	 * 
 	 * @param graph
 	 */
-	private void findNewWord(Graph graph) {
+//	private void findNewWord(Graph graph) {
+//		// 进入新词发现,学习
+//		List<Term> result = new ArrayList<Term>();
+//		int length = graph.terms.length - 1;
+//		for (int i = 0; i < length; i++) {
+//			if (graph.terms[i] != null) {
+//				result.add(graph.terms[i]);
+//			}
+//		}
+//
+//		try {
+//			learn(result);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+	
+	
+	/**
+	 * 新词发现
+	 * 
+	 * @param graph
+	 */
+	private void findNewWord2(Graph graph) {
 		// 进入新词发现,学习
-		List<Term> result = new ArrayList<Term>();
-		int length = graph.terms.length - 1;
-		for (int i = 0; i < length; i++) {
-			if (graph.terms[i] != null) {
-				result.add(graph.terms[i]);
-			}
-		}
-
-		try {
-			learn(result);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<NewWord> newWords = new NewWordFind2().getNewWords(graph.terms);
+		addListToTerm(newWords) ;
 	}
 
 	/**
@@ -160,7 +172,7 @@ public class LearnTool {
 			//设置名字为空,节省内存空间
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
-				newWord.setName(null);
+//				newWord.setName(null);
 			}
 		}
 	}

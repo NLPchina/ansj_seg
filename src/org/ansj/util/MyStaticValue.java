@@ -44,6 +44,15 @@ public class MyStaticValue {
 	public static BufferedReader getCompanReader() {
 		return DicReader.getReader("company/company.data");
 	}
+	
+	/**
+	 * 机构名词典
+	 * 
+	 * @return
+	 */
+	public static BufferedReader getNewWordReader() {
+		return DicReader.getReader("newWord/new_word_freq.dic");
+	}
 
 	/**
 	 * 核心词典

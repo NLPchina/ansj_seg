@@ -10,11 +10,13 @@ import love.cq.util.StringUtil;
 
 import org.ansj.dic.DicReader;
 import org.ansj.domain.CompanyNatureAttr;
+import org.ansj.domain.NewWordNatureAttr;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.name.CompanyAttrLibrary;
+import org.ansj.library.company.CompanyAttrLibrary;
 import org.ansj.library.name.PersonAttrLibrary;
+import org.ansj.library.newWord.NewWordAttrLibrary;
 import org.ansj.util.MyStaticValue;
 
 public class InitDictionary {
@@ -110,6 +112,9 @@ public class InitDictionary {
 		HashMap<String, CompanyNatureAttr> companyMap = new CompanyAttrLibrary().getCompanyMap();
 		CompanyNatureAttr companyAttr = null;
 
+		HashMap<String, NewWordNatureAttr> newWordMap = new NewWordAttrLibrary().getNewWordMap();
+		NewWordNatureAttr newWordAttr = null;
+
 		/**
 		 * 下面开始加载词典
 		 */
@@ -139,6 +144,14 @@ public class InitDictionary {
 				if ((companyAttr = companyMap.get(strs[1])) != null) {
 					tn.setCompanyAttr(companyAttr);
 				}
+
+				// 判断是否是新词属性
+				if ((newWordAttr = newWordMap.get(strs[1])) != null) {
+					//更新成词的概率
+					newWordAttr.updateAll(tn.allFreq);
+					tn.setNewWordAttr(newWordAttr);
+				}
+
 				termNatures[num] = tn;
 			}
 		}
@@ -266,5 +279,5 @@ public class InitDictionary {
 		}
 		return value;
 	}
-	
+
 }

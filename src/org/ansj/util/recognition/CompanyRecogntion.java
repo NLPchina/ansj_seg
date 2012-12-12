@@ -7,7 +7,7 @@ import org.ansj.domain.CompanyNatureAttr;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.name.CompanyAttrLibrary;
+import org.ansj.library.company.CompanyAttrLibrary;
 import org.ansj.util.TermUtil;
 
 /**

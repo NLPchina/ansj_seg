@@ -78,4 +78,5 @@ public class ToAnalysis extends Analysis {
 	public static List<Term> paser(String str) {
 		return new ToAnalysis().paserStr(str);
 	}
+	
 }

@@ -41,6 +41,11 @@ public class TermNatures {
 	 * 机构名词性
 	 */
 	public CompanyNatureAttr companyAttr = CompanyNatureAttr.NULL;
+	
+	/**
+	 * 新词词性
+	 */
+	public NewWordNatureAttr newWordAttr = NewWordNatureAttr.NULL;
 
 	/**
 	 * 所有的词频
@@ -115,5 +120,11 @@ public class TermNatures {
 	public void setCompanyAttr(CompanyNatureAttr companyAttr) {
 		this.companyAttr = companyAttr;
 	}
+
+	public void setNewWordAttr(NewWordNatureAttr newWordAttr) {
+		this.newWordAttr = newWordAttr;
+	}
+	
+	
 	
 }

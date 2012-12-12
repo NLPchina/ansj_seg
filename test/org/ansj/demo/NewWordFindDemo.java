@@ -20,7 +20,7 @@ import org.ansj.util.newWordFind.LearnTool;
 public class NewWordFindDemo {
 	public static void main(String[] args) throws IOException {
 		HashMap<String, Integer> hm = new HashMap<String, Integer>();
-		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/冒死记录中国神秘事件（真全本）.txt", "GBK");
+		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/西游记.txt", "GBK");
 		LearnTool learn = new LearnTool();
 long start = System.currentTimeMillis()  ;
 		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn) ;
