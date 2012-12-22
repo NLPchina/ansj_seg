@@ -1,7 +1,7 @@
 Ansj中文分词
 ==================
 
-在线测试地址<a href="http://ansj.sdapp.cn/demo/seg.jsp">在线测试地址!</href>,
+在线测试地址<a href="http://demo.ansj.org">在线测试地址!</href>,
 
 增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/ansj_seg/tree/master/contrib 这里下载jar包!
 
