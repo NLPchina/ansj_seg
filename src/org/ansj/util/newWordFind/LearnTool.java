@@ -160,7 +160,7 @@ public class LearnTool {
 			//设置名字为空,节省内存空间
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
-				newWord.setName(null);
+//				newWord.setName(null);
 			}
 		}
 	}
