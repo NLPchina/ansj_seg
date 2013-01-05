@@ -8,8 +8,6 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.newWordFind.LearnTool;
-import org.ansj.util.recognition.AsianPersonRecognition;
-import org.ansj.util.recognition.ForeignPersonRecognition;
 import org.ansj.util.recognition.NatureRecognition;
 import org.ansj.util.recognition.NewWordRecognition;
 import org.ansj.util.recognition.NumRecognition;

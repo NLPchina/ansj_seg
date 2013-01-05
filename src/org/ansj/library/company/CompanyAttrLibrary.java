@@ -1,4 +1,4 @@
-package org.ansj.library.name;
+package org.ansj.library.company;
 
 import java.io.BufferedReader;
 import java.io.IOException;

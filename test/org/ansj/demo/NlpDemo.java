@@ -24,6 +24,6 @@ public class NlpDemo {
 
 		System.out.println("这次训练已经学到了: " + learn.count + " 个词!");
 		System.out.println(System.currentTimeMillis() - start);
-		System.out.println(learn.getTopTree(0));
+		System.out.println(learn.getTopTree(100));
 	}
 }
