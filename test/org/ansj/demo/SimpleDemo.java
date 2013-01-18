@@ -2,6 +2,7 @@ package org.ansj.demo;
 
 import java.io.IOException;
 
+import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 /**
@@ -18,7 +19,7 @@ public class SimpleDemo {
 		
 		for (int i = 0; i < 100000; i++) {
 			all += str.length() ;
-			ToAnalysis.paser(str);
+			BaseAnalysis.paser(str);
 		}
 		System.out.println("每秒处理了:"+(all*1000.0/(System.currentTimeMillis()-start)));
 	}

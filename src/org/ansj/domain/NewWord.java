@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import org.ansj.util.MathUtil;
+import org.ansj.util.newWordFind.NewTerm;
 
 /**
  * 新词发现,实体名
@@ -13,16 +14,36 @@ public class NewWord {
 	private String name;
 	// 分数
 	private double score;
-	private double selfScore;
-	// 出现次数
-	private int freq;
 	// 词性
 	private TermNatures nature;
 
-	public NewWord(String name, int freq, TermNatures nature) {
+	public NewWord(String name, TermNatures nature) {
 		this.name = name;
-		this.freq = freq;
 		this.nature = nature;
+	}
+
+	public NewWord(String name, TermNatures nature, double score) {
+		this.name = name;
+		this.nature = nature;
+		this.score = getScore(nature, score);
+	}
+
+	/**
+	 * 根据词性对分数划分
+	 * 
+	 * @param nature2
+	 * @return
+	 */
+	private double getScore(TermNatures nature, double score) {
+		// TODO Auto-generated method stub
+		if (TermNature.NW.equals(nature)) {
+			return score*-1;
+		} else if (TermNature.NR.equals(nature)) {
+			return score * 100;
+		} else if (TermNature.NT.equals(nature)) {
+			return score * 10;
+		}
+		return score;
 	}
 
 	public String getName() {
@@ -35,18 +56,6 @@ public class NewWord {
 
 	public double getScore() {
 		return score;
-	}
-
-	public void setScore(double score) {
-		this.score = score;
-	}
-
-	public int getFreq() {
-		return freq;
-	}
-
-	public void setFreq(int freq) {
-		this.freq = freq;
 	}
 
 	public TermNatures getNature() {
@@ -62,29 +71,25 @@ public class NewWord {
 	 * 
 	 * @param version
 	 * @param i
-	 * @param nw
+	 * @param tn
 	 */
-	public void update(int i, TermNatures nw) {
+	public void update(double score, TermNatures tn) {
 		// TODO Auto-generated method stub
-		this.freq += i;
-		if (nw == null || !TermNatures.NW.equals(nw)) {
-			this.nature = nw;
+		this.score += getScore(tn, score);
+		if (tn == null || !TermNatures.NW.equals(tn)) {
+			this.nature = tn;
 		}
-		this.score += selfScore * i;
 	}
 
-	/**
-	 * 计算分数
-	 */
-	public void explainScore() {
-		this.selfScore = MathUtil.scoreWord(this.name, this.nature);
-		this.score = selfScore;
+	public void update(double score) {
+		// TODO Auto-generated method stub
+		this.score += score;
 	}
 
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return this.name + "\t" + this.score + "\t" + this.freq + "\t" + this.getNature().termNatures[0];
+		return this.name + "\t" + this.score + "\t" + this.getNature().termNatures[0];
 	}
 
 }

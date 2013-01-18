@@ -7,9 +7,9 @@ package org.ansj.domain;
  */
 public class NewWordNatureAttr {
 	public static final NewWordNatureAttr NULL = new NewWordNatureAttr();
-	private double b;
-	private double m;
-	private double e;
+	private int b;
+	private int m;
+	private int e;
 
 	// 5 20
 	private int all;
@@ -32,34 +32,31 @@ public class NewWordNatureAttr {
 		this.e = e;
 	}
 
-	public void updateAll(int all) {
-		this.all += all * 10;
-		this.b = (b / all) * Math.log(1 - this.b / all);
-		this.m = (m / all) * Math.log(1 - this.m / all);
-		this.e = (e / all) * Math.log(1 - this.e / all);
+	public void updateAll(int allValue) {
+		this.all += (allValue * 100);
 	}
 
-	public double getB() {
+	public int getB() {
 		return b;
 	}
 
-	public void setB(double b) {
+	public void setB(int b) {
 		this.b = b;
 	}
 
-	public double getM() {
+	public int getM() {
 		return m;
 	}
 
-	public void setM(double m) {
+	public void setM(int m) {
 		this.m = m;
 	}
 
-	public double getE() {
+	public int getE() {
 		return e;
 	}
 
-	public void setE(double e) {
+	public void setE(int e) {
 		this.e = e;
 	}
 
@@ -70,5 +67,5 @@ public class NewWordNatureAttr {
 	public void setAll(int all) {
 		this.all = all;
 	}
-
+	
 }

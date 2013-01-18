@@ -170,7 +170,7 @@ public class AsianPersonRecognition {
 		List<NewWord> all = new ArrayList<NewWord>();
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {
-			all.add(new NewWord(term2.getName(), 1, TermNatures.NR));
+			all.add(new NewWord(term2.getName(),  TermNatures.NR,term2.selfScore));
 		}
 		return all;
 	}

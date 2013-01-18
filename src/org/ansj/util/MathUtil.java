@@ -1,5 +1,8 @@
 package org.ansj.util;
 
+import java.util.List;
+
+import org.ansj.domain.NewWordNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.InitDictionary;
@@ -80,30 +83,94 @@ public class MathUtil {
 	 * @param tn
 	 * @return
 	 */
-	public static double scoreWord(String name, TermNatures tn) {
-		int freq = 1  ;
-		int smoothing = 1 ;
-		if(tn.equals(TermNatures.NR)){
-			smoothing = 5 ;
+	// public static double scoreWord(String name, TermNatures tn) {
+	// int freq = 1 ;
+	// int smoothing = 1 ;
+	// if(tn.equals(TermNatures.NR)){
+	// smoothing = 5 ;
+	// }
+	// if(tn.equals(TermNatures.NT)){
+	// smoothing = 2 ;
+	// }
+	// double score = 0 ;
+	//
+	// for (int i = 0; i < name.length(); i++) {
+	// TermNatures termNatures = InitDictionary.termNatures[name.charAt(i)] ;
+	// if(termNatures==null){
+	// freq = 1 ;
+	// }else{
+	// freq = termNatures.allFreq ;
+	// }
+	// score += Math.log((freq+1)*dTemp) ;
+	// }
+	// return (score/name.length())*smoothing;
+	// }
+
+	public static void main(String[] args) {
+		System.out.println(Math.log(dTemp * 2));
+	}
+
+	/**
+	 * 新词熵及其左右熵
+	 * 
+	 * @param all
+	 */
+	public static double leftRightEntropy(List<Term> all) {
+		// TODO Auto-generated method stub
+		double score = 0;
+		NewWordNatureAttr newWordAttr = null;
+		Term first = all.get(0);
+
+		// 查看左右链接
+		int twoWordFreq = TwoWordLibrary.getTwoWordFreq(first.getFrom(), first);
+		score -= twoWordFreq;
+
+
+		// 查看又连接
+		int length = all.size() - 1;
+		Term end = all.get(all.size() - 1);
+		twoWordFreq = TwoWordLibrary.getTwoWordFreq(end, end.getTo());
+		score -= twoWordFreq;
+
+		// 查看内部链接
+		for (int i = 0; i < length; i++) {
+			score -= TwoWordLibrary.getTwoWordFreq(all.get(i), all.get(i + 1));
 		}
-		if(tn.equals(TermNatures.NT)){
-			smoothing = 2 ;
+		if (score < 0) {
+			return 0;
 		}
-		double score = 0 ;
-		
-		for (int i = 0; i < name.length(); i++) {
-			TermNatures termNatures = InitDictionary.termNatures[name.charAt(i)] ;
-			if(termNatures==null){
-				freq = 1 ;
-			}else{
-				freq = termNatures.allFreq ;
+
+		// 首字分数
+		newWordAttr = first.getTermNatures().newWordAttr;
+		score += getTermScore(newWordAttr, newWordAttr.getB());
+
+		// 末字分数
+		newWordAttr = end.getTermNatures().newWordAttr;
+		score += getTermScore(newWordAttr, newWordAttr.getE());
+
+		// 总分数
+		double midelScore = 0 ;
+		int freq = 1 ;
+		Term term = null ;
+		for (int i = 0; i < all.size() ; i++) {
+			term = all.get(i) ;
+			if(term.getTermNatures() == TermNatures.NB||term.getTermNatures() == TermNatures.EN){
+				return 0 ;
 			}
-			score += Math.log((freq+1)*dTemp) ;
+			freq += term.getTermNatures().allFreq ;
+			newWordAttr = term.getTermNatures().newWordAttr;
+			midelScore += getTermScore(newWordAttr, newWordAttr.getM());
 		}
-		return (score/name.length())*smoothing;
+		score = (score + midelScore)/freq ;
+		return score;
+	}
+
+	private static double getTermScore(NewWordNatureAttr newWordAttr, int freq) {
+		if(newWordAttr==NewWordNatureAttr.NULL){
+			return 3 ;
+		}
+		return (freq / (double) (newWordAttr.getAll() + 1)) * Math.log(500000 / (double) (newWordAttr.getAll() + 1));
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(Math.log(dTemp*2));
-	}
+
 }

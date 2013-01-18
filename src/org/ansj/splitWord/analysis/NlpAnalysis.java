@@ -42,6 +42,11 @@ public class NlpAnalysis extends Analysis {
 					NumRecognition.recognition(graph.terms);
 				}
 
+				// 词性标注
+				List<Term> result = getResult();
+				new NatureRecognition(result).recognition();
+				
+				
 				// 新词发现训练
 				learn.learn(graph);
 
@@ -52,12 +57,11 @@ public class NlpAnalysis extends Analysis {
 
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
-				graph.rmLittlePath();
 				graph.walkPathByScore();
 
-				// 词性标注
-				List<Term> result = getResult();
-				new NatureRecognition(result).recognition();
+				//优化后重新获得最优路径
+				result = getResult();
+				
 				return result;
 			}
 

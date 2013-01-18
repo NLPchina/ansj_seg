@@ -2,6 +2,8 @@ package org.ansj.util.recognition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
@@ -24,6 +26,8 @@ public class ForeignPersonRecognition {
 
 	private static NameChar INNAME = null;
 
+	private static HashSet<Character> ISNOTFIRST = new HashSet<Character>();
+
 	static {
 		NameChar trans_english = new NameChar(
 				StringUtil
@@ -43,6 +47,9 @@ public class ForeignPersonRecognition {
 				StringUtil
 						.sortCharArray("-·—丁万丘东丝中丹丽乃久义乌乔买于亚亨京什仑仓代以仲伊伍伏伐伦伯伽但佐佛佩依侯俄保儒克兰其兹内冈凯切列利别力加努劳勃勒北华卓南博卜卡卢卫厄历及古可史叶司各合吉吐君吾呼哈哥哲唐喀善喇喜嘉噶因图土圣坎坚坦埃培基堡塔塞增墨士夏多大夫奇奈奎契奥妮姆威娃娅娜孜季宁守安宜宰密察尔尕尤尧尼居山川差巴布希帕帝干平年库庞康廉弗强当彦彭彻彼律得德恩恰慈慕戈戴才扎托拉拜捷提摩敏敖敦文斐斯新施日旦旺昂明普智曼朗木本札朱李杜来杰林果查柯柴根格桑梅梵森楞次欣欧歇武比毕汀汉汗汤汶沁沃沙河治泉泊法波泰泼泽洛津济浦海涅温滕潘澳烈热爱牙特狄王玛玻珀珊珍班理琪琳琴瑞瑟瓜瓦甫申畔略登白皮盖盟相石祖福科穆立笆简米素索累约纳纽绍维罕罗翁翰考耶聂肉肯胡胥腓舍良色艾芙芬芭苏若英茂范茅茨茹荣莉莎莫莱莲菲萨葛蒂蒙虏蜜衣裴西詹让诗诸诺谢豪贝费贾赖赛赫路辛达迈连迦迪逊道那邦郎鄂采里金钦锡门阿陀陶隆雅雍雷霍革韦音额香马魏鲁鲍麦黎默黛齐"));
 
+		ISNOTFIRST.add('-');
+		ISNOTFIRST.add('·');
+		ISNOTFIRST.add('—');
 	}
 
 	public static void main(String[] args) {
@@ -79,8 +86,14 @@ public class ForeignPersonRecognition {
 
 			term = terms[i];
 			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
-			if (tempList.size() == 0 && term.getTermNatures().personAttr.end > 10) {
-				continue;
+			if (tempList.size() == 0) {
+				if (term.getTermNatures().personAttr.end > 10) {
+					continue;
+				}
+
+				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
+					continue;
+				}
 			}
 
 			name = term.getName();
@@ -157,8 +170,14 @@ public class ForeignPersonRecognition {
 
 			term = terms[i];
 			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
-			if (tempList.size() == 0 && term.getTermNatures().personAttr.end > 10) {
-				continue;
+			if (tempList.size() == 0) {
+				if (term.getTermNatures().personAttr.end > 10) {
+					continue;
+				}
+
+				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
+					continue;
+				}
 			}
 
 			name = term.getName();
@@ -174,7 +193,7 @@ public class ForeignPersonRecognition {
 				for (Term temp : tempList) {
 					sb.append(temp.getName());
 				}
-				all.add(new NewWord(sb.toString(), 1, TermNatures.NR));
+				all.add(new NewWord(sb.toString(), TermNatures.NR, -1));
 				reset();
 			}
 		}

@@ -1,18 +1,18 @@
 package org.ansj.util.newWordFind;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+
 import love.cq.domain.SmartForest;
 
 import org.ansj.domain.NewWord;
-import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.util.CollectionUtil;
 import org.ansj.util.Graph;
-import org.ansj.util.newWordFind.PatTree.Node;
+import org.ansj.util.newWordFind.PatHashMap.Node;
 import org.ansj.util.recognition.AsianPersonRecognition;
 import org.ansj.util.recognition.CompanyRecogntion;
 import org.ansj.util.recognition.ForeignPersonRecognition;
@@ -49,23 +49,6 @@ public class LearnTool {
 	private final SmartForest<NewWord> sf = new SmartForest<NewWord>();
 
 	/**
-	 * 学习.分词前先把要分的词放入进行学习
-	 * 
-	 * @param content
-	 * @throws IOException
-	 */
-//	private void learn(List<Term> list) throws IOException {
-//		List<Node> newWords = new NewWordFind().getNewWords(list);
-//		if (newWords == null)
-//			return;
-//		NewWord newWord = null;
-//		for (Node node : newWords) {
-//			newWord = new NewWord(node.getName(), node.getCount() + 1, TermNatures.NW);
-//			addTerm(newWord);
-//		}
-//	}
-
-	/**
 	 * 公司名称学习.
 	 * 
 	 * @param graph
@@ -88,7 +71,7 @@ public class LearnTool {
 
 		// 新词发现
 		if (isNewWord) {
-			findNewWord2(graph);
+			newWordDetection(graph);
 		}
 
 	}
@@ -115,6 +98,7 @@ public class LearnTool {
 
 	// 批量将新词加入到词典中
 	private void addListToTerm(List<NewWord> newWords) {
+		if(newWords.size()==0) return ;
 		for (NewWord newWord : newWords) {
 			addTerm(newWord);
 		}
@@ -125,34 +109,22 @@ public class LearnTool {
 	 * 
 	 * @param graph
 	 */
-//	private void findNewWord(Graph graph) {
-//		// 进入新词发现,学习
-//		List<Term> result = new ArrayList<Term>();
-//		int length = graph.terms.length - 1;
-//		for (int i = 0; i < length; i++) {
-//			if (graph.terms[i] != null) {
-//				result.add(graph.terms[i]);
-//			}
-//		}
-//
-//		try {
-//			learn(result);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-	
-	
-	/**
-	 * 新词发现
-	 * 
-	 * @param graph
-	 */
-	private void findNewWord2(Graph graph) {
-		// 进入新词发现,学习
-		List<NewWord> newWords = new NewWordFind2().getNewWords(graph.terms);
-		addListToTerm(newWords) ;
+	private void newWordDetection(Graph graph) {
+		Collection<Node> newWords = null;
+		try {
+			newWords = new NewWordDetection().getNewWords(graph);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (newWords == null)
+			return;
+		NewWord newWord = null;
+		for (Node node : newWords) {
+			newWord = new NewWord(node.getName(), TermNatures.NW);
+			newWord.update(node.getScore());
+			addTerm(newWord);
+		}
 	}
 
 	/**
@@ -161,18 +133,16 @@ public class LearnTool {
 	 * @param newWord
 	 */
 	public void addTerm(NewWord newWord) {
-		NewWord temp = null ;
+		NewWord temp = null;
 		SmartForest<NewWord> smartForest = null;
 		if ((smartForest = sf.getBranch(newWord.getName())) != null && smartForest.getParam() != null) {
 			temp = smartForest.getParam();
-			temp.update(newWord.getFreq(), newWord.getNature());
+			temp.update(newWord.getScore(), newWord.getNature());
 		} else {
 			count++;
-			newWord.explainScore();
-			//设置名字为空,节省内存空间
+			// 设置名字为空,节省内存空间
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
-//				newWord.setName(null);
 			}
 		}
 	}
