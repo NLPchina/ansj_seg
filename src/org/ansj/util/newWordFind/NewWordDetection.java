@@ -9,6 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map.Entry;
 
+import love.cq.util.StringUtil;
+
 import org.ansj.dic.DicReader;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
@@ -86,8 +88,8 @@ public class NewWordDetection {
 
 		// 词性过滤
 		String natureStr = term.getNatrue().natureStr;
-		if ((natureStr == null || natureStr.contains("m") || "v".equals(natureStr)) && term.getTermNatures().allFreq > 1000
-				|| ("d".equals(natureStr) )|| "z".equals(natureStr)) {
+		if ((natureStr == null || natureStr.contains("m") || "v".equals(natureStr)) && term.getTermNatures().allFreq > 1000 || ("d".equals(natureStr))
+				|| "z".equals(natureStr)) {
 			return false;
 		}
 
@@ -139,7 +141,8 @@ public class NewWordDetection {
 		// "苹果今天正式发布了新一代操作系统OS X Mountain Lion，版本号为10.8，该系统已经在Mac App Store上架，售价为128元。 苹果称，OS X Mountain Lion中包含了200多项新功能，并将iPhone、iPad和iPod touch中的诸多精彩功能带到了Mac上。此外，该系统还针对中国用户进行了本土化定制。 1.  Mountain Lion的中国本土化 OS X Mountain Lion 针对许多热门的中文功能与服务提供全新支持：词典 app 现包含《现代汉语规范词典》。通过升级的文本输入方法，输入中文变得更轻松、更快速、更准确。通过八种全新字体，你的书写内容可以用正式、非正式或有趣的形式来呈现。Mail 支持 QQ、163 和 126 邮箱。Safari中内置了百度搜索选项。现在，你还可以从你的 app 直接把内容发布到网上：在优酷和土豆上发布视频，在新浪微博上发布微博。2.  iCloud iCloud可以让Mac、iPad、iPhone 和iPod touch之间的协作更加紧密。无论你在哪里使用电子邮件、日历、通讯录、提醒事项、文档、备忘录等内容，它都会让它们保持更新。只需用你的 Apple ID 登录一次，iCloud 就可以在所有使用它的 app 中设置好了。 3.  iMessage 该系统还引入了iMessage功能。现在你也可以向任何运行 iOS 5 的 iPhone、iPad 或 iPod touch 用户发送信息。信息会在你的 Mac 及你使用的任何设备上显示，这就意味着你可以在 Mac 上开始对话，然后无论走到哪里都能在 iPhone 或 iPad 上继续进行。你还可以发送照片、视频、文档和通讯录，甚至发送群组消息。 4.  通知中心 苹果还将iOS 5中的通知中心引入到了Mountain Lion中，你可以在通知中心中轻松查看电子邮件、信息、软件更新或日历提醒等消息。如果有任何通知，你就会在第一时间知道。 5.  Gatekeeper Gatekeeper可以帮助你避免在 Mac 上下载和安装恶意软件，还能为你进一步控制哪些 app 可以被安装。这是 OS X 保卫 Mac 安全的一种全新方式。 此外，OS X Mountain Lion在日历、通讯录、信息、文本编辑、分享等方面进行了大量改进，详细信息可参阅：OS X Mountain Lion新特性 ";
 		// content =
 		// "甲骨文的MySQL开发者工具团队今天发布了MySQL Workbench 5.2.41版本，该版本中包含了一个新的数据库迁移向导插件。 新的迁移向导提供了一个易于使用的图形界面，帮助开发者将数据库从第三方产品中迁移到MySQL。在这个初期版本的插件中，支持迁移的数据库管理系统包括微软的SQL Server，以及其他支持ODBC的数据库，如PostgreSQL等。 MySQL Workbench是一个可视化的数据库设计软件，前身是 FabForce 公司的 DB Designer 4。它为数据库管理员、程序开发者和系统规划师提供可视化设计、模型建立、以及数据库管理功能。 除了迁移工具外，MySQL Workbench 5.2.41中的其他改进包括： 修复了100多个bugSQL编辑器中的代码完成功能（测试版）更好地处理建模时的模式同步";
-		content = "屌丝库告诉你什么是屌丝、屌丝是什么意思,这里是屌丝男、女屌丝的天地,屌丝库有屌丝生活、屌丝图片、男女屌丝日志、网络新词等栏目,分享屌丝泡妞心得,屌丝的生活点点滴滴";
+		// content =
+		// "屌丝库告诉你什么是屌丝、屌丝是什么意思,这里是屌丝男、女屌丝的天地,屌丝库有屌丝生活、屌丝图片、男女屌丝日志、网络新词等栏目,分享屌丝泡妞心得,屌丝的生活点点滴滴";
 		//
 		// content = "江苏宏宝五金股份有限公司（以下简称“本公司”）于2012年11月9日接到实际控制人" +
 		// "江苏宏宝集团有限公司（以下简称“宏宝集团”）通知，" +
@@ -152,12 +155,12 @@ public class NewWordDetection {
 		// "江苏张家港农村商业银行股份有限公司申请的流动资金贷款提供担保，股权质押登记日为2012年11月8日，质押期限至2014年11月5日止。上述质押登记手续已在中国证券登记结算有限责任公司深圳分公司办理完毕。";
 		// content = "微博是最新的交流方式新浪微博,微博很好微博很大微博!";
 
-		// content
-		// ="企业为了刻意凸显自身的先进性和本就薄弱的领导力，总会打出诸如颠覆、革命等旗号，以集聚人气和关注。而这一切对万达来说，只是浮云。在当前电子商务营商环境日趋成熟，网民习惯逐渐形成的大环境下，万达电商可以高薪挖来成熟市场内的人才搭建技术平台，也不必费尽心机去络线下资源，聚合及管理供应链，甚至在自身强大的线下门店配合下，也能很轻松地越过支付和配送的壁垒，扮演电子商务"
-		// ;
+		content = "企业为了刻意凸显自身的先进性和本就薄弱的领导力，总会打出诸如颠覆、革命等旗号，以集聚人气和关注。而这一切对万达来说，只是浮云。在当前电子商务营商环境日趋成熟，网民习惯逐渐形成的大环境下，万达电商可以高薪挖来成熟市场内的人才搭建技术平台，也不必费尽心机去络线下资源，聚合及管理供应链，甚至在自身强大的线下门店配合下，也能很轻松地越过支付和配送的壁垒，扮演电子商务";
+		content ="电子商务" ;
 		LearnTool learn = new LearnTool();
-		List<Term> paser = NlpAnalysis.paser(content, learn);
+		List<Term> paser = NlpAnalysis.paser(StringUtil.rmHtmlTag(content), learn);
 		List<Entry<String, Double>> topTree = learn.getTopTree(10);
+		System.out.println(topTree);
 		System.out.println(paser);
 		// List<Term> paser = ToAnalysis.paser(content);
 		// System.out.println(new NewWordFind().getNewWords(paser));

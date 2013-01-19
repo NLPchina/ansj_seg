@@ -159,6 +159,9 @@ public class LearnTool {
 	 * @return
 	 */
 	public List<Entry<String, Double>> getTopTree(int num) {
+		if(sf.branches==null){
+			return null ;
+		}
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		for (int i = 0; i < sf.branches.length; i++) {
 			valueResult(sf.branches[i], hm);

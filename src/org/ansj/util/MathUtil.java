@@ -76,35 +76,6 @@ public class MathUtil {
 		return score;
 	}
 
-	/**
-	 * 传入一个字符串.根据字符串的.字计算新词的可能性
-	 * 
-	 * @param name
-	 * @param tn
-	 * @return
-	 */
-	// public static double scoreWord(String name, TermNatures tn) {
-	// int freq = 1 ;
-	// int smoothing = 1 ;
-	// if(tn.equals(TermNatures.NR)){
-	// smoothing = 5 ;
-	// }
-	// if(tn.equals(TermNatures.NT)){
-	// smoothing = 2 ;
-	// }
-	// double score = 0 ;
-	//
-	// for (int i = 0; i < name.length(); i++) {
-	// TermNatures termNatures = InitDictionary.termNatures[name.charAt(i)] ;
-	// if(termNatures==null){
-	// freq = 1 ;
-	// }else{
-	// freq = termNatures.allFreq ;
-	// }
-	// score += Math.log((freq+1)*dTemp) ;
-	// }
-	// return (score/name.length())*smoothing;
-	// }
 
 	public static void main(String[] args) {
 		System.out.println(Math.log(dTemp * 2));

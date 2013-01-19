@@ -92,8 +92,9 @@ public class UserDefineRecognition {
 			}
 			// terms[j] = null;
 		}
-
-		Term term = new Term(sb.toString(), offe, new TermNatures(new TermNature(tempNature, tempFreq)));
+		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
+		Term term = new Term(sb.toString(), offe, termNatures);
+		term.setNature(termNatures.termNatures[0].nature);
 		TermUtil.insertTerm(terms, term);
 		reset();
 	}
