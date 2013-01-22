@@ -19,7 +19,7 @@ public class NlpDemo {
 		String temp = null;
 		while ((temp = materialsReader.readLine()) != null) {
 			List<Term> paser = NlpAnalysis.paser(temp, learn);
-//			System.out.println(paser);
+			System.out.println(paser);
 		}
 
 		System.out.println("这次训练已经学到了: " + learn.count + " 个词!");

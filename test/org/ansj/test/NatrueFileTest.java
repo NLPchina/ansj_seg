@@ -7,6 +7,7 @@ import java.util.List;
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
+import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.recognition.NatureRecognition;
 
@@ -16,15 +17,20 @@ public class NatrueFileTest {
 		String temp = null ;
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/社交焦虑的治疗方式.txt", "GBK") ;
 		while((temp=reader.readLine())!=null){
-			sb.append(temp) ;
+			List<Term> paser = BaseAnalysis.paser(temp) ;
+			for (Term term : paser) {
+				sb.append(term.getName()) ;
+				sb.append("\t") ;
+			}
+			sb.append("\n") ;
+			
 		}
 		
-		List<Term> paser = ToAnalysis.paser(sb.toString()) ;
-		
-		new NatureRecognition(paser).recognition() ;
+		IOUtil.Writer("/Users/ansj/Desktop/result.txt", IOUtil.UTF8, sb.toString()); 
 		
 		
-		System.out.println(paser);
+		
+		
 
 	}
 }

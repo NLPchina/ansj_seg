@@ -20,7 +20,7 @@ public class MathUtil {
 	private static final double dTemp = (double) 1 / MAX_FREQUENCE;
 
 	/**
-	 * 从一个词的词性到另一个词的词性的分数
+	 * 从一个词的词性到另一个词的词的分数
 	 * 
 	 * @param form
 	 *            前面的词
@@ -91,48 +91,44 @@ public class MathUtil {
 		double score = 0;
 		NewWordNatureAttr newWordAttr = null;
 		Term first = all.get(0);
+		
 
 		// 查看左右链接
 		int twoWordFreq = TwoWordLibrary.getTwoWordFreq(first.getFrom(), first);
 		score -= twoWordFreq;
+		
 
-
-		// 查看又连接
+		// 查看右连接
 		int length = all.size() - 1;
 		Term end = all.get(all.size() - 1);
 		twoWordFreq = TwoWordLibrary.getTwoWordFreq(end, end.getTo());
 		score -= twoWordFreq;
+		
 
 		// 查看内部链接
 		for (int i = 0; i < length; i++) {
 			score -= TwoWordLibrary.getTwoWordFreq(all.get(i), all.get(i + 1));
 		}
-		if (score < 0) {
+		if (score < -3) {
 			return 0;
 		}
+		
 
 		// 首字分数
 		newWordAttr = first.getTermNatures().newWordAttr;
 		score += getTermScore(newWordAttr, newWordAttr.getB());
-
 		// 末字分数
 		newWordAttr = end.getTermNatures().newWordAttr;
 		score += getTermScore(newWordAttr, newWordAttr.getE());
-
-		// 总分数
+		// 中词分数
 		double midelScore = 0 ;
-		int freq = 1 ;
 		Term term = null ;
-		for (int i = 0; i < all.size() ; i++) {
+		for (int i = 1; i < length ; i++) {
 			term = all.get(i) ;
-			if(term.getTermNatures() == TermNatures.NB||term.getTermNatures() == TermNatures.EN){
-				return 0 ;
-			}
-			freq += term.getTermNatures().allFreq ;
 			newWordAttr = term.getTermNatures().newWordAttr;
 			midelScore += getTermScore(newWordAttr, newWordAttr.getM());
 		}
-		score = (score + midelScore)/freq ;
+		score +=  midelScore/(length) ;
 		return score;
 	}
 

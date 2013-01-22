@@ -3,9 +3,10 @@ package org.ansj.test;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
+
 import org.ansj.domain.Term;
-import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.newWordFind.LearnTool;
 
 public class Test {
 
@@ -153,14 +154,14 @@ public class Test {
 		all.add("小和尚留了一个像大和尚一样的和尚头");
 		all.add("我是中华人民共和国公民;我爸爸是共和党党员; 地铁和平门站");
 		all.add("二次元乳量，养眼美女，我在泰国用微信");
-
+ToAnalysis.paser("123孙健234你好公司 有限!") ;
 		long start = System.currentTimeMillis();
 		int count = 0;
 		for (int mm = 0; mm < 10000; mm++) {
 			for (String string : all) {
 				count+=string.length() ;
 //					List list = new ArrayList();
-					Analysis udf = new ToAnalysis(new StringReader(string));
+				ToAnalysis udf = new ToAnalysis(new StringReader(string));
 					Term term = null;
 					while ((term = udf.next()) != null) {
 //						list.add(term);

@@ -193,7 +193,7 @@ public class ForeignPersonRecognition {
 				for (Term temp : tempList) {
 					sb.append(temp.getName());
 				}
-				all.add(new NewWord(sb.toString(), TermNatures.NR, -1));
+				all.add(new NewWord(sb.toString(), TermNatures.NR, -1, 1));
 				reset();
 			}
 		}

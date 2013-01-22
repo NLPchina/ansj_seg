@@ -55,6 +55,7 @@ public class NlpAnalysis extends Analysis {
 				graph.rmLittlePath();
 				graph.walkPathByFreq();
 
+				
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
 				graph.walkPathByScore();

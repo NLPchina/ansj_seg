@@ -73,6 +73,9 @@ public class NewWordRecognition {
 			// 循环查找添加
 			term = terms[i];
 			sb.append(term.getName());
+			if(branch.getStatus()==2){
+				term.selfScore = branch.getParam().getScore() ;
+			}
 			boolean flag = true;
 			while (flag) {
 				term = term.getTo();
@@ -92,7 +95,7 @@ public class NewWordRecognition {
 					tempNatures = branch.getParam().getNature();
 					to = term.getTo();
 					makeNewTerm();
-					break;
+					continue;
 				case 3:
 					sb.append(term.getName());
 					score = branch.getParam().getScore();

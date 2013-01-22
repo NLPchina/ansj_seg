@@ -1,8 +1,5 @@
 package org.ansj.domain;
 
-import org.ansj.util.MathUtil;
-import org.ansj.util.newWordFind.NewTerm;
-
 /**
  * 新词发现,实体名
  * 
@@ -16,16 +13,22 @@ public class NewWord {
 	private double score;
 	// 词性
 	private TermNatures nature;
+	// 总词频
+	private int allFreq;
+	// 平均分数
+	private double averageScore;
+	// 此词是否可用
+	private boolean isActive = false ;
 
-	public NewWord(String name, TermNatures nature) {
-		this.name = name;
-		this.nature = nature;
-	}
-
-	public NewWord(String name, TermNatures nature, double score) {
+	public NewWord(String name, TermNatures nature, double score, int freq) {
 		this.name = name;
 		this.nature = nature;
 		this.score = getScore(nature, score);
+		this.allFreq = freq;
+		averageScore = score;
+		if(allFreq>2||averageScore<-0.5){
+			isActive = true ;
+		}
 	}
 
 	/**
@@ -36,11 +39,11 @@ public class NewWord {
 	 */
 	private double getScore(TermNatures nature, double score) {
 		// TODO Auto-generated method stub
-		if (TermNature.NW.equals(nature)) {
-			return score*-1;
-		} else if (TermNature.NR.equals(nature)) {
+		if (TermNatures.NW.equals(nature)) {
+			return score * -1;
+		} else if (TermNatures.NR.equals(nature)) {
 			return score * 100;
-		} else if (TermNature.NT.equals(nature)) {
+		} else if (TermNatures.NT.equals(nature)) {
 			return score * 10;
 		}
 		return score;
@@ -73,17 +76,18 @@ public class NewWord {
 	 * @param i
 	 * @param tn
 	 */
-	public void update(double score, TermNatures tn) {
+	public void update(double score, TermNatures tn, int freq) {
 		// TODO Auto-generated method stub
 		this.score += getScore(tn, score);
+		this.allFreq += freq;
+		this.averageScore = this.score / freq;
 		if (tn == null || !TermNatures.NW.equals(tn)) {
 			this.nature = tn;
 		}
-	}
-
-	public void update(double score) {
-		// TODO Auto-generated method stub
-		this.score += score;
+		
+		if(allFreq>2||averageScore<-0.5){
+			isActive = true ;
+		}
 	}
 
 	@Override
@@ -91,5 +95,15 @@ public class NewWord {
 		// TODO Auto-generated method stub
 		return this.name + "\t" + this.score + "\t" + this.getNature().termNatures[0];
 	}
+
+	public int getAllFreq() {
+		return allFreq;
+	}
+
+	public double getAverageScore() {
+		return averageScore;
+	}
+	
+	
 
 }

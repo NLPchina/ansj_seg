@@ -98,7 +98,8 @@ public class LearnTool {
 
 	// 批量将新词加入到词典中
 	private void addListToTerm(List<NewWord> newWords) {
-		if(newWords.size()==0) return ;
+		if (newWords.size() == 0)
+			return;
 		for (NewWord newWord : newWords) {
 			addTerm(newWord);
 		}
@@ -121,8 +122,7 @@ public class LearnTool {
 			return;
 		NewWord newWord = null;
 		for (Node node : newWords) {
-			newWord = new NewWord(node.getName(), TermNatures.NW);
-			newWord.update(node.getScore());
+			newWord = new NewWord(node.getName(), TermNatures.NW, node.getScore(), node.getFreq());
 			addTerm(newWord);
 		}
 	}
@@ -137,7 +137,7 @@ public class LearnTool {
 		SmartForest<NewWord> smartForest = null;
 		if ((smartForest = sf.getBranch(newWord.getName())) != null && smartForest.getParam() != null) {
 			temp = smartForest.getParam();
-			temp.update(newWord.getScore(), newWord.getNature());
+			temp.update(newWord.getScore(), newWord.getNature(), newWord.getAllFreq());
 		} else {
 			count++;
 			// 设置名字为空,节省内存空间
@@ -159,12 +159,16 @@ public class LearnTool {
 	 * @return
 	 */
 	public List<Entry<String, Double>> getTopTree(int num) {
-		if(sf.branches==null){
-			return null ;
+		return getTopTree(num, null);
+	}
+
+	public List<Entry<String, Double>> getTopTree(int num, TermNatures nature) {
+		if (sf.branches == null) {
+			return null;
 		}
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		for (int i = 0; i < sf.branches.length; i++) {
-			valueResult(sf.branches[i], hm);
+			valueResult(sf.branches[i], hm, nature);
 		}
 		List<Entry<String, Double>> sortMapByValue = CollectionUtil.sortMapByValue(hm, -1);
 		if (num == 0) {
@@ -175,17 +179,21 @@ public class LearnTool {
 		}
 	}
 
-	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm) {
+	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, TermNatures nature) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < smartForest.branches.length; i++) {
 			NewWord param = smartForest.branches[i].getParam();
 			if (smartForest.branches[i].getStatus() == 3) {
-				hm.put(param.getName(), param.getScore());
+				if (nature == null || param.getNature().equals(nature)) {
+					hm.put(param.getName(), param.getScore());
+				}
 			} else if (smartForest.branches[i].getStatus() == 2) {
-				hm.put(param.getName(), param.getScore());
-				valueResult(smartForest.branches[i], hm);
+				if (nature == null || param.getNature().equals(nature)) {
+					hm.put(param.getName(), param.getScore());
+				}
+				valueResult(smartForest.branches[i], hm, nature);
 			} else {
-				valueResult(smartForest.branches[i], hm);
+				valueResult(smartForest.branches[i], hm, nature);
 			}
 		}
 	}

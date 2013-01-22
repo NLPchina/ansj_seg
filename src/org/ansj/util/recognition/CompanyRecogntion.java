@@ -56,7 +56,7 @@ public class CompanyRecogntion {
 				beginTerm = term.getFrom();
 				recogntion(term, tempScore);
 				if (maxTerm != null) {
-					all.add(new NewWord(maxTerm.getName(), TermNatures.NT, maxTerm.selfScore));
+					all.add(new NewWord(maxTerm.getName(), TermNatures.NT, maxTerm.selfScore,1));
 					maxTerm = null;
 				}
 			}

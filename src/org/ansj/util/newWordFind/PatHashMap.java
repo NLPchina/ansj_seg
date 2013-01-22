@@ -23,6 +23,7 @@ public class PatHashMap {
 
 	private HashMap<String, Node> hm = new HashMap<String, Node>();
 	private int allFreq;
+	
 
 	/**
 	 * 增加term链到树中
@@ -42,25 +43,23 @@ public class PatHashMap {
 				all.add(terms.get(j));
 				if (all.size() > 1) {
 					double leftRightEntropy = MathUtil.leftRightEntropy(all);
-					if (leftRightEntropy > 0.1) {
-						// 计算总数
-						allFreq++;
+					// 计算总数
+					allFreq++;
 
-						StringBuilder sb = new StringBuilder();
-						for (Term term : all) {
-							sb.append(term.getName());
-						}
-						String name = sb.toString();
-						Node node = hm.get(name);
-						if (node == null) {
-							node = new Node(name);
-							node.score = leftRightEntropy;
-							node.freq = 1;
-							hm.put(name, node);
-						} else {
-							node.score += leftRightEntropy;
-							node.freq += 1;
-						}
+					StringBuilder sb = new StringBuilder();
+					for (Term term : all) {
+						sb.append(term.getName());
+					}
+					String name = sb.toString();
+					Node node = hm.get(name);
+					if (node == null) {
+						node = new Node(name);
+						node.score = leftRightEntropy;
+						node.freq = 1;
+						hm.put(name, node);
+					} else {
+						node.score += leftRightEntropy;
+						node.freq += 1;
 					}
 				}
 			}
@@ -70,36 +69,38 @@ public class PatHashMap {
 
 	/**
 	 * 得道所有的词
+	 * 
 	 * @return
 	 */
 	public Collection<Node> getWords() {
 		Collection<Node> values = hm.values();
-		Iterator<Node> iterator = values.iterator();
-		Node node = null;
-		double validate = allFreq/(double)values.size() ;
-		while (iterator.hasNext()) {
-			node = iterator.next();
-			 if(!filter(node,validate)){
-				 iterator.remove() ;
-			 }else{
-				 node.score = -Math.log(node.score*30) ;
-			 }
-		}
+		// Iterator<Node> iterator = values.iterator();
+		// Node node = null;
+		// double validate = allFreq/(double)values.size() ;
+		// while (iterator.hasNext()) {
+		// node = iterator.next();
+		// if(!filter(node,validate)){
+		// iterator.remove() ;
+		// }else{
+		// node.score = -Math.log(node.score*30) ;
+		// }
+		// }
 		return values;
 	}
 
 	/**
 	 * 验证一个词是否是新词
+	 * 
 	 * @param node
 	 * @param validate
 	 * @return false 不合格.true 合格
 	 */
 	private boolean filter(Node node, double validate) {
 		// TODO Auto-generated method stub
-		if(node.freq<validate&&node.score<1){
-			return false ;
-		}else{
-			return true ;
+		if (node.freq < validate && node.score < 1) {
+			return false;
+		} else {
+			return true;
 		}
 	}
 
@@ -148,6 +149,10 @@ public class PatHashMap {
 			} else {
 				return -1;
 			}
+		}
+
+		public int getFreq() {
+			return freq;
 		}
 
 		public double getScore() {

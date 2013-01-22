@@ -23,6 +23,7 @@ public class Graph {
 	public boolean hasPerson;
 	// 是否有数字
 	public boolean hasNum;
+
 	// 是否需有歧异
 
 	public Graph(String str) {
@@ -80,33 +81,58 @@ public class Graph {
 			}
 			// 断开横向链表.节省内存
 			from.setNext(null);
-			to = setToAndfrom(to, from);
+			to = TermUtil.setToAndfrom(to, from);
 		}
 		return root;
 	}
 
+	/**
+	 * 删除最短的节点
+	 */
 	public void rmLittlePath() {
 		int maxTo = -1;
+		int subMaxTo = -1;
 		Term temp = null;
+		Term maxTerm = null ;
 		boolean flag = false;
 		for (int i = 0; i < terms.length; i++) {
+
 			if (terms[i] == null)
 				continue;
-			maxTo = terms[i].getToValue();
+			temp = terms[i] ;
+			maxTo = temp.getToValue();
+			maxTerm = temp ;
+			// 横向读链表找到最大的to
+			while ((temp = temp.getNext()) != null) {
+				if(maxTo<temp.getToValue()){
+					maxTo = temp.getToValue() ;
+					maxTerm = temp ;
+				}
+			}
+
 			if (maxTo - i == 1 || i + 1 == terms.length)
 				continue;
+
 			flag = false;
+
 			for (int j = i + 1; j < maxTo; j++) {
 				temp = terms[j];
-				if (temp != null && temp.getToValue() > maxTo) {
+				if (temp == null) {
+					continue;
+				}
+				subMaxTo = temp.getToValue();
+				while ((temp = temp.getNext()) != null) {
+					subMaxTo = Math.max(subMaxTo, temp.getToValue());
+				}
+				if (maxTo < subMaxTo) {
 					flag = true;
-					i = temp.getToValue() - 1;
 					break;
 				}
 			}
 
 			if (!flag) {
-				terms[i].setNext(null);
+				maxTerm.setNext(null) ;
+				terms[i] = maxTerm ;
 				for (int j = i + 1; j < maxTo; j++) {
 					terms[j] = null;
 				}
@@ -115,6 +141,9 @@ public class Graph {
 		}
 	}
 
+	/**
+	 * 删除无意义的节点,防止viterbi太多
+	 */
 	public void rmLittleSinglePath() {
 		int maxTo = -1;
 		Term temp = null;
@@ -131,13 +160,6 @@ public class Graph {
 				}
 			}
 		}
-	}
-
-	protected Term setToAndfrom(Term to, Term from) {
-		// TODO Auto-generated method stub
-		from.setTo(to);
-		to.setFrom(from);
-		return from;
 	}
 
 	public void walkPathByScore() {
@@ -173,6 +195,7 @@ public class Graph {
 		}
 		optimalRoot();
 	}
+
 	public void walkPath() {
 		Term term = null;
 		// BEGIN先行打分
@@ -214,7 +237,7 @@ public class Graph {
 	}
 
 	/**
-	 * 根据词长打分方法
+	 * 根据词频打分方法
 	 * 
 	 * @param i
 	 *            起始位置
@@ -227,15 +250,14 @@ public class Graph {
 		if (terms[to] != null) {
 			term = terms[to];
 			while (term != null) {
-				// 关系式to.set(from)
 				term.setPathScoreByFreq(fromTerm);
-				term = term.getNext() ;
+				term = term.getNext();
 			}
 		}
 	}
 
 	/**
-	 * 人名打分方法
+	 * 根据分数
 	 * 
 	 * @param i
 	 *            起始位置
@@ -249,7 +271,7 @@ public class Graph {
 			term = terms[to];
 			while (term != null) {
 				// 关系式to.set(from)
-				term.setPathPersonScore(fromTerm);
+				term.setPathSelfScore(fromTerm);
 				term = term.getNext();
 			}
 		}

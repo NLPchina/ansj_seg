@@ -20,7 +20,7 @@ public class JianFanZhuanhuanDemo {
 		all.add("林益世想回高雄探母 法官警告勿有逃亡念頭") ;
 		all.add("林益世想回高雄探母 法官警告勿有逃亡念头") ;
 		all.add("吳伯雄談建言被誤解讀:盡點言責 絕對善意") ;
-		all.add("吴伯雄谈建言被误解读:尽点言责 绝对善意") ;
+		all.add("輸入簡體字,點下面繁體字按鈕進行在線轉換.") ;
 		for (String string : all) {
 			List<Term> paser = ToAnalysis.paser(string) ;
 			System.out.println(paser);

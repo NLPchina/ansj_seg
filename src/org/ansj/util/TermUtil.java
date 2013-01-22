@@ -35,7 +35,7 @@ public class TermUtil {
 	}
 
 	/**
-	 * 将一个term插入到链表中的对应位置中,此处如果有效率问题我就调优.不怕
+	 * 将一个term插入到链表中的对应位置中,不排序了.
 	 * 
 	 * @param terms
 	 * @param term
@@ -44,38 +44,11 @@ public class TermUtil {
 		Term temp = terms[term.getOffe()];
 		if (temp == null) {
 			terms[term.getOffe()] = term;
-			return;
-		}
-		if (temp.getName().length() < term.getName().length()) {
-			terms[term.getOffe()] = term.setNext(temp);
-			return;
-		} else if (temp.getName().length() == term.getName().length()) {
-			if (temp.selfScore < term.selfScore) {
-				terms[term.getOffe()] = term.setNext(temp.getNext());
+		}else{
+			if(temp.getNext()!=null){
+				term.setNext(temp.getNext()) ;
 			}
-			return;
-		}
-
-		Term temp1 = null;
-		while (temp.getName().length() > term.getName().length()) {
-			temp1 = temp.getNext();
-			if (temp1 != null) {
-				if (temp1.getName().length() > term.getName().length()) {
-					temp = temp1;
-				} else if (temp1.getName().length() < term.getName().length()) {
-					term.setNext(temp1);
-					temp.setNext(term);
-					break;
-				} else {
-					if (temp1.selfScore < term.selfScore) {
-						temp.setNext(term.setNext(temp1.getNext()));
-					}
-					break;
-				}
-			} else {
-				term.setNext(temp1);
-				break;
-			}
+			temp.setNext(term) ;
 		}
 	}
 
@@ -97,4 +70,10 @@ public class TermUtil {
 		insertTermNum(terms, term);
 	}
 
+	protected static Term setToAndfrom(Term to, Term from) {
+		// TODO Auto-generated method stub
+		from.setTo(to);
+		to.setFrom(from);
+		return from;
+	}
 }

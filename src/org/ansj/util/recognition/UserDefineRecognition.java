@@ -78,7 +78,6 @@ public class UserDefineRecognition {
 		if (offe != -1 && offe < endOffe) {
 			makeNewTerm();
 		}
-
 	}
 
 	private void makeNewTerm() {

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import love.cq.util.StringUtil;
 
 import org.ansj.domain.Nature;
+import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
 
 /**
@@ -83,11 +84,27 @@ public class NatureLibrary {
 
 	/**
 	 * 获得两个词性之间的频率
+	 * 
 	 * @param from
 	 * @param to
 	 * @return
 	 */
 	public static int getTwoNatureFreq(Nature from, Nature to) {
+		if (from.index < 0 || to.index < 0) {
+			return 0;
+		}
+		return NATURETABLE[from.index][to.index];
+	}
+
+	/**
+	 * 获得两个term之间的频率
+	 * @param fromTerm
+	 * @param toTerm
+	 * @return
+	 */
+	public static int getTwoTermFreq(Term fromTerm, Term toTerm) {
+		Nature from = fromTerm.getNatrue();
+		Nature to = toTerm.getNatrue();
 		if (from.index < 0 || to.index < 0) {
 			return 0;
 		}
