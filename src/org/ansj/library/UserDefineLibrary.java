@@ -2,6 +2,9 @@ package org.ansj.library;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +25,7 @@ public class UserDefineLibrary {
 		List<Value> values = new ArrayList<Value>();
 		values.add(new Value("安全措施", "userDefine", "1000"));
 		Forest makeForest = Library.makeForest(values);
-		GetWord word = makeForest.getWord("安全措施");
+		GetWord word = FOREST.getWord("达到");
 
 		System.out.println(word.getFrontWords());
 	}
@@ -45,33 +48,31 @@ public class UserDefineLibrary {
 			// 如果系统设置了用户词典.那么..呵呵
 			temp = MyStaticValue.userDefinePath;
 			// 加载用户自定义词典
-			Value value = null;
-			String[] strs = null;
-			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null) && new File(temp).isFile()) {
-				br = IOUtil.getReader(temp, "UTF-8");
-				while ((temp = br.readLine()) != null) {
-					if (StringUtil.isBlank(temp)) {
-						continue;
-					} else {
-						strs = temp.split("\t");
-						if (strs.length != 3) {
-							value = new Value(strs[0], PARAMER);
-						} else {
-							value = new Value(strs[0], strs[1], strs[2]);
-						}
-
-						if (!InitDictionary.isInSystemDic(value.getKeyword())) {
-							Library.insertWord(FOREST, value);
+			File file = null;
+			if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null)) {
+				file = new File(temp);
+				if (file.isFile()) {
+					loadFile(file);
+				} else if (file.isDirectory()) {
+					File[] files = file.listFiles();
+					for (int i = 0; i < files.length; i++) {
+						if (file.getName().trim().endsWith(".dic")) {
+							loadFile(files[i]);
 						}
 					}
+				} else {
+					System.err.println("init user library  error :" + temp + " because : not find that file !");
 				}
+
 			} else {
-				System.err.println("用户自定义词典:" + temp + ", 没有这个文件!");
+				System.err.println("init user library  error :" + temp + " because : not find that file !");
 			}
-			System.out.println("加载用户自定义词典完成用时:" + (System.currentTimeMillis() - start));
+
+			System.out.println("init user library ok use time :" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			System.err.println("加载用户自定义词典没有加载,因为配置的路径为"+temp);
+			e.printStackTrace();
+			System.err.println("init user library error :" + temp);
 		}
 	}
 
@@ -91,6 +92,46 @@ public class UserDefineLibrary {
 		paramers[1] = String.valueOf(freq);
 		Value value = new Value(keyword, paramers);
 		Library.insertWord(FOREST, value);
+	}
+
+	// 单个文件价值词典
+	private static void loadFile(File file) {
+		// TODO Auto-generated method stub
+		if (!file.canRead()) {
+			System.err.println("file in path " + file.getAbsolutePath() + " can not to read!");
+			return;
+		}
+		String temp = null;
+		BufferedReader br = null;
+		String[] strs = null;
+		Value value = null;
+		try {
+			br = IOUtil.getReader(new FileInputStream(file), "UTF-8");
+			while ((temp = br.readLine()) != null) {
+				if (StringUtil.isBlank(temp)) {
+					continue;
+				} else {
+					strs = temp.split("\t");
+					if (strs.length != 3) {
+						value = new Value(strs[0], PARAMER);
+					} else {
+						value = new Value(strs[0], strs[1], strs[2]);
+					}
+					Library.insertWord(FOREST, value);
+				}
+			}
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				IOUtil.close(br);
+			}
+			br = null;
+		}
 	}
 
 	/**

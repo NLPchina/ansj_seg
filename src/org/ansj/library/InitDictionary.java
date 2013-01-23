@@ -54,10 +54,10 @@ public class InitDictionary {
 		long start = System.currentTimeMillis();
 		try {
 			initArrays();
-			System.out.println("词典加载完成用时:" + (System.currentTimeMillis() - start) + "毫秒");
+			System.out.println("init core library ok use time :" + (System.currentTimeMillis() - start) );
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.print("词典加载出错");
+			System.err.print("init library core library error! ");
 		}
 	}
 

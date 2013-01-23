@@ -19,6 +19,9 @@ import org.ansj.domain.BigramEntry;
  */
 public class MyStaticValue {
 
+	/**
+	 * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
+	 */
 	public static String userDefinePath = null;
 
 	/**

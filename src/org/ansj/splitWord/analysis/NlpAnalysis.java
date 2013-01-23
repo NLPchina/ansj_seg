@@ -93,4 +93,8 @@ public class NlpAnalysis extends Analysis {
 	public static List<Term> paser(String str, LearnTool learn) {
 		return new NlpAnalysis(learn).paserStr(str);
 	}
+	
+	public static List<Term> paser(String str) {
+		return new NlpAnalysis(new LearnTool()).paserStr(str);
+	}
 }
