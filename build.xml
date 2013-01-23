@@ -9,7 +9,7 @@
 
 	<!--依赖jar包-->
 	<path id="classpath">
-		<fileset file="${lib}" includes="**/*.jar" />
+		<fileset file="${lib}" includes="lib/*.jar" />
 	</path>
 
 	<target name="init">
