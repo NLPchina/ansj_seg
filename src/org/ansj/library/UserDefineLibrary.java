@@ -19,10 +19,13 @@ import org.ansj.util.MyStaticValue;
 
 /**
  * 用户自定义词典操作类
+ * 
  * @author ansj
  */
 public class UserDefineLibrary {
+
 	public static Forest FOREST = null;
+
 	private static final String[] PARAMER = { "userDefine", "1000" };
 
 	public static void main(String[] args) throws Exception {
@@ -32,10 +35,10 @@ public class UserDefineLibrary {
 		GetWord word = FOREST.getWord("达到");
 
 		System.out.println(word.getFrontWords());
-		UserDefineLibrary.clear() ;
-		
+		UserDefineLibrary.clear();
+
 		word = FOREST.getWord("达到");
-		
+
 		System.out.println(word.getFrontWords());
 	}
 
@@ -158,4 +161,5 @@ public class UserDefineLibrary {
 	public static void clear() {
 		FOREST.clear();
 	}
+
 }
