@@ -74,7 +74,6 @@ public class UserDefineRecognition {
 				}
 			}
 		}
-
 		if (offe != -1 && offe < endOffe) {
 			makeNewTerm();
 		}
@@ -94,6 +93,7 @@ public class UserDefineRecognition {
 		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
 		Term term = new Term(sb.toString(), offe, termNatures);
 		term.setNature(termNatures.termNatures[0].nature);
+		term.selfScore = -1 * tempFreq;
 		TermUtil.insertTerm(terms, term);
 		reset();
 	}

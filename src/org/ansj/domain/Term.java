@@ -84,19 +84,6 @@ public class Term implements Comparable<Term> {
 		}
 	}
 
-	/**
-	 * 根据词频词长最优的路径,词频越高越有限
-	 * 
-	 * @param term
-	 */
-	public void setPathScoreByFreq(Term from) {
-		// 维特比进行最优路径的构建
-		double score = MathUtil.compuScoreFreq(from, this);
-		if (this.from == null || this.getScore() <= score) {
-			this.setFromAndScore(from, score);
-		}
-	}
-
 	private void setFromAndScore(Term from, double score) {
 		// TODO Auto-generated method stub
 		this.from = from;
@@ -199,7 +186,15 @@ public class Term implements Comparable<Term> {
 		if (natrue != null && !"null".equals(natrue.natureStr)) {
 			return this.name + "/" + natrue.natureStr;
 		} else {
-			return this.name ;
+			return this.name;
 		}
+	}
+
+	/**
+	 * 将term的所有分数置为0
+	 */
+	public void clearScore() {
+		this.score = 0;
+		this.selfScore = 0;
 	}
 }

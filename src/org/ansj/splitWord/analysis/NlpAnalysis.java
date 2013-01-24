@@ -52,8 +52,8 @@ public class NlpAnalysis extends Analysis {
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recognition();
-				graph.rmLittlePath();
-				graph.walkPathByFreq();
+//				graph.rmLittlePath();
+				graph.walkPathByScore();
 
 				
 				// 进行新词发现
