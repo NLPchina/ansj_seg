@@ -12,7 +12,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.InitDictionary;
-import org.ansj.library.TwoWordLibrary;
+import org.ansj.library.NgramLibrary;
 
 /**
  * 用于生成bigramdicmake的字典
@@ -61,12 +61,12 @@ public class BigramdictMake {
 
 		}
 
-		TwoWordLibrary.setBigramTables(result);
+		NgramLibrary.setBigramTables(result);
 		Term _from = new Term("中国", 0, new TermNatures(TermNature.NULL));
 		_from.getTermNatures().id = 101617;
 		Term _to = new Term("家庭", 0, new TermNatures(TermNature.NULL));
 		_to.getTermNatures().id = 136991;
-		System.out.println(TwoWordLibrary.getTwoWordFreq(_from, _to));
+		System.out.println(NgramLibrary.getTwoWordFreq(_from, _to));
 
 		IOUtil.WriterObj("data/bigramdict/bigramdict.data", result);
 	}

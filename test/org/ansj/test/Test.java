@@ -2,16 +2,19 @@ package org.ansj.test;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.ansj.domain.Term;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.newWordFind.LearnTool;
+import org.ansj.util.recognition.NatureRecognition;
 
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		HashSet<String> all = new HashSet() ;
+		HashSet<String> all = new HashSet();
 		all.add("他说的确实在理");
 		all.add("长春市长春节讲话");
 		all.add("结婚的和尚未结婚的");
@@ -67,13 +70,13 @@ public class Test {
 		all.add("关卡编辑器");
 		all.add("eclipse 多项目依赖");
 		all.add("张媛:猩猩的娃叫陈美希吗？不知为什么让我突然想起了林明美");
-		all.add("李建民工作了一天") ;
-		all.add("李民工作了一天" );
-		all.add("李民工作了爸爸" );
-		all.add("井冈山：党建信息化服务新平台") ;
-		all.add("如果您使用代理服务器，请检查您的代理设置或与您的网络管理员联系，以确保代理服务器工作正常。如果您认为不应该使用代理服务器，请调整您的代理设置：转至扳手菜单 > 设置 > 显示高级设置... > 更改代理服务器设置... > LAN 设置，取消选中“为 LAN 使用代理服务器”复选框" );
-		all.add("在业内闻名") ;
-		all.add("这是一个伸手不见五指的黑夜。我叫孙悟空，我爱北京，我爱Python和C++。") ;
+		all.add("李建民工作了一天");
+		all.add("李民工作了一天");
+		all.add("李民工作了爸爸");
+		all.add("井冈山：党建信息化服务新平台");
+		all.add("如果您使用代理服务器，请检查您的代理设置或与您的网络管理员联系，以确保代理服务器工作正常。如果您认为不应该使用代理服务器，请调整您的代理设置：转至扳手菜单 > 设置 > 显示高级设置... > 更改代理服务器设置... > LAN 设置，取消选中“为 LAN 使用代理服务器”复选框");
+		all.add("在业内闻名");
+		all.add("这是一个伸手不见五指的黑夜。我叫孙悟空，我爱北京，我爱Python和C++。");
 		all.add("我不喜欢日本和服。");
 		all.add("雷猴回归人间。");
 		all.add("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作");
@@ -154,25 +157,25 @@ public class Test {
 		all.add("小和尚留了一个像大和尚一样的和尚头");
 		all.add("我是中华人民共和国公民;我爸爸是共和党党员; 地铁和平门站");
 		all.add("二次元乳量，养眼美女，我在泰国用微信");
-ToAnalysis.paser("123孙健234你好公司 有限!") ;
+		ToAnalysis.paser("123孙健234你好公司 有限!");
 		long start = System.currentTimeMillis();
 		int count = 0;
-		for (int mm = 0; mm < 10000; mm++) {
+		for (int mm = 0; mm < 1; mm++) {
 			for (String string : all) {
-				count+=string.length() ;
-//					List list = new ArrayList();
+				count += string.length();
+				List list = new ArrayList();
 				ToAnalysis udf = new ToAnalysis(new StringReader(string));
-					Term term = null;
-					while ((term = udf.next()) != null) {
-//						list.add(term);
-					}
-//					new NatureRecognition(list).recogntion();
-//					System.out.println(list);
+				Term term = null;
+				while ((term = udf.next()) != null) {
+					list.add(term);
+				}
+				new NatureRecognition(list).recognition() ;
+				System.out.println(list);
 			}
 		}
 		System.out.println(System.currentTimeMillis() - start);
-		
-		System.out.println(count/((System.currentTimeMillis() - start)/1000));
+
+//		System.out.println(count / ((System.currentTimeMillis() - start) / 1000));
 
 		// all.add("程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪");
 		// start = System.currentTimeMillis();

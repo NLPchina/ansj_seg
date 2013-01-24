@@ -34,7 +34,6 @@ public class IndexAnalysis extends Analysis {
 
 				// 数字发现
 				NumRecognition.recognition(graph.terms);
-				graph.rmLittlePath();
 
 				// 姓名识别
 				new AsianPersonRecognition(graph.terms).recognition();

@@ -7,7 +7,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.InitDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.library.TwoWordLibrary;
+import org.ansj.library.NgramLibrary;
 import org.ansj.util.recognition.NatureRecognition.NatureTerm;
 
 public class MathUtil {
@@ -35,7 +35,7 @@ public class MathUtil {
 			return from.getScore() + MAX_FREQUENCE;
 		}
 
-		int nTwoWordsFreq = TwoWordLibrary.getTwoWordFreq(from, to);
+		int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
 		double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara)
 				* ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
 
@@ -94,20 +94,20 @@ public class MathUtil {
 		
 
 		// 查看左右链接
-		int twoWordFreq = TwoWordLibrary.getTwoWordFreq(first.getFrom(), first);
+		int twoWordFreq = NgramLibrary.getTwoWordFreq(first.getFrom(), first);
 		score -= twoWordFreq;
 		
 
 		// 查看右连接
 		int length = all.size() - 1;
 		Term end = all.get(all.size() - 1);
-		twoWordFreq = TwoWordLibrary.getTwoWordFreq(end, end.getTo());
+		twoWordFreq = NgramLibrary.getTwoWordFreq(end, end.getTo());
 		score -= twoWordFreq;
 		
 
 		// 查看内部链接
 		for (int i = 0; i < length; i++) {
-			score -= TwoWordLibrary.getTwoWordFreq(all.get(i), all.get(i + 1));
+			score -= NgramLibrary.getTwoWordFreq(all.get(i), all.get(i + 1));
 		}
 		if (score < -3) {
 			return 0;

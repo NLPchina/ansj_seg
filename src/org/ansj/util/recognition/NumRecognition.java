@@ -6,7 +6,7 @@ import org.ansj.util.TermUtil;
 public class NumRecognition {
 
 	/**
-	 * 数字+数字合并
+	 * 数字+数字合并,zheng
 	 * 
 	 * @param terms
 	 */
