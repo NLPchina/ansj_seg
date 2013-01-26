@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import love.cq.domain.WoodInterface;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
@@ -172,34 +173,10 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BigramEntry[][] getBigramTables() {
-		// InputStream inputStream = null;
-		// ObjectInputStream objectInputStream = null;
-		// BigramEntry[][] bigramTables = new BigramEntry[0][0];
-		// try {
-		// inputStream = DicReader.getInputStream("bigramdict.data");
-		// objectInputStream = new ObjectInputStream(inputStream);
-		// bigramTables = (BigramEntry[][]) objectInputStream.readObject();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } catch (ClassNotFoundException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// } finally {
-		// try {
-		// if (objectInputStream != null)
-		// objectInputStream.close();
-		// if (inputStream != null)
-		// inputStream.close();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
 		BigramEntry[][] result = new BigramEntry[0][0];
-		BufferedReader reader = null ;
+		BufferedReader reader = null;
 		try {
-			reader = IOUtil.getReader( DicReader.getInputStream("bigramdict.dic"), "UTF-8");
+			reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8");
 			String temp = null;
 			String[] strs = null;
 			result = new BigramEntry[423152][0];
@@ -229,10 +206,12 @@ public class MyStaticValue {
 				if (index > -1) {
 					continue;
 				} else {
-					length = result[fromId].length;
-					result[fromId] = Arrays.copyOf(result[fromId], length + 1);
-					result[fromId][length] = to;
-					Arrays.sort(result[fromId]);
+					BigramEntry[] newBranches = new BigramEntry[result[fromId].length + 1];
+					int insert = -(index + 1);
+					System.arraycopy(result[fromId], 0, newBranches, 0, insert);
+					System.arraycopy(result[fromId], insert, newBranches, insert + 1, result[fromId].length - insert);
+					newBranches[insert] = to;
+					result[fromId] = newBranches;
 				}
 
 			}
@@ -245,8 +224,8 @@ public class MyStaticValue {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}finally{
-			IOUtil.close(reader); 
+		} finally {
+			IOUtil.close(reader);
 		}
 		return result;
 	}
