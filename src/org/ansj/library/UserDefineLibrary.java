@@ -32,7 +32,7 @@ public class UserDefineLibrary {
 		List<Value> values = new ArrayList<Value>();
 		values.add(new Value("安全措施", "userDefine", "1000"));
 		Forest makeForest = Library.makeForest(values);
-		GetWord word = FOREST.getWord("达到");
+		GetWord word = FOREST.getWord("北京理工大学办事处");
 
 		System.out.println(word.getFrontWords());
 		UserDefineLibrary.clear();

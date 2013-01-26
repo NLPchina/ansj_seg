@@ -51,7 +51,7 @@ public class ToAnalysis extends Analysis {
 				
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recognition();
-//				graph.rmLittlePath();
+				graph.rmLittlePath();
 				graph.walkPathByScore();
 
 				return getResult();

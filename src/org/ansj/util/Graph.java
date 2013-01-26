@@ -90,86 +90,86 @@ public class Graph {
 		return root;
 	}
 
-	// /**
-	// * 删除最短的节点,废了好大劲写的.然后发现木有用..伤不起啊.舍不得删.让他进git体验下吧回头我再删掉-_-!
-	// */
-	// public void rmLittlePath() {
-	// int maxTo = -1;
-	// Term temp = null;
-	// Term maxTerm = null;
-	// // 是否有交叉
-	// boolean flag = false;
-	// int length = terms.length - 1;
-	// for (int i = 0; i < length; i++) {
-	// maxTerm = getMaxTerm(i);
-	//
-	// if (maxTerm == null)
-	// continue;
-	//
-	// maxTo = maxTerm.getToValue();
-	//
-	// /**
-	// * 对字数进行优化.如果一个字.就跳过..两个字.且第二个为null则.也跳过.从第二个后开始
-	// */
-	// switch (maxTerm.getName().length()) {
-	// case 1:
-	// continue;
-	// case 2:
-	// if (terms[i + 1] == null) {
-	// i = i + 1;
-	// continue;
-	// }
-	// }
-	//
-	// /**
-	// * 判断是否有交叉
-	// */
-	// for (int j = i + 1; j < maxTo; j++) {
-	// temp = getMaxTerm(j);
-	// if (temp == null) {
-	// continue;
-	// }
-	// if (maxTo < temp.getToValue()) {
-	// maxTo = temp.getToValue();
-	// flag = true;
-	// }
-	// }
-	//
-	// if (flag) {
-	// i = maxTo - 1;
-	// flag = false;
-	// } else {
-	// maxTerm.setNext(null);
-	// terms[i] = maxTerm;
-	// for (int j = i + 1; j < maxTo; j++) {
-	// terms[j] = null;
-	// }
-	// }
-	// }
-	// }
+	 /**
+	 * 删除最短的节点,废了好大劲写的.然后发现木有用..伤不起啊.舍不得删.让他进git体验下吧回头我再删掉-_-!
+	 */
+	 public void rmLittlePath() {
+	 int maxTo = -1;
+	 Term temp = null;
+	 Term maxTerm = null;
+	 // 是否有交叉
+	 boolean flag = false;
+	 int length = terms.length - 1;
+	 for (int i = 0; i < length; i++) {
+	 maxTerm = getMaxTerm(i);
+	
+	 if (maxTerm == null)
+	 continue;
+	
+	 maxTo = maxTerm.getToValue();
+	
+	 /**
+	 * 对字数进行优化.如果一个字.就跳过..两个字.且第二个为null则.也跳过.从第二个后开始
+	 */
+	 switch (maxTerm.getName().length()) {
+	 case 1:
+	 continue;
+	 case 2:
+	 if (terms[i + 1] == null) {
+	 i = i + 1;
+	 continue;
+	 }
+	 }
+	
+	 /**
+	 * 判断是否有交叉
+	 */
+	 for (int j = i + 1; j < maxTo; j++) {
+	 temp = getMaxTerm(j);
+	 if (temp == null) {
+	 continue;
+	 }
+	 if (maxTo < temp.getToValue()) {
+	 maxTo = temp.getToValue();
+	 flag = true;
+	 }
+	 }
+	
+	 if (flag) {
+	 i = maxTo - 1;
+	 flag = false;
+	 } else {
+	 maxTerm.setNext(null);
+	 terms[i] = maxTerm;
+	 for (int j = i + 1; j < maxTo; j++) {
+	 terms[j] = null;
+	 }
+	 }
+	 }
+	 }
 
-	// /**
-	// * 得道最到本行最大term
-	// *
-	// * @param i
-	// * @return
-	// */
-	// private Term getMaxTerm(int i) {
-	// // TODO Auto-generated method stub
-	// Term maxTerm = terms[i];
-	// if (maxTerm == null) {
-	// return null;
-	// }
-	// int maxTo = maxTerm.getToValue();
-	// Term term = maxTerm;
-	// while ((term = term.getNext()) != null) {
-	// if (maxTo < term.getToValue()) {
-	// maxTo = term.getToValue();
-	// maxTerm = term;
-	// }
-	// }
-	// return maxTerm;
-	// }
+	/**
+	 * 得道最到本行最大term
+	 * 
+	 * @param i
+	 * @return
+	 */
+	private Term getMaxTerm(int i) {
+		// TODO Auto-generated method stub
+		Term maxTerm = terms[i];
+		if (maxTerm == null) {
+			return null;
+		}
+		int maxTo = maxTerm.getToValue();
+		Term term = maxTerm;
+		while ((term = term.getNext()) != null) {
+			if (maxTo < term.getToValue()) {
+				maxTo = term.getToValue();
+				maxTerm = term;
+			}
+		}
+		return maxTerm;
+	}
 
 	/**
 	 * 删除无意义的节点,防止viterbi太多
