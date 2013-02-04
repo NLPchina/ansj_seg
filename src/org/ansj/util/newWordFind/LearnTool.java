@@ -28,8 +28,6 @@ public class LearnTool {
 	/**
 	 * 是否开启学习机
 	 */
-	public boolean isLearn = true;
-
 	public boolean isCompany = true;
 
 	public boolean isNewWord = true;
