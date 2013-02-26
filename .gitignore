@@ -12,3 +12,5 @@ Copy of userLibrary.dic
 data/
 org/ansj/training/
 test/org/ansj/test/*
+jrat.output/*
+jrat.xml
