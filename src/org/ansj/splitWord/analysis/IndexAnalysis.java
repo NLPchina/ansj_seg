@@ -38,6 +38,7 @@ public class IndexAnalysis extends Analysis {
 				// 姓名识别
 				new AsianPersonRecognition(graph.terms).recognition();
 
+				
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms).recognition();
 
@@ -53,15 +54,18 @@ public class IndexAnalysis extends Analysis {
 				// TODO Auto-generated method stub
 				List<Term> all = new LinkedList<Term>();
 				Term term = null;
+				String temp = null ;
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
 					while (term != null) {
 						all.add(term);
+						temp = term.getName() ;
 						term = term.getNext();
-						if (term == null || term.getName().length() == 1) {
+						if (term == null || term.getName().length() == 1||temp.equals(term.getName())) {
 							break;
 						}
+						
 					}
 				}
 				return all;
