@@ -13,7 +13,7 @@ public class NlpTest {
 //		List<Term> paser = ToAnalysis.paser("北京理工大学办事处");
 //		System.out.println(paser);
 //		System.out.println(NlpAnalysis.paser("吴睿和张三是好朋友."));
-//		System.out.println(ToAnalysis.paser("吴睿和张三是好朋友."));
+		System.out.println(ToAnalysis.paser("怎么办"));
 		System.out.println('\000'=='\u0000');
 	}
 }

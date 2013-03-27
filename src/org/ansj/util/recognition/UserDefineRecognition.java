@@ -36,20 +36,22 @@ public class UserDefineRecognition {
 		}
 		int length = terms.length - 1;
 
+		boolean flag = true;
 		for (int i = 0; i < length; i++) {
 			if (terms[i] == null)
 				continue;
+			if (branch == FOREST) {
+				flag = false;
+			} else {
+				flag = true;
+			}
+
 			branch = termStatus(branch, terms[i]);
 			if (branch == null) {
-				if (offe != -1 && offe < endOffe) {
+				if (offe != -1) {
 					i = offe;
-					makeNewTerm();
-				} else {
-					if (offe != -1) {
-						i = offe;
-					}
-					reset();
 				}
+				reset();
 			} else if (branch.getStatus() == 3) {
 				endOffe = i;
 				tempNature = branch.getParams()[0];
@@ -57,6 +59,7 @@ public class UserDefineRecognition {
 				if (offe != -1 && offe < endOffe) {
 					i = offe;
 					makeNewTerm();
+					reset();
 				} else {
 					reset();
 				}
@@ -67,6 +70,9 @@ public class UserDefineRecognition {
 				} else {
 					tempNature = branch.getParams()[0];
 					tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+					if (flag) {
+						makeNewTerm();
+					}
 				}
 			} else if (branch.getStatus() == 1) {
 				if (offe == -1) {
@@ -95,7 +101,7 @@ public class UserDefineRecognition {
 		term.setNature(termNatures.termNatures[0].nature);
 		term.selfScore = -1 * tempFreq;
 		TermUtil.insertTerm(terms, term);
-		reset();
+		// reset();
 	}
 
 	/**

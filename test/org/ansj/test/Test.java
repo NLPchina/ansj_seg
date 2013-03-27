@@ -15,6 +15,7 @@ public class Test {
 
 	public static void main(String[] args) throws IOException {
 		HashSet<String> all = new HashSet();
+		all.add("淘宝网店");
 		all.add("他说的确实在理");
 		all.add("长春市长春节讲话");
 		all.add("结婚的和尚未结婚的");
