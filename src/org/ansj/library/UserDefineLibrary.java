@@ -43,29 +43,16 @@ public class UserDefineLibrary {
 	}
 
 	static {
-		String temp = null;
-		BufferedReader br = null;
 		try {
 			long start = System.currentTimeMillis();
 			FOREST = new Forest();
 			// 先加载系统内置补充词典
-			br = MyStaticValue.getSystemLibraryReader();
-
-			while ((temp = br.readLine()) != null) {
-				if (StringUtil.isBlank(temp)) {
-					continue;
-				} else {
-					Library.insertWord(FOREST, temp);
-				}
-			}
-			loadLibrary(MyStaticValue.userDefinePath);
+			initSystemLibrary(FOREST);
+			loadLibrary(FOREST, MyStaticValue.userDefinePath);
 			System.out.println("init user library ok use time :" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			System.err.println("init user library error :" + temp);
-		} finally {
-			IOUtil.close(br);
 		}
 	}
 
@@ -87,8 +74,31 @@ public class UserDefineLibrary {
 		Library.insertWord(FOREST, value);
 	}
 
+	private static void initSystemLibrary(Forest FOREST) {
+		// TODO Auto-generated method stub
+		String temp = null;
+		BufferedReader br = null;
+
+		br = MyStaticValue.getSystemLibraryReader();
+
+		try {
+			while ((temp = br.readLine()) != null) {
+				if (StringUtil.isBlank(temp)) {
+					continue;
+				} else {
+					Library.insertWord(FOREST, temp);
+				}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			IOUtil.close(br);
+		}
+	}
+
 	// 单个文件价值词典
-	private static void loadFile(File file) {
+	private static void loadFile(Forest forest, File file) {
 		// TODO Auto-generated method stub
 		if (!file.canRead()) {
 			System.err.println("file in path " + file.getAbsolutePath() + " can not to read!");
@@ -110,7 +120,7 @@ public class UserDefineLibrary {
 					} else {
 						value = new Value(strs[0], strs[1], strs[2]);
 					}
-					Library.insertWord(FOREST, value);
+					Library.insertWord(forest, value);
 				}
 			}
 		} catch (UnsupportedEncodingException e) {
@@ -126,20 +136,37 @@ public class UserDefineLibrary {
 	}
 
 	/**
+	 * 用户自定义自己的词典,生成
+	 * @param isSystem 是否加载系统词典
+	 * @param libraryPaths 词典路径,可以是目录,也可以是具体的文件.如果是目录.只加载后缀为dic的文件
+	 * @return 返回的词典结构.
+	 */
+	public static Forest makeUserDefineForest(boolean isSystem, String... libraryPaths) {
+		Forest forest = new Forest();
+		if (isSystem) {
+			initSystemLibrary(forest);
+		}
+		for (String path : libraryPaths) {
+			loadLibrary(forest,path) ;
+		}
+		return forest;
+	}
+
+	/**
 	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
 	 */
-	public static void loadLibrary(String temp) {
+	public static void loadLibrary(Forest forest, String temp) {
 		// 加载用户自定义词典
 		File file = null;
 		if ((temp != null || (temp = MyStaticValue.rb.getString("userLibrary")) != null)) {
 			file = new File(temp);
 			if (file.isFile()) {
-				loadFile(file);
+				loadFile(forest,file);
 			} else if (file.isDirectory()) {
 				File[] files = file.listFiles();
 				for (int i = 0; i < files.length; i++) {
 					if (file.getName().trim().endsWith(".dic")) {
-						loadFile(files[i]);
+						loadFile(forest, files[i]);
 					}
 				}
 			} else {

@@ -4,6 +4,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import love.cq.domain.Forest;
+
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
@@ -20,9 +22,15 @@ import org.ansj.util.recognition.UserDefineRecognition;
  */
 public class ToAnalysis extends Analysis {
 
+	private Forest forest = null;
+
 	public ToAnalysis(Reader reader) {
 		super(reader);
-		// TODO Auto-generated constructor stub
+	}
+
+	public ToAnalysis(Reader reader, Forest forest) {
+		super(reader);
+		this.forest = forest;
 	}
 
 	@Override
@@ -48,11 +56,9 @@ public class ToAnalysis extends Analysis {
 					new ForeignPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
 				}
-				
-				
-				
+
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recognition();
+				new UserDefineRecognition(graph.terms, forest).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 
@@ -77,8 +83,21 @@ public class ToAnalysis extends Analysis {
 	private ToAnalysis() {
 	};
 
+	/**
+	 * 用户自己定义的词典
+	 * 
+	 * @param forest
+	 */
+	public ToAnalysis(Forest forest) {
+		// TODO Auto-generated constructor stub
+		this.forest = forest;
+	}
+
 	public static List<Term> paser(String str) {
 		return new ToAnalysis().paserStr(str);
 	}
-	
+
+	public static List<Term> paser(String str, Forest forest) {
+		return new ToAnalysis(forest).paserStr(str);
+	}
 }

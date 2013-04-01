@@ -1,12 +1,13 @@
 package org.ansj.util.recognition;
 
-import static org.ansj.library.UserDefineLibrary.FOREST;
+import love.cq.domain.Forest;
 import love.cq.domain.WoodInterface;
 import love.cq.util.ObjectBean;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
 
 /**
@@ -19,7 +20,9 @@ public class UserDefineRecognition {
 
 	private Term[] terms = null;
 
-	private WoodInterface branch = FOREST;
+	private WoodInterface forest = UserDefineLibrary.FOREST;
+
+	private WoodInterface branch = forest;
 
 	private int offe = -1;
 	private int endOffe = -1;
@@ -28,6 +31,15 @@ public class UserDefineRecognition {
 
 	public UserDefineRecognition(Term[] terms) {
 		this.terms = terms;
+	}
+
+	public UserDefineRecognition(Term[] terms, Forest forest) {
+		this.terms = terms;
+		if (forest != null){
+			this.forest = forest;
+			branch = this.forest ;
+		}
+		
 	}
 
 	public void recognition() {
@@ -40,7 +52,7 @@ public class UserDefineRecognition {
 		for (int i = 0; i < length; i++) {
 			if (terms[i] == null)
 				continue;
-			if (branch == FOREST) {
+			if (branch == forest) {
 				flag = false;
 			} else {
 				flag = true;
@@ -112,7 +124,7 @@ public class UserDefineRecognition {
 		endOffe = -1;
 		tempFreq = 50;
 		tempNature = null;
-		branch = FOREST;
+		branch = forest;
 	}
 
 	/**
