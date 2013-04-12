@@ -98,7 +98,7 @@ public class UserDefineLibrary {
 	}
 
 	// 单个文件价值词典
-	private static void loadFile(Forest forest, File file) {
+	public static void loadFile(Forest forest, File file) {
 		// TODO Auto-generated method stub
 		if (!file.canRead()) {
 			System.err.println("file in path " + file.getAbsolutePath() + " can not to read!");
