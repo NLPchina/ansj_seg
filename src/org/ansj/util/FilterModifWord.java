@@ -20,6 +20,14 @@ public class FilterModifWord {
 		FilterModifWord.updateDic = updateDic;
 	}
 
+	
+	
+	public static HashMap<String, String> getUpdateDic() {
+		return updateDic;
+	}
+
+
+
 	/**
 	 * 停用词.并且更新用户词表.如果是用此方法. 都必须事先设置updateDic.通过setUpdateDic 方法
 	 * 

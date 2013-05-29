@@ -60,6 +60,7 @@ public class AsianPersonRecognition {
 				freq = term.getTermNatures().personAttr.getFreq(j, 0);
 				if ((freq > 10) || (term.getName().length() == 2 && freq > 10)) {
 					tempTerm = nameFind(i, beginFreq, j);
+					System.out.println(tempTerm);
 					if (tempTerm != null) {
 						termList.add(tempTerm);
 						// 如果是无争议性识别
@@ -157,7 +158,6 @@ public class AsianPersonRecognition {
 		}
 
 		skip = undefinite == 0;
-
 		term = new Term(sb.toString(), offe, TermNatures.NR);
 		term.selfScore = score;
 

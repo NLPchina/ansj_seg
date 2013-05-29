@@ -186,7 +186,7 @@ public class Term implements Comparable<Term> {
 		if (natrue != null && !"null".equals(natrue.natureStr)) {
 			return this.name + "/" + natrue.natureStr;
 		} else {
-			return this.name;
+			return this.name +"/null";
 		}
 	}
 
