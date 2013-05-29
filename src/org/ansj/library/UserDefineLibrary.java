@@ -165,7 +165,7 @@ public class UserDefineLibrary {
 			} else if (file.isDirectory()) {
 				File[] files = file.listFiles();
 				for (int i = 0; i < files.length; i++) {
-					if (file.getName().trim().endsWith(".dic")) {
+					if (files[i].getName().trim().endsWith(".dic")) {
 						loadFile(forest, files[i]);
 					}
 				}
