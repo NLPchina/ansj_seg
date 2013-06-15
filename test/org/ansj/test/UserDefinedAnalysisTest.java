@@ -53,6 +53,7 @@ public class UserDefinedAnalysisTest {
 		String str1 = "上海电力2012年财务报表如下怎么办";
 		
 		
+		
 		UserDefineLibrary.insertWord("怎么办", "aaa", 1000) ;
 	
 		List paser = ToAnalysis.paser(str1);
