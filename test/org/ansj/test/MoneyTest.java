@@ -9,7 +9,7 @@ public class MoneyTest {
 		long begin = (Runtime.getRuntime().freeMemory() / 1000000);
 
 		//分词内存占用
-//		ToAnalysis.paser("内存测试123,张三") ;
+//		ToAnalysis.parse("内存测试123,张三") ;
 //		InitDictionary.initArrays();
 //		new TwoWordLibrary() ;
 		UserDefinedAnalysisTest.main(null) ;

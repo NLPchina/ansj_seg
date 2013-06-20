@@ -93,11 +93,11 @@ public class ToAnalysis extends Analysis {
 		this.forest = forest;
 	}
 
-	public static List<Term> paser(String str) {
-		return new ToAnalysis().paserStr(str);
+	public static List<Term> parse(String str) {
+		return new ToAnalysis().parseStr(str);
 	}
 
-	public static List<Term> paser(String str, Forest forest) {
-		return new ToAnalysis(forest).paserStr(str);
+	public static List<Term> parse(String str, Forest forest) {
+		return new ToAnalysis(forest).parseStr(str);
 	}
 }

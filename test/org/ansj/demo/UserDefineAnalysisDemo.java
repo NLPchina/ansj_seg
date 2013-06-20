@@ -25,11 +25,11 @@ public class UserDefineAnalysisDemo {
 		userForestMap.put("user2", forest) ;
 		
 		List<Term> paser = null ;
-		paser = ToAnalysis.paser("java学习是一个很难的过程.", userForestMap.get("user1")) ;
+		paser = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user1")) ;
 		System.out.println(paser);
-		paser = ToAnalysis.paser("java学习是一个很难的过程.", userForestMap.get("user2")) ;
+		paser = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user2")) ;
 		System.out.println(paser);
-		paser = ToAnalysis.paser("php学习是一个很难的过程.", userForestMap.get("user2")) ;
+		paser = ToAnalysis.parse("php学习是一个很难的过程.", userForestMap.get("user2")) ;
 		System.out.println(paser);
 		
 	}

@@ -21,7 +21,7 @@ public class SimpleDemo {
 	public static void main(String[] args) throws IOException {
 		String str = "java@ID:6321-000301@你好";
 		// 普通分词
-		List<Term> paser = BaseAnalysis.paser(str);
+		List<Term> paser = BaseAnalysis.parse(str);
 		// 词性标注
 		new NatureRecognition(paser).recognition();
 

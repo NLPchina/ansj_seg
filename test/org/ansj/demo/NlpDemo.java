@@ -38,7 +38,7 @@ public class NlpDemo {
 		learn.isNewWord = false ;
 		
 		for (String string : value) {
-			List<Term> paser = NlpAnalysis.paser(string, learn) ;
+			List<Term> paser = NlpAnalysis.parse(string, learn) ;
 			System.out.println(paser);
 		}
 		

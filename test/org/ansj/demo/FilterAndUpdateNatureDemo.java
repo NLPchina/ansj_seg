@@ -27,7 +27,7 @@ public class FilterAndUpdateNatureDemo {
 
 		FilterModifWord.setUpdateDic(updateDic);
 
-		List<Term> paser = ToAnalysis.paser("停用词过滤了.并且修正词143922950性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
+		List<Term> paser = ToAnalysis.parse("停用词过滤了.并且修正词143922950性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
 		System.out.println(paser);
 
 		paser = FilterModifWord.modifResult(paser);
@@ -41,7 +41,7 @@ public class FilterAndUpdateNatureDemo {
 //		updateDic.put("你", FilterModifWord._stop);
 //		updateDic.put("词典", "userDefine2");
 //
-//		paser = ToAnalysis.paser("停用词过滤了.并且修正词性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
+//		paser = ToAnalysis.parse("停用词过滤了.并且修正词性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
 //
 //		paser = FilterModifWord.modifResult(paser);
 //

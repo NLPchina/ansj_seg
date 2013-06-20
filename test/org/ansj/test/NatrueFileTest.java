@@ -17,7 +17,7 @@ public class NatrueFileTest {
 		String temp = null ;
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/社交焦虑的治疗方式.txt", "GBK") ;
 		while((temp=reader.readLine())!=null){
-			List<Term> paser = BaseAnalysis.paser(temp) ;
+			List<Term> paser = BaseAnalysis.parse(temp) ;
 			for (Term term : paser) {
 				sb.append(term.getName()) ;
 				sb.append("\t") ;

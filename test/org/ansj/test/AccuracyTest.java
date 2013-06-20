@@ -19,7 +19,7 @@ public class AccuracyTest {
 		int z =0 ;
 		int b =0 ;
 		while((mTemp=materialsReader.readLine())!=null&&(rTemp=resultReader.readLine())!=null){
-			List<Term> paser = ToAnalysis.paser(mTemp) ;
+			List<Term> paser = ToAnalysis.parse(mTemp) ;
 			mTemp = listToString(paser).trim() ;
 			rTemp = rTemp.trim() ;
 			if(mTemp.equals(rTemp)){
