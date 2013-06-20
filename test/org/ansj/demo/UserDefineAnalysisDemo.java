@@ -24,13 +24,13 @@ public class UserDefineAnalysisDemo {
 		forest = UserDefineLibrary.makeUserDefineForest(false, "library/user2.dic") ;
 		userForestMap.put("user2", forest) ;
 		
-		List<Term> paser = null ;
-		paser = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user1")) ;
-		System.out.println(paser);
-		paser = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user2")) ;
-		System.out.println(paser);
-		paser = ToAnalysis.parse("php学习是一个很难的过程.", userForestMap.get("user2")) ;
-		System.out.println(paser);
+		List<Term> parse = null ;
+		parse = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user1")) ;
+		System.out.println(parse);
+		parse = ToAnalysis.parse("java学习是一个很难的过程.", userForestMap.get("user2")) ;
+		System.out.println(parse);
+		parse = ToAnalysis.parse("php学习是一个很难的过程.", userForestMap.get("user2")) ;
+		System.out.println(parse);
 		
 	}
 }

@@ -56,7 +56,7 @@ public class UserDefinedAnalysisTest {
 		
 		UserDefineLibrary.insertWord("怎么办", "aaa", 1000) ;
 	
-		List paser = ToAnalysis.parse(str1);
-		System.out.println(paser);
+		List parse = ToAnalysis.parse(str1);
+		System.out.println(parse);
 	}
 }

@@ -33,8 +33,8 @@ public class CompanyTest {
 
 		LearnTool learn = new LearnTool();
 		for (String string : all) {
-			List<Term> paser = NlpAnalysis.parse(string, learn);
-			System.out.println(paser);
+			List<Term> parse = NlpAnalysis.parse(string, learn);
+			System.out.println(parse);
 		}
 
 	}
