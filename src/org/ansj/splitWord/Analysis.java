@@ -176,7 +176,7 @@ public abstract class Analysis {
 		terms.addAll(result);
 	}
 
-	protected List<Term> paserStr(String temp) {
+	protected List<Term> parseStr(String temp) {
 		// TODO Auto-generated method stub
 		analysis(temp);
 		return terms;

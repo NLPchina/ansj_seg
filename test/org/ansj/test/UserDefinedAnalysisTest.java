@@ -19,7 +19,7 @@ public class UserDefinedAnalysisTest {
 	//
 	// // UserDefineLibrary.insertWord("我是特种兵","userDefine",100) ;
 	// //
-	// // System.out.println(ToAnalysis.paser("我是特种兵是一部很好看的电影!")); ;
+	// // System.out.println(ToAnalysis.parse("我是特种兵是一部很好看的电影!")); ;
 	//
 	// String format = "%s\tuserDefine\t10";
 	// List<String> dic = new ArrayList<String>();
@@ -33,7 +33,7 @@ public class UserDefinedAnalysisTest {
 	// Library.insertWord(UserDefineLibrary.FOREST, String.format(format, new
 	// Object[] { dic.get(i) }));
 	// }
-	// List terms = ToAnalysis.paser("就是加了一个上海电力，它没有生效，还是会分成上海/电力");
+	// List terms = ToAnalysis.parse("就是加了一个上海电力，它没有生效，还是会分成上海/电力");
 	// (new NatureRecognition(terms)).recognition();
 	// System.out.println(terms);
 	//
@@ -42,7 +42,7 @@ public class UserDefinedAnalysisTest {
 	//
 	// LearnTool learn = new LearnTool() ;
 	//
-	// System.out.println(NlpAnalysis.paser("2003年ansj中文分词1至今，包括南方基金(微博)、大成基金(微博)、 万科A 万科ａ 万科a 万科A华宝兴业基金(微博)、富国基金(微博)、汇添富基金(微博)等多家大型基金公司旗下产品进入贵州茅台前十大流通股股东名单。贵州茅台股价历史走势图显示，在基金科瑞大比例持有贵州茅台期间，贵州茅台股价完成了一半的涨幅。而广发聚丰2008年开始大量持有贵州茅台，这是该股新一轮上涨的起点。不过，2006年汇添富开始陆续大量持有贵州茅台，则经历了该股猛烈的“过山车”行情。其中汇添富均衡增长大量持有期间，贵州茅台股价一度从204元一路跌至72.33元。",learn));
+	// System.out.println(NlpAnalysis.parse("2003年ansj中文分词1至今，包括南方基金(微博)、大成基金(微博)、 万科A 万科ａ 万科a 万科A华宝兴业基金(微博)、富国基金(微博)、汇添富基金(微博)等多家大型基金公司旗下产品进入贵州茅台前十大流通股股东名单。贵州茅台股价历史走势图显示，在基金科瑞大比例持有贵州茅台期间，贵州茅台股价完成了一半的涨幅。而广发聚丰2008年开始大量持有贵州茅台，这是该股新一轮上涨的起点。不过，2006年汇添富开始陆续大量持有贵州茅台，则经历了该股猛烈的“过山车”行情。其中汇添富均衡增长大量持有期间，贵州茅台股价一度从204元一路跌至72.33元。",learn));
 	//
 	// System.out.println(learn.count+"\t"+learn.getTopTree(0));
 	//
@@ -56,7 +56,7 @@ public class UserDefinedAnalysisTest {
 		
 		UserDefineLibrary.insertWord("怎么办", "aaa", 1000) ;
 	
-		List paser = ToAnalysis.paser(str1);
-		System.out.println(paser);
+		List parse = ToAnalysis.parse(str1);
+		System.out.println(parse);
 	}
 }

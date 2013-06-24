@@ -11,7 +11,7 @@ import org.ansj.splitWord.analysis.BaseAnalysis;
  */
 public class BaseAnalysisDemo {
 	public static void main(String[] args) {
-		List<Term> paser = BaseAnalysis.paser("若雅虎关闭了,我就不访问网站了") ;
-		System.out.println(paser);
+		List<Term> parse = BaseAnalysis.parse("若雅虎关闭了,我就不访问网站了") ;
+		System.out.println(parse);
 	}
 }

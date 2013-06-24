@@ -30,7 +30,7 @@ package org.ansj.test;
 //		}
 //		BufferedReader reader = IOUtil.getReader("/Users/ansj/Documents/temp/blogBigFile.txt", "UTF-8");
 //		String content = null;
-//		ToAnalysis.paser("init");
+//		ToAnalysis.parse("init");
 //		long start = System.currentTimeMillis();
 //		int size = 0;
 //		int resultSize = 0;
@@ -42,7 +42,7 @@ package org.ansj.test;
 //		while ((content = reader.readLine()) != null) {
 //			i++;
 //			length += content.length();
-//			// all = ToAnalysis.paser(content);
+//			// all = ToAnalysis.parse(content);
 //			// size += all.size();
 //			TreeSet<NewTerm> newWords = new NewWordFind().getNewWords(content);
 //
@@ -73,7 +73,7 @@ package org.ansj.test;
 //
 //	}
 //
-//	public static void paser() {
+//	public static void parse() {
 //
 //	}
 //}

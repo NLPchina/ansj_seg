@@ -165,7 +165,7 @@ public class NewWordDetection {
 //		content = "企业为了刻意凸显自身的先进性和本就薄弱的领导力，总会打出诸如颠覆、革命等旗号，以集聚人气和关注。而这一切对万达来说，只是浮云。在当前电子商务营商环境日趋成熟，网民习惯逐渐形成的大环境下，万达电商可以高薪挖来成熟市场内的人才搭建技术平台，也不必费尽心机去络线下资源，聚合及管理供应链，甚至在自身强大的线下门店配合下，也能很轻松地越过支付和配送的壁垒，扮演电子商务";
 //		content = "【长乐一老板嫁女嫁妆2.1亿 席开300多桌】近日，网友微博爆料“长乐一企业家嫁女，嫁妆高达2.1亿元”。记者18日核实了此事，长乐金峰镇金峰村一李姓企业家16日嫁女，嫁妆为2.1亿元的“创业基金”。据参加婚礼的村民介绍，婚宴摆了300多桌，场面相当豪华。福州日报(图：@木板儿)";
 		LearnTool learn = new LearnTool();
-		List<Term> paser = NlpAnalysis.paser(StringUtil.rmHtmlTag(content), learn);
+		List<Term> paser = NlpAnalysis.parse(StringUtil.rmHtmlTag(content), learn);
 		List<Entry<String, Double>> topTree = learn.getTopTree(100);
 		System.out.println(topTree);
 		System.out.println(paser);

@@ -15,7 +15,7 @@ import org.ansj.util.recognition.NatureRecognition;
 public class NatureRecognitionTest {
 	public static void main(String[] args) {
 		String str = "结婚的和尚未结婚的孙建是一个好人";
-		List<Term> terms = ToAnalysis.paser(str);
+		List<Term> terms = ToAnalysis.parse(str);
 		new NatureRecognition(terms).recognition();
 	}
 }

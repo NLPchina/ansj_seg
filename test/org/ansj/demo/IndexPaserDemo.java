@@ -7,8 +7,8 @@ import org.ansj.splitWord.analysis.IndexAnalysis;
 
 public class IndexPaserDemo {
 	public static void main(String[] args) {
-		List<Term> paser = IndexAnalysis.paser("习近平") ;
-		System.out.println(paser);
-		System.out.println(IndexAnalysis.paser("2012年3月孙健很郁闷呢"));
+		List<Term> parse = IndexAnalysis.parse("习近平") ;
+		System.out.println(parse);
+		System.out.println(IndexAnalysis.parse("2012年3月孙健很郁闷呢"));
 	}
 }

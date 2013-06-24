@@ -57,7 +57,7 @@ public class BaseAnalysis extends Analysis {
 	private BaseAnalysis() {
 	};
 
-	public static List<Term> paser(String str) {
-		return new BaseAnalysis().paserStr(str);
+	public static List<Term> parse(String str) {
+		return new BaseAnalysis().parseStr(str);
 	}
 }
