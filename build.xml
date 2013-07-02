@@ -40,7 +40,7 @@
 
 
 		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-		<jar jarfile="${dist}/ans_seg-${DSTAMP}.jar" basedir="${build}">
+		<jar jarfile="${dist}/ansj_seg-${DSTAMP}.jar" basedir="${build}">
 			<zipfileset src="${lib}/tree-split-word.jar" />
 		</jar>
 		
