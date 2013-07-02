@@ -19,8 +19,8 @@ public class AccuracyTest {
 		int z =0 ;
 		int b =0 ;
 		while((mTemp=materialsReader.readLine())!=null&&(rTemp=resultReader.readLine())!=null){
-			List<Term> paser = ToAnalysis.paser(mTemp) ;
-			mTemp = listToString(paser).trim() ;
+			List<Term> parse = ToAnalysis.parse(mTemp) ;
+			mTemp = listToString(parse).trim() ;
 			rTemp = rTemp.trim() ;
 			if(mTemp.equals(rTemp)){
 				z++ ;
@@ -41,9 +41,9 @@ public class AccuracyTest {
 	}
 	
 	
-	public static String listToString(List<Term> paser){
+	public static String listToString(List<Term> parse){
 		StringBuilder sb = new StringBuilder() ;
-		for (Term term : paser) {
+		for (Term term : parse) {
 			sb.append(term.getName()) ;
 			sb.append(" ") ;
 		}

@@ -22,7 +22,7 @@ public class Term implements Comparable<Term> {
 	// 到达位置
 	private Term to;
 	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
-	private Nature natrue = TermNature.NULL.nature;
+	private Nature nature = TermNature.NULL.nature;
 
 	// 是否是外国人名
 	public boolean isFName = false;
@@ -169,7 +169,7 @@ public class Term implements Comparable<Term> {
 
 	public void setNature(Nature nature) {
 		// TODO Auto-generated method stub
-		this.natrue = nature;
+		this.nature = nature;
 	}
 
 	/**
@@ -178,13 +178,13 @@ public class Term implements Comparable<Term> {
 	 * @return
 	 */
 	public Nature getNatrue() {
-		return natrue;
+		return nature;
 	}
 
 	@Override
 	public String toString() {
-		if (natrue != null && !"null".equals(natrue.natureStr)) {
-			return this.name + "/" + natrue.natureStr;
+		if (nature != null && !"null".equals(nature.natureStr)) {
+			return this.name + "/" + nature.natureStr;
 		} else {
 			return this.name +"/null";
 		}

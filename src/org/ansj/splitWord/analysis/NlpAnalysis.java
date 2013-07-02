@@ -90,11 +90,11 @@ public class NlpAnalysis extends Analysis {
 		this.learn = learn;
 	};
 
-	public static List<Term> paser(String str, LearnTool learn) {
-		return new NlpAnalysis(learn).paserStr(str);
+	public static List<Term> parse(String str, LearnTool learn) {
+		return new NlpAnalysis(learn).parseStr(str);
 	}
 	
-	public static List<Term> paser(String str) {
-		return new NlpAnalysis(new LearnTool()).paserStr(str);
+	public static List<Term> parse(String str) {
+		return new NlpAnalysis(new LearnTool()).parseStr(str);
 	}
 }

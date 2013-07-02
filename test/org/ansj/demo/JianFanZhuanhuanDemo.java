@@ -22,8 +22,8 @@ public class JianFanZhuanhuanDemo {
 		all.add("吳伯雄談建言被誤解讀:盡點言責 絕對善意") ;
 		all.add("輸入簡體字,點下面繁體字按鈕進行在線轉換.") ;
 		for (String string : all) {
-			List<Term> paser = ToAnalysis.paser(string) ;
-			System.out.println(paser);
+			List<Term> parse = ToAnalysis.parse(string) ;
+			System.out.println(parse);
 		}
 		
 	}

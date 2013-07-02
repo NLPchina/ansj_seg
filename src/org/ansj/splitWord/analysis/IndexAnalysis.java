@@ -78,7 +78,7 @@ public class IndexAnalysis extends Analysis {
 	private IndexAnalysis() {
 	};
 
-	public static List<Term> paser(String str) {
-		return new IndexAnalysis().paserStr(str);
+	public static List<Term> parse(String str) {
+		return new IndexAnalysis().parseStr(str);
 	}
 }

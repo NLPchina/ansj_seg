@@ -21,7 +21,7 @@ public class ToAnalysisTest {
 		// File("/Users/ansj/Documents/快盘/SogouCA.WWW08").listFiles() ;
 		File[] files = { new File("/Users/ansj/Downloads/西游记.txt") };
 		int count = 0;
-		ToAnalysis.paser("孙 123 sf") ;
+		ToAnalysis.parse("孙 123 sf") ;
 		long start = System.currentTimeMillis();
 		LearnTool learn = new LearnTool() ;
 		
