@@ -194,6 +194,8 @@ public abstract class Analysis {
 	 * @param br
 	 */
 	public void resetContent(BufferedReader br) {
+	    this.offe = 0 ;
+	    this.tempLength = 0;
 		this.br = br;
 	}
 }

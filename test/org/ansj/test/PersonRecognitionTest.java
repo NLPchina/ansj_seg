@@ -29,6 +29,9 @@ public class PersonRecognitionTest {
 		list.add("汤姆克鲁斯的英文名字很苦");
 		list.add("曼城第23分钟遭遇打击，孔帕尼中线丢球，莫里森中路直塞，沙恩-朗拿球成单刀之势，米尔纳背后将其铲倒，主裁判克拉滕伯格认为米尔纳是最后一名防守球员，直接掏出红牌！曼奇尼在场边向第四官员抗议，认为莱斯科特已经补防到位。多兰斯主罚任意球打在人墙上高出。");
 		list.add("中新网10月20日电 据日本共同社报道，日本民主党代理干事长安住淳20日表示，首相野田佳彦将履行“近期”解散众院举行大选的承诺，预计在“公债发行特例法案”获得通过等条件具备时解散众院。");
+		list.add("邓颖超生前最喜欢的画像");
+		list.add("习近平和朱镕基情切照相");
+		list.add("李克强");
 		for (String string : list) {
 			List<Term> parse = ToAnalysis.parse(string);
 			new NatureRecognition(parse).recognition();
