@@ -65,7 +65,7 @@ public class UserDefineLibrary {
         String ambiguityLibrary = MyStaticValue.rb.getString("ambiguityLibrary");
         if (StringUtil.isBlank(ambiguityLibrary)) {
             System.err.println("init ambiguity  error :" + ambiguityLibrary
-                + " because : not find that file or can not to read !");
+                               + " because : not find that file or can not to read !");
             return;
         }
         File file = new File(ambiguityLibrary);
@@ -79,9 +79,9 @@ public class UserDefineLibrary {
                 e.printStackTrace();
             }
             System.out.println("init redressLibrary ok!");
-        }else{
+        } else {
             System.err.println("init ambiguity  error :" + ambiguityLibrary
-                + " because : not find that file or can not to read !");
+                               + " because : not find that file or can not to read !");
         }
     }
 
@@ -94,7 +94,7 @@ public class UserDefineLibrary {
             long start = System.currentTimeMillis();
             FOREST = new Forest();
             // 先加载系统内置补充词典
-//            initSystemLibrary(FOREST);
+            //            initSystemLibrary(FOREST);
             loadLibrary(FOREST, MyStaticValue.userDefinePath);
             System.out.println("init user library ok use time :"
                                + (System.currentTimeMillis() - start));
@@ -165,7 +165,6 @@ public class UserDefineLibrary {
             br = null;
         }
     }
-
 
     /**
      * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
