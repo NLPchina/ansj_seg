@@ -14,3 +14,5 @@ org/ansj/training/
 test/org/ansj/test/*
 jrat.output/*
 jrat.xml
+._.DS_Store
+._*
