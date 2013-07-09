@@ -124,7 +124,6 @@ public abstract class Analysis {
                 params = gw.getParams();
                 startOffe = gw.offe;
                 for (int i = 0; i < params.length; i += 2) {
-                    System.out.println(params[i]);
                     gp.addTerm(new Term(params[i], startOffe, new TermNatures(new TermNature(
                         params[i + 1], 1))));
                     startOffe += params[i].length();

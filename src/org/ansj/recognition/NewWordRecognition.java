@@ -2,11 +2,11 @@ package org.ansj.recognition;
 
 import love.cq.domain.SmartForest;
 
+import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
-import org.ansj.util.newWordFind.LearnTool;
 
 /**
  * 新词识别

@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.newWordFind.LearnTool;
 
 public class ToAnalysisTest {
 	public static void main(String[] args) throws IOException {

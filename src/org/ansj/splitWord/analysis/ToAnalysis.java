@@ -52,6 +52,7 @@ public class ToAnalysis extends Analysis {
                     // 亚洲人名识别
                     new AsianPersonRecognition(graph.terms).recognition();
                     graph.walkPathByScore();
+                    AsianPersonRecognition.nameAmbiguity(graph.terms);
                     // 外国人名识别
                     new ForeignPersonRecognition(graph.terms).recognition();
                     graph.walkPathByScore();

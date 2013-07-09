@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
@@ -11,7 +12,6 @@ import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
-import org.ansj.util.newWordFind.LearnTool;
 
 /**
  * 自然语言分词,结果不稳定但是很全面

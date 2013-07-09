@@ -7,10 +7,10 @@ import java.util.Map.Entry;
 import java.util.Set;
 import love.cq.util.IOUtil;
 
+import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.util.newWordFind.LearnTool;
 
 /**
  * 这是一个新词发现的简单例子.
