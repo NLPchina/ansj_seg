@@ -8,8 +8,6 @@ import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.recognition.NatureRecognition;
 
 public class NatrueFileTest {
 	public static void main(String[] args) throws IOException {

@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.recognition.NatureRecognition;
 
@@ -178,16 +177,16 @@ public class Test {
 
 //		System.out.println(count / ((System.currentTimeMillis() - start) / 1000));
 
-		// all.add("程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪");
-		// start = System.currentTimeMillis();
-		// for (int i = 0; i < 100000; i++) {
-		// ToAnalysis.parse(strs[99]) ;
-		// // for (SegToken segToken : process) {
-		// // System.out.print(new String(segToken.charArray));
-		// // System.out.print(" ");
-		// // }
-		// // System.out.println();
-		// }
-		// System.out.println(System.currentTimeMillis() - start);
+		 all.add("程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪");
+		 start = System.currentTimeMillis();
+		 for (int i = 0; i < 100000; i++) {
+		 ToAnalysis.parse("程序员祝海林和朱会震是在孙健的左面和右面.范凯在最右面.再往左是李松洪") ;
+		 // for (SegToken segToken : process) {
+		 // System.out.print(new String(segToken.charArray));
+		 // System.out.print(" ");
+		 // }
+		 // System.out.println();
+		 }
+		 System.out.println(System.currentTimeMillis() - start);
 	}
 }

@@ -30,6 +30,6 @@ public class FileDemo {
 //		}
 		long end = System.currentTimeMillis() ;
 		System.out.println(start-end);
-//		System.out.println("共 "+allCount+" 个字符，每秒处理了:"+(allCount*1000.0/(end-start)));
+		System.out.println("共 "+allCount+" 个字符，每秒处理了:"+(allCount*1000.0/(end-start)));
 	}
 }

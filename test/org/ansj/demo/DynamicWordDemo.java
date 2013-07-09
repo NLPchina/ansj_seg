@@ -5,7 +5,6 @@ import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.recognition.NatureRecognition;
 
 /**
  * 动态添加删除用户自定义词典!

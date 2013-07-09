@@ -1,9 +1,5 @@
 package org.ansj.test;
 
-import java.util.List;
-
-import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class NlpTest {

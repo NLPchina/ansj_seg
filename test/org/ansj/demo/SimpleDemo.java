@@ -6,10 +6,8 @@ import java.util.List;
 
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
+import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.recognition.NatureRecognition;
 
 /**
  * 最最最简单的分词调用方式

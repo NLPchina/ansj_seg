@@ -1,6 +1,7 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.InitDictionary.*;
+import static org.ansj.library.InitDictionary.IN_SYSTEM;
+import static org.ansj.library.InitDictionary.conversion;
 import static org.ansj.library.InitDictionary.status;
 
 import java.io.BufferedReader;
@@ -9,10 +10,13 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
+import love.cq.splitWord.GetWord;
 import love.cq.util.StringUtil;
 
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.Graph;
 import org.ansj.util.WordAlert;
@@ -25,177 +29,211 @@ import org.ansj.util.WordAlert;
  */
 public abstract class Analysis {
 
-	/**
-	 * 用来记录偏移量
-	 */
-	public int offe;
+    /**
+     * 用来记录偏移量
+     */
+    public int offe;
 
-	/**
-	 * 记录上一次文本长度
-	 */
-	private int tempLength;
+    /**
+     * 记录上一次文本长度
+     */
+    private int tempLength;
 
-	/**
-	 * 分词的类
-	 */
-	private GetWordsImpl gwi = new GetWordsImpl();
+    /**
+     * 分词的类
+     */
+    private GetWordsImpl gwi = new GetWordsImpl();
 
-	/**
-	 * 文档读取流
-	 */
-	private BufferedReader br;
+    /**
+     * 文档读取流
+     */
+    private BufferedReader br;
 
-	/**
-	 * 如果文档太过大建议传入输入流
-	 * 
-	 * @param reader
-	 */
-	public Analysis(Reader reader) {
-		br = new BufferedReader(reader);
-	}
+    /**
+     * 如果文档太过大建议传入输入流
+     * 
+     * @param reader
+     */
+    public Analysis(Reader reader) {
+        br = new BufferedReader(reader);
+    }
 
-	protected Analysis() {
-	};
+    protected Analysis() {
+    };
 
-	private LinkedList<Term> terms = new LinkedList<Term>();
+    private LinkedList<Term> terms = new LinkedList<Term>();
 
-	/**
-	 * while 循环调用.直到返回为null则分词结束
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	private Term term = null;
+    /**
+     * while 循环调用.直到返回为null则分词结束
+     * 
+     * @return
+     * @throws IOException
+     */
+    private Term term = null;
 
-	public Term next() throws IOException {
+    public Term next() throws IOException {
 
-		if (!terms.isEmpty()) {
-			term = terms.poll();
-			term.updateOffe(offe);
-			return term;
-		}
+        if (!terms.isEmpty()) {
+            term = terms.poll();
+            term.updateOffe(offe);
+            return term;
+        }
 
-		String temp = br.readLine();
+        String temp = br.readLine();
 
-		while (StringUtil.isBlank(temp)) {
-			if (temp == null) {
-				return null;
-			} else {
-				offe = offe + temp.length() + 1;
-				temp = br.readLine();
-			}
+        while (StringUtil.isBlank(temp)) {
+            if (temp == null) {
+                return null;
+            } else {
+                offe = offe + temp.length() + 1;
+                temp = br.readLine();
+            }
 
-		}
+        }
 
-		offe += tempLength;
+        offe += tempLength;
 
-		analysis(temp);
+        //歧异处理字符串
 
-		if (!terms.isEmpty()) {
-			term = terms.poll();
-			term.updateOffe(offe);
-			return term;
-		}
+        analysisStr(temp);
 
-		return null;
-	}
+        if (!terms.isEmpty()) {
+            term = terms.poll();
+            term.updateOffe(offe);
+            return term;
+        }
 
-	private void analysis(String temp) {
-		// TODO Auto-generated method stub
-		Graph gp = new Graph(temp);
-		int start = 0;
-		int end = 0;
-		int length = 0;
+        return null;
+    }
 
-		length = temp.length();
+    /**
+     * 一整句话分词,用户设置的歧异优先
+     * @param temp
+     */
+    private void analysisStr(String temp) {
+        // TODO Auto-generated method stub
+        Graph gp = new Graph(temp);
+        int startOffe = 0;
+        if (UserDefineLibrary.ambiguityForest != null) {
+            GetWord gw = new GetWord(UserDefineLibrary.ambiguityForest, temp);
+            String[] params = null;
+            while ((gw.getAllWords()) != null) {
+                if (gw.offe > startOffe) {
+                    analysis(gp, temp.substring(startOffe, gw.offe), startOffe);
+                }
+                params = gw.getParams();
+                startOffe = gw.offe;
+                for (int i = 0; i < params.length; i += 2) {
+                    System.out.println(params[i]);
+                    gp.addTerm(new Term(params[i], startOffe, new TermNatures(new TermNature(
+                        params[i + 1], 1))));
+                    startOffe += params[i].length();
+                }
+            }
+            if (startOffe == 0) {
+                analysis(gp, temp, startOffe);
+            } else {
+                analysis(gp, temp.substring(startOffe, temp.length()), startOffe);
+            }
+        } else {
+            analysis(gp, temp, startOffe);
+        }
+        List<Term> result = this.getResult(gp);
 
-		tempLength = length + 1;
+        terms.addAll(result);
+    }
 
-		String str = null;
-		char c = 0;
-		for (int i = 0; i < length; i++) {
-			switch (status[conversion(temp.charAt(i))]) {
-			case 0:
-				gp.addTerm(new Term(temp.charAt(i) + "", i, TermNatures.NULL));
-				break;
-			case 4:
-				start = i;
-				end = 1;
-				while (++i < length && status[temp.charAt(i)] == 4) {
-					end++;
-				}
-				str = WordAlert.alertEnglish(temp, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.EN));
-				i--;
-				break;
-			case 5:
-				start = i;
-				end = 1;
-				while (++i < length && status[temp.charAt(i)] == 5) {
-					end++;
-				}
-				str = WordAlert.alertNumber(temp, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.NB));
-				i--;
-				break;
-			default:
-				start = i;
-				end = i;
-				c = temp.charAt(start);
-				while (IN_SYSTEM[c] > 0) {
-					end++;
-					if (++i >= length)
-						break;
-					c = temp.charAt(i);
-				}
+    private void analysis(Graph gp, String temp, int startOffe) {
+        // TODO Auto-generated method stub
+        int start = 0;
+        int end = 0;
+        int length = 0;
+        length = temp.length();
 
-				if (start == end) {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-				}
+        tempLength = length + 1;
 
-				str = temp.substring(start, end);
-				gwi.setStr(str);
-				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe + start, gwi.getTermNatures()));
-				}
+        String str = null;
+        char c = 0;
+        for (int i = 0; i < length; i++) {
+            switch (status[conversion(temp.charAt(i))]) {
+                case 0:
+                    gp.addTerm(new Term(temp.charAt(i) + "", startOffe + i, TermNatures.NULL));
+                    break;
+                case 4:
+                    start = i;
+                    end = 1;
+                    while (++i < length && status[temp.charAt(i)] == 4) {
+                        end++;
+                    }
+                    str = WordAlert.alertEnglish(temp, start, end);
+                    gp.addTerm(new Term(str, start + startOffe, TermNatures.EN));
+                    i--;
+                    break;
+                case 5:
+                    start = i;
+                    end = 1;
+                    while (++i < length && status[temp.charAt(i)] == 5) {
+                        end++;
+                    }
+                    str = WordAlert.alertNumber(temp, start, end);
+                    gp.addTerm(new Term(str, start + startOffe, TermNatures.NB));
+                    i--;
+                    break;
+                default:
+                    start = i;
+                    end = i;
+                    c = temp.charAt(start);
+                    while (IN_SYSTEM[c] > 0) {
+                        end++;
+                        if (++i >= length)
+                            break;
+                        c = temp.charAt(i);
+                    }
 
-				/**
-				 * 如果未分出词.以未知字符加入到gp中
-				 */
-				if (IN_SYSTEM[c] > 0 || status[c] > 3) {
-					i -= 1;
-				} else {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-				}
+                    if (start == end) {
+                        gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NULL));
+                    }
 
-				break;
-			}
-		}
-		List<Term> result = this.getResult(gp);
+                    str = temp.substring(start, end);
+                    gwi.setStr(str);
+                    while ((str = gwi.allWords()) != null) {
+                        gp.addTerm(new Term(str, gwi.offe + start + startOffe, gwi.getTermNatures()));
+                    }
 
-		terms.addAll(result);
-	}
+                    /**
+                     * 如果未分出词.以未知字符加入到gp中
+                     */
+                    if (IN_SYSTEM[c] > 0 || status[c] > 3) {
+                        i -= 1;
+                    } else {
+                        gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NULL));
+                    }
 
-	protected List<Term> parseStr(String temp) {
-		// TODO Auto-generated method stub
-		analysis(temp);
-		return terms;
-	}
+                    break;
+            }
+        }
+    }
 
-	protected abstract List<Term> getResult(Graph graph);
+    protected List<Term> parseStr(String temp) {
+        // TODO Auto-generated method stub
+        analysisStr(temp);
+        return terms;
+    }
 
-	public abstract class Merger {
-		public abstract List<Term> merger();
-	}
+    protected abstract List<Term> getResult(Graph graph);
 
-	/**
-	 * 重置分词器
-	 * 
-	 * @param br
-	 */
-	public void resetContent(BufferedReader br) {
-	    this.offe = 0 ;
-	    this.tempLength = 0;
-		this.br = br;
-	}
+    public abstract class Merger {
+        public abstract List<Term> merger();
+    }
+
+    /**
+     * 重置分词器
+     * 
+     * @param br
+     */
+    public void resetContent(BufferedReader br) {
+        this.offe = 0;
+        this.tempLength = 0;
+        this.br = br;
+    }
 }

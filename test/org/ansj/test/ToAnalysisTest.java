@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;

@@ -1,17 +1,9 @@
 package org.ansj.test;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import love.cq.library.Library;
-
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
-import org.ansj.util.newWordFind.LearnTool;
-import org.ansj.util.recognition.NatureRecognition;
 
 public class UserDefinedAnalysisTest {
 
@@ -54,7 +46,7 @@ public class UserDefinedAnalysisTest {
 		
 		
 		
-		UserDefineLibrary.insertWord("怎么办", "aaa", 1000) ;
+		UserDefineLibrary.insertWord("新词", "词性", 1000) ;
 	
 		List parse = ToAnalysis.parse(str1);
 		System.out.println(parse);

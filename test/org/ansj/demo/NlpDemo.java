@@ -1,11 +1,8 @@
 package org.ansj.demo;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;

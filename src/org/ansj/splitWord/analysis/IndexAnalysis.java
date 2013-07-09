@@ -5,11 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.ansj.domain.Term;
+import org.ansj.recognition.AsianPersonRecognition;
+import org.ansj.recognition.NumRecognition;
+import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
-import org.ansj.util.recognition.AsianPersonRecognition;
-import org.ansj.util.recognition.NumRecognition;
-import org.ansj.util.recognition.UserDefineRecognition;
 
 /**
  * 用于检索的分词方式

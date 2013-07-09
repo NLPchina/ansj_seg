@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import love.cq.domain.WoodInterface;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 

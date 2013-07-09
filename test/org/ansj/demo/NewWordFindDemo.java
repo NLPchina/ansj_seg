@@ -8,7 +8,6 @@ import java.util.Set;
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.util.newWordFind.LearnTool;

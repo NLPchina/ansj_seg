@@ -11,7 +11,7 @@ import org.ansj.splitWord.analysis.BaseAnalysis;
  */
 public class BaseAnalysisDemo {
 	public static void main(String[] args) {
-		List<Term> parse = BaseAnalysis.parse("若雅虎关闭了,我就不访问网站了") ;
+		List<Term> parse = BaseAnalysis.parse("习近平和朱镕基关系很好!") ;
 		System.out.println(parse);
 	}
 }

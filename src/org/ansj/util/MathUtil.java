@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.ansj.domain.NewWordNatureAttr;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.InitDictionary;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.NgramLibrary;
-import org.ansj.util.recognition.NatureRecognition.NatureTerm;
+import org.ansj.recognition.NatureRecognition.NatureTerm;
 
 public class MathUtil {
 

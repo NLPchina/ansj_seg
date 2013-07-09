@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Term;
+import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.NewWordRecognition;
+import org.ansj.recognition.NumRecognition;
+import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.newWordFind.LearnTool;
-import org.ansj.util.recognition.NatureRecognition;
-import org.ansj.util.recognition.NewWordRecognition;
-import org.ansj.util.recognition.NumRecognition;
-import org.ansj.util.recognition.UserDefineRecognition;
 
 /**
  * 自然语言分词,结果不稳定但是很全面

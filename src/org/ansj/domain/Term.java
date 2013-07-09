@@ -1,7 +1,7 @@
 package org.ansj.domain;
 
+import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.util.MathUtil;
-import org.ansj.util.recognition.ForeignPersonRecognition;
 
 public class Term implements Comparable<Term> {
 	public static final Term NULL = new Term("NULL", 0, TermNatures.NULL);
