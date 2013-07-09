@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
+import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.recognition.NatureRecognition;
 
 public class TestFile3 {
 	public static void main(String[] args) throws IOException {
