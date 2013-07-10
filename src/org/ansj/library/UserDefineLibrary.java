@@ -64,7 +64,7 @@ public class UserDefineLibrary {
         // TODO Auto-generated method stub
         String ambiguityLibrary = MyStaticValue.rb.getString("ambiguityLibrary");
         if (StringUtil.isBlank(ambiguityLibrary)) {
-            System.err.println("init ambiguity  error :" + ambiguityLibrary
+            System.err.println("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
             return;
         }
@@ -80,7 +80,7 @@ public class UserDefineLibrary {
             }
             System.out.println("init redressLibrary ok!");
         } else {
-            System.err.println("init ambiguity  error :" + ambiguityLibrary
+            System.err.println("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
         }
     }
@@ -93,40 +93,14 @@ public class UserDefineLibrary {
         try {
             long start = System.currentTimeMillis();
             FOREST = new Forest();
-            // 先加载系统内置补充词典
-            //            initSystemLibrary(FOREST);
+            // 加载用户自定义词典
             loadLibrary(FOREST, MyStaticValue.userDefinePath);
-            System.out.println("init user library ok use time :"
-                               + (System.currentTimeMillis() - start));
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
     }
-
-    //    private static void initSystemLibrary(Forest FOREST) {
-    //        // TODO Auto-generated method stub
-    //        String temp = null;
-    //        BufferedReader br = null;
-    //
-    //        br = MyStaticValue.getSystemLibraryReader();
-    //
-    //        try {
-    //            while ((temp = br.readLine()) != null) {
-    //                if (StringUtil.isBlank(temp)) {
-    //                    continue;
-    //                } else {
-    //                    Library.insertWord(FOREST, temp);
-    //                }
-    //            }
-    //        } catch (IOException e) {
-    //            // TODO Auto-generated catch block
-    //            e.printStackTrace();
-    //        } finally {
-    //            IOUtil.close(br);
-    //        }
-    //    }
 
     // 单个文件加载词典
     public static void loadFile(Forest forest, File file) {
@@ -154,6 +128,7 @@ public class UserDefineLibrary {
                     Library.insertWord(forest, value);
                 }
             }
+            System.out.println("init user userLibrary ok path is : " + file.getAbsolutePath());
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

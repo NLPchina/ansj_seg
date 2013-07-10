@@ -1,7 +1,5 @@
 package org.ansj.app.keyword;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,109 +7,110 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import love.cq.util.IOUtil;
-
 import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class KeyWordComputer {
 
-	private int nKeyword = 5;
+    private int nKeyword = 5;
 
-	public KeyWordComputer() {
-		nKeyword = 5;
-	}
+    public KeyWordComputer() {
+        nKeyword = 5;
+    }
 
-	public KeyWordComputer(int nKeyword) {
-		this.nKeyword = nKeyword;
+    /**
+     * 返回关键词个数
+     * @param nKeyword
+     */
+    public KeyWordComputer(int nKeyword) {
+        this.nKeyword = nKeyword;
 
-	}
+    }
 
-	public Collection<Keyword> computeArticleTfidf(String content) {
-		return computeArticleTfidf(content, 0);
-	}
+    /**
+     * 
+     * @param content 正文
+     * @return
+     */
+    private List<Keyword> computeArticleTfidf(String content, int titleLength) {
+        Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
-	LearnTool learn = new LearnTool() ;
-	public List<Keyword> computeArticleTfidf(String content, int titleLength) {
-		Map<String, Keyword> tm = new HashMap<String, Keyword>();
-		
-		learn.isAsianName = false;
-		learn.isForeignName = false;
-		
-		List<Term> parse = NlpAnalysis.parse(content,learn);
-		
-		System.out.println("===="+learn.getTopTree(100));;
-		new NatureRecognition(parse).recognition();
+        LearnTool learn = new LearnTool();
+        List<Term> parse = NlpAnalysis.parse(content, learn);
+        parse = NlpAnalysis.parse(content, learn);
 
-		for (Term term : parse) {
-			int weight = getWeight(term, content.length(), titleLength);
-			if (weight == 0)
-				continue;
-			Keyword keyword = tm.get(term.getName());
-			if (keyword == null) {
-				keyword = new Keyword(term.getName(), term.getNatrue().allFrequency, weight);
-				tm.put(term.getName(), keyword);
-			} else {
-				keyword.updateWeight(1);
-			}
-		}
+        for (Term term : parse) {
+            int weight = getWeight(term, content.length(), titleLength);
+            if (weight == 0)
+                continue;
+            Keyword keyword = tm.get(term.getName());
+            if (keyword == null) {
+                keyword = new Keyword(term.getName(), term.getNatrue().allFrequency, weight);
+                tm.put(term.getName(), keyword);
+            } else {
+                keyword.updateWeight(1);
+            }
+        }
 
-		TreeSet<Keyword> treeSet = new TreeSet<Keyword>(tm.values());
+        TreeSet<Keyword> treeSet = new TreeSet<Keyword>(tm.values());
 
-		ArrayList<Keyword> arrayList = new ArrayList<Keyword>(treeSet);
-		if (treeSet.size() < nKeyword) {
-			return arrayList;
-		} else {
-			return arrayList.subList(0, nKeyword);
-		}
+        ArrayList<Keyword> arrayList = new ArrayList<Keyword>(treeSet);
+        if (treeSet.size() < nKeyword) {
+            return arrayList;
+        } else {
+            return arrayList.subList(0, nKeyword);
+        }
 
-	}
+    }
 
-	public Collection<Keyword> computeArticleTfidf(String title, String content) {
-		return computeArticleTfidf(title + "\t" + content, title.length());
-	}
+    /**
+     * 
+     * @param title 标题 
+     * @param content   正文
+     * @return
+     */
+    public Collection<Keyword> computeArticleTfidf(String title, String content) {
+        return computeArticleTfidf(title + "\t" + content, title.length());
+    }
 
-	private int getWeight(Term term, int length, int titleLength) {
-		if (term.getName().matches("(?s)\\d.*")) {
-			return 0;
-		}
+    /**
+     * 只有正文
+     * @param content
+     * @return
+     */
+    public Collection<Keyword> computeArticleTfidf(String content) {
+        return computeArticleTfidf(content, 30);
+    }
 
-		if (term.getName().trim().length() < 2) {
-			return 0;
-		}
+    private int getWeight(Term term, int length, int titleLength) {
+        if (term.getName().matches("(?s)\\d.*")) {
+            return 0;
+        }
 
-		String pos = term.getNatrue().natureStr;
+        if (term.getName().trim().length() < 2) {
+            return 0;
+        }
 
-		if (!pos.startsWith("n") || "num".equals(pos)) {
-			return 0;
-		}
-		int weight = 0;
+        String pos = term.getNatrue().natureStr;
 
-		if (term.getName().equals("黑匣子") && titleLength > term.getOffe()) {
-			return 20;
-		}
+        if (!pos.startsWith("n") || "num".equals(pos)) {
+            return 0;
+        }
+        int weight = 0;
 
-		// position
-		double position = (term.getOffe() + 0.0) / length;
-		if (position < 0.05)
-			return 10;
-		weight += (5 - 5 * position);
+        if (titleLength > term.getOffe()) {
+            return 20;
+        }
 
-		return weight;
-	}
+        // position
+        double position = (term.getOffe() + 0.0) / length;
+        if (position < 0.05)
+            return 10;
+        weight += (5 - 5 * position);
 
-	public static void main(String[] args) throws IOException {
+        return weight;
+    }
 
-		BufferedReader reader = IOUtil.getReader("/home/chong/workspace/summary/data/testArticle", IOUtil.UTF8);
-		String inString = null;
-		while ((inString = reader.readLine()) != null) {
-			List<Term> parse = ToAnalysis.parse(inString);
-			new NatureRecognition(parse).recognition();
-//			System.out.println(inString);
-			System.out.println(new KeyWordComputer().computeArticleTfidf(inString));
-		}
-	}
 }
