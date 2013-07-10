@@ -20,6 +20,12 @@ import org.ansj.library.newWord.NewWordAttrLibrary;
 import org.ansj.util.MyStaticValue;
 
 public class InitDictionary {
+    
+    /**
+     * DAT数组长度
+     */
+    public static int arrayLength ;
+    
 	/**
 	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
 	 */
@@ -85,7 +91,7 @@ public class InitDictionary {
 
 		String[] strs = last.split("	");
 
-		int arrayLength = Integer.parseInt(strs[0]) + 1;
+		arrayLength = Integer.parseInt(strs[0]) + 1;
 
 		base = new int[arrayLength];
 

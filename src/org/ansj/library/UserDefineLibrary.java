@@ -65,7 +65,7 @@ public class UserDefineLibrary {
         String ambiguityLibrary = MyStaticValue.rb.getString("ambiguityLibrary");
         if (StringUtil.isBlank(ambiguityLibrary)) {
             System.err.println("init ambiguity  error :" + ambiguityLibrary
-                + " because : not find that file or can not to read !");
+                               + " because : not find that file or can not to read !");
             return;
         }
         File file = new File(ambiguityLibrary);
@@ -79,9 +79,9 @@ public class UserDefineLibrary {
                 e.printStackTrace();
             }
             System.out.println("init redressLibrary ok!");
-        }else{
+        } else {
             System.err.println("init ambiguity  error :" + ambiguityLibrary
-                + " because : not find that file or can not to read !");
+                               + " because : not find that file or can not to read !");
         }
     }
 
@@ -94,7 +94,7 @@ public class UserDefineLibrary {
             long start = System.currentTimeMillis();
             FOREST = new Forest();
             // 先加载系统内置补充词典
-            initSystemLibrary(FOREST);
+            //            initSystemLibrary(FOREST);
             loadLibrary(FOREST, MyStaticValue.userDefinePath);
             System.out.println("init user library ok use time :"
                                + (System.currentTimeMillis() - start));
@@ -105,28 +105,28 @@ public class UserDefineLibrary {
 
     }
 
-    private static void initSystemLibrary(Forest FOREST) {
-        // TODO Auto-generated method stub
-        String temp = null;
-        BufferedReader br = null;
-
-        br = MyStaticValue.getSystemLibraryReader();
-
-        try {
-            while ((temp = br.readLine()) != null) {
-                if (StringUtil.isBlank(temp)) {
-                    continue;
-                } else {
-                    Library.insertWord(FOREST, temp);
-                }
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            IOUtil.close(br);
-        }
-    }
+    //    private static void initSystemLibrary(Forest FOREST) {
+    //        // TODO Auto-generated method stub
+    //        String temp = null;
+    //        BufferedReader br = null;
+    //
+    //        br = MyStaticValue.getSystemLibraryReader();
+    //
+    //        try {
+    //            while ((temp = br.readLine()) != null) {
+    //                if (StringUtil.isBlank(temp)) {
+    //                    continue;
+    //                } else {
+    //                    Library.insertWord(FOREST, temp);
+    //                }
+    //            }
+    //        } catch (IOException e) {
+    //            // TODO Auto-generated catch block
+    //            e.printStackTrace();
+    //        } finally {
+    //            IOUtil.close(br);
+    //        }
+    //    }
 
     // 单个文件加载词典
     public static void loadFile(Forest forest, File file) {
@@ -164,23 +164,6 @@ public class UserDefineLibrary {
             IOUtil.close(br);
             br = null;
         }
-    }
-
-    /**
-     * 用户自定义自己的词典,生成
-     * @param isSystem 是否加载系统词典
-     * @param libraryPaths 词典路径,可以是目录,也可以是具体的文件.如果是目录.只加载后缀为dic的文件
-     * @return 返回的词典结构.
-     */
-    public static Forest makeUserDefineForest(boolean isSystem, String... libraryPaths) {
-        Forest forest = new Forest();
-        if (isSystem) {
-            initSystemLibrary(forest);
-        }
-        for (String path : libraryPaths) {
-            loadLibrary(forest, path);
-        }
-        return forest;
     }
 
     /**
