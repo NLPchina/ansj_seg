@@ -91,7 +91,6 @@ public class UserDefineLibrary {
     private static void initUserLibrary() {
         // TODO Auto-generated method stub
         try {
-            long start = System.currentTimeMillis();
             FOREST = new Forest();
             // 加载用户自定义词典
             loadLibrary(FOREST, MyStaticValue.userDefinePath);
