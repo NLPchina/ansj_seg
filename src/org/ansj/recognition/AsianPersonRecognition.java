@@ -8,7 +8,6 @@ import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NgramLibrary;
-import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 
 /**

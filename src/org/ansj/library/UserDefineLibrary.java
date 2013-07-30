@@ -62,7 +62,7 @@ public class UserDefineLibrary {
      */
     private static void initAmbiguityLibrary() {
         // TODO Auto-generated method stub
-        String ambiguityLibrary = MyStaticValue.rb.getString("ambiguityLibrary");
+        String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
         if (StringUtil.isBlank(ambiguityLibrary)) {
             System.err.println("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
@@ -78,7 +78,7 @@ public class UserDefineLibrary {
                                    + " because : not find that file or can not to read !");
                 e.printStackTrace();
             }
-            System.out.println("init redressLibrary ok!");
+            System.out.println("init ambiguityLibrary ok!");
         } else {
             System.err.println("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
@@ -93,7 +93,7 @@ public class UserDefineLibrary {
         try {
             FOREST = new Forest();
             // 加载用户自定义词典
-            loadLibrary(FOREST, MyStaticValue.userDefinePath);
+            loadLibrary(FOREST, MyStaticValue.userLibrary);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -146,7 +146,7 @@ public class UserDefineLibrary {
     public static void loadLibrary(Forest forest, String path) {
         // 加载用户自定义词典
         File file = null;
-        if ((path != null || (path = MyStaticValue.rb.getString("userLibrary")) != null)) {
+        if (path != null) {
             file = new File(path);
             if (!file.canRead() || file.isHidden()) {
                 return;

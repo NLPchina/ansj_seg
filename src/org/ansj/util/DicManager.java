@@ -42,12 +42,7 @@ public class DicManager {
 
     private static void init() {
 
-        if (MyStaticValue.rb.containsKey(userLibraryPath)) {
-            System.err.println("waring : not find any config userLibraryPath");
-            return;
-        }
-
-        userLibraryPath = MyStaticValue.rb.getString("userLibraryDir");
+        userLibraryPath = MyStaticValue.userLibraryPath;
 
         if (StringUtil.isNotBlank(userLibraryPath)) {
             return;

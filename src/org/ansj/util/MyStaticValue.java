@@ -28,12 +28,24 @@ public class MyStaticValue {
     /**
      * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
      */
-    public static String userDefinePath = null;
+    public static String userLibrary = null;
 
-    /**
-     * 配置文件变量
-     */
-    public final static ResourceBundle rb = ResourceBundle.getBundle("library");
+    public static String userLibraryPath = null;
+
+    public static String ambiguityLibrary = null;
+
+    static {
+        /**
+         * 配置文件变量
+         */
+        ResourceBundle rb = ResourceBundle.getBundle("library");
+        if (rb.containsKey("userLibrary"))
+            userLibrary = rb.getString("userLibrary");
+        if (rb.containsKey("userLibraryPath"))
+            userLibraryPath = rb.getString("userLibraryPath");
+        if (rb.containsKey("ambiguityLibrary"))
+            ambiguityLibrary = rb.getString("ambiguityLibrary");
+    }
 
     /**
      * 人名词典
@@ -182,7 +194,6 @@ public class MyStaticValue {
             int fromId = 0;
             int toId = 0;
             int freq = 0;
-            int length = 0;
             BigramEntry to = null;
             while ((temp = reader.readLine()) != null) {
                 if (StringUtil.isBlank(temp)) {

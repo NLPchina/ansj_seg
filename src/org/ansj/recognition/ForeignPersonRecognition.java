@@ -5,14 +5,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeSet;
 
 import love.cq.util.StringUtil;
 
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 
 /**
