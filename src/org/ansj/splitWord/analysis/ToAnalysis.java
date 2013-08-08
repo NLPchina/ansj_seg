@@ -7,6 +7,7 @@ import java.util.List;
 import love.cq.domain.Forest;
 
 import org.ansj.domain.Term;
+import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -23,15 +24,6 @@ import org.ansj.util.Graph;
 public class ToAnalysis extends Analysis {
 
     private Forest[] forests = null;
-
-    public ToAnalysis(Reader reader) {
-        super(reader);
-    }
-
-    public ToAnalysis(Reader reader, Forest[] forests) {
-        super(reader);
-        this.forests = forests;
-    }
 
     @Override
     protected List<Term> getResult(final Graph graph) {
@@ -59,13 +51,23 @@ public class ToAnalysis extends Analysis {
                 }
 
                 // 用户自定义词典的识别
-                for (Forest forest : forests) {
-                    new UserDefineRecognition(graph.terms, forest).recognition();
-                    graph.rmLittlePath();
-                    graph.walkPathByScore();
+                if (forests == null) {
+                    userDefineRecognition(graph, null);
+                } else {
+                    for (Forest forest : forests) {
+                        if (forest == null)
+                            continue;
+                        userDefineRecognition(graph, forest);
+                    }
                 }
 
                 return getResult();
+            }
+
+            private void userDefineRecognition(final Graph graph, Forest forest) {
+                new UserDefineRecognition(graph.terms, forest).recognition();
+                graph.rmLittlePath();
+                graph.walkPathByScore();
             }
 
             private List<Term> getResult() {
@@ -93,6 +95,21 @@ public class ToAnalysis extends Analysis {
      */
     public ToAnalysis(Forest[] forests) {
         // TODO Auto-generated constructor stub
+        if (forests == null) {
+            forests = new Forest[] { UserDefineLibrary.FOREST };
+        }
+        this.forests = forests;
+    }
+
+    public ToAnalysis(Reader reader) {
+        super(reader);
+    }
+
+    public ToAnalysis(Reader reader, Forest[] forests) {
+        super(reader);
+        if (forests == null) {
+            forests = new Forest[] { UserDefineLibrary.FOREST };
+        }
         this.forests = forests;
     }
 
