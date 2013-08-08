@@ -22,15 +22,15 @@ import org.ansj.util.Graph;
  */
 public class ToAnalysis extends Analysis {
 
-    private Forest forest = null;
+    private Forest[] forests = null;
 
     public ToAnalysis(Reader reader) {
         super(reader);
     }
 
-    public ToAnalysis(Reader reader, Forest forest) {
+    public ToAnalysis(Reader reader, Forest[] forests) {
         super(reader);
-        this.forest = forest;
+        this.forests = forests;
     }
 
     @Override
@@ -59,9 +59,11 @@ public class ToAnalysis extends Analysis {
                 }
 
                 // 用户自定义词典的识别
-                new UserDefineRecognition(graph.terms, forest).recognition();
-                graph.rmLittlePath();
-                graph.walkPathByScore();
+                for (Forest forest : forests) {
+                    new UserDefineRecognition(graph.terms, forest).recognition();
+                    graph.rmLittlePath();
+                    graph.walkPathByScore();
+                }
 
                 return getResult();
             }
@@ -89,16 +91,17 @@ public class ToAnalysis extends Analysis {
      * 
      * @param forest
      */
-    public ToAnalysis(Forest forest) {
+    public ToAnalysis(Forest[] forests) {
         // TODO Auto-generated constructor stub
-        this.forest = forest;
+        this.forests = forests;
     }
 
     public static List<Term> parse(String str) {
         return new ToAnalysis().parseStr(str);
     }
 
-    public static List<Term> parse(String str, Forest forest) {
-        return new ToAnalysis(forest).parseStr(str);
+    public static List<Term> parse(String str, Forest... forests) {
+        return new ToAnalysis(forests).parseStr(str);
+
     }
 }
