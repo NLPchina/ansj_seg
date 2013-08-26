@@ -16,3 +16,4 @@ jrat.output/*
 jrat.xml
 ._.DS_Store
 ._*
+/target
