@@ -3,6 +3,33 @@ Ansj中文分词
 
 在线测试地址<a href="http://demo.ansj.org">在线测试地址!</href>,
 
+##maven
+````
+<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>https://raw.github.com/ansjsun/mvn-repo/master</url>
+		</repository>
+	</repositories>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>tree_split</artifactId>
+			<version>0.8</version>
+		</dependency>
+	</dependencies>
+
+````
+##Download jar
+
+````
+https://github.com/ansjsun/mvn-repo/tree/master/org/ansj/ansj_seg
+````
+
+
+
 增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/ansj_seg/tree/master/contrib 这里下载jar包!
 
 
