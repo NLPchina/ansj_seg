@@ -18,7 +18,7 @@ public class NgramLibrary {
 		try {
 			long start = System.currentTimeMillis();
 			bigramTables = MyStaticValue.getBigramTables();
-			System.out.println("init ngram ok use time :" + (System.currentTimeMillis() - start));
+			MyStaticValue.LIBRARYLOG.info("init ngram ok use time :" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

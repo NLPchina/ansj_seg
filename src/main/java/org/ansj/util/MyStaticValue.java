@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
@@ -25,26 +26,31 @@ import org.ansj.library.InitDictionary;
  */
 public class MyStaticValue {
 
+    public static final Logger LIBRARYLOG  = Logger.getLogger("DICLOG") ;
     /**
      * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
      */
-    public static String userLibrary = null;
+    public static String userLibrary = "library/default.dic";
 
-    public static String userLibraryPath = null;
+    public static String userLibraryPath = "library/dics";
 
-    public static String ambiguityLibrary = null;
+    public static String ambiguityLibrary = "library/ambiguity.dic";
 
     static {
         /**
          * 配置文件变量
          */
-        ResourceBundle rb = ResourceBundle.getBundle("library");
-        if (rb.containsKey("userLibrary"))
-            userLibrary = rb.getString("userLibrary");
-        if (rb.containsKey("userLibraryPath"))
-            userLibraryPath = rb.getString("userLibraryPath");
-        if (rb.containsKey("ambiguityLibrary"))
-            ambiguityLibrary = rb.getString("ambiguityLibrary");
+        try {
+            ResourceBundle rb = ResourceBundle.getBundle("library");
+            if (rb.containsKey("userLibrary"))
+                userLibrary = rb.getString("userLibrary");
+            if (rb.containsKey("userLibraryPath"))
+                userLibraryPath = rb.getString("userLibraryPath");
+            if (rb.containsKey("ambiguityLibrary"))
+                ambiguityLibrary = rb.getString("ambiguityLibrary");
+        } catch (Exception e) {
+            LIBRARYLOG.warning("not find library.properties in classpath use it by default !") ;
+        }
     }
 
     /**

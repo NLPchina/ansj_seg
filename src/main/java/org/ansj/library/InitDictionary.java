@@ -60,10 +60,10 @@ public class InitDictionary {
 		long start = System.currentTimeMillis();
 		try {
 			initArrays();
-			System.out.println("init core library ok use time :" + (System.currentTimeMillis() - start) );
+			MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start) );
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.print("init library core library error! ");
+			MyStaticValue.LIBRARYLOG.warning("init library core library error! ");
 		}
 	}
 

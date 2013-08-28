@@ -12,8 +12,10 @@ import love.cq.domain.Value;
 import love.cq.library.Library;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
-
 import org.ansj.util.MyStaticValue;
+import static org.ansj.util.MyStaticValue.LIBRARYLOG;
+
+;
 
 /**
  * 用户自定义词典操作类
@@ -64,30 +66,29 @@ public class UserDefineLibrary {
         // TODO Auto-generated method stub
         String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
         if (StringUtil.isBlank(ambiguityLibrary)) {
-            System.err.println("init ambiguity  waring :" + ambiguityLibrary
+            LIBRARYLOG.warning("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
             return;
         }
-        //maven工程修改词典加载方式
         try {
-			ambiguityLibrary = UserDefineLibrary.class.getResource("/" + ambiguityLibrary).getFile();
-		} catch (Exception exception) {
-			System.err.println("init ambiguity  waring :" + ambiguityLibrary
-                    + " because : not find that file or can not to read !");
-		}
+            ambiguityLibrary = MyStaticValue.ambiguityLibrary;
+        } catch (Exception exception) {
+            LIBRARYLOG.warning("init ambiguity  waring :" + ambiguityLibrary
+                               + " because : not find that file or can not to read !");
+        }
         File file = new File(ambiguityLibrary);
         if (file.isFile() && file.canRead()) {
             try {
                 ambiguityForest = Library.makeForest(ambiguityLibrary);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
-                System.err.println("init ambiguity  error :" + ambiguityLibrary
+                LIBRARYLOG.warning("init ambiguity  error :" + ambiguityLibrary
                                    + " because : not find that file or can not to read !");
                 e.printStackTrace();
             }
-            System.out.println("init ambiguityLibrary ok!");
+            LIBRARYLOG.info("init ambiguityLibrary ok!");
         } else {
-            System.err.println("init ambiguity  waring :" + ambiguityLibrary
+            LIBRARYLOG.warning("init ambiguity  waring :" + ambiguityLibrary
                                + " because : not find that file or can not to read !");
         }
     }
@@ -100,9 +101,7 @@ public class UserDefineLibrary {
         try {
             FOREST = new Forest();
             // 加载用户自定义词典
-            //maven工程修改词典加载方式
             String userLibrary = MyStaticValue.userLibrary;
-            userLibrary = UserDefineLibrary.class.getResource("/" + userLibrary).getFile();
             loadLibrary(FOREST, userLibrary);
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -115,7 +114,7 @@ public class UserDefineLibrary {
     public static void loadFile(Forest forest, File file) {
         // TODO Auto-generated method stub
         if (!file.canRead()) {
-            System.err.println("file in path " + file.getAbsolutePath() + " can not to read!");
+            LIBRARYLOG.warning("file in path " + file.getAbsolutePath() + " can not to read!");
             return;
         }
         String temp = null;
@@ -137,7 +136,7 @@ public class UserDefineLibrary {
                     Library.insertWord(forest, value);
                 }
             }
-            System.out.println("init user userLibrary ok path is : " + file.getAbsolutePath());
+            LIBRARYLOG.info("init user userLibrary ok path is : " + file.getAbsolutePath());
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -159,6 +158,8 @@ public class UserDefineLibrary {
         if (path != null) {
             file = new File(path);
             if (!file.canRead() || file.isHidden()) {
+                LIBRARYLOG.warning("init userLibrary  waring :" + path
+                                   + " because : not find that file or can not to read !");
                 return;
             }
             if (file.isFile()) {
@@ -171,7 +172,7 @@ public class UserDefineLibrary {
                     }
                 }
             } else {
-                System.err.println("init user library  error :" + path
+                LIBRARYLOG.warning("init user library  error :" + path
                                    + " because : not find that file !");
             }
         }
