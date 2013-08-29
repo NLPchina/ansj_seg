@@ -50,7 +50,7 @@ public class DicManager {
 			e.printStackTrace();
 		}
 
-        if (StringUtil.isNotBlank(userLibraryPath)) {
+        if (StringUtil.isBlank(userLibraryPath)) {
             return;
         }
 
