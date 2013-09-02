@@ -16,7 +16,7 @@ Ansj中文分词
 	<dependencies>
 		<dependency>
 			<groupId>org.ansj</groupId>
-			<artifactId>tree_split</artifactId>
+			<artifactId>ansj_seg</artifactId>
 			<version>0.8</version>
 		</dependency>
 	</dependencies>
