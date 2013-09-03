@@ -5,21 +5,20 @@ Ansj中文分词
 
 ##maven
 ````
-<repositories>
+	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>https://raw.github.com/ansjsun/mvn-repo/master</url>
+			<url>http://ansjsun.github.io/mvn-repo/</url>
 		</repository>
 	</repositories>
 
-
 	<dependencies>
-		<dependency>
-			<groupId>org.ansj</groupId>
-			<artifactId>ansj_seg</artifactId>
-			<version>0.8</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.ansj</groupId>
+            <artifactId>ansj_seg</artifactId>
+            <version>0.8</version>
+        </dependency>
+    </dependencies>
 
 ````
 ##Download jar

@@ -39,7 +39,7 @@
 	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>https://raw.github.com/ansjsun/mvn-repo/master</url>
+			<url>https://raw.github.com/ansjsun/mvn-repo/gh-pages</url>
 		</repository>
 	</repositories>
 
@@ -81,7 +81,7 @@
 					<message>deploy-${project.artifactId}:${project.version}~${maven.build.timestamp}</message>  <!-- git commit message -->
 					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
 					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-					<branch>refs/heads/master</branch>                       <!-- remote branch name -->
+					<branch>refs/heads/gh-pages</branch>                       <!-- remote branch name -->
 					<includes>
 						<include>**/*</include>
 					</includes>
