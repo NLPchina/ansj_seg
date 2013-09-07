@@ -3,9 +3,9 @@
 *.war
 *.ear
 .settings/
-/.classpath
-/.project
-/bin
+.classpath
+.project
+bin/
 .DS_Store
 .data/
 data/
@@ -15,4 +15,4 @@ jrat.output/*
 jrat.xml
 ._.DS_Store
 ._*
-/target
+target/
