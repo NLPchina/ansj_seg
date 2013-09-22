@@ -24,12 +24,14 @@ Ansj中文分词
 ##Download jar
 
 ````
-https://github.com/ansjsun/mvn-repo/tree/master/org/ansj/ansj_seg
+首先需要分词程序的jar
+https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/ansj_seg
+然后还需要导入tree的数据结构jar
+https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/tree_split
 ````
 
+增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj 这里下载jar包!
 
-
-增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/ansj_seg/tree/master/contrib 这里下载jar包!
 
 
 
