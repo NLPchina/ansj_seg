@@ -7,7 +7,6 @@ import static org.ansj.library.UserDefineLibrary.getUserForestMap;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -18,7 +17,7 @@ import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
 /**
- * 用来管理用户自定义词典,和纠正词典
+ * 用来管理用户自定义词典,和纠正词典,这个类现在无用.也不要用也不要问
  * @author ansj
  *
  */
@@ -34,36 +33,6 @@ public class DicManager {
 
     public DicManager(String name) {
         this.name = name;
-    }
-
-    static {
-        init();
-    }
-
-    private static void init() {
-
-        userLibraryPath = MyStaticValue.userLibraryPath;
-        //maven工程修改词典加载方式
-        try {
-			userLibraryPath = DicManager.class.getResource("/" + userLibraryPath).getFile();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-        if (StringUtil.isBlank(userLibraryPath)) {
-            return;
-        }
-
-        files = new File(userLibraryPath).listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                // TODO Auto-generated method stub
-                if (name.endsWith(".dic")) {
-                    return true;
-                }
-                return false;
-            }
-        });
     }
 
     public void insertFileToLibrary(String filePath, String charEncoding) {
