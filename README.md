@@ -16,7 +16,7 @@ Ansj中文分词
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>0.8</version>
+            <version>0.9</version>
         </dependency>
     </dependencies>
 
