@@ -14,6 +14,7 @@ import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
+import org.ansj.util.MyStaticValue;
 
 /**
  * 标准分词
@@ -40,7 +41,7 @@ public class ToAnalysis extends Analysis {
                 }
 
                 // 姓名识别
-                if (graph.hasPerson) {
+                if (graph.hasPerson && MyStaticValue.isNameRecognition) {
                     // 亚洲人名识别
                     new AsianPersonRecognition(graph.terms).recognition();
                     graph.walkPathByScore();

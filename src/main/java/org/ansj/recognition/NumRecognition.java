@@ -1,6 +1,7 @@
 package org.ansj.recognition;
 
 import org.ansj.domain.Term;
+import org.ansj.util.MyStaticValue;
 import org.ansj.util.TermUtil;
 
 public class NumRecognition {
@@ -40,7 +41,8 @@ public class NumRecognition {
                 terms[i].setName(terms[i].getName() + temp.getName());
             }
             // 如果是数字结尾
-            if (temp.getTermNatures().numAttr.numEndFreq > 0) {
+            if (MyStaticValue.isQuantifierRecognition
+                && temp.getTermNatures().numAttr.numEndFreq > 0) {
                 terms[i].setName(terms[i].getName() + temp.getName());
                 temp = temp.getTo();
             }

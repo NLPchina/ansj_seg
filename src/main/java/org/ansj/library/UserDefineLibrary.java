@@ -34,8 +34,6 @@ public class UserDefineLibrary {
 
     public static Forest ambiguityForest = null;
 
-    private static final HashMap<String, Forest> userForestMap = new HashMap<String, Forest>();
-
     static {
         initUserLibrary();
         initAmbiguityLibrary();
@@ -190,10 +188,6 @@ public class UserDefineLibrary {
      */
     public static void clear() {
         FOREST.clear();
-    }
-
-    public static HashMap<String, Forest> getUserForestMap() {
-        return userForestMap;
     }
 
 }
