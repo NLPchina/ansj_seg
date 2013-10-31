@@ -1,13 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
 	<groupId>org.ansj</groupId>
 	<artifactId>ansj_seg</artifactId>
 	<packaging>jar</packaging>
-	<name>ansj_seg</name>
 	<version>0.9</version>
+
+	<name>ansj_seg</name>
 	<description>best java chinese word seg ! </description>
 	<url>https://github.com/ansjsun/ansj_seg</url>
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -21,8 +30,10 @@
 		<developerConnection>scm:git:git@github.com:ansjsun/ansj_seg.git</developerConnection>
 		<url>git@github.com:ansjsun/ansj_seg.git</url>
 	</scm>
-
-
+	<issueManagement>
+		<system>Github Issue</system>
+		<url>https://github.com/ansjsun/ansj_seg/issues</url>
+	</issueManagement>
 	<developers>
 		<developer>
 			<id>ansj</id>
@@ -36,14 +47,6 @@
 		<github.global.server>github</github.global.server>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>mvn-repo</id>
-			<url>https://raw.github.com/ansjsun/mvn-repo/gh-pages</url>
-		</repository>
-	</repositories>
-
-
 	<dependencies>
 		<dependency>
 			<groupId>org.ansj</groupId>
@@ -51,7 +54,7 @@
 			<version>1.0.1</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -63,43 +66,34 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-
-
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.7</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.8</version>
-				<configuration>
-					<message>deploy-${project.artifactId}:${project.version}~${maven.build.timestamp}</message>  <!-- git commit message -->
-					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-					<branch>refs/heads/gh-pages</branch>                       <!-- remote branch name -->
-					<includes>
-						<include>**/*</include>
-					</includes>
-					<repositoryName>mvn-repo</repositoryName>      <!-- github repo name -->
-					<repositoryOwner>ansjsun</repositoryOwner>    <!-- github username -->
-					<merge>true</merge>
-				</configuration>
-				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
-						'deploy' phase -->
-					<execution>
-						<goals>
-							<goal>site</goal>
-						</goals>
-						<phase>deploy</phase>
-					</execution>
-				</executions>
-			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-enforcer-plugin</artifactId>
+										<versionRange>[1.0,)</versionRange>
+										<goals>
+											<goal>enforce</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
