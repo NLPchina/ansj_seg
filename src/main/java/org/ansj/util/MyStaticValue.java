@@ -27,6 +27,16 @@ import org.ansj.library.InitDictionary;
 public class MyStaticValue {
 
 	public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
+	
+	//是否开启人名识别
+	public static boolean isNameRecognition = true ;
+	
+	//是否开启数字识别
+    public static boolean isNumRecognition = true ;
+    
+    //是否数字和量词合并
+    public static boolean isQuantifierRecognition = true ;
+	
 	/**
 	 * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
 	 */
@@ -125,16 +135,6 @@ public class MyStaticValue {
 		// TODO Auto-generated method stub
 		return DicReader.getReader("nature/nature.table");
 	}
-
-	// /**
-	// * 系统集成的补充词典
-	// *
-	// * @return
-	// */
-	// public static BufferedReader getSystemLibraryReader() {
-	// // TODO Auto-generated method stub
-	// return DicReader.getReader("systemLibrary.dic");
-	// }
 
 	/**
 	 * 得道姓名单字的词频词典

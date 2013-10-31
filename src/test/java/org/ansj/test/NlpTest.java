@@ -8,13 +8,15 @@ import love.cq.util.IOUtil;
 
 import org.ansj.app.newWord.LearnTool;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class NlpTest {
 	public static void main(String[] args) throws IOException {
-	    LearnTool learn = new LearnTool() ;
-        NlpAnalysis nlpAnalysis = new NlpAnalysis(IOUtil.getReader("/Users/ansj/Documents/workspace/ElasticSearchServer/sub_test.txt", IOUtil.UTF8), learn) ;
-        while(nlpAnalysis.next()!=null){}
-        List<Entry<String, Double>> topTree = learn.getTopTree(20) ;
-        System.out.println(topTree);
+//	    LearnTool learn = new LearnTool() ;
+//        NlpAnalysis nlpAnalysis = new NlpAnalysis(IOUtil.getReader("/Users/ansj/Documents/workspace/ElasticSearchServer/sub_test.txt", IOUtil.UTF8), learn) ;
+//        while(nlpAnalysis.next()!=null){}
+//        List<Entry<String, Double>> topTree = learn.getTopTree(20) ;
+//        System.out.println(topTree);
+		System.out.println(ToAnalysis.parse("亚太经合组织"));
 	}
 }
