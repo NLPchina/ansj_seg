@@ -51,9 +51,10 @@ public class AnsjServer {
 				String responseMsg = "欢迎使用Ansj中文分词!\ndemo:http://localhost:8888/?input=我日世界&method=to"; // 响应信息
 				Map<String, String> paramers = parseParamers(httpExchange);
 				String input = paramers.get("input");
-				String method = paramers.get("method");
+                                String method = paramers.get("method");
+                                String nature = paramers.get("nature");
 				if (StringUtil.isNotBlank(input)) {
-					responseMsg = AnsjServlet.processRequest(input, method);
+					responseMsg = AnsjServlet.processRequest(input, method, nature);
 				}
 
 				writeToClient(httpExchange, responseMsg);
