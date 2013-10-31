@@ -3,15 +3,8 @@ Ansj中文分词
 
 在线测试地址<a href="http://demo.ansj.org">在线测试地址!</href>,
 
-##maven
+##maven(中央库)
 ````
-	<repositories>
-		<repository>
-			<id>mvn-repo</id>
-			<url>http://ansjsun.github.io/mvn-repo/</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
         <dependency>
             <groupId>org.ansj</groupId>
@@ -25,12 +18,12 @@ Ansj中文分词
 
 ````
 首先需要分词程序的jar
-https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/ansj_seg
+http://search.maven.org/#search|ga|1|a%3A%22ansj_seg%22
 然后还需要导入tree的数据结构jar
-https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/tree_split
+http://search.maven.org/#search|ga|1|a%3A%22tree_split%22
 ````
 
-增加了对lucene的支持.如果不想编译文件可以直接到 https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj 这里下载jar包!
+增加了对lucene的支持.如果不想编译文件可以直接到 http://search.maven.org/#search|ga|1|g%3A%22org.ansj%22 这里下载jar包!
 
 
 
