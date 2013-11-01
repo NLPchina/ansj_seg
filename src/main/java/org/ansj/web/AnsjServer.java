@@ -52,8 +52,9 @@ public class AnsjServer {
 				Map<String, String> paramers = parseParamers(httpExchange);
 				String input = paramers.get("input");
 				String method = paramers.get("method");
+				String nature = paramers.get("nature");
 				if (StringUtil.isNotBlank(input)) {
-					responseMsg = AnsjServlet.processRequest(input, method);
+					responseMsg = AnsjServlet.processRequest(input, method, nature);
 				}
 
 				writeToClient(httpExchange, responseMsg);
