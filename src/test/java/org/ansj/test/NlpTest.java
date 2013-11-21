@@ -17,6 +17,6 @@ public class NlpTest {
 //        while(nlpAnalysis.next()!=null){}
 //        List<Entry<String, Double>> topTree = learn.getTopTree(20) ;
 //        System.out.println(topTree);
-		System.out.println(ToAnalysis.parse("亚太经合组织"));
+		System.out.println(ToAnalysis.parse("奥地利、比利时和大不列颠及北爱尔兰联合王报告向低收入家庭提供取暖和更方便使用电力的"));
 	}
 }
