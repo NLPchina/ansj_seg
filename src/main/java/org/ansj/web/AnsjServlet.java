@@ -15,8 +15,7 @@ public class AnsjServlet {
 		TO, NLP, BASE
 	}
 
-	public static String processRequest(String input, String strMethod,
-			String strNature) throws IOException {
+	public static String processRequest(String input, String strMethod, String strNature) throws IOException {
 		AnsjMethod method = AnsjMethod.TO;
 		if (strMethod != null) {
 			method = AnsjMethod.valueOf(strMethod.toUpperCase());
@@ -24,19 +23,19 @@ public class AnsjServlet {
 			method = AnsjMethod.TO;
 		}
 		Boolean nature = true;
-		if (strNature.toLowerCase().equals("false")) {
+		if (strNature != null && strNature.toLowerCase().equals("false")) {
 			nature = false;
 		}
 		List<Term> terms = null;
 		switch (method) {
-			case TO:
-				terms = ToAnalysis.parse(input);
-				break;
-			case NLP:
-				terms = NlpAnalysis.parse(input);
-				break;
-			default:
-				terms = BaseAnalysis.parse(input);
+		case TO:
+			terms = ToAnalysis.parse(input);
+			break;
+		case NLP:
+			terms = NlpAnalysis.parse(input);
+			break;
+		default:
+			terms = BaseAnalysis.parse(input);
 
 		}
 		if (terms == null) {
@@ -46,7 +45,7 @@ public class AnsjServlet {
 			new NatureRecognition(terms).recognition();
 		}
 		StringBuilder sb = new StringBuilder();
-		for (Term term: terms) {
+		for (Term term : terms) {
 			String tmp = term.getName();
 			if (nature) {
 				tmp += "/" + term.getNatrue().natureStr;
