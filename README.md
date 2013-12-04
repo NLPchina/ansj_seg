@@ -47,7 +47,7 @@ https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/tree_split
 
 可以应用到自然语言处理等方面,适用于对分词效果要求搞的各种项目.
 
-如果你在eclipse中跑这个项目.需要导入tree-split 的jar包.当然也可以incloud 这个项目https://github.com/ansjsun/TreeSplitWord 
+如果你在eclipse中跑这个项目.需要导入tree-split 的jar包.当然也可以incloud 这个项目https://github.com/ansjsun/tree_split 
 
 如果你第一次下载只想测试测试效果可以调用这个简易接口
 
