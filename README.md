@@ -47,14 +47,14 @@ https://github.com/ansjsun/mvn-repo/tree/gh-pages/org/ansj/tree_split
 
 可以应用到自然语言处理等方面,适用于对分词效果要求搞的各种项目.
 
-如果你在eclipse中跑这个项目.需要导入tree-split 的jar包.当然也可以incloud 这个项目https://github.com/ansjsun/TreeSplitWord 
+如果你在eclipse中跑这个项目.需要导入tree-split 的jar包.当然也可以incloud 这个项目https://github.com/lshgo/TreeSplitWord
 
 如果你第一次下载只想测试测试效果可以调用这个简易接口
 
 <pre><code>
  String str = "欢迎使用ansj_seg,(ansj中文分词)在这里如果你遇到什么问题都可以联系我.我一定尽我所能.帮助大家.ansj_seg更快,更准,更自由!" ;
- System.out.println(ToAnalysis.paser(str));
- 
+ System.out.println(ToAnalysis.parse(str));
+
  ﻿[欢迎/, 使用/, ansj/, _/, seg/, ,/, (/, ansj/, 中文/, 分词/, )/, 在/, 这里/, 如果/, 你/, 遇到/, 什么/, 问题/, 都/, 可以/, 联系/, 我/, 房/, 我/, 一定/, 尽/, 我/, 所/, 能/, ./, 帮助/, 大家/, ./, ansj/, _/, seg/, 更/, 快/, ,/, 更/, 准/, ,/, 更/, 自由/, !/]
 </code></pre>
 
