@@ -37,8 +37,6 @@ public class MathUtil {
 		double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara)
 				* ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
 
-		if (value < 0)
-			value += frequency;
 
 		if (value < 0) {
 			value += frequency;
