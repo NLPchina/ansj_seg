@@ -17,8 +17,6 @@ public class NewWord {
 	private int allFreq;
 	// 平均分数
 	private double averageScore;
-	// 此词是否可用
-	private boolean isActive = false ;
 
 	public NewWord(String name, TermNatures nature, double score, int freq) {
 		this.name = name;
@@ -26,9 +24,6 @@ public class NewWord {
 		this.score = getScore(nature, score);
 		this.allFreq = freq;
 		averageScore = score;
-		if(allFreq>2||averageScore<-0.5){
-			isActive = true ;
-		}
 	}
 
 	/**
@@ -39,13 +34,13 @@ public class NewWord {
 	 */
 	private double getScore(TermNatures nature, double score) {
 		// TODO Auto-generated method stub
-		if (TermNatures.NW.equals(nature)) {
-			return score * -1;
-		} else if (TermNatures.NR.equals(nature)) {
-			return score * 100;
-		} else if (TermNatures.NT.equals(nature)) {
-			return score * 10;
-		}
+//		if (TermNatures.NW.equals(nature)) {
+//			return score * 10;
+//		} else if (TermNatures.NR.equals(nature)) {
+//			return score * 100;
+//		} else if (TermNatures.NT.equals(nature)) {
+//			return score * 10;
+//		}
 		return score;
 	}
 
@@ -83,10 +78,6 @@ public class NewWord {
 		this.averageScore = this.score / freq;
 		if (tn == null || !TermNatures.NW.equals(tn)) {
 			this.nature = tn;
-		}
-		
-		if(allFreq>2||averageScore<-0.5){
-			isActive = true ;
 		}
 	}
 

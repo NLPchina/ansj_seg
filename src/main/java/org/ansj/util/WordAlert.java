@@ -1,29 +1,12 @@
 package org.ansj.util;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.ansj.app.crf.pojo.Element;
+
 public class WordAlert {
-	public static void main(String[] args) {
-		System.out.println((int) '１');
-		// System.out.println((int)'ｂ') ;
-		// System.out.println((int)'') ;
-		System.out.println((int) '９');
-		System.out.println((int) '０');
-		// System.out.println("-----------------------------") ;
-		System.out.println((int) '0');
-		// System.out.println((int)'Ｂ') ;
-		// System.out.println((int)'Ｃ') ;
-		// System.out.println((int)'Ｄ') ;
-		// System.out.println((int)'Ｚ') ;
-		// System.out.println((int)'Z');
-		String str = "１２３４５６４９８７大法师说的12323123";
-		// long start = System.currentTimeMillis() ;
-		// for (int i = 0; i < 10000000; i++) {
-		// // alertEnglish(str.toCharArray(),0,str.length());
-		// str.toLowerCase();
-		// }
-		// System.out.println(System.currentTimeMillis()-start);
-		System.out.println(alertNumber(str.toCharArray(), 0, str.length()));
-		;
-	}
 
 	/**
 	 * 这个就是(int)'ａ'
@@ -73,6 +56,26 @@ public class WordAlert {
 	 * 差距进行转译需要的
 	 */
 	public static final int UPPER_GAP_N = 65248;
+	
+	
+	private static final char[] CHARCOVER = new char[65536];
+
+    static {
+        for (int i = 0; i < CHARCOVER.length; i++) {
+            if (i >= MIN_LOWER && i <= MAX_LOWER) {
+                CHARCOVER[i] = (char) (i - LOWER_GAP);
+            } else if (i >= MIN_UPPER && i <= MAX_UPPER) {
+                CHARCOVER[i] = (char) (i - UPPER_GAP);
+            } else if (i >= MIN_UPPER_E && i <= MAX_UPPER_E) {
+                CHARCOVER[i] = (char) (i - UPPER_GAP_E);
+            } else if (i >= MIN_UPPER_N && i <= MAX_UPPER_N) {
+                CHARCOVER[i] = (char) (i - UPPER_GAP_N);
+            } else {
+                CHARCOVER[i] = (char) i;
+            }
+        }
+    }
+    
 
 	/**
 	 * 对全角的字符串,大写字母进行转译.如ｓｄｆｓｄｆ
@@ -137,4 +140,69 @@ public class WordAlert {
 		}
 		return sb.toString();
 	}
+	
+	
+	
+	
+	 public static char[] alertStr(String str) {
+	        char[] chars = new char[str.length()];
+	        for (int i = 0; i < chars.length; i++) {
+	            chars[i] = CHARCOVER[str.charAt(i)];
+	        }
+	        return chars;
+	    }
+
+	    /**
+	     * true num ,false not num
+	     * 
+	     * @param str
+	     * @return
+	     */
+	    public static List<Element> str2Elements(String str) {
+
+	        if (str == null || str.trim().length() == 0) {
+	            return Collections.emptyList();
+	        }
+
+	        char[] chars = alertStr(str);
+	        int maxLen = chars.length - 1;
+	        List<Element> list = new ArrayList<Element>();
+	        Element element = null;
+	        out: for (int i = 0; i < chars.length; i++) {
+	            if (chars[i] >= '0' && chars[i] <= '9') {
+	                element = new Element('M');
+	                list.add(element);
+	                if (i == maxLen) {
+	                    break out;
+	                }
+	                char c = chars[++i];
+	                while (c == '.' || c == '%' ||(c >= '0' && c <= '9')) {
+	                    if (i == maxLen) {
+	                        break out;
+	                    }
+	                    c = chars[++i];
+	                    element.len();
+	                }
+	                i--;
+	            } else if (chars[i] >= 'a' && chars[i] <= 'z') {
+	                element = new Element('W');
+	                list.add(element);
+	                if (i == maxLen) {
+	                    break out;
+	                }
+	                char c = chars[++i];
+	                while (c >= 'a' && c <= 'z') {
+	                    if (i == maxLen) {
+	                        break out;
+	                    }
+	                    c = chars[++i];
+	                    element.len();
+	                }
+	                i--;
+	            } else {
+	                list.add(new Element(chars[i]));
+	            }
+	        }
+	        return list;
+	    }
 }
