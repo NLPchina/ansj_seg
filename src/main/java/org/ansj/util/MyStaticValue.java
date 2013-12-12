@@ -267,18 +267,16 @@ public class MyStaticValue {
 
         try {
             LIBRARYLOG.info("begin init crf model!");
-            model = new BayesModel(DicReader.getInputStream("crf/template.ftl"));
-            model.loadModel(DicReader.getInputStream("crf/bayes.model"));
-            LIBRARYLOG.info("load crf model ok!");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        LOCK.unlock();
+            model = Model.loadModel(DicReader.getInputStream("crf/template.ftl"),
+                DicReader.getInputStream("crf/bayes.model"));
+            LIBRARYLOG.info("load crf model ok!");
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            LOCK.unlock();
+        }
 
         return model;
     }

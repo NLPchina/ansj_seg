@@ -16,6 +16,8 @@ import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import love.cq.domain.SmartForest;
+
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Feature;
 import org.ansj.util.MatrixUtil;
@@ -43,6 +45,8 @@ public abstract class Model {
     public int[] tagCount = new int[4];
 
     protected Map<String, Feature> myGrad;
+
+    protected SmartForest<double[][]> smartForest = null;
 
     public int allFeatureCount = 0;
 
@@ -175,22 +179,43 @@ public abstract class Model {
      * 模型读取
      * 
      * @param path
+     * @return 
      * @return
      * @throws FileNotFoundException
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void loadModel(String path) throws FileNotFoundException, IOException,
-                                      ClassNotFoundException {
-        loadModel(new FileInputStream(path));
+    public static Model loadModel(String templatePath, String modelPath) throws Exception {
+        return loadModel(new FileInputStream(templatePath), new FileInputStream(modelPath));
+
     }
 
-    public void loadModel(InputStream is) throws FileNotFoundException, IOException,
-                                         ClassNotFoundException {
+    public static Model loadModel(InputStream templateStream, InputStream modelStream)
+                                                                                      throws Exception {
         ObjectInputStream ois = null;
         try {
-            ois = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(is)));
-            this.status = (double[][]) ois.readObject();
+            ois = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(modelStream)));
+
+            Model model = new Model(templateStream) {
+
+                @Override
+                public void calculate(String line, String splitStr) {
+                    // TODO Auto-generated method stub
+                    throw new RuntimeException(
+                        "you can not to calculate ,this model only use by cut ");
+                }
+
+                @Override
+                protected void compute() {
+                    // TODO Auto-generated method stub
+                    throw new RuntimeException(
+                        "you can not to calculate ,this model only use by cut ");
+                }
+
+            };
+
+            model.smartForest = new SmartForest<double[][]>(0.8);
+            model.status = (double[][]) ois.readObject();
             // 总共的特征数
             double[][] w = null;
             String key = null;
@@ -198,8 +223,8 @@ public abstract class Model {
             int featureCount = ois.readInt();
             for (int i = 0; i < featureCount; i++) {
                 key = ois.readUTF();
-                w = new double[template.ft.length][0];
-                for (int j = 0; j < template.ft.length; j++) {
+                w = new double[model.template.ft.length][0];
+                for (int j = 0; j < model.template.ft.length; j++) {
                     while ((b = ois.readByte()) != -1) {
                         if (w[j].length == 0) {
                             w[j] = new double[TAG_NUM];
@@ -207,15 +232,14 @@ public abstract class Model {
                         w[j][b] = ois.readFloat();
                     }
                 }
-                Feature feature = new Feature(w);
-
-                myGrad.put(key, feature);
+                model.smartForest.add(key, w);
             }
-        } catch (Exception e) {
-            // TODO: handle exception
+
+            return model;
         } finally {
-            if (ois != null)
+            if (ois != null) {
                 ois.close();
+            }
         }
     }
 
@@ -275,12 +299,12 @@ public abstract class Model {
 
     public double[] getFeature(int featureIndex, char... chars) {
         // TODO Auto-generated method stub
-        String key = new String(chars);
-        Feature feature = myGrad.get(key);
-        if (feature == null) {
+        SmartForest<double[][]> sf = smartForest;
+        sf = sf.getBranch(chars);
+        if (sf == null) {
             return null;
         }
-        return feature.w[featureIndex];
+        return sf.getParam()[featureIndex];
     }
 
     /**

@@ -21,8 +21,7 @@ public class RightRate {
         BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(
             "corpus/rmrb.test")));
 
-        Model model = new BayesModel("template.ftl");
-        model.loadModel("bayes.model");
+        Model model = Model.loadModel("template.ftl", "bayes.model");
         SplitWord sw = new SplitWord(model);
 
         String temp_str = null;

@@ -4,6 +4,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import love.cq.util.StringUtil;
+
 import org.ansj.app.crf.SplitWord;
 import org.ansj.app.crf.model.Model;
 import org.ansj.app.newWord.LearnTool;
@@ -88,7 +90,7 @@ public class CRFAnalysis extends Analysis {
                 List<String> words = sw.cut(graph.str);
 
                 for (String word : words) {
-                    if (word.length() == 1 || word.endsWith(".")) {
+                    if (word.length() == 1 || word.endsWith(".")||StringUtil.isBlank(word)) {
                         continue;
                     }
                     learn.addTerm(new NewWord(word, TermNatures.NW, -word.length(), word.length()));
