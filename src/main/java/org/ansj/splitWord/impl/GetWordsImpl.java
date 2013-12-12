@@ -6,6 +6,8 @@ import static org.ansj.library.InitDictionary.conversion;
 import static org.ansj.library.InitDictionary.status;
 import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
+import static org.ansj.library.InitDictionary.arrayLength;
+
 
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.GetWords;
@@ -108,7 +110,7 @@ public class GetWordsImpl implements GetWords {
 	private int getStatement() {
 		checkValue = baseValue;
 		baseValue = base[checkValue] + charHashCode;
-		if (check[baseValue] == checkValue || check[baseValue] == -1) {
+		if (baseValue < arrayLength && (check[baseValue] == checkValue || check[baseValue] == -1)) {
 			return status[baseValue];
 		}
 		return 0;

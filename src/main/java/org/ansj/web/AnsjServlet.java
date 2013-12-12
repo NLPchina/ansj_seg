@@ -15,12 +15,16 @@ public class AnsjServlet {
 		TO, NLP, BASE
 	}
 
-	public static String processRequest(String input, String strMethod) throws IOException {
+	public static String processRequest(String input, String strMethod, String strNature) throws IOException {
 		AnsjMethod method = AnsjMethod.TO;
 		if (strMethod != null) {
 			method = AnsjMethod.valueOf(strMethod.toUpperCase());
 		} else {
 			method = AnsjMethod.TO;
+		}
+		Boolean nature = true;
+		if (strNature != null && strNature.toLowerCase().equals("false")) {
+			nature = false;
 		}
 		List<Term> terms = null;
 		switch (method) {
@@ -37,10 +41,16 @@ public class AnsjServlet {
 		if (terms == null) {
 			return "Failed to parse input";
 		}
-		new NatureRecognition(terms).recognition();
+		if (nature) {
+			new NatureRecognition(terms).recognition();
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Term term : terms) {
-			sb.append(term.getName() + "/" + term.getNatrue().natureStr + " ");
+			String tmp = term.getName();
+			if (nature) {
+				tmp += "/" + term.getNatrue().natureStr;
+			}
+			sb.append(tmp + " ");
 		}
 		return sb.toString();
 	}
