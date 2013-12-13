@@ -67,68 +67,6 @@ public class NewTerm  implements Comparable<NewTerm> , Cloneable {
 	}
 
 
-
-//	@Override
-//	public int compareTo(CharcterTerm o) {
-//		// TODO Auto-generated method stub
-//		if (this.name.equals(o.name))
-//			return 0;
-//		if (this.weight > o.weight) {
-//			return 1;
-//		} else {
-//			return -1;
-//		}
-//	}
-//
-//	@Override
-//	public int hashCode() {
-//		// TODO Auto-generated method stub
-//		return name.hashCode();
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		// TODO Auto-generated method stub
-//		CharcterTerm term = (CharcterTerm) obj;
-//		return this.name.equals(term.getName());
-//	}
-
-//	public void addTerm(CharcterTerm ct) {
-//		if (toMap == null) {
-//			toMap = new HashMap<String, List<CharcterTerm>>();
-//		}
-//		List<CharcterTerm> all = toMap.get(ct.getName());
-//
-//		if (all == null) {
-//			all = new ArrayList<CharcterTerm>();
-//			toMap.put(ct.getName(), all) ;
-//		}
-//
-//		ct.from = this ;
-//		
-//		this.to = ct ;
-//		
-//		all.add(ct) ;
-//	}
-	
-	
-//	public Map<String, List<CharcterTerm>> getToMap(){
-//		return this.toMap ;
-//	}
-	
-//	public void merger(int threshold){
-//		if(this.toMap==null){
-//			return ;
-//		}
-//		for (List<CharcterTerm> all : toMap.values()) {
-//			if(all.size()>=threshold){
-//				for (CharcterTerm charcterTerm : all) {
-//					charcterTerm = charcterTerm.merger(charcterTerm.from) ;
-//				}
-//			}
-//		}
-//	}
-
 	/**
 	 * 进行term合并
 	 * 

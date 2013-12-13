@@ -31,8 +31,6 @@ public class NlpDemo {
 		learn.isCompany= false ;
 		//关闭外国人名识别
 		learn.isForeignName=false ;
-		//关闭新词发现
-		learn.isNewWord = false ;
 		
 		for (String string : value) {
 			List<Term> parse = NlpAnalysis.parse(string, learn) ;

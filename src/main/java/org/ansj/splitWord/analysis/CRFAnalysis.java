@@ -12,6 +12,8 @@ import org.ansj.app.newWord.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.InitDictionary;
+import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -87,18 +89,26 @@ public class CRFAnalysis extends Analysis {
 
                 learn.learn(graph);
 
-                List<String> words = sw.cut(graph.str);
-
-                for (String word : words) {
-                    if (word.length() == 1 || word.endsWith(".")||StringUtil.isBlank(word)) {
-                        continue;
-                    }
-                    learn.addTerm(new NewWord(word, TermNatures.NW, -word.length(), word.length()));
-                }
                 // 用户自定义词典的识别
                 new UserDefineRecognition(graph.terms).recognition();
                 graph.walkPathByScore();
 
+                // 通过crf分词
+                List<String> words = sw.cut(graph.str);
+
+                for (String word : words) {
+                    if (word.length() == 1 || word.endsWith(".") || StringUtil.isBlank(word)) {
+                        continue;
+                    }
+                    if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
+                        continue;
+                    }
+
+                    if (word.charAt(word.length() - 1) < 256) {
+                        continue;
+                    }
+                    learn.addTerm(new NewWord(word, TermNatures.NW, -1, word.length()));
+                }
                 // 进行新词发现
                 new NewWordRecognition(graph.terms, learn).recognition();
                 graph.walkPathByScore();

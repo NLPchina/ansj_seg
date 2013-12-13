@@ -8,8 +8,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
+import love.cq.domain.Branch;
 import love.cq.domain.Forest;
 import love.cq.domain.Value;
+import love.cq.domain.WoodInterface;
 import love.cq.library.Library;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
@@ -182,6 +184,25 @@ public class UserDefineLibrary {
      */
     public static void removeWord(String word) {
         Library.removeWord(FOREST, word);
+    }
+
+    public static String[] getParams(String word) {
+        WoodInterface temp = FOREST;
+        for (int i = 0; i < word.length(); i++) {
+            temp = temp.get(word.charAt(i));
+            if (temp == null) {
+                return null;
+            }
+        }
+        if (temp.getStatus() > 1) {
+            return temp.getParams();
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean contains(String word) {
+        return getParams(word) != null;
     }
 
     /**

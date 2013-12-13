@@ -1,7 +1,5 @@
 package org.ansj.app.newWord;
 
-import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -9,7 +7,6 @@ import java.util.Map.Entry;
 import love.cq.domain.SmartForest;
 import love.cq.util.CollectionUtil;
 
-import org.ansj.app.newWord.PatHashMap.Node;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
@@ -29,8 +26,6 @@ public class LearnTool {
      * 是否开启学习机
      */
     public boolean isCompany = true;
-
-    public boolean isNewWord = true;
 
     public boolean isAsianName = true;
 
@@ -67,11 +62,6 @@ public class LearnTool {
             findForeignPerson(graph);
         }
 
-        // 新词发现
-        if (isNewWord) {
-            newWordDetection(graph);
-        }
-
     }
 
     private void findAsianPerson(Graph graph) {
@@ -98,32 +88,19 @@ public class LearnTool {
     private void addListToTerm(List<NewWord> newWords) {
         if (newWords.size() == 0)
             return;
+
+        double sum = 0 ;
         for (NewWord newWord : newWords) {
+            sum -= newWord.getScore() ;
+        }
+        
+        for (NewWord newWord : newWords) {
+            double p = newWord.getScore()/sum ;
+            newWord.setScore(p) ;
             addTerm(newWord);
         }
     }
 
-    /**
-     * 新词发现
-     * 
-     * @param graph
-     */
-    private void newWordDetection(Graph graph) {
-        Collection<Node> newWords = null;
-        try {
-            newWords = new NewWordDetection().getNewWords(graph);
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        if (newWords == null)
-            return;
-        NewWord newWord = null;
-        for (Node node : newWords) {
-            newWord = new NewWord(node.getName(), TermNatures.NW, node.getScore(), node.getFreq());
-            addTerm(newWord);
-        }
-    }
 
     /**
      * 增加一个新词到树中
