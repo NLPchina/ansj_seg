@@ -9,7 +9,7 @@ import java.util.List;
 import love.cq.util.IOUtil;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.CRFAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 
 
 public class TestSigHan {
@@ -18,7 +18,7 @@ public class TestSigHan {
         String temp = null;
         FileOutputStream fos = new FileOutputStream(new File("/home/ansj/src/icwb2-data/test_segmentation.utf8"));
         while ((temp = reader.readLine()) != null) {
-            List<Term> parse = CRFAnalysis.parse(temp) ;
+            List<Term> parse = NlpAnalysis.parse(temp) ;
             StringBuilder sb = new StringBuilder() ;
             for (Term term : parse) {
                 sb.append(term.getName()+"\t") ;

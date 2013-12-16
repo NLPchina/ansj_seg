@@ -91,7 +91,7 @@ public class Graph {
     }
 
     /**
-    * 删除最短的节点,废了好大劲写的.然后发现木有用..伤不起啊.舍不得删.让他进git体验下吧回头我再删掉-_-!
+    * 删除最短的节点
     */
     public void rmLittlePath() {
         int maxTo = -1;
@@ -189,6 +189,45 @@ public class Graph {
                     terms[j] = null;
                 }
             }
+        }
+    }
+
+    /**
+     * 删除小节点。保证被删除的小节点的单个分数小于等于大节点的分数
+     */
+    public void rmLittlePathByScore() {
+        int maxTo = -1;
+        Term temp = null;
+        double maxScore = 0;
+        for (int i = 0; i < terms.length; i++) {
+            if (terms[i] == null)
+                continue;
+            Term term = terms[i];
+            do {
+                maxTo = term.getToValue();
+                maxScore = term.score;
+                if (maxTo - i == 1 || i + 1 == terms.length)
+                    continue;
+                boolean flag = true;//可以删除
+                out: for (int j = i; j < maxTo; j++) {
+                    temp = terms[j];
+                    if (temp == null) {
+                        continue;
+                    }
+                    do {
+                        if (temp.getToValue() > maxTo || temp.score > maxScore) {
+                            flag = false;
+                            break out;
+                        }
+                    } while ((temp = temp.getNext()) != null);
+                }
+                //验证通过可以删除了
+                if (flag) {
+                    for (int j = i+1; j < maxTo; j++) {
+                        terms[j] = null;
+                    }
+                }
+            } while ((term = term.getNext()) != null);
         }
     }
 

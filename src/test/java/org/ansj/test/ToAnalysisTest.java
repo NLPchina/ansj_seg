@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.Analysis;
@@ -29,7 +29,7 @@ public class ToAnalysisTest {
 				continue;
 			}
 			Reader reader = new InputStreamReader(new FileInputStream(files[i]), "GBK");
-			Analysis toAnalysis = new NlpAnalysis(reader,learn);
+			Analysis toAnalysis = new NlpAnalysis(reader,null, learn);
 			Term next = null;
 			while ((next = toAnalysis.next()) != null) {
 				if("nw".equals(next.getNatrue().natureStr)){

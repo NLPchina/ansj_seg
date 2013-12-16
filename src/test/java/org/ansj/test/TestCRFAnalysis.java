@@ -9,9 +9,9 @@ import java.util.List;
 
 import love.cq.util.IOUtil;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.CRFAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 
 public class TestCRFAnalysis {
     public static void main(String[] args) throws IOException {
@@ -20,7 +20,7 @@ public class TestCRFAnalysis {
             "/home/ansj/文档/data/corpus/sport/sports.sohu.com.txt", "utf-8");
 
         String temp = null;
-        List<Term> parse = CRFAnalysis.parse("测试123孙建");
+        List<Term> parse = NlpAnalysis.parse("测试123孙建");
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(
             "/home/ansj/文档/data/corpus/sport/sports.sohu.com.txt.result")));
         LearnTool learn = new LearnTool();
@@ -28,7 +28,7 @@ public class TestCRFAnalysis {
         long start = System.currentTimeMillis();
         while ((temp = reader.readLine()) != null) {
             len += temp.length() ;
-            parse = CRFAnalysis.parse(temp, learn);
+            parse = NlpAnalysis.parse(temp, learn);
             bw.write(parse.toString());
             bw.write("\n");
         }

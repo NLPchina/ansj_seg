@@ -74,6 +74,8 @@ public class WordAlert {
                 CHARCOVER[i] = (char) i;
             }
         }
+        
+        CHARCOVER['-'] = '·' ;
     }
     
 

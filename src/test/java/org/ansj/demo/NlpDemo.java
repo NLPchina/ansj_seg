@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 

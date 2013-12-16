@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;

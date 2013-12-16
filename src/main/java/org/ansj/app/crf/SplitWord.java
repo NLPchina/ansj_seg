@@ -88,22 +88,14 @@ public class SplitWord {
         int maxStatus = next.tagScore[0] > next.tagScore[3] ? 0 : 3;
         next.updateTag(maxStatus);
         maxStatus = next.from[maxStatus];
-        // System.out.println(next + "\t" +
-        // Element.getTagName(next.from[next.getTag()]));
         // 逆序寻找
         for (int i = elements.size() - 2; i > 0; i--) {
             self = elements.get(i);
             self.updateTag(maxStatus);
             maxStatus = self.from[self.getTag()];
-            // System.out.println(self + "\t" +
-            // Element.getTagName(self.from[self.getTag()]));
             next = self;
         }
         elements.get(0).updateTag(maxStatus);
-
-        // for (Element element : elements) {
-        // System.out.println(Arrays.toString(element.from));
-        // }
 
         return elements;
 

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import love.cq.util.IOUtil;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.analysis.NlpAnalysis;
@@ -24,7 +24,7 @@ public class NewWordFindDemo {
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/冒死记录中国神秘事件（真全本）.txt", "GBK");
 		LearnTool learn = new LearnTool();
 		long start = System.currentTimeMillis();
-		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn);
+		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, null, learn);
 		Term term = null;
 		while ((term = nlpAnalysis.next()) != null) {
 			if(!TermNatures.NW.equals(term.getTermNatures())){

@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import love.cq.util.IOUtil;
 
-import org.ansj.app.newWord.LearnTool;
+import org.ansj.dic.LearnTool;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
