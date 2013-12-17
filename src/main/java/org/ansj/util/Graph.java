@@ -198,11 +198,25 @@ public class Graph {
     public void rmLittlePathByScore() {
         int maxTo = -1;
         Term temp = null;
-        double maxScore = 0;
         for (int i = 0; i < terms.length; i++) {
-            if (terms[i] == null)
+            if (terms[i] == null) {
                 continue;
+            }
+            Term maxTerm = null;
+            double maxScore = 0;
             Term term = terms[i];
+            //找到自身分数对大最长的
+
+            do {
+                if (maxTerm == null || maxScore > term.getScore()) {
+                    maxTerm = term;
+                } else if (maxScore == term.getScore()
+                           && maxTerm.getName().length() < term.getName().length()) {
+                    maxTerm = term;
+                }
+
+            } while ((term = term.getNext()) != null);
+            term = maxTerm;
             do {
                 maxTo = term.getToValue();
                 maxScore = term.score;
@@ -215,7 +229,7 @@ public class Graph {
                         continue;
                     }
                     do {
-                        if (temp.getToValue() > maxTo || temp.score > maxScore) {
+                        if (temp.getToValue() > maxTo || temp.score < maxScore) {
                             flag = false;
                             break out;
                         }
@@ -223,7 +237,7 @@ public class Graph {
                 }
                 //验证通过可以删除了
                 if (flag) {
-                    for (int j = i+1; j < maxTo; j++) {
+                    for (int j = i + 1; j < maxTo; j++) {
                         terms[j] = null;
                     }
                 }

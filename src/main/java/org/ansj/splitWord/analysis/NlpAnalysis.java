@@ -24,7 +24,7 @@ import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 
 /**
- * 自然语言分词,结果不稳定但是很全面
+ * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
  * 
  * @author ansj
  * 

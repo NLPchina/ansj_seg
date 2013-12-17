@@ -1,4 +1,4 @@
-package org.ansj.web;
+package org.ansj.app.web;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -139,7 +139,7 @@ public class AnsjServer {
 	}
 
 	public static void main(String[] args) throws Exception {
-		if (args.length < 1) {
+		if (args==null || args.length < 1) {
 			System.err.println("Usage: AnsjServer <serverPort> so by default 8888");
 			args = new String[] { "8888" };
 		}
