@@ -10,7 +10,7 @@ import org.ansj.util.FilterModifWord;
 public class FilterAndUpdateNatureDemo {
 	public static void main(String[] args) {
 
-	    //加入停用此
+	    //加入停用词
 		FilterModifWord.insertStopWord("并且") ;
 		FilterModifWord.insertStopWord("但是") ;
 		

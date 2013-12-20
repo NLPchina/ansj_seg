@@ -32,27 +32,8 @@ public class Feature {
      */
     public void logNormalize() {
         // TODO Auto-generated method stub
-        // double pw = this.value / model.allFeatureCount;
-        //
-        // double sum = MatrixUtil.sum(w);
-        //
-        // for (int i = 0; i < w.length; i++) {
-        // for (int j = 0; j < w[i].length; j++) {
-        // w[i][j] = pw * (w[i][j] / sum) / ((w[i][j] + 1) /
-        // model.featureTagCount[i][j]);
-        // if (w[i][j] > 0)
-        // w[i][j] = -w[i][j] * Math.log(w[i][j]);
-        // }
-        // }
         double sum = MatrixUtil.sum(w);
         for (int i = 0; i < w.length; i++) {
-            // for (int j = 0; j < w[i].length; j++) {
-            // w[i][j] = model.tagPos[j] * (w[i][j] / model.tagCount[j]) /
-            // ((w[i][j] + 1) / model.featureTagCount[i][j]);
-            // if (w[i][j] > 0)
-            // w[i][j] = -w[i][j] * Math.log(w[i][j]);
-            // }
-
             for (int j = 0; j < w[i].length; j++) {
                 w[i][j] = w[i][j] / sum;
                 if (w[i][j] > 0) {

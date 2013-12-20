@@ -25,6 +25,10 @@ import org.ansj.util.WordAlert;
 
 public abstract class Model {
 
+    public static enum MODEL_TYPE {
+        CRF, EMM
+    };
+
     public Template template = null;
 
     // S0 , B1, M2, E3
@@ -90,54 +94,7 @@ public abstract class Model {
         }
     }
 
-    protected void updateFeature(List<Element> list, int index) {
-        // TODO Auto-generated method stub
-        int sta = list.get(index).getTag();
-        char[] chars = null;
-        for (int i = 0; i < template.ft.length; i++) {
-            chars = new char[template.ft[i].length];
-            for (int j = 0; j < chars.length; j++) {
-                chars[j] = list.get(index + template.ft[i][j]).name;
-            }
-            updateFeature(i, sta, chars);
-        }
-    }
-
-    // P(t)*P(w|t)/P(w)
-    protected void logNormalizeSTATUS() {
-        double[] sta = null;
-        for (int i = 0; i < status.length; i++) {
-            sta = status[i];
-            double sum = MatrixUtil.sum(sta);
-            for (int j = 0; j < sta.length; j++) {
-                if (sta[j] == 0) {
-                    continue;
-                }
-                sta[j] = sta[j] / sum;
-                sta[j] = -sta[j] * Math.log(sta[j]);
-            }
-        }
-
-        double sum = MatrixUtil.sum(tagCount);
-        for (int i = 0; i < tagCount.length; i++) {
-            tagPos[i] = tagCount[i] / sum;
-        }
-    }
-
-    protected void updateFeature(int fIndex, int sta, char... chars) {
-        // TODO Auto-generated method stub
-        allFeatureCount++;
-        featureTagCount[fIndex][sta]++;
-        tagCount[sta]++;
-        String name = new String(chars);
-        Feature feature = myGrad.get(name);
-        if (feature == null) {
-            feature = new Feature(template.ft.length);
-            myGrad.put(name, feature);
-        }
-        feature.update(fIndex, sta, 1);
-    }
-
+   
     /**
      * 讲模型写入
      * 

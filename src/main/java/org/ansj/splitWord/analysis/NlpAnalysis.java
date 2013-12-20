@@ -108,7 +108,6 @@ public class NlpAnalysis extends Analysis {
                     if (word.charAt(0) < 256 || word.charAt(word.length() - 1) < 256) {
                         continue;
                     }
-                    
                     learn.addTerm(new NewWord(word, TermNatures.NW, -1, word.length()));
                 }
                 // 进行新词发现

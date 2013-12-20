@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
-import org.ansj.app.crf.model.BayesModel;
 import org.ansj.app.crf.model.Model;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.BigramEntry;

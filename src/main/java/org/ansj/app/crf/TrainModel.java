@@ -2,10 +2,17 @@ package org.ansj.app.crf;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import love.cq.util.IOUtil;
+
+import org.ansj.app.crf.model.CRFModel;
+import org.ansj.app.crf.model.EMMModel;
 import org.ansj.app.crf.model.Model;
+import org.ansj.app.crf.model.Model.MODEL_TYPE;
 
 /**
  * 训练由字构词模型
@@ -19,9 +26,34 @@ public class TrainModel {
 
     private Model model = null;
 
-    public TrainModel(String splitStr, boolean isNature, Model model) {
-        this.splitStr = splitStr;
-        this.model = model;
+    /**
+     * 训练model
+     * @param splitStr 训练文件词语的分隔符
+     * @param templatePath  训练模板的路径
+     * @param modelType 模型类型
+     * @throws IOException  
+     */
+    public TrainModel(String splitStr, String templatePath, MODEL_TYPE modelType)
+                                                                                 throws IOException {
+        init(splitStr,IOUtil.getInputStream(templatePath), modelType);
+    }
+
+    public TrainModel(String splitStr, InputStream templateStream, MODEL_TYPE modelType)
+                                                                                        throws IOException {
+        init(splitStr,templateStream, modelType);
+    }
+
+    private void init(String splitStr,InputStream templateStream, MODEL_TYPE modelType) throws IOException {
+        // TODO Auto-generated method stub
+        this.splitStr = splitStr ;
+        switch (modelType) {
+            case CRF:
+                this.model = new CRFModel(templateStream) ;
+                break;
+            case EMM:
+                this.model = new EMMModel(templateStream);
+                break;
+        }
     }
 
     int lineNum = 0;
@@ -58,4 +90,8 @@ public class TrainModel {
 
     }
 
+    
+    public void saveModel(String path) throws FileNotFoundException, IOException{
+        this.model.writeModel(path) ;
+    }
 }

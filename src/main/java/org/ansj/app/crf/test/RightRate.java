@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.ansj.app.crf.SplitWord;
-import org.ansj.app.crf.model.BayesModel;
 import org.ansj.app.crf.model.Model;
 
 public class RightRate {
