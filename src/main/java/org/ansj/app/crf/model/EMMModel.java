@@ -1,11 +1,16 @@
 package org.ansj.app.crf.model;
 
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.zip.GZIPOutputStream;
 
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Feature;
@@ -19,17 +24,26 @@ import org.ansj.util.MatrixUtil;
  */
 public class EMMModel extends Model {
 
-    public int maxSize = 5000000;
-    public int removeSize = 200000;
+    private double[][] featureTagCount = null;
 
-    public EMMModel(String template) throws IOException {
-        super(template);
+    private double[] tagPos = new double[4];
+
+    private int[] tagCount = new int[4];
+
+    private int maxSize = 5000000;
+
+    private int removeSize = 200000;
+
+    public EMMModel(String templatePath) throws IOException {
+        super(templatePath);
         this.myGrad = new HashMap<String, Feature>();
+        featureTagCount = new double[template.ft.length][TAG_NUM];
     }
 
     public EMMModel(InputStream templateStream) throws IOException {
         super(templateStream);
         this.myGrad = new HashMap<String, Feature>();
+        featureTagCount = new double[template.ft.length][TAG_NUM];
     }
 
     @Override
@@ -146,6 +160,38 @@ public class EMMModel extends Model {
             }
         }
         System.out.println("移除后还剩" + myGrad.size());
+    }
+
+    @Override
+    public void writeModel(String path) throws FileNotFoundException, IOException {
+        // TODO Auto-generated method stub
+        // 计算
+        compute();
+        System.out.println("compute ok now to save model!");
+        // 写模型
+
+        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
+            new GZIPOutputStream(new FileOutputStream(path))));
+
+        // 特征转移率
+        oos.writeObject(status);
+        // 总共的特征数
+        oos.writeInt(myGrad.size());
+        double[] ds = null;
+        for (Entry<String, Feature> entry : myGrad.entrySet()) {
+            oos.writeUTF(entry.getKey());
+            for (int i = 0; i < template.ft.length; i++) {
+                ds = entry.getValue().w[i];
+                for (int j = 0; j < ds.length; j++) {
+                    oos.writeByte(j);
+                    oos.writeFloat((float) ds[j]);
+                }
+                oos.writeByte(-1);
+            }
+        }
+
+        oos.flush();
+        oos.close();
     }
 
 }

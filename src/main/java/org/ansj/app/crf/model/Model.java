@@ -40,13 +40,7 @@ public abstract class Model {
     public static final Element END = new Element('E', S);
     public static final int TAG_NUM = 4;
 
-    public double[][] featureTagCount = null;
-
     protected double[][] status = new double[TAG_NUM][TAG_NUM];
-
-    public double[] tagPos = new double[4];
-
-    public int[] tagCount = new int[4];
 
     protected Map<String, Feature> myGrad;
 
@@ -63,7 +57,6 @@ public abstract class Model {
             template = Template.parse(templatePath);
             parseTemplate(template);
         }
-        featureTagCount = new double[template.ft.length][TAG_NUM];
     }
 
     public Model(InputStream templateStream) throws IOException {
@@ -72,7 +65,6 @@ public abstract class Model {
             template = Template.parse(templateStream);
             parseTemplate(template);
         }
-        featureTagCount = new double[template.ft.length][TAG_NUM];
     }
 
     /**
@@ -94,7 +86,6 @@ public abstract class Model {
         }
     }
 
-   
     /**
      * 讲模型写入
      * 
@@ -102,35 +93,7 @@ public abstract class Model {
      * @throws FileNotFoundException
      * @throws IOException
      */
-    public void writeModel(String path) throws FileNotFoundException, IOException {
-        // 计算
-        compute();
-        System.out.println("compute ok now to save model!");
-        // 写模型
-
-        ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(
-            new GZIPOutputStream(new FileOutputStream(path))));
-
-        // 特征转移率
-        oos.writeObject(status);
-        // 总共的特征数
-        oos.writeInt(myGrad.size());
-        double[] ds = null;
-        for (Entry<String, Feature> entry : myGrad.entrySet()) {
-            oos.writeUTF(entry.getKey());
-            for (int i = 0; i < template.ft.length; i++) {
-                ds = entry.getValue().w[i];
-                for (int j = 0; j < ds.length; j++) {
-                    oos.writeByte(j);
-                    oos.writeFloat((float) ds[j]);
-                }
-                oos.writeByte(-1);
-            }
-        }
-
-        oos.flush();
-        oos.close();
-    }
+    public abstract void writeModel(String path) throws FileNotFoundException, IOException;
 
     /**
      * 模型读取
@@ -169,10 +132,18 @@ public abstract class Model {
                         "you can not to calculate ,this model only use by cut ");
                 }
 
+                @Override
+                public void writeModel(String path) throws FileNotFoundException, IOException {
+                    // TODO Auto-generated method stub
+                    throw new RuntimeException("you can not to save ,this model only use by cut ");
+                }
+
             };
 
             model.smartForest = new SmartForest<double[][]>(0.8);
+
             model.status = (double[][]) ois.readObject();
+
             // 总共的特征数
             double[][] w = null;
             String key = null;

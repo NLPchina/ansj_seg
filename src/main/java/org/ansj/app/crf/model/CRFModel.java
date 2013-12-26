@@ -1,13 +1,16 @@
 package org.ansj.app.crf.model;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Feature;
+import org.ansj.app.crf.pojo.TempFeature;
 
 /**
  * 伟大的crf model
@@ -51,7 +54,7 @@ public class CRFModel extends Model {
         return sum;
     }
 
-    private double logsumexp(double[] A) {
+    private double softMax(double[] A) {
         // find max A
         double max = Double.MIN_VALUE;
 
@@ -99,8 +102,24 @@ public class CRFModel extends Model {
         //        double lik = dot(grad, w) - norm;
     }
 
-    protected void updateFeature(List<Element> list, int index) {
+    private void updateFeature(List<Element> list, int index) {
         // TODO Auto-generated method stub
+        List<TempFeature> tempFeatures = this.getTempFeatures(list, index);
+
+        for (TempFeature tempFeature : tempFeatures) {
+            updateFeature(lineGrad, tempFeature.index, tempFeature.sta, tempFeature.name);
+        }
+    }
+
+    /**
+     * 得到此index所有featrue
+     * @param list
+     * @param index
+     * @return
+     */
+    private List<TempFeature> getTempFeatures(List<Element> list, int index) {
+        // TODO Auto-generated method stub
+        List<TempFeature> tempFeatures = new ArrayList<TempFeature>(template.ft.length);
         int sta = list.get(index).getTag();
         char[] chars = null;
         for (int i = 0; i < template.ft.length; i++) {
@@ -108,33 +127,37 @@ public class CRFModel extends Model {
             for (int j = 0; j < chars.length; j++) {
                 chars[j] = list.get(index + template.ft[i][j]).name;
             }
-            updateFeature(i, sta, chars);
+            tempFeatures.add(new TempFeature(chars, i, sta));
         }
+        return tempFeatures;
     }
 
-    protected void updateFeature(int fIndex, int sta, char... chars) {
+    private void updateFeature(Map<String, Feature> grad, int fIndex, int sta, String name) {
         // TODO Auto-generated method stub
-        allFeatureCount++;
-        featureTagCount[fIndex][sta]++;
-        tagCount[sta]++;
-        String name = new String(chars);
-        Feature feature = lineGrad.get(name);
+        Feature feature = grad.get(name);
         if (feature == null) {
             feature = new Feature(template.ft.length);
-            lineGrad.put(name, feature);
+            grad.put(name, feature);
         }
         feature.update(fIndex, sta, 1);
     }
 
-    private double calcBack(int index, int sta, List<Element> list) {
-        // b[i,r] = logsumexp([
-        // calc_b(x, i+1, k, w, e, b) + calc_e(x, i, r, k, w, e)
-        // for k in prev_states])
-
+    private double calcBack(int index, int tag, List<Element> list) {
+        if (index >= list.size()) {
+            return 0;
+        }
+        calcBack(index + 1, list.get(index + 1).getTag(), list);
+        
+        List<TempFeature> tempFeatures = this.getTempFeatures(list, index) ;
+        
+        
         return 0;
     }
+    
 
-    private double calcE(int index, int sta, List<Element> list) {
-        return 0;
+    @Override
+    public void writeModel(String path) throws FileNotFoundException, IOException {
+        // TODO Auto-generated method stub
+
     }
 }

@@ -15,6 +15,8 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.Analyzer.TokenStreamComponents;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.PrefixQuery;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -26,21 +28,23 @@ import love.cq.util.IOUtil;
  */
 public class AppTest {
     public static void main(String[] args) throws IOException {
-        Set<String> filter = new HashSet<String>() ;
-        
-        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/home/ansj/公共的/stopLibrary.dic"))) ;
-        
-        String temp = null ;
-        
-        while((temp=br.readLine())!=null){
-            filter.add(temp) ;
-        }
-        
-        StringReader reader = new StringReader("龙虎胶囊 6 * 7cm") ;
-        Tokenizer tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), reader, filter, false);
-        while(tokenizer.incrementToken()){
-            CharTermAttribute attribute = tokenizer.getAttribute(CharTermAttribute.class) ;
-            System.out.println(attribute);
-        }
+//        Set<String> filter = new HashSet<String>() ;
+//        
+//        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream("/home/ansj/公共的/stopLibrary.dic"))) ;
+//        
+//        String temp = null ;
+//        
+//        while((temp=br.readLine())!=null){
+//            filter.add(temp) ;
+//        }
+//        
+//        StringReader reader = new StringReader("龙虎胶囊 6 * 7cm") ;
+//        Tokenizer tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), reader, filter, false);
+//        while(tokenizer.incrementToken()){
+//            CharTermAttribute attribute = tokenizer.getAttribute(CharTermAttribute.class) ;
+//            System.out.println(attribute);
+//        }
+        PrefixQuery pq = new PrefixQuery(new Term("name","中国")) ;
+        System.out.println(pq);
     }
 }
