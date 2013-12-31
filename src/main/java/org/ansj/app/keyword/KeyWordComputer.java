@@ -9,7 +9,6 @@ import java.util.TreeSet;
 
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 
 public class KeyWordComputer {
@@ -17,7 +16,6 @@ public class KeyWordComputer {
     private int nKeyword = 5;
 
     public KeyWordComputer() {
-        nKeyword = 5;
     }
 
     /**
@@ -39,7 +37,6 @@ public class KeyWordComputer {
 
         LearnTool learn = new LearnTool();
         List<Term> parse = NlpAnalysis.parse(content, learn);
-        parse = NlpAnalysis.parse(content, learn);
 
         for (Term term : parse) {
             int weight = getWeight(term, content.length(), titleLength);
@@ -57,7 +54,7 @@ public class KeyWordComputer {
         TreeSet<Keyword> treeSet = new TreeSet<Keyword>(tm.values());
 
         ArrayList<Keyword> arrayList = new ArrayList<Keyword>(treeSet);
-        if (treeSet.size() < nKeyword) {
+        if (treeSet.size() <= nKeyword) {
             return arrayList;
         } else {
             return arrayList.subList(0, nKeyword);
