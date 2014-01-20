@@ -1,6 +1,6 @@
 package org.ansj.app.crf.pojo;
 
-import org.ansj.app.crf.model.Model;
+import org.ansj.app.crf.Model;
 
 public class Element {
     public char name;
@@ -13,74 +13,75 @@ public class Element {
     public int[] from;
 
     public Element(char name) {
-        this.name = name;
+	this.name = name;
     }
 
     public Element(Character name, int tag) {
-        this.name = name;
-        this.tag = tag;
+	this.name = name;
+	this.tag = tag;
     }
 
     public int getTag() {
-        return tag;
+	return tag;
     }
 
     public Element updateTag(int tag) {
-        this.tag = tag;
-        return this;
+	this.tag = tag;
+	return this;
     }
-    
+
     public Element updateNature(String nature) {
-        this.nature = nature;
-        return this;
+	this.nature = nature;
+	return this;
     }
 
     public void len() {
-        len++;
+	len++;
     }
 
     public String toString() {
-        // sbme
+	// sbme
 
-        return name + "/" + getTagName(tag) + "/" + len;
-    }
-
-    public static char getTagName(int tag) {
-        switch (tag) {
-            case 0:
-                return 'S';
-            case 1:
-                return 'B';
-            case 2:
-                return 'M';
-            case 3:
-                return 'E';
-            default:
-                return '?';
-        }
+	return name + "/" + "/" + len;
     }
 
     public void maxFrom(Model model, Element element) {
-        // TODO Auto-generated method stub
-        if (from == null) {
-            from = new int[this.tagScore.length];
-        }
-        double[] pTagScore = element.tagScore;
-        double rate = 0;
-        for (int i = 0; i < this.tagScore.length; i++) {
-            double maxValue = 0;
-            for (int j = 0; j < pTagScore.length; j++) {
-                if ((rate = model.tagRate(j, i)) == 0) {
-                    continue;
-                }
-                double value = (pTagScore[j] + tagScore[i]) + rate;
-                if (value > maxValue) {
-                    maxValue = value;
-                    from[i] = j;
-                }
-            }
-            tagScore[i] = maxValue;
-        }
+	// TODO Auto-generated method stub
+	if (from == null) {
+	    from = new int[this.tagScore.length];
+	}
+	double[] pTagScore = element.tagScore;
+	double rate = 0;
+	for (int i = 0; i < this.tagScore.length; i++) {
+	    double maxValue = 0;
+	    for (int j = 0; j < pTagScore.length; j++) {
+		if ((rate = model.tagRate(j, i)) == 0) {
+		    continue;
+		}
+		double value = (pTagScore[j] + tagScore[i]) + rate;
+		if (value > maxValue) {
+		    maxValue = value;
+		    from[i] = j;
+		}
+	    }
+	    tagScore[i] = maxValue;
+	}
+    }
+
+    public static char getTagName(int tag) {
+	// TODO Auto-generated method stub
+	switch (tag) {
+	case 0:
+	    return 'S';
+	case 1:
+	    return 'B';
+	case 2:
+	    return 'M';
+	case 3:
+	    return 'E';
+	default:
+	    return '?';
+	}
     }
 
 }

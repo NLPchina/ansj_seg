@@ -9,13 +9,14 @@ import org.ansj.app.keyword.Keyword;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class AnsjServlet {
 
     private enum AnsjMethod {
-        TO, NLP, BASE, KEYWORD
+        TO, NLP, BASE, KEYWORD ,INDEX
     }
 
     public static String processRequest(String input, String strMethod, String strNature)
@@ -42,6 +43,9 @@ public class AnsjServlet {
             case KEYWORD:
                 KeyWordComputer keyWordComputer = new KeyWordComputer(10);
                 keyWords = keyWordComputer.computeArticleTfidf(input);
+                break;
+            case INDEX:
+        	terms = IndexAnalysis.parse(input);
                 break;
             default:
                 terms = BaseAnalysis.parse(input);

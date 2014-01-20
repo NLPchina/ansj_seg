@@ -85,7 +85,6 @@ public class AnsjServer {
             // TODO Auto-generated method stub
             InputStream resourceAsStream = null;
             try {
-                path = path.substring(1,path.length()) ;
                 resourceAsStream = this.getClass().getResourceAsStream(path);
                 resourceAsStream.available();
                 return IOUtil.getContent(resourceAsStream, IOUtil.UTF8);

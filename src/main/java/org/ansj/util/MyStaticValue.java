@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
-import org.ansj.app.crf.model.Model;
+import org.ansj.app.crf.Model;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.BigramEntry;
 import org.ansj.library.InitDictionary;
@@ -31,18 +31,18 @@ public class MyStaticValue {
 
     public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
-    //是否开启人名识别
+    // 是否开启人名识别
     public static boolean isNameRecognition = true;
 
     private static final Lock LOCK = new ReentrantLock();
 
-    //是否开启数字识别
+    // 是否开启数字识别
     public static boolean isNumRecognition = true;
 
-    //是否数字和量词合并
+    // 是否数字和量词合并
     public static boolean isQuantifierRecognition = true;
 
-    //crf 模型
+    // crf 模型
     private static Model model = null;
 
     /**
@@ -53,18 +53,18 @@ public class MyStaticValue {
     public static String ambiguityLibrary = "library/ambiguity.dic";
 
     static {
-        /**
-         * 配置文件变量
-         */
-        try {
-            ResourceBundle rb = ResourceBundle.getBundle("library");
-            if (rb.containsKey("userLibrary"))
-                userLibrary = rb.getString("userLibrary");
-            if (rb.containsKey("ambiguityLibrary"))
-                ambiguityLibrary = rb.getString("ambiguityLibrary");
-        } catch (Exception e) {
-            LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
-        }
+	/**
+	 * 配置文件变量
+	 */
+	try {
+	    ResourceBundle rb = ResourceBundle.getBundle("library");
+	    if (rb.containsKey("userLibrary"))
+		userLibrary = rb.getString("userLibrary");
+	    if (rb.containsKey("ambiguityLibrary"))
+		ambiguityLibrary = rb.getString("ambiguityLibrary");
+	} catch (Exception e) {
+	    LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
+	}
     }
 
     /**
@@ -73,7 +73,7 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getPersonReader() {
-        return DicReader.getReader("person/person.dic");
+	return DicReader.getReader("person/person.dic");
     }
 
     /**
@@ -82,7 +82,7 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getCompanReader() {
-        return DicReader.getReader("company/company.data");
+	return DicReader.getReader("company/company.data");
     }
 
     /**
@@ -91,7 +91,7 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getNewWordReader() {
-        return DicReader.getReader("newWord/new_word_freq.dic");
+	return DicReader.getReader("newWord/new_word_freq.dic");
     }
 
     /**
@@ -100,8 +100,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getArraysReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("arrays.dic");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("arrays.dic");
     }
 
     /**
@@ -110,8 +110,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getNumberReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("numberLibrary.dic");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("numberLibrary.dic");
     }
 
     /**
@@ -120,8 +120,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getEnglishReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("englishLibrary.dic");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("englishLibrary.dic");
     }
 
     /**
@@ -130,8 +130,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getNatureMapReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("nature/nature.map");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("nature/nature.map");
     }
 
     /**
@@ -140,8 +140,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getNatureTableReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("nature/nature.table");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("nature/nature.table");
     }
 
     /**
@@ -150,8 +150,8 @@ public class MyStaticValue {
      * @return
      */
     public static BufferedReader getPersonFreqReader() {
-        // TODO Auto-generated method stub
-        return DicReader.getReader("person/name_freq.dic");
+	// TODO Auto-generated method stub
+	return DicReader.getReader("person/name_freq.dic");
     }
 
     /**
@@ -161,31 +161,31 @@ public class MyStaticValue {
      */
     @SuppressWarnings("unchecked")
     public static Map<String, int[][]> getPersonFreqMap() {
-        InputStream inputStream = null;
-        ObjectInputStream objectInputStream = null;
-        Map<String, int[][]> map = new HashMap<String, int[][]>(0);
-        try {
-            inputStream = DicReader.getInputStream("person/asian_name_freq.data");
-            objectInputStream = new ObjectInputStream(inputStream);
-            map = (Map<String, int[][]>) objectInputStream.readObject();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            try {
-                if (objectInputStream != null)
-                    objectInputStream.close();
-                if (inputStream != null)
-                    inputStream.close();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return map;
+	InputStream inputStream = null;
+	ObjectInputStream objectInputStream = null;
+	Map<String, int[][]> map = new HashMap<String, int[][]>(0);
+	try {
+	    inputStream = DicReader.getInputStream("person/asian_name_freq.data");
+	    objectInputStream = new ObjectInputStream(inputStream);
+	    map = (Map<String, int[][]>) objectInputStream.readObject();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (ClassNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    try {
+		if (objectInputStream != null)
+		    objectInputStream.close();
+		if (inputStream != null)
+		    inputStream.close();
+	    } catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	}
+	return map;
     }
 
     /**
@@ -194,89 +194,88 @@ public class MyStaticValue {
      * @return
      */
     public static BigramEntry[][] getBigramTables() {
-        BigramEntry[][] result = new BigramEntry[0][0];
-        BufferedReader reader = null;
-        try {
-            reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8");
-            String temp = null;
-            String[] strs = null;
-            result = new BigramEntry[InitDictionary.arrayLength][0];
-            int fromId = 0;
-            int toId = 0;
-            int freq = 0;
-            BigramEntry to = null;
-            while ((temp = reader.readLine()) != null) {
-                if (StringUtil.isBlank(temp)) {
-                    continue;
-                }
+	BigramEntry[][] result = new BigramEntry[0][0];
+	BufferedReader reader = null;
+	try {
+	    reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8");
+	    String temp = null;
+	    String[] strs = null;
+	    result = new BigramEntry[InitDictionary.arrayLength][0];
+	    int fromId = 0;
+	    int toId = 0;
+	    int freq = 0;
+	    BigramEntry to = null;
+	    while ((temp = reader.readLine()) != null) {
+		if (StringUtil.isBlank(temp)) {
+		    continue;
+		}
 
-                strs = temp.split("\t");
-                freq = Integer.parseInt(strs[1]);
-                strs = strs[0].split("@");
-                if ((fromId = InitDictionary.getWordId(strs[0])) <= 0) {
-                    fromId = 0;
-                }
-                if ((toId = InitDictionary.getWordId(strs[1])) <= 0) {
-                    toId = -1;
-                }
+		strs = temp.split("\t");
+		freq = Integer.parseInt(strs[1]);
+		strs = strs[0].split("@");
+		if ((fromId = InitDictionary.getWordId(strs[0])) <= 0) {
+		    fromId = 0;
+		}
+		if ((toId = InitDictionary.getWordId(strs[1])) <= 0) {
+		    toId = -1;
+		}
 
-                to = new BigramEntry(toId, freq);
-                int index = Arrays.binarySearch(result[fromId], to);
-                if (index > -1) {
-                    continue;
-                } else {
-                    BigramEntry[] newBranches = new BigramEntry[result[fromId].length + 1];
-                    int insert = -(index + 1);
-                    System.arraycopy(result[fromId], 0, newBranches, 0, insert);
-                    System.arraycopy(result[fromId], insert, newBranches, insert + 1,
-                        result[fromId].length - insert);
-                    newBranches[insert] = to;
-                    result[fromId] = newBranches;
-                }
+		to = new BigramEntry(toId, freq);
+		int index = Arrays.binarySearch(result[fromId], to);
+		if (index > -1) {
+		    continue;
+		} else {
+		    BigramEntry[] newBranches = new BigramEntry[result[fromId].length + 1];
+		    int insert = -(index + 1);
+		    System.arraycopy(result[fromId], 0, newBranches, 0, insert);
+		    System.arraycopy(result[fromId], insert, newBranches, insert + 1, result[fromId].length - insert);
+		    newBranches[insert] = to;
+		    result[fromId] = newBranches;
+		}
 
-            }
-        } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            IOUtil.close(reader);
-        }
-        return result;
+	    }
+	} catch (NumberFormatException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (UnsupportedEncodingException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    IOUtil.close(reader);
+	}
+	return result;
     }
 
     /**
      * 得到默认的模型
+     * 
      * @return
      */
     public static Model getDefaultModel() {
-        // TODO Auto-generated method stub
-        if (model != null) {
-            return model;
-        }
-        LOCK.lock();
-        if (model != null) {
-            return model;
-        }
+	// TODO Auto-generated method stub
+	if (model != null) {
+	    return model;
+	}
+	LOCK.lock();
+	if (model != null) {
+	    return model;
+	}
 
-        try {
-            LIBRARYLOG.info("begin init crf model!");
+	try {
+	    LIBRARYLOG.info("begin init crf model!");
 
-            model = Model.loadModel(DicReader.getInputStream("crf/template.ftl"),
-                DicReader.getInputStream("crf/bayes.model"));
-            LIBRARYLOG.info("load crf model ok!");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } finally {
-            LOCK.unlock();
-        }
+	    model = Model.loadModel(DicReader.getInputStream("crf/crf.model"));
+	    LIBRARYLOG.info("load crf model ok!");
+	} catch (Exception e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    LOCK.unlock();
+	}
 
-        return model;
+	return model;
     }
 }
