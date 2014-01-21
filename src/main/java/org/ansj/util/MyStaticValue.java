@@ -17,6 +17,7 @@ import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
 import org.ansj.app.crf.Model;
+import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.BigramEntry;
 import org.ansj.library.InitDictionary;
@@ -43,7 +44,9 @@ public class MyStaticValue {
     public static boolean isQuantifierRecognition = true;
 
     // crf 模型
-    private static Model model = null;
+    private static SplitWord minSplitWord = null;
+
+    private static SplitWord bigSplitWord = null;
 
     /**
      * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
@@ -254,21 +257,20 @@ public class MyStaticValue {
      * 
      * @return
      */
-    public static Model getDefaultModel() {
+    public static SplitWord getMinSplitWord() {
 	// TODO Auto-generated method stub
-	if (model != null) {
-	    return model;
+	if (minSplitWord != null) {
+	    return minSplitWord;
 	}
 	LOCK.lock();
-	if (model != null) {
-	    return model;
+	if (minSplitWord != null) {
+	    return minSplitWord;
 	}
 
 	try {
-	    LIBRARYLOG.info("begin init crf model!");
-
-	    model = Model.loadModel(DicReader.getInputStream("crf/crf.model"));
-	    LIBRARYLOG.info("load crf model ok!");
+	    LIBRARYLOG.info("begin init crf min model!");
+	    minSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/min.model")));
+	    LIBRARYLOG.info("load crf model min ok!");
 	} catch (Exception e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
@@ -276,6 +278,35 @@ public class MyStaticValue {
 	    LOCK.unlock();
 	}
 
-	return model;
+	return minSplitWord;
+    }
+
+    /**
+     * 得到默认的模型
+     * 
+     * @return
+     */
+    public static SplitWord getBigSplitWord() {
+	// TODO Auto-generated method stub
+	if (bigSplitWord != null) {
+	    return bigSplitWord;
+	}
+	LOCK.lock();
+	if (bigSplitWord != null) {
+	    return bigSplitWord;
+	}
+
+	try {
+	    LIBRARYLOG.info("begin init crf big model!");
+	    bigSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/big.model")));
+	    LIBRARYLOG.info("load crf crf big ok!");
+	} catch (Exception e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} finally {
+	    LOCK.unlock();
+	}
+
+	return bigSplitWord;
     }
 }

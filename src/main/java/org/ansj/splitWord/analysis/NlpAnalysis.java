@@ -32,16 +32,14 @@ public class NlpAnalysis extends Analysis {
 
     private LearnTool learn = null;
 
-    private Model model = null;
-
     private SplitWord sw = null;
+
+    private static SplitWord defaultSlitWord = MyStaticValue.getBigSplitWord();
 
     public NlpAnalysis(Reader reader, Model model, LearnTool learn) {
 	super(reader);
-	if (model == null) {
-	    this.model = MyStaticValue.getDefaultModel();
-	} else {
-	    this.model = model;
+	if (model != null) {
+	    sw = new SplitWord(model);
 	}
 
 	if (learn == null) {
@@ -59,10 +57,8 @@ public class NlpAnalysis extends Analysis {
      * @param templatePath
      */
     private NlpAnalysis(Model model, LearnTool learn) {
-	if (model == null) {
-	    this.model = MyStaticValue.getDefaultModel();
-	} else {
-	    this.model = model;
+	if (model != null) {
+	    sw = new SplitWord(model);
 	}
 	if (learn == null) {
 	    this.learn = new LearnTool();
@@ -75,7 +71,7 @@ public class NlpAnalysis extends Analysis {
     protected List<Term> getResult(final Graph graph) {
 	// TODO Auto-generated method stub
 	if (sw == null) {
-	    sw = new SplitWord(model);
+	    sw = defaultSlitWord;
 	}
 
 	Merger merger = new Merger() {
@@ -94,10 +90,6 @@ public class NlpAnalysis extends Analysis {
 		new NatureRecognition(result).recognition();
 
 		learn.learn(graph);
-
-		// 用户自定义词典的识别
-		new UserDefineRecognition(graph.terms).recognition();
-		graph.walkPathByScore();
 
 		// 通过crf分词
 		List<String> words = sw.cut(graph.str);
@@ -118,6 +110,10 @@ public class NlpAnalysis extends Analysis {
 		// 进行新词发现
 		new NewWordRecognition(graph.terms, learn).recognition();
 		graph.rmLittlePathByScore();
+		graph.walkPathByScore();
+
+		// 用户自定义词典的识别
+		new UserDefineRecognition(graph.terms).recognition();
 		graph.walkPathByScore();
 
 		// 优化后重新获得最优路径

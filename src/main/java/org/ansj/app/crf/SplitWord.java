@@ -35,7 +35,6 @@ public class SplitWord {
      */
     public SplitWord(Model model) {
 	this.model = model;
-
 	tagConver = new int[model.template.tagNum];
 	revTagConver = new int[model.template.tagNum];
 	Set<Entry<String, Integer>> entrySet = model.template.statusMap.entrySet();

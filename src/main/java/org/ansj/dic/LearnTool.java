@@ -47,10 +47,6 @@ public class LearnTool {
      * @param graph
      */
     public void learn(Graph graph) {
-        // 机构名识别
-//        if (isCompany) {
-//            findCompany(graph);
-//        }
 
         // 亚洲人名识别
         if (isAsianName) {

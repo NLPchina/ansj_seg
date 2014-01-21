@@ -43,6 +43,10 @@ body {
 					$("#form1").attr("action","../?method=index") ;
 					$("#form1").attr("target","INDEX") ;
 					$("#form1").submit();
+					
+					$("#form1").attr("action","../?method=min_nlp") ;
+					$("#form1").attr("target","MIN_NLP") ;
+					$("#form1").submit();
 				});
 
 			});
@@ -80,6 +84,8 @@ body {
 			<iframe name="KEYWORD" style="width: 100%"></iframe>
 			<h4>NLP 分词方式</h4>
 			<iframe name="NLP" style="width: 100%"></iframe>
+			<h4>MIN_NLP 分词方式</h4>
+			<iframe name="MIN_NLP" style="width: 100%"></iframe>
 			<h4>基本 分词方式</h4>
 			<iframe name="TO" style="width: 100%"></iframe>
 			<h4>索引 分词方式</h4>

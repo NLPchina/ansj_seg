@@ -16,7 +16,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 public class AnsjServlet {
 
     private enum AnsjMethod {
-        TO, NLP, BASE, KEYWORD ,INDEX
+        TO, NLP, BASE, KEYWORD ,INDEX ,MIN_NLP
     }
 
     public static String processRequest(String input, String strMethod, String strNature)
@@ -40,6 +40,12 @@ public class AnsjServlet {
             case NLP:
                 terms = NlpAnalysis.parse(input);
                 break;
+            case MIN_NLP:
+                terms = NlpAnalysis.parse(input);
+                String str = terms.toString() ;
+                if(str.length()>4){
+                    return str.substring(1,str.length()-2) ;
+                }
             case KEYWORD:
                 KeyWordComputer keyWordComputer = new KeyWordComputer(10);
                 keyWords = keyWordComputer.computeArticleTfidf(input);
