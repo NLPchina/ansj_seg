@@ -3,9 +3,9 @@ package org.ansj.recognition;
 import love.cq.domain.SmartForest;
 
 import org.ansj.dic.LearnTool;
+import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.TermUtil;
 
 /**
@@ -28,7 +28,7 @@ public class NewWordRecognition {
 
 	// private int offe = -1;
 	// private int endOffe = -1;
-	private TermNatures tempNatures;
+	private Nature tempNature;
 
 	private Term from;
 
@@ -71,8 +71,8 @@ public class NewWordRecognition {
 			// 循环查找添加
 			term = terms[i];
 			sb.append(term.getName());
-			if(branch.getStatus()==2){
-				term.selfScore = branch.getParam().getScore() ;
+			if (branch.getStatus() == 2) {
+				term.selfScore = branch.getParam().getScore();
 			}
 			boolean flag = true;
 			while (flag) {
@@ -90,14 +90,14 @@ public class NewWordRecognition {
 				case 2:
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
-					tempNatures = branch.getParam().getNature();
+					tempNature = branch.getParam().getNature();
 					to = term.getTo();
 					makeNewTerm();
 					continue;
 				case 3:
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
-					tempNatures = branch.getParam().getNature();
+					tempNature = branch.getParam().getNature();
 					to = term.getTo();
 					makeNewTerm();
 					flag = false;
@@ -113,12 +113,13 @@ public class NewWordRecognition {
 
 	private void makeNewTerm() {
 		// TODO Auto-generated method stub
-		Term term = new Term(sb.toString(), offe, tempNatures);
+		Term term = new Term(sb.toString(), offe, tempNature.natureStr , 1);
 		term.selfScore = score;
-		term.setNature(tempNatures.termNatures[0].nature) ;
+		term.setNature(tempNature);
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
 		TermUtil.insertTerm(terms, term);
+		TermUtil.parseNatureAndSubTerm(term);
 	}
 
 	/**
@@ -126,7 +127,7 @@ public class NewWordRecognition {
 	 */
 	private void reset() {
 		offe = -1;
-		tempNatures = null;
+		tempNature = null;
 		branch = forest;
 		score = 0;
 		sb = new StringBuilder();

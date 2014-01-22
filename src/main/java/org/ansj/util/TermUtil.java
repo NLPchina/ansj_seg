@@ -1,9 +1,14 @@
 package org.ansj.util;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.NatureLibrary;
+import org.ansj.library.company.CompanyAttrLibrary;
+import org.ansj.recognition.ForeignPersonRecognition;
+import org.ansj.recognition.NatureRecognition;
 
 /**
  * term的操作类
@@ -44,11 +49,11 @@ public class TermUtil {
 		Term temp = terms[term.getOffe()];
 		if (temp == null) {
 			terms[term.getOffe()] = term;
-		}else{
-			if(temp.getNext()!=null){
-				term.setNext(temp.getNext()) ;
+		} else {
+			if (temp.getNext() != null) {
+				term.setNext(temp.getNext());
 			}
-			temp.setNext(term) ;
+			temp.setNext(term);
 		}
 	}
 
@@ -75,5 +80,57 @@ public class TermUtil {
 		from.setTo(to);
 		to.setFrom(from);
 		return from;
+	}
+
+	private static final HashMap<String, int[]> companyMap = CompanyAttrLibrary.getCompanyMap();
+
+	/**
+	 * 得到细颗粒度的分词，并且确定词性
+	 * 
+	 * @return 返回是null说明已经是最细颗粒度
+	 */
+	public static void parseNatureAndSubTerm(Term term) {
+		
+		String name = term.getName() ; 
+		int offe = term.getOffe() ;
+
+		if (name.length() <= 3) {
+			return  ;
+		}
+		
+		List<String> words = MyStaticValue.getMinSplitWord().cut(name);
+
+		if (words.size() == 1) {
+			return ;
+		}
+
+		//是否是外国人名
+		if(ForeignPersonRecognition.isFName(name)){
+			term.setNature(NatureLibrary.getNature("nrf")) ;
+			return ;
+		}
+		
+		
+		List<Term> subTerm = NatureRecognition.recognition(words, offe);
+		
+		
+		//判断是否是机构名
+		term.setSubTerm(subTerm) ;
+		Term first = subTerm.get(0) ;
+		Term last = subTerm.get(subTerm.size()-1)  ;
+		int[] is = companyMap.get(first.getName()) ;
+		int all = 0 ;
+//		if(is!=null){
+//			all+=is[0] ;
+//		}
+		is = companyMap.get(last.getName()) ;
+		if(is!=null){
+			all+=is[1] ;
+		}
+		
+		if(all>1000){
+			term.setNature(NatureLibrary.getNature("nt")) ;
+			return ;
+		}
 	}
 }

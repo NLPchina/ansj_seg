@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import love.cq.domain.Branch;
 import love.cq.domain.Forest;
 import love.cq.domain.Value;
 import love.cq.domain.WoodInterface;

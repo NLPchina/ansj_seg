@@ -9,14 +9,10 @@ import java.util.Set;
 import love.cq.util.StringUtil;
 
 import org.ansj.dic.DicReader;
-import org.ansj.domain.CompanyNatureAttr;
-import org.ansj.domain.NewWordNatureAttr;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.company.CompanyAttrLibrary;
 import org.ansj.library.name.PersonAttrLibrary;
-import org.ansj.library.newWord.NewWordAttrLibrary;
 import org.ansj.util.MyStaticValue;
 
 public class InitDictionary {
@@ -112,14 +108,6 @@ public class InitDictionary {
 		HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
 		PersonNatureAttr personAttr = null;
 
-		/**
-		 * 机构名识别必备的
-		 */
-		HashMap<String, CompanyNatureAttr> companyMap = new CompanyAttrLibrary().getCompanyMap();
-		CompanyNatureAttr companyAttr = null;
-
-		HashMap<String, NewWordNatureAttr> newWordMap = new NewWordAttrLibrary().getNewWordMap();
-		NewWordNatureAttr newWordAttr = null;
 
 		/**
 		 * 下面开始加载词典
@@ -145,17 +133,6 @@ public class InitDictionary {
 				// 判断是否是人名属性
 				if ((personAttr = personMap.get(strs[1])) != null) {
 					tn.setPersonNatureAttr(personAttr);
-				}
-				// 判断是否是地名属性
-				if ((companyAttr = companyMap.get(strs[1])) != null) {
-					tn.setCompanyAttr(companyAttr);
-				}
-
-				// 判断是否是新词属性
-				if ((newWordAttr = newWordMap.get(strs[1])) != null) {
-					//更新成词的概率
-					newWordAttr.updateAll(tn.allFreq);
-					tn.setNewWordAttr(newWordAttr);
 				}
 
 				termNatures[num] = tn;
@@ -186,28 +163,6 @@ public class InitDictionary {
 			}
 		}
 
-		// 机构词性补录
-		Set<Entry<String, CompanyNatureAttr>> cnSet = companyMap.entrySet();
-		for (Entry<String, CompanyNatureAttr> entry : cnSet) {
-			if (entry.getKey().length() == 1) {
-				c = entry.getKey().charAt(0);
-				if (status[c] > 1) {
-					continue;
-				}
-				if (status[c] == 0) {
-					base[c] = c;
-					check[c] = -1;
-					status[c] = 3;
-					words[c] = entry.getKey();
-				}
-
-				if ((tn = termNatures[c]) == null) {
-					tn = new TermNatures(TermNature.NULL);
-				}
-				tn.setCompanyAttr(entry.getValue());
-				termNatures[c] = tn;
-			}
-		}
 		// 简繁体字体转换
 		BufferedReader reader2 = DicReader.getReader("jianFan.dic");
 		while ((temp = reader2.readLine()) != null) {

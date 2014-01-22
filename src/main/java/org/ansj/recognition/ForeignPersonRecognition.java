@@ -11,6 +11,7 @@ import love.cq.util.StringUtil;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.NatureLibrary;
 import org.ansj.util.TermUtil;
 
 /**
@@ -113,6 +114,7 @@ public class ForeignPersonRecognition {
 		return flag;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void reset() {
 		// TODO Auto-generated method stub
 		tempList.clear();
@@ -179,7 +181,7 @@ public class ForeignPersonRecognition {
 				for (Term temp : tempList) {
 					sb.append(temp.getName());
 				}
-				all.add(new NewWord(sb.toString(), TermNatures.NR, -1, 1));
+				all.add(new NewWord(sb.toString(), NatureLibrary.getNature("nrf"), -sb.length()));
 				reset();
 			}
 		}

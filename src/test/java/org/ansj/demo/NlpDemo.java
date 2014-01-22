@@ -27,8 +27,6 @@ public class NlpDemo {
 		
 		//关闭人名识别
 		learn.isAsianName = false ;
-		//关闭机构名识别
-		learn.isCompany= false ;
 		//关闭外国人名识别
 		learn.isForeignName=false ;
 		

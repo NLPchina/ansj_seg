@@ -11,9 +11,10 @@ import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
 import org.ansj.library.InitDictionary;
+import org.ansj.library.NatureLibrary;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -30,128 +31,130 @@ import org.ansj.util.MyStaticValue;
  */
 public class NlpAnalysis extends Analysis {
 
-    private LearnTool learn = null;
+	private LearnTool learn = null;
 
-    private SplitWord sw = null;
+	private SplitWord sw = null;
 
-    private static SplitWord defaultSlitWord = MyStaticValue.getBigSplitWord();
+	private static SplitWord defaultSlitWord = MyStaticValue.getBigSplitWord();
 
-    public NlpAnalysis(Reader reader, Model model, LearnTool learn) {
-	super(reader);
-	if (model != null) {
-	    sw = new SplitWord(model);
+	public NlpAnalysis(Reader reader, Model model, LearnTool learn) {
+		super(reader);
+		if (model != null) {
+			sw = new SplitWord(model);
+		}
+
+		if (learn == null) {
+			this.learn = new LearnTool();
+		} else {
+			this.learn = learn;
+		}
 	}
 
-	if (learn == null) {
-	    this.learn = new LearnTool();
-	} else {
-	    this.learn = learn;
-	}
-    }
-
-    /**
-     * 用户自定义的model，
-     * 
-     * @param reader
-     * @param modelPath
-     * @param templatePath
-     */
-    private NlpAnalysis(Model model, LearnTool learn) {
-	if (model != null) {
-	    sw = new SplitWord(model);
-	}
-	if (learn == null) {
-	    this.learn = new LearnTool();
-	} else {
-	    this.learn = learn;
-	}
-    }
-
-    @Override
-    protected List<Term> getResult(final Graph graph) {
-	// TODO Auto-generated method stub
-	if (sw == null) {
-	    sw = defaultSlitWord;
+	/**
+	 * 用户自定义的model，
+	 * 
+	 * @param reader
+	 * @param modelPath
+	 * @param templatePath
+	 */
+	private NlpAnalysis(Model model, LearnTool learn) {
+		if (model != null) {
+			sw = new SplitWord(model);
+		}
+		if (learn == null) {
+			this.learn = new LearnTool();
+		} else {
+			this.learn = learn;
+		}
 	}
 
-	Merger merger = new Merger() {
-	    @Override
-	    public List<Term> merger() {
+	@Override
+	protected List<Term> getResult(final Graph graph) {
 		// TODO Auto-generated method stub
-		graph.walkPath();
-
-		// 数字发现
-		if (graph.hasNum) {
-		    NumRecognition.recognition(graph.terms);
+		if (sw == null) {
+			sw = defaultSlitWord;
 		}
 
-		// 词性标注
-		List<Term> result = getResult();
-		new NatureRecognition(result).recognition();
+		Merger merger = new Merger() {
+			@Override
+			public List<Term> merger() {
+				// TODO Auto-generated method stub
+				graph.walkPath();
 
-		learn.learn(graph);
+				// 数字发现
+				if (graph.hasNum) {
+					NumRecognition.recognition(graph.terms);
+				}
 
-		// 通过crf分词
-		List<String> words = sw.cut(graph.str);
+				// 词性标注
+				List<Term> result = getResult();
+				new NatureRecognition(result).recognition();
 
-		for (String word : words) {
-		    if (word.length() == 1 || word.endsWith(".") || StringUtil.isBlank(word)) {
-			continue;
-		    }
-		    if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
-			continue;
-		    }
+				learn.learn(graph);
 
-		    if (word.charAt(0) < 256 || word.charAt(word.length() - 1) < 256) {
-			continue;
-		    }
-		    learn.addTerm(new NewWord(word, TermNatures.NW, -1, word.length()));
-		}
-		// 进行新词发现
-		new NewWordRecognition(graph.terms, learn).recognition();
-		graph.rmLittlePathByScore();
-		graph.walkPathByScore();
+				// 通过crf分词
+				List<String> words = sw.cut(graph.str);
 
-		// 用户自定义词典的识别
-		new UserDefineRecognition(graph.terms).recognition();
-		graph.walkPathByScore();
+				for (String word : words) {
+					if (word.length() == 1 || word.endsWith(".") || StringUtil.isBlank(word)) {
+						continue;
+					}
+					if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
+						continue;
+					}
 
-		// 优化后重新获得最优路径
-		result = getResult();
+					if (word.charAt(0) < 256 || word.charAt(word.length() - 1) < 256) {
+						continue;
+					}
+					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
+				}
+				// 进行新词发现
+				new NewWordRecognition(graph.terms, learn).recognition();
+				graph.walkPathByScore();
 
-		return result;
-	    }
+				//修复人名左右连接
+				AsianPersonRecognition.nameAmbiguity(graph.terms);
+				
+				// 用户自定义词典的识别
+				new UserDefineRecognition(graph.terms).recognition();
+				graph.walkPathByScore();
 
-	    private List<Term> getResult() {
-		// TODO Auto-generated method stub
-		List<Term> result = new ArrayList<Term>();
-		int length = graph.terms.length - 1;
-		for (int i = 0; i < length; i++) {
-		    if (graph.terms[i] == null) {
-			continue;
-		    }
-		    result.add(graph.terms[i]);
-		}
-		return result;
-	    }
-	};
-	return merger.merger();
-    }
+				// 优化后重新获得最优路径
+				result = getResult();
 
-    public static List<Term> parse(String str, Model model) {
-	return new NlpAnalysis(model, null).parseStr(str);
-    }
+				return result;
+			}
 
-    public static List<Term> parse(String str, LearnTool learn) {
-	return new NlpAnalysis(null, learn).parseStr(str);
-    }
+			private List<Term> getResult() {
+				// TODO Auto-generated method stub
+				List<Term> result = new ArrayList<Term>();
+				int length = graph.terms.length - 1;
+				for (int i = 0; i < length; i++) {
+					if (graph.terms[i] == null) {
+						continue;
+					}
+					result.add(graph.terms[i]);
+				}
+				return result;
+			}
+		};
+		return merger.merger();
+	}
 
-    public static List<Term> parse(String str) {
-	return new NlpAnalysis(null, null).parseStr(str);
-    }
+	public static List<Term> parse(String str, Model model) {
+		return new NlpAnalysis(model, null).parseStr(str);
+	}
 
-    public static List<Term> parse(String str, Model model, LearnTool learn) {
-	return new NlpAnalysis(model, learn).parseStr(str);
-    }
+	public static List<Term> parse(String str, LearnTool learn) {
+		return new NlpAnalysis(null, learn).parseStr(str);
+	}
+
+	public static List<Term> parse(String str) {
+		return new NlpAnalysis(null, null).parseStr(str);
+	}
+
+	public static List<Term> parse(String str, Model model, LearnTool learn) {
+		return new NlpAnalysis(model, learn).parseStr(str);
+	}
 
 }

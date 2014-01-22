@@ -253,7 +253,7 @@ public class WordAlert {
 	return sb.toString();
     }
 
-    private static char[] alertStr(String str) {
+    public static char[] alertStr(String str) {
 	char[] chars = new char[str.length()];
 	for (int i = 0; i < chars.length; i++) {
 	    chars[i] = CHARCOVER[str.charAt(i)];

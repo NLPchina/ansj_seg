@@ -12,15 +12,15 @@ public class NewWord {
     // 分数
     private double score;
     // 词性
-    private TermNatures nature;
+    private Nature nature;
     // 总词频
     private int allFreq;
 
-    public NewWord(String name, TermNatures nature, double score, int freq) {
+    public NewWord(String name, Nature nature, double score) {
         this.name = name;
         this.nature = nature;
         this.score = score;
-        this.allFreq = freq;
+        this.allFreq = 1;
     }
 
     public String getName() {
@@ -35,11 +35,11 @@ public class NewWord {
         return score;
     }
 
-    public TermNatures getNature() {
+    public Nature getNature() {
         return nature;
     }
 
-    public void setNature(TermNatures nature) {
+    public void setNature(Nature nature) {
         this.nature = nature;
     }
 
@@ -50,11 +50,11 @@ public class NewWord {
      * @param i
      * @param tn
      */
-    public void update(double score, TermNatures tn, int freq) {
+    public void update(double score, Nature tn, int freq) {
         // TODO Auto-generated method stub
-        this.score += score * freq;
+        this.score -= freq;
         this.allFreq += freq;
-        if (TermNatures.NW.equals(this.nature) || !TermNatures.NW.equals(tn)) {
+        if ("nw".equals(this.nature.natureStr) || !"nw".equals(tn.natureStr)) {
             this.nature = tn;
         }
     }
@@ -62,7 +62,7 @@ public class NewWord {
     @Override
     public String toString() {
         // TODO Auto-generated method stub
-        return this.name + "\t" + this.score + "\t" + this.getNature().termNatures[0];
+        return this.name + "\t" + this.score + "\t" + this.getNature().natureStr;
     }
 
     public int getAllFreq() {
