@@ -3,11 +3,11 @@ package org.ansj.recognition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.NatureLibrary;
 import org.ansj.library.NgramLibrary;
 import org.ansj.util.TermUtil;
 
@@ -170,7 +170,7 @@ public class AsianPersonRecognition {
 		List<NewWord> all = new ArrayList<NewWord>();
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {
-			all.add(new NewWord(term2.getName(), NatureLibrary.getNature("nr"), term2.selfScore));
+			all.add(new NewWord(term2.getName(), Nature.NR, -term2.getName().length()));
 		}
 		return all;
 	}

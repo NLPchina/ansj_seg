@@ -3,9 +3,7 @@ package org.ansj.test;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class ForeignPersonRecongnitionTest {
 	public static void main(String[] args) {

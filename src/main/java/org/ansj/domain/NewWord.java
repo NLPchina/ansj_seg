@@ -52,10 +52,10 @@ public class NewWord {
      */
     public void update(double score, Nature tn, int freq) {
         // TODO Auto-generated method stub
-        this.score -= freq;
+        this.score += score;
         this.allFreq += freq;
-        if ("nw".equals(this.nature.natureStr) || !"nw".equals(tn.natureStr)) {
-            this.nature = tn;
+        if (Nature.NW == nature) {
+        	this.nature = tn;
         }
     }
 

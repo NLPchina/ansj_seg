@@ -1,24 +1,10 @@
 package org.ansj.test;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-
-import love.cq.util.IOUtil;
-
-import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
 
 public class TestCRFAnalysis1 {
     public static void main(String[] args) throws IOException {

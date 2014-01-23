@@ -8,10 +8,10 @@ import java.util.List;
 
 import love.cq.util.StringUtil;
 
+import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.NatureLibrary;
 import org.ansj.util.TermUtil;
 
 /**
@@ -181,7 +181,7 @@ public class ForeignPersonRecognition {
 				for (Term temp : tempList) {
 					sb.append(temp.getName());
 				}
-				all.add(new NewWord(sb.toString(), NatureLibrary.getNature("nrf"), -sb.length()));
+				all.add(new NewWord(sb.toString(), Nature.NRF, -sb.length()));
 				reset();
 			}
 		}

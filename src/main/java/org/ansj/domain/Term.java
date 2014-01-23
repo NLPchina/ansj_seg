@@ -2,11 +2,8 @@ package org.ansj.domain;
 
 import java.util.List;
 
-import org.ansj.library.NatureLibrary;
 import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.NatureRecognition;
 import org.ansj.util.MathUtil;
-import org.ansj.util.MyStaticValue;
 
 public class Term implements Comparable<Term> {
 	public static final Term NULL = new Term("NULL", 0, TermNatures.NULL);

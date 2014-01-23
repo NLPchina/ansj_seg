@@ -1,7 +1,5 @@
 package org.ansj.demo;
 
-import java.io.File;
-
 import org.ansj.library.UserDefineLibrary;
 
 import love.cq.domain.Forest;

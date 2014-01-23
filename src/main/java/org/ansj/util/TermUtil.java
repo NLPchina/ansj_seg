@@ -3,6 +3,7 @@ package org.ansj.util;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NatureLibrary;
@@ -90,47 +91,49 @@ public class TermUtil {
 	 * @return 返回是null说明已经是最细颗粒度
 	 */
 	public static void parseNatureAndSubTerm(Term term) {
-		
-		String name = term.getName() ; 
-		int offe = term.getOffe() ;
+		if (!Nature.NW.equals(term.getNatrue())) {
+			return;
+		}
+
+		String name = term.getName();
+
+		int offe = term.getOffe();
 
 		if (name.length() <= 3) {
-			return  ;
+			return;
 		}
-		
+
 		List<String> words = MyStaticValue.getMinSplitWord().cut(name);
 
 		if (words.size() == 1) {
-			return ;
+			return;
 		}
 
-		//是否是外国人名
-		if(ForeignPersonRecognition.isFName(name)){
-			term.setNature(NatureLibrary.getNature("nrf")) ;
-			return ;
+		// 是否是外国人名
+		if (ForeignPersonRecognition.isFName(name)) {
+			term.setNature(NatureLibrary.getNature("nrf"));
+			return;
 		}
-		
-		
+
 		List<Term> subTerm = NatureRecognition.recognition(words, offe);
-		
-		
-		//判断是否是机构名
-		term.setSubTerm(subTerm) ;
-		Term first = subTerm.get(0) ;
-		Term last = subTerm.get(subTerm.size()-1)  ;
-		int[] is = companyMap.get(first.getName()) ;
-		int all = 0 ;
-//		if(is!=null){
-//			all+=is[0] ;
-//		}
-		is = companyMap.get(last.getName()) ;
-		if(is!=null){
-			all+=is[1] ;
+
+		// 判断是否是机构名
+		term.setSubTerm(subTerm);
+		Term first = subTerm.get(0);
+		Term last = subTerm.get(subTerm.size() - 1);
+		int[] is = companyMap.get(first.getName());
+		int all = 0;
+		// if(is!=null){
+		// all+=is[0] ;
+		// }
+		is = companyMap.get(last.getName());
+		if (is != null) {
+			all += is[1];
 		}
-		
-		if(all>1000){
-			term.setNature(NatureLibrary.getNature("nt")) ;
-			return ;
+
+		if (all > 1000) {
+			term.setNature(NatureLibrary.getNature("nt"));
+			return;
 		}
 	}
 }

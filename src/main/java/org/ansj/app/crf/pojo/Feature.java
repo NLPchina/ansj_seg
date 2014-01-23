@@ -27,7 +27,8 @@ public class Feature {
 	w[fIndex][sta] += step;
     };
 
-    public String toString() {
+    @Override
+	public String toString() {
 	// TODO Auto-generated method stub
 	StringBuilder sb = new StringBuilder();
 	for (double[] ints : w) {

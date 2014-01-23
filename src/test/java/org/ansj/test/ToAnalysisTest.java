@@ -18,7 +18,7 @@ public class ToAnalysisTest {
 		
 		// File[] files = new
 		// File("/Users/ansj/Documents/快盘/SogouCA.WWW08").listFiles() ;
-		File[] files = { new File("/Users/ansj/Downloads/西游记.txt") };
+		File[] files = { new File("/home/ansj/公共的/射雕英雄传.txt") };
 		int count = 0;
 		ToAnalysis.parse("孙 123 sf") ;
 		long start = System.currentTimeMillis();
@@ -28,16 +28,13 @@ public class ToAnalysisTest {
 			if (!files[i].getName().endsWith(".txt")) {
 				continue;
 			}
-			Reader reader = new InputStreamReader(new FileInputStream(files[i]), "GBK");
+			Reader reader = new InputStreamReader(new FileInputStream(files[i]), "utf-8");
 			Analysis toAnalysis = new NlpAnalysis(reader,null, learn);
 			Term next = null;
 			while ((next = toAnalysis.next()) != null) {
-				if("nw".equals(next.getNatrue().natureStr)){
-					System.out.println(next);
-				}
 			}
 		}
-		System.out.println(learn.getTopTree(100,TermNatures.NW));
+		System.out.println(learn.getTopTree(100));
 		System.out.println(System.currentTimeMillis() - start);
 
 	}

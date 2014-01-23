@@ -28,6 +28,7 @@ import com.sun.net.httpserver.spi.HttpServerProvider;
  * @author ansj
  * 
  */
+@SuppressWarnings("all")
 public class AnsjServer {
 
     private final static String WARM_UP_WORD = "你好";

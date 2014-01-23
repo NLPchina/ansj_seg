@@ -15,93 +15,92 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class AnsjServlet {
 
-    private enum AnsjMethod {
-        TO, NLP, BASE, KEYWORD ,INDEX ,MIN_NLP
-    }
+	private enum AnsjMethod {
+		TO, NLP, BASE, KEYWORD, INDEX, MIN_NLP
+	}
 
-    public static String processRequest(String input, String strMethod, String strNature)
-                                                                                         throws IOException {
-        AnsjMethod method = AnsjMethod.TO;
-        if (strMethod != null) {
-            method = AnsjMethod.valueOf(strMethod.toUpperCase());
-        } else {
-            method = AnsjMethod.TO;
-        }
-        Boolean nature = true;
-        if (strNature != null && strNature.toLowerCase().equals("false")) {
-            nature = false;
-        }
-        List<Term> terms = null;
-        Collection<Keyword> keyWords = null;
-        switch (method) {
-            case TO:
-                terms = ToAnalysis.parse(input);
-                break;
-            case NLP:
-                terms = NlpAnalysis.parse(input);
-                break;
-            case MIN_NLP:
-                terms = NlpAnalysis.parse(input);
-                String str = terms.toString() ;
-                if(str.length()>4){
-                    return str.substring(1,str.length()-2) ;
-                }
-            case KEYWORD:
-                KeyWordComputer keyWordComputer = new KeyWordComputer(10);
-                keyWords = keyWordComputer.computeArticleTfidf(input);
-                break;
-            case INDEX:
-        	terms = IndexAnalysis.parse(input);
-                break;
-            default:
-                terms = BaseAnalysis.parse(input);
-        }
+	public static String processRequest(String input, String strMethod, String strNature) throws IOException {
+		AnsjMethod method = AnsjMethod.TO;
+		if (strMethod != null) {
+			method = AnsjMethod.valueOf(strMethod.toUpperCase());
+		} else {
+			method = AnsjMethod.TO;
+		}
+		Boolean nature = true;
+		if (strNature != null && strNature.toLowerCase().equals("false")) {
+			nature = false;
+		}
+		List<Term> terms = null;
+		Collection<Keyword> keyWords = null;
+		switch (method) {
+		case TO:
+			terms = ToAnalysis.parse(input);
+			break;
+		case NLP:
+			terms = NlpAnalysis.parse(input);
+			break;
+		case MIN_NLP:
+			terms = NlpAnalysis.parse(input);
+			String str = terms.toString();
+			if (str.length() > 4) {
+				return str.substring(1, str.length() - 1);
+			}
+		case KEYWORD:
+			KeyWordComputer keyWordComputer = new KeyWordComputer(10);
+			keyWords = keyWordComputer.computeArticleTfidf(input);
+			break;
+		case INDEX:
+			terms = IndexAnalysis.parse(input);
+			break;
+		default:
+			terms = BaseAnalysis.parse(input);
+		}
 
-        if (terms != null) {
-            return termToString(terms, nature);
-        }
+		if (terms != null) {
+			return termToString(terms, nature, method);
+		}
 
-        if (keyWords != null) {
-            return keyWordsToString(keyWords, nature);
-        }
+		if (keyWords != null) {
+			return keyWordsToString(keyWords, nature);
+		}
 
-        return "i am error!";
-    }
+		return "i am error!";
+	}
 
-    private static String keyWordsToString(Collection<Keyword> keyWords, boolean nature) {
-        // TODO Auto-generated method stub
-        StringBuilder sb = new StringBuilder();
-        for (Keyword k : keyWords) {
-            String tmp = k.getName();
-            if (nature) {
-                tmp += "/" + k.getScore();
-            }
-            sb.append(tmp + "\t");
-        }
-        return sb.toString();
-    }
+	private static String keyWordsToString(Collection<Keyword> keyWords, boolean nature) {
+		// TODO Auto-generated method stub
+		StringBuilder sb = new StringBuilder();
+		for (Keyword k : keyWords) {
+			String tmp = k.getName();
+			if (nature) {
+				tmp += "/" + k.getScore();
+			}
+			sb.append(tmp + "\t");
+		}
+		return sb.toString();
+	}
 
-    private static String termToString(List<Term> terms, boolean nature) {
-        // TODO Auto-generated method stub
-        if (terms == null) {
-            return "Failed to parse input";
-        }
-        if (nature) {
-            new NatureRecognition(terms).recognition();
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Term term : terms) {
-            String tmp = term.getName();
-            if (nature) {
-                tmp += "/" + term.getNatrue().natureStr;
+	private static String termToString(List<Term> terms, boolean nature, AnsjMethod method) {
+		// TODO Auto-generated method stub
+		if (terms == null) {
+			return "Failed to parse input";
+		}
+		if (nature && method != AnsjMethod.NLP && method != AnsjMethod.MIN_NLP) {
+			new NatureRecognition(terms).recognition();
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Term term : terms) {
+			String tmp = term.getName();
+			if (nature) {
+				tmp += "/" + term.getNatrue().natureStr;
 
-                if (term.getNatrue().natureStr == null || term.getNatrue().natureStr.equals("null")) {
-                    continue;
-                }
-            }
-            sb.append(tmp + "\t");
-        }
-        return sb.toString();
-    }
+				if (term.getNatrue().natureStr == null || term.getNatrue().natureStr.equals("null")) {
+					continue;
+				}
+			}
+			sb.append(tmp + "\t");
+		}
+		return sb.toString();
+	}
 
 }

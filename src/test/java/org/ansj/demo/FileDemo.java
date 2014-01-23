@@ -2,8 +2,6 @@ package org.ansj.demo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.List;
-
 import love.cq.util.IOUtil;
 
 import org.ansj.splitWord.analysis.ToAnalysis;
