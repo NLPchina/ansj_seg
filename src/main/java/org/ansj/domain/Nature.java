@@ -17,14 +17,12 @@ public class Nature {
 	public final int natureIndex;
 	// 词性的频率
 	public final int allFrequency;
-	
-	
-	public static final Nature NW = NatureLibrary.getNature("nw") ;
-	
-	public static final Nature NRF = NatureLibrary.getNature("nrf") ;
-	
-	public static final Nature NR = NatureLibrary.getNature("nr") ;
-	
+
+	public static final Nature NW = NatureLibrary.getNature("nw");
+
+	public static final Nature NRF = NatureLibrary.getNature("nrf");
+
+	public static final Nature NR = NatureLibrary.getNature("nr");
 
 	public Nature(String natureStr, int index, int natureIndex, int allFrequency) {
 		this.natureStr = natureStr;

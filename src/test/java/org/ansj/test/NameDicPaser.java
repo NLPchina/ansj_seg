@@ -13,22 +13,22 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class NameDicPaser {
 	public static void main(String[] args) throws IOException {
-		BufferedReader reader = IOUtil.getReader(new FileInputStream("/Users/ansj/Documents/快盘/分词/library/name_temp.dic"), "UTF-8") ;
-		String temp = null ;
-		Analysis toAnalysis = null ;
-		Term term = null ;
-		int count =0 ;
-		int all = 0 ;
-		while((temp=reader.readLine())!=null){
-			all ++ ;
+		BufferedReader reader = IOUtil.getReader(new FileInputStream("/Users/ansj/Documents/快盘/分词/library/name_temp.dic"), "UTF-8");
+		String temp = null;
+		Analysis toAnalysis = null;
+		Term term = null;
+		int count = 0;
+		int all = 0;
+		while ((temp = reader.readLine()) != null) {
+			all++;
 			toAnalysis = new ToAnalysis(new StringReader(temp));
-			while((term=toAnalysis.next())!=null){
-				if(temp.length()==term.getName().length()){
-					count ++ ;
+			while ((term = toAnalysis.next()) != null) {
+				if (temp.length() == term.getName().length()) {
+					count++;
 				}
 			}
 		}
-		
-		System.out.println(count+"/"+all);
+
+		System.out.println(count + "/" + all);
 	}
 }

@@ -40,13 +40,13 @@ public class Term implements Comparable<Term> {
 			isFName = ForeignPersonRecognition.isFName(this.name);
 		}
 	}
-	
+
 	public Term(String name, int offe, String natureStr, int natureFreq) {
 		super();
 		this.name = name;
 		this.offe = offe;
-		TermNature termNature = new TermNature(natureStr,natureFreq) ;
-		this.nature = termNature.nature ;
+		TermNature termNature = new TermNature(natureStr, natureFreq);
+		this.nature = termNature.nature;
 		this.termNatures = new TermNatures(termNature);
 	}
 
@@ -222,6 +222,5 @@ public class Term implements Comparable<Term> {
 	public List<Term> getSubTerm() {
 		return subTerm;
 	}
-	
-	
+
 }

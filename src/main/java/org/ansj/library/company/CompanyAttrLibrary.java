@@ -25,8 +25,8 @@ public class CompanyAttrLibrary {
 		try {
 			init();
 		} catch (Exception e) {
-			e.printStackTrace() ;
-			cnMap = new HashMap<String, int[]>() ;
+			e.printStackTrace();
+			cnMap = new HashMap<String, int[]>();
 		}
 		return cnMap;
 	}

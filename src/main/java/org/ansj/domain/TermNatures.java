@@ -2,8 +2,9 @@ package org.ansj.domain;
 
 /**
  * 没一个term都拥有一个词性集合
+ * 
  * @author ansj
- *
+ * 
  */
 public class TermNatures {
 	public static final TermNatures NULL = new TermNatures(TermNature.NULL);
@@ -36,8 +37,7 @@ public class TermNatures {
 	 * 人名词性
 	 */
 	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
-	
-	
+
 	/**
 	 * 所有的词频
 	 */
@@ -53,7 +53,7 @@ public class TermNatures {
 	 * 
 	 * @param termNatures
 	 */
-	public TermNatures(TermNature[] termNatures, int id ) {
+	public TermNatures(TermNature[] termNatures, int id) {
 		this.id = id;
 		this.termNatures = termNatures;
 		serAttribute();

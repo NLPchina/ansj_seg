@@ -37,6 +37,6 @@ public class CompanyTest {
 			List<Term> parse = NlpAnalysis.parse(string, learn);
 			System.out.println(parse);
 		}
-
+		
 	}
 }

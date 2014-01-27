@@ -1,4 +1,5 @@
 package org.ansj.test;
+
 //package org.ansj.splitWord.impl;
 //
 //import java.io.BufferedReader;
@@ -76,4 +77,4 @@ package org.ansj.test;
 //	public static void parse() {
 //
 //	}
-//}
+// }

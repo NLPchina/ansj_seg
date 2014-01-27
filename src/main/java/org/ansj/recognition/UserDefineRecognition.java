@@ -35,11 +35,11 @@ public class UserDefineRecognition {
 
 	public UserDefineRecognition(Term[] terms, Forest forest) {
 		this.terms = terms;
-		if (forest != null){
+		if (forest != null) {
 			this.forest = forest;
-			branch = this.forest ;
+			branch = this.forest;
 		}
-		
+
 	}
 
 	public void recognition() {

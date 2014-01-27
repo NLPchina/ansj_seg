@@ -27,8 +27,8 @@ public class NewWordFindDemo {
 		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, null, learn);
 		Term term = null;
 		while ((term = nlpAnalysis.next()) != null) {
-			if(!TermNatures.NW.equals(term.getTermNatures())){
-				continue ;
+			if (!TermNatures.NW.equals(term.getTermNatures())) {
+				continue;
 			}
 			if (hm.containsKey(term.getName())) {
 				hm.put(term.getName(), hm.get(term.getName()) + 1);

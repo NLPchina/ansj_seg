@@ -1,5 +1,6 @@
 package org.ansj.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,7 +10,6 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.company.CompanyAttrLibrary;
 import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.NatureRecognition;
 
 /**
  * term的操作类
@@ -90,7 +90,7 @@ public class TermUtil {
 	 * 
 	 * @return 返回是null说明已经是最细颗粒度
 	 */
-	public static void parseNatureAndSubTerm(Term term) {
+	public static void parseNature(Term term) {
 		if (!Nature.NW.equals(term.getNatrue())) {
 			return;
 		}
@@ -103,11 +103,11 @@ public class TermUtil {
 			return;
 		}
 
-		List<String> words = MyStaticValue.getMinSplitWord().cut(name);
-
-		if (words.size() == 1) {
-			return;
-		}
+//		List<String> words = MyStaticValue.getMinSplitWord().cut(name);
+//
+//		if (words.size() == 1) {
+//			return;
+//		}
 
 		// 是否是外国人名
 		if (ForeignPersonRecognition.isFName(name)) {
@@ -115,7 +115,7 @@ public class TermUtil {
 			return;
 		}
 
-		List<Term> subTerm = NatureRecognition.recognition(words, offe);
+		List<Term> subTerm = term.getSubTerm();
 
 		// 判断是否是机构名
 		term.setSubTerm(subTerm);
@@ -136,4 +136,23 @@ public class TermUtil {
 			return;
 		}
 	}
+
+	/**
+	 * 从from到to生成subterm
+	 * @param terms
+	 * @param from
+	 * @param to
+	 * @return
+	 */
+	public static List<Term> getSubTerm(Term from, Term to) {
+		// TODO Auto-generated method stub
+		List<Term> subTerm = new ArrayList<Term>(3) ;
+		
+		while((from=from.getTo())!=to){
+			subTerm.add(from) ;
+		}
+		
+		return subTerm;
+	}
+
 }

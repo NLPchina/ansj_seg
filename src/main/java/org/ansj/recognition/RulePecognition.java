@@ -40,9 +40,9 @@ public class RulePecognition {
 				}
 			} else {
 				if (end.equals(name)) {
-					result.add(new NewWord(sb.toString(), Nature.NW, sb.length()));
+					result.add(new NewWord(sb.toString(), Nature.NW, -sb.length()));
 					sb = null;
-					end = null ;
+					end = null;
 				} else {
 					sb.append(name);
 				}

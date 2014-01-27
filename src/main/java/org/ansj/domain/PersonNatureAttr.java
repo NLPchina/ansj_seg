@@ -29,7 +29,7 @@ public class PersonNatureAttr {
 	public int end;
 
 	public int allFreq;
-	
+
 	// 是否有可能是名字的第一个字
 	public boolean flag;
 

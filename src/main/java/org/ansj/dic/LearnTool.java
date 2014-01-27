@@ -57,12 +57,12 @@ public class LearnTool {
 		}
 
 		// 抽取书名号中的实体
-		findRuleEntry(graph) ;
+		findRuleEntry(graph);
 	}
 
 	private void findRuleEntry(Graph graph) {
 		// TODO Auto-generated method stub
-		List<NewWord> newWords = RulePecognition.recognition(graph) ;
+		List<NewWord> newWords = RulePecognition.recognition(graph);
 		addListToTerm(newWords);
 	}
 
@@ -147,7 +147,7 @@ public class LearnTool {
 			NewWord param = smartForest.branches[i].getParam();
 			if (smartForest.branches[i].getStatus() == 3) {
 				if (nature == null || param.getNature().equals(nature)) {
-					hm.put(param.getName(), param.getScore());
+					hm.put(param.getName(), Math.log(param.getAllFreq() + 1));
 				}
 			} else if (smartForest.branches[i].getStatus() == 2) {
 				if (nature == null || param.getNature().equals(nature)) {

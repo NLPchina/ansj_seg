@@ -43,11 +43,9 @@ public class UserDefinedAnalysisTest {
 	public static void main(String[] args) {
 		String str = "Ansj中文分词是一个真正的ict的实现.并且加入了自己的一些数据结构和算法的分词.实现了高效率和高准确率的完美结合!";
 		String str1 = "上海电力2012年财务报表如下怎爸爸去哪儿么办";
-		
-		
-		
-		UserDefineLibrary.insertWord("爸爸去哪儿", "n", 1000) ;
-	
+
+		UserDefineLibrary.insertWord("爸爸去哪儿", "n", 1000);
+
 		List parse = ToAnalysis.parse(str1);
 		System.out.println(parse);
 	}

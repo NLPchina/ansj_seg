@@ -8,7 +8,6 @@ import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
 import static org.ansj.library.InitDictionary.arrayLength;
 
-
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.GetWords;
 

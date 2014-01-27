@@ -3,9 +3,7 @@ package org.ansj.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 
 public class PersonRecognitionTest {
 	public static void main(String[] args) throws Exception {
@@ -33,9 +31,7 @@ public class PersonRecognitionTest {
 		list.add("习近平和朱镕基情切照相");
 		list.add("李克强");
 		for (String string : list) {
-			List<Term> parse = ToAnalysis.parse(string);
-			new NatureRecognition(parse).recognition();
-			System.out.println(parse);
+			System.out.println(NlpAnalysis.parse(string));
 		}
 		// makeFile() ;
 		// initWordFreq() ;

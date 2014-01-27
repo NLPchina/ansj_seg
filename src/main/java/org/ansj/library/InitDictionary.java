@@ -16,12 +16,12 @@ import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
 
 public class InitDictionary {
-    
-    /**
-     * DAT数组长度
-     */
-    public static int arrayLength ;
-    
+
+	/**
+	 * DAT数组长度
+	 */
+	public static int arrayLength;
+
 	/**
 	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
 	 */
@@ -56,7 +56,7 @@ public class InitDictionary {
 		long start = System.currentTimeMillis();
 		try {
 			initArrays();
-			MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start) );
+			MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			e.printStackTrace();
 			MyStaticValue.LIBRARYLOG.warning("init library core library error! ");
@@ -107,7 +107,6 @@ public class InitDictionary {
 		 */
 		HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
 		PersonNatureAttr personAttr = null;
-
 
 		/**
 		 * 下面开始加载词典

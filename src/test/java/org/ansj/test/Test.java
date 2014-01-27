@@ -169,7 +169,7 @@ public class Test {
 				while ((term = udf.next()) != null) {
 					list.add(term);
 				}
-				new NatureRecognition(list).recognition() ;
+				new NatureRecognition(list).recognition();
 				System.out.println(list);
 			}
 		}

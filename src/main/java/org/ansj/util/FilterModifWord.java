@@ -14,50 +14,46 @@ import org.ansj.library.UserDefineLibrary;
  */
 public class FilterModifWord {
 
-    private static Set<String> FILTER = new HashSet<String>();
+	private static Set<String> FILTER = new HashSet<String>();
 
-    private static String TAG = "#";
+	private static String TAG = "#";
 
-    public static void insertStopWords(List<String> filterWords) {
-        FILTER.addAll(filterWords);
-    }
+	public static void insertStopWords(List<String> filterWords) {
+		FILTER.addAll(filterWords);
+	}
 
-    public static void insertStopWord(String filterWord) {
-        FILTER.add(filterWord);
-    }
+	public static void insertStopWord(String filterWord) {
+		FILTER.add(filterWord);
+	}
 
-    public static void insertStopNatures(String... filterNatures) {
-        for (String natureStr : filterNatures) {
-            FILTER.add(TAG + natureStr);
-        }
+	public static void insertStopNatures(String... filterNatures) {
+		for (String natureStr : filterNatures) {
+			FILTER.add(TAG + natureStr);
+		}
 
-    }
+	}
 
-    /*
-     * 停用词过滤并且修正词性
-     */
-    public static List<Term> modifResult(List<Term> all) {
-        List<Term> result = new ArrayList<Term>();
-        try {
-            for (Term term : all) {
-                if (FILTER.size() > 0
-                    && (FILTER.contains(term.getName()) || FILTER
-                        .contains(TAG + term.getNatrue().natureStr))) {
-                    continue;
-                }
-                String[] params = UserDefineLibrary.getParams(term.getName()) ;
-                if (params!=null) {
-                    term.setNature(new Nature(params[0]));
-                }
-                result.add(term);
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            System.err
-                .println("FilterStopWord.updateDic can not be null , "
-                         + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
-        }
-        return result;
-    }
-    
+	/*
+	 * 停用词过滤并且修正词性
+	 */
+	public static List<Term> modifResult(List<Term> all) {
+		List<Term> result = new ArrayList<Term>();
+		try {
+			for (Term term : all) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.getNatrue().natureStr))) {
+					continue;
+				}
+				String[] params = UserDefineLibrary.getParams(term.getName());
+				if (params != null) {
+					term.setNature(new Nature(params[0]));
+				}
+				result.add(term);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			System.err.println("FilterStopWord.updateDic can not be null , " + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
+		}
+		return result;
+	}
+
 }

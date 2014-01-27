@@ -23,8 +23,8 @@ public class SimpleDemo {
 		// 词性标注
 		new NatureRecognition(parse).recognition();
 
-		//合并用户id
-		parse = mergerId(parse) ;
+		// 合并用户id
+		parse = mergerId(parse);
 		System.out.println(parse);
 	}
 
@@ -32,27 +32,27 @@ public class SimpleDemo {
 
 	public static List<Term> mergerId(List<Term> parse) {
 		List<Term> result = new ArrayList<Term>();
-		Term term = null ;
-		Term newTerm = null ;
+		Term term = null;
+		Term newTerm = null;
 		for (int i = 0; i < parse.size(); i++) {
-			term = parse.get(i) ;
+			term = parse.get(i);
 			if ("@".equals(term.getName())) {
 				StringBuilder sb = new StringBuilder(term.getName());
 				int end = mergerId(parse, sb, i);
 				System.out.println(end);
 				if (end > 0) {
 					newTerm = new Term(sb.toString(), term.getOffe(), null);
-					newTerm.setNature(userIdNature) ;
+					newTerm.setNature(userIdNature);
 					result.add(newTerm);
 					i = end;
-				}else{
-					result.add(term) ;
+				} else {
+					result.add(term);
 				}
-			}else{
-				result.add(parse.get(i)) ;
+			} else {
+				result.add(parse.get(i));
 			}
 		}
-		return result ;
+		return result;
 	}
 
 	private static int mergerId(List<Term> parse, StringBuilder sb, int i) {
@@ -63,11 +63,11 @@ public class SimpleDemo {
 		for (; j < parse.size(); j++) {
 			term = parse.get(j);
 			natureStr = term.getNatrue().natureStr;
-			if ("en".equals(natureStr) || "m".equals(natureStr) || "-".equals(term.getName())||":".equals(term.getName())) {
+			if ("en".equals(natureStr) || "m".equals(natureStr) || "-".equals(term.getName()) || ":".equals(term.getName())) {
 				sb.append(term.getName());
 			} else if ("@".equals(term.getName())) {
 				sb.append(term.getName());
-				break ;
+				break;
 			} else {
 				return -1;
 			}

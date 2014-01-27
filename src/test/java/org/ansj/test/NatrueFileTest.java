@@ -11,24 +11,20 @@ import org.ansj.splitWord.analysis.BaseAnalysis;
 
 public class NatrueFileTest {
 	public static void main(String[] args) throws IOException {
-		StringBuilder sb = new StringBuilder() ;
-		String temp = null ;
-		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/社交焦虑的治疗方式.txt", "GBK") ;
-		while((temp=reader.readLine())!=null){
-			List<Term> parse = BaseAnalysis.parse(temp) ;
+		StringBuilder sb = new StringBuilder();
+		String temp = null;
+		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/社交焦虑的治疗方式.txt", "GBK");
+		while ((temp = reader.readLine()) != null) {
+			List<Term> parse = BaseAnalysis.parse(temp);
 			for (Term term : parse) {
-				sb.append(term.getName()) ;
-				sb.append("\t") ;
+				sb.append(term.getName());
+				sb.append("\t");
 			}
-			sb.append("\n") ;
-			
+			sb.append("\n");
+
 		}
-		
-		IOUtil.Writer("/Users/ansj/Desktop/result.txt", IOUtil.UTF8, sb.toString()); 
-		
-		
-		
-		
+
+		IOUtil.Writer("/Users/ansj/Desktop/result.txt", IOUtil.UTF8, sb.toString());
 
 	}
 }

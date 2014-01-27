@@ -98,6 +98,7 @@ public class NatureLibrary {
 
 	/**
 	 * 获得两个term之间的频率
+	 * 
 	 * @param fromTerm
 	 * @param toTerm
 	 * @return

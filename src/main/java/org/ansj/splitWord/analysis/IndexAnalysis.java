@@ -21,88 +21,87 @@ import org.ansj.util.MyStaticValue;
  * 
  */
 public class IndexAnalysis extends Analysis {
-    private Forest[] forests = null;
+	private Forest[] forests = null;
 
-    public IndexAnalysis(Reader reader) {
-        super(reader);
-        // TODO Auto-generated constructor stub
-    }
+	public IndexAnalysis(Reader reader) {
+		super(reader);
+		// TODO Auto-generated constructor stub
+	}
 
-    private IndexAnalysis() {
-    };
+	private IndexAnalysis() {
+	};
 
-    public IndexAnalysis(Forest[] forests) {
-        // TODO Auto-generated constructor stub
-        this.forests = forests;
-    }
+	public IndexAnalysis(Forest[] forests) {
+		// TODO Auto-generated constructor stub
+		this.forests = forests;
+	}
 
-    @Override
-    protected List<Term> getResult(final Graph graph) {
-        Merger merger = new Merger() {
+	@Override
+	protected List<Term> getResult(final Graph graph) {
+		Merger merger = new Merger() {
 
-            @Override
-            public List<Term> merger() {
-                graph.walkPath();
+			@Override
+			public List<Term> merger() {
+				graph.walkPath();
 
-                // 数字发现
-                if (MyStaticValue.isNumRecognition)
-                    NumRecognition.recognition(graph.terms);
+				// 数字发现
+				if (MyStaticValue.isNumRecognition)
+					NumRecognition.recognition(graph.terms);
 
-                // 姓名识别
-                if (MyStaticValue.isNameRecognition)
-                    new AsianPersonRecognition(graph.terms).recognition();
+				// 姓名识别
+				if (MyStaticValue.isNameRecognition)
+					new AsianPersonRecognition(graph.terms).recognition();
 
-                // 用户自定义词典的识别
-                if (forests == null) {
-                    new UserDefineRecognition(graph.terms).recognition();
-                } else {
-                    for (Forest forest : forests) {
-                        if (forest == null)
-                            continue;
-                        new UserDefineRecognition(graph.terms, forest).recognition();
-                    }
-                }
+				// 用户自定义词典的识别
+				if (forests == null) {
+					new UserDefineRecognition(graph.terms).recognition();
+				} else {
+					for (Forest forest : forests) {
+						if (forest == null)
+							continue;
+						new UserDefineRecognition(graph.terms, forest).recognition();
+					}
+				}
 
-                return result();
-            }
+				return result();
+			}
 
-            /**
-             * 检索的分词
-             * 
-             * @return
-             */
-            private List<Term> result() {
-                // TODO Auto-generated method stub
-                List<Term> all = new LinkedList<Term>();
-                Term term = null;
-                String temp = null;
-                int length = graph.terms.length - 1;
-                for (int i = 0; i < length; i++) {
-                    term = graph.terms[i];
-                    while (term != null) {
-                        all.add(term);
-                        temp = term.getName();
-                        term = term.getNext();
-                        if (term == null || term.getName().length() == 1
-                            || temp.equals(term.getName())) {
-                            break;
-                        }
+			/**
+			 * 检索的分词
+			 * 
+			 * @return
+			 */
+			private List<Term> result() {
+				// TODO Auto-generated method stub
+				List<Term> all = new LinkedList<Term>();
+				Term term = null;
+				String temp = null;
+				int length = graph.terms.length - 1;
+				for (int i = 0; i < length; i++) {
+					term = graph.terms[i];
+					while (term != null) {
+						all.add(term);
+						temp = term.getName();
+						term = term.getNext();
+						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
+							break;
+						}
 
-                    }
-                }
-                return all;
-            }
-        };
+					}
+				}
+				return all;
+			}
+		};
 
-        return merger.merger();
-    }
+		return merger.merger();
+	}
 
-    public static List<Term> parse(String str) {
-        return new IndexAnalysis().parseStr(str);
-    }
+	public static List<Term> parse(String str) {
+		return new IndexAnalysis().parseStr(str);
+	}
 
-    public static List<Term> parse(String str, Forest... forests) {
-        return new IndexAnalysis(forests).parseStr(str);
+	public static List<Term> parse(String str, Forest... forests) {
+		return new IndexAnalysis(forests).parseStr(str);
 
-    }
+	}
 }

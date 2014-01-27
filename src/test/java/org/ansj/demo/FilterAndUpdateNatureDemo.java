@@ -10,18 +10,18 @@ import org.ansj.util.FilterModifWord;
 public class FilterAndUpdateNatureDemo {
 	public static void main(String[] args) {
 
-	    //加入停用词
-		FilterModifWord.insertStopWord("并且") ;
-		FilterModifWord.insertStopWord("但是") ;
-		
-		//加入过滤词性词性
-		FilterModifWord.insertStopNatures("v") ;
+		// 加入停用词
+		FilterModifWord.insertStopWord("并且");
+		FilterModifWord.insertStopWord("但是");
+
+		// 加入过滤词性词性
+		FilterModifWord.insertStopNatures("v");
 
 		List<Term> parse = ToAnalysis.parse("停用词过滤了.并且修正词143922950性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
-		new NatureRecognition(parse).recognition() ;
+		new NatureRecognition(parse).recognition();
 		System.out.println(parse);
 
-		//修正词性并且过滤停用
+		// 修正词性并且过滤停用
 		parse = FilterModifWord.modifResult(parse);
 
 		System.out.println(parse);

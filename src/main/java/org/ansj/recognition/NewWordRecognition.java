@@ -113,13 +113,16 @@ public class NewWordRecognition {
 
 	private void makeNewTerm() {
 		// TODO Auto-generated method stub
-		Term term = new Term(sb.toString(), offe, tempNature.natureStr , 1);
+		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
 		term.selfScore = score;
 		term.setNature(tempNature);
+		if (sb.length() > 3) {
+			term.setSubTerm(TermUtil.getSubTerm(from, to));
+		}
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
 		TermUtil.insertTerm(terms, term);
-		TermUtil.parseNatureAndSubTerm(term);
+		TermUtil.parseNature(term);
 	}
 
 	/**

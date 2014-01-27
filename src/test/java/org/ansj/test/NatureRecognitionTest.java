@@ -14,8 +14,10 @@ import org.ansj.splitWord.analysis.ToAnalysis;
  */
 public class NatureRecognitionTest {
 	public static void main(String[] args) {
+		
 		String str = "结婚的和尚未结婚的孙建是一个好人";
 		List<Term> terms = ToAnalysis.parse(str);
 		new NatureRecognition(terms).recognition();
+		System.out.println(terms);
 	}
 }

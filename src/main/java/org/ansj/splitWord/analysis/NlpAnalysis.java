@@ -4,8 +4,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
@@ -96,28 +94,27 @@ public class NlpAnalysis extends Analysis {
 				List<String> words = sw.cut(graph.str);
 
 				for (String word : words) {
-					if (word.length() == 1 || word.endsWith(".") || StringUtil.isBlank(word)) {
-						continue;
-					}
-					if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
+					if (word.length() < 2) {
 						continue;
 					}
 
-					if (word.charAt(0) < 256 || word.charAt(word.length() - 1) < 256) {
+					if (InitDictionary.isInSystemDic(word)  || UserDefineLibrary.contains(word) ) {
 						continue;
 					}
+
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
 				}
+
+				// 用户自定义词典的识别
+				new UserDefineRecognition(graph.terms).recognition();
+				graph.walkPathByScore();
+				
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
 				graph.walkPathByScore();
 
-				//修复人名左右连接
+				// 修复人名左右连接
 				AsianPersonRecognition.nameAmbiguity(graph.terms);
-				
-				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recognition();
-				graph.walkPathByScore();
 
 				// 优化后重新获得最优路径
 				result = getResult();
