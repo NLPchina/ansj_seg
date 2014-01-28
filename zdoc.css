@@ -1,0 +1,210 @@
+/*---------------------------------------------------------------------------
+ * Body
+ */
+body{
+	
+}
+
+body,font,td,form,.zdoc_body{
+	font-family: arial, sans-serif;
+	font-size: 14px;
+	line-height: 22px;
+	letter-spacing: 0px;
+}
+
+hr{
+	display:none;
+}
+
+div.hr{
+	height:16px;
+	line-height:16px;
+	text-align:center;
+	background:url(hrbg.png) repeat-x;
+	margin-left:10px;
+	margin-right:10px;
+}
+
+div.hr b{
+	display:inline-block;
+	width:16px;
+	height:16px;
+	margin-right:10px;
+	background:url(logo16.png) no-repeat;
+}
+
+p{
+	margin-left:50px;
+	margin-right:50px;
+}
+
+/*---------------------------------------------------------------------------
+ * Document
+ */
+.zdoc_header{
+	font-size: 28px;
+	font-weight: bold;
+	padding: 16px;
+	padding-top:30px;
+	text-align:center;
+	text-shadow:1px 1px #DDD;
+}
+
+.zdoc_footer{
+	background-color:#F7941D;
+	padding: 5px;
+	padding-right:15px;
+	margin: 0px;
+	margin-top: 50px;
+	text-align: right;
+	font-size: 11px;
+}
+
+.zdoc_author{
+	text-align:right;
+	padding:3px;
+	padding-right:10px;
+	font-size: 11px;
+	margin-bottom: 10px;
+	background-color:#F7941D;
+	border-radius:4px;
+}
+
+.zdoc_author a,
+.zdoc_author a:link,
+.zdoc_author a:visited,
+.zdoc_author a:active,
+.zdoc_author a:hover,
+.zdoc_footer a,
+.zdoc_footer a:link,
+.zdoc_footer a:visited,
+.zdoc_footer a:active,
+.zdoc_footer a:hover{
+	color:#FFF5C1;
+	text-decoration:none;
+}
+
+.zdoc_author a:hover,
+.zdoc_footer a:hover{
+	color:#FFFFFF;
+	text-decoration:underline;
+}
+
+.zdoc_footer b, .zdoc_author b{
+	color: #FFF;
+	display: inline-block;
+	margin-left:10px;
+	margin-right:2px;
+}
+
+.zdoc_footer em, .zdoc_author em{
+	margin-left:10px;
+	font-weight:bold;
+	color:#FFD866;
+}
+
+/*---------------------------------------------------------------------------
+ * Heading
+ */
+h1{
+	color:#000;
+	font-size:20px;
+	font-weight:bold;
+	margin:2px;
+	padding:5px;
+	padding-left:10px;
+}
+
+h2{
+	color:#00C;
+	font-size:16px;
+	font-weight:bold;
+	padding:2px;
+	margin:5px;
+	margin-top:20px;
+	margin-left:30px;
+	margin-right:50px;
+}
+
+h3,h4,h5,h6{
+	color: #000000;
+	font-size:14px;
+	font-weight:bold;
+	margin:2px;
+	margin-left:40px;
+	padding:2px;
+}
+
+table{
+	margin-top:10px;
+	margin-bottom:10px;
+	margin-left:40px;
+}
+/*---------------------------------------------------------------------------
+ * Code
+ */
+pre{
+	color: #126;
+	font-family:Courier New;
+	font-size: 12px;
+	line-height: 18px;
+	letter-spacing: 0px;
+	border-left:4px solid #DDDDDD;
+	padding: 10px;
+	margin-left:60px;
+}
+
+.zdoc_code_cmt{
+    color:#888
+}
+
+/*---------------------------------------------------------------------------
+ * Index table
+ */
+.zdoc_body ul, .zdoc_body ol{
+	padding-top:10px;
+	padding-bottom:10px;
+	padding-left:40px;
+	margin-left:40px;
+	margin-right:50px;
+	margin-bottom:10px;
+	background-color:#F0F0F0;
+}
+
+ul.zdoc_index_table{
+	list-style:none;
+	border:1px dashed #ADF;
+	background-color:#EEE;
+	display:inline-block;
+	padding:20px;
+	min-width:300px;
+	margin:10px;
+	border:0px;
+	padding-left:30px;
+}
+
+ul.zdoc_index_table .num{
+	color:#B66;
+	display:inline-block;
+	font-weight:normal;
+	margin-right:10px;
+}
+
+ul.zdoc_index_table, ul.zdoc_index_table ul{
+	border:0px;
+	list-style:none;
+}
+
+.zdoc_body ul ul, .zdoc_body  ul ol, .zdoc_body  ol ol, .zdoc_body  ol ul{
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-left:30px;
+	margin-left:14px;
+	border-left:3px dotted #E0E0E0;
+}
+
+ul.zdoc_index_table ul{
+	margin-left:27px;
+	padding-left:10px;
+	border-left-color:#CCCCCC;
+}
