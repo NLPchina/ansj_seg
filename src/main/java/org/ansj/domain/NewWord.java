@@ -17,9 +17,6 @@ public class NewWord {
 	private int allFreq;
 
 	public NewWord(String name, Nature nature, double score) {
-if(score>0){
-	System.out.println(name);
-}		
 		this.name = name;
 		this.nature = nature;
 		this.score = score;

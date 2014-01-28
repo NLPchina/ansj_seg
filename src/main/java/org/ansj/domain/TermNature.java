@@ -11,7 +11,6 @@ public class TermNature {
 	/**
 	 * 系统内置的几个
 	 */
-	public static final TermNature NULL = new TermNature("null", 1);
 	public static final TermNature NB = new TermNature("m", 1);
 	public static final TermNature EN = new TermNature("en", 1);
 	public static final TermNature BEGIN = new TermNature("始##始", 1);

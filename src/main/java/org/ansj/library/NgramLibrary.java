@@ -25,13 +25,6 @@ public class NgramLibrary {
 		}
 	}
 
-	public static void main(String[] args) {
-		Term from = new Term("阿", 0, new TermNatures(TermNature.NULL));
-		from.getTermNatures().id = InitDictionary.getWordId(from.getName());
-		Term to = new Term("全国", 0, new TermNatures(TermNature.NULL));
-		to.getTermNatures().id = InitDictionary.getWordId(to.getName());
-		System.out.println(getTwoWordFreq(from, to));
-	}
 
 	/**
 	 * 查找两个词与词之间的频率

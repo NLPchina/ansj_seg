@@ -156,7 +156,7 @@ public abstract class Analysis {
 		for (int i = 0; i < length; i++) {
 			switch (status[conversion(temp.charAt(i))]) {
 			case 0:
-				gp.addTerm(new Term(temp.charAt(i) + "", startOffe + i, TermNatures.NULL));
+				gp.addTerm(new Term(temp.charAt(i) + "", startOffe + i, TermNatures.NW));
 				break;
 			case 4:
 				start = i;
@@ -190,7 +190,7 @@ public abstract class Analysis {
 				}
 
 				if (start == end) {
-					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NULL));
+					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NW));
 				}
 
 				str = temp.substring(start, end);
@@ -205,7 +205,7 @@ public abstract class Analysis {
 				if (IN_SYSTEM[c] > 0 || status[c] > 3) {
 					i -= 1;
 				} else {
-					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NULL));
+					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NW));
 				}
 
 				break;

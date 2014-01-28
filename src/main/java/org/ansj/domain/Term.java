@@ -6,7 +6,6 @@ import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.util.MathUtil;
 
 public class Term implements Comparable<Term> {
-	public static final Term NULL = new Term("NULL", 0, TermNatures.NULL);
 	// 当前词
 	private String name;
 	// 当前词的起始位置
@@ -24,21 +23,15 @@ public class Term implements Comparable<Term> {
 	// 到达位置
 	private Term to;
 	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
-	private Nature nature = TermNature.NULL.nature;
+	private Nature nature = TermNature.NW.nature;
 
 	private List<Term> subTerm = null;
-
-	// 是否是外国人名
-	public boolean isFName = false;
 
 	public Term(String name, int offe, TermNatures termNatures) {
 		super();
 		this.name = name;
 		this.offe = offe;
 		this.termNatures = termNatures;
-		if (termNatures == TermNatures.NR || termNatures == TermNatures.NULL || name.length() == 1) {
-			isFName = ForeignPersonRecognition.isFName(this.name);
-		}
 	}
 
 	public Term(String name, int offe, String natureStr, int natureFreq) {
@@ -196,14 +189,10 @@ public class Term implements Comparable<Term> {
 
 	@Override
 	public String toString() {
-		if (nature != null && !"null".equals(nature.natureStr)) {
-			if (this.subTerm != null) {
-				return this.subTerm.toString() + "/" + nature.natureStr;
-			} else {
-				return this.name + "/" + nature.natureStr;
-			}
+		if (this.subTerm != null) {
+			return this.subTerm.toString() + "/" + nature.natureStr;
 		} else {
-			return this.name;
+			return this.name + "/" + nature.natureStr;
 		}
 	}
 

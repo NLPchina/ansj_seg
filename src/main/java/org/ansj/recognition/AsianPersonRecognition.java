@@ -188,7 +188,7 @@ public class AsianPersonRecognition {
 				if (next.getTermNatures().personAttr.split > 0) {
 					term.setName(term.getName() + next.getName().charAt(0));
 					terms[i + 2] = null;
-					terms[i + 3] = new Term(next.getName().substring(1), next.getOffe(), TermNatures.NULL);
+					terms[i + 3] = new Term(next.getName().substring(1), next.getOffe(), TermNatures.NW);
 					TermUtil.termLink(term, terms[i + 3]);
 					TermUtil.termLink(terms[i + 3], next.getTo());
 				}

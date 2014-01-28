@@ -298,8 +298,9 @@ public class Graph {
 		} else {
 			char c = str.charAt(to);
 			TermNatures tn = InitDictionary.termNatures[c];
-			if (tn == null)
-				tn = TermNatures.NULL;
+			if (tn == null) {
+				tn = TermNatures.NW;
+			}
 			terms[to] = new Term(String.valueOf(c), to, tn);
 			terms[to].setPathScore(fromTerm);
 		}

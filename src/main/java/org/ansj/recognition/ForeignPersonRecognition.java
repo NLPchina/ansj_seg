@@ -81,7 +81,8 @@ public class ForeignPersonRecognition {
 			}
 
 			name = term.getName();
-			if (term.isFName) {
+
+			if (term.getTermNatures() == TermNatures.NR || term.getTermNatures() == TermNatures.NW || name.length() == 1) {
 				boolean flag = validate(name);
 				if (flag) {
 					tempList.add(term);
@@ -166,7 +167,7 @@ public class ForeignPersonRecognition {
 			}
 
 			name = term.getName();
-			if (term.isFName) {
+			if (term.getTermNatures() == TermNatures.NR || term.getTermNatures() == TermNatures.NW || name.length() == 1) {
 				boolean flag = validate(name);
 				if (flag) {
 					tempList.add(term);
