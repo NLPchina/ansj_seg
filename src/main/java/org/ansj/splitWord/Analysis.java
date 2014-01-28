@@ -6,10 +6,10 @@ import static org.ansj.library.InitDictionary.status;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
+import love.cq.domain.Forest;
 import love.cq.splitWord.GetWord;
 import love.cq.util.StringUtil;
 
@@ -44,19 +44,12 @@ public abstract class Analysis {
 	 */
 	private GetWordsImpl gwi = new GetWordsImpl();
 
+	protected Forest[] forests = null;
+
 	/**
 	 * 文档读取流
 	 */
 	private BufferedReader br;
-
-	/**
-	 * 如果文档太过大建议传入输入流
-	 * 
-	 * @param reader
-	 */
-	public Analysis(Reader reader) {
-		br = new BufferedReader(reader);
-	}
 
 	protected Analysis() {
 	};

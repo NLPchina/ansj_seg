@@ -1,19 +1,15 @@
 package org.ansj.test;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
-import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 public class Test {
 
 	public static void main(String[] args) throws IOException {
-		HashSet<String> all = new HashSet();
+		HashSet<String> all = new HashSet<String>();
 		all.add("淘宝网店");
 		all.add("他说的确实在理");
 		all.add("长春市长春节讲话");
@@ -157,21 +153,27 @@ public class Test {
 		all.add("小和尚留了一个像大和尚一样的和尚头");
 		all.add("我是中华人民共和国公民;我爸爸是共和党党员; 地铁和平门站");
 		all.add("二次元乳量，养眼美女，我在泰国用微信");
+		String example = "江苏宏宝五金股份有限公司（以下简称“本公司”）于2012年11月9日接到实际控制人" + "江苏宏宝集团有限公司（以下简称“宏宝集团”）通知，" + "宏宝集团将其所持本公司无限售条件流通股份500万股（占公司总股本的2．72％）质押给" + "华夏银行股份有限公司苏州分行，为"
+				+ "张家港市宏大钢管有限公司向华夏银行股份有限公司苏州分行" + "申请最高融资额提供担保，股权质押登记日为2012年11月8日，质押期限至2013年11月5日止；同日，" + "宏宝集团" + "将其所持本公司无限售条件流通股份1000万股（占公司总股本的5．43％）质押给"
+				+ "江苏张家港农村商业银行股份有限公司，为张家港保税区" + "康龙国际贸易有限公司向" + "江苏张家港农村商业银行股份有限公司申请的流动资金贷款提供担保，股权质押登记日为2012年11月8日，质押期限至2014年11月5日止。上述质押登记手续已在中国证券登记结算有限责任公司深圳分公司办理完毕。";
+		all.add(example);
+		example = " 新浪体育讯　北京时间4月15日03:00(英国当地时间14日20:00)，2009/10赛季英格兰足球超级联赛第34轮一场焦点战在白鹿巷球场展开角逐，阿森纳客场1比2不敌托特纳姆热刺，丹尼-罗斯和拜尔先入两球，本特纳扳回一城。阿森纳仍落后切尔西6分(净胜球少15个)，夺冠几成泡影。热刺近 7轮联赛取得6胜，继续以1分之差紧逼曼城。";
+		all.add(example);
+		example = "东华能源2012年第四次临时股东大会于2012年11月9日召开，审议通过了《关于同意投资设立“宁波福基石化有限公司”的议案》、《关于“张家港扬子江石化有限公司”新增40万吨/年聚丙烯项目的议案》、《关于对“宁波福基石化有限公司”授权的议案》、《关于对“张家港扬子江石化有限公司”授权的议案》、《关于提请股东大会延长董事会全权办理非公开发行股票事项授权有效期的议案》。";
+		all.add(example);
+		all.add("事实上，HTC自诞生以来，多数时候都只是在为谷歌等公司代工生产移动终端。但它从2006年开始培育自己的HTC品牌，并在此后的五年时间里迅速成为仅次于诺基亚的全球第二大手机厂商，占有全球18.22%的智能手机份额，在北美智能手机市场的份额也曾一度达到23%，是全美最大的智能手机供应商。");
+		all.add("蓝鼎集团资产总额为79.49亿元，净资产9.00亿元。2010年蓝鼎集团总资产64.21亿元，其中所有者权益2.19亿元。这意味着，2010年和2011年蓝鼎集团的资产负债率分别高达96.6%和88.34%。如此高的资产负债率在A股房地产类上市公司中较为少见。有关数据显示，在135家房地产上市公司中，2011年资产负债率高于88%的仅有3家公司，分别是*ST园城[10.61 -0.09% 股吧 研报](107.7%)、高新发展[6.72 -0.59% 股吧 研报](95.5%)以及鲁商置业[4.18 0.48% 股吧 研报](92%)。");
+		all.add("能不能试试这个 西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区");
+		all.add("【10000亿——阿里巴巴称淘宝和天猫本年度的总零售额突破 10000亿】 阿里巴巴还公布了其它有趣的数据：2012 年第 3 季度中国第三方互联网支付市场交易规模达到 9764 亿元人民币，支付宝占 46.9%，财付通占 20.4%，银联在线占 11.5%");
+		all.add("电子科技大学成都学院云计算系大一新生唐鑫不幸患上了白血病，急需A型血且血小板浓度在150以上，最好是男性（无病史，近日未摄入药物）。愿意帮助她的小伙伴请与唐鑫妈妈联系，电话号码：13219119727。唐鑫现在在成都军区总医院，请大家相互转发，来成都帮她渡过难关，真诚感谢您的爱心。");
+		all.add("俞志龙和陈举亚是南京维数公司的同事 ,保护协会，协会主席亚拉·巴洛斯说他们是在1990年开始寻找野生金刚鹦鹉的，最后终于找到了唯一的一只，是一只雄性鹦鹉，从那以后生物学家一直在观察它，因为再没有发现第二只野生的金刚鹦鹉。巴洛斯说");
 		ToAnalysis.parse("123孙健234你好公司 有限!");
+
 		long start = System.currentTimeMillis();
-		int count = 0;
-		for (int mm = 0; mm < 1; mm++) {
-			for (String string : all) {
-				count += string.length();
-				List list = new ArrayList();
-				ToAnalysis udf = new ToAnalysis(new StringReader(string));
-				Term term = null;
-				while ((term = udf.next()) != null) {
-					list.add(term);
-				}
-				new NatureRecognition(list).recognition();
-				System.out.println(list);
-			}
+
+		for (String string : all) {
+			System.out.println(ToAnalysis.parse(string));
+			System.out.println(NlpAnalysis.parse(string));
 		}
 		System.out.println(System.currentTimeMillis() - start);
 

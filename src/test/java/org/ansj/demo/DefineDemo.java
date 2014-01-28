@@ -10,12 +10,10 @@ import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 
 /**
- * 最最最简单的分词调用方式
- * 
  * @author ansj
  * 
  */
-public class SimpleDemo {
+public class DefineDemo {
 	public static void main(String[] args) throws IOException {
 		String str = "java@ID:6321-000301@你好";
 		// 普通分词

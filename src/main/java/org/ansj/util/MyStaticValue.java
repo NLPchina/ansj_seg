@@ -264,7 +264,7 @@ public class MyStaticValue {
 	 * 
 	 * @return
 	 */
-	public static SplitWord getBigSplitWord() {
+	public static SplitWord getCRFSplitWord() {
 		// TODO Auto-generated method stub
 		if (crfSplitWord != null) {
 			return crfSplitWord;

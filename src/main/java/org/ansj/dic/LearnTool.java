@@ -147,7 +147,7 @@ public class LearnTool {
 			NewWord param = smartForest.branches[i].getParam();
 			if (smartForest.branches[i].getStatus() == 3) {
 				if (nature == null || param.getNature().equals(nature)) {
-					hm.put(param.getName(), Math.log(param.getAllFreq() + 1));
+					hm.put(param.getName(), param.getScore());
 				}
 			} else if (smartForest.branches[i].getStatus() == 2) {
 				if (nature == null || param.getNature().equals(nature)) {

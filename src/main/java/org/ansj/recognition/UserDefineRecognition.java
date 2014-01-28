@@ -20,80 +20,83 @@ public class UserDefineRecognition {
 
 	private Term[] terms = null;
 
-	private WoodInterface forest = UserDefineLibrary.FOREST;
-
-	private WoodInterface branch = forest;
+	private WoodInterface[] forests = { UserDefineLibrary.FOREST };
 
 	private int offe = -1;
 	private int endOffe = -1;
 	private int tempFreq = 50;
 	private String tempNature;
 
-	public UserDefineRecognition(Term[] terms) {
-		this.terms = terms;
-	}
+	private WoodInterface branch = null;
+	private WoodInterface forest = null;
 
-	public UserDefineRecognition(Term[] terms, Forest forest) {
+	public UserDefineRecognition(Term[] terms, Forest... forests) {
 		this.terms = terms;
-		if (forest != null) {
-			this.forest = forest;
-			branch = this.forest;
+		if (forests != null) {
+			this.forests = forests;
 		}
 
 	}
 
 	public void recognition() {
-		if (branch == null) {
-			return;
-		}
-		int length = terms.length - 1;
 
-		boolean flag = true;
-		for (int i = 0; i < length; i++) {
-			if (terms[i] == null)
+		for (WoodInterface forest : forests) {
+			if (forest == null) {
 				continue;
-			if (branch == forest) {
-				flag = false;
-			} else {
-				flag = true;
 			}
+			this.forest = forest;
 
-			branch = termStatus(branch, terms[i]);
-			if (branch == null) {
-				if (offe != -1) {
-					i = offe;
-				}
-				reset();
-			} else if (branch.getStatus() == 3) {
-				endOffe = i;
-				tempNature = branch.getParams()[0];
-				tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
-				if (offe != -1 && offe < endOffe) {
-					i = offe;
-					makeNewTerm();
-					reset();
+			branch = forest;
+
+			int length = terms.length - 1;
+
+			boolean flag = true;
+			for (int i = 0; i < length; i++) {
+				if (terms[i] == null)
+					continue;
+				if (branch == forest) {
+					flag = false;
 				} else {
-					reset();
+					flag = true;
 				}
-			} else if (branch.getStatus() == 2) {
-				endOffe = i;
-				if (offe == -1) {
-					offe = i;
-				} else {
+
+				branch = termStatus(branch, terms[i]);
+				if (branch == null) {
+					if (offe != -1) {
+						i = offe;
+					}
+					reset();
+				} else if (branch.getStatus() == 3) {
+					endOffe = i;
 					tempNature = branch.getParams()[0];
 					tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
-					if (flag) {
+					if (offe != -1 && offe < endOffe) {
+						i = offe;
 						makeNewTerm();
+						reset();
+					} else {
+						reset();
+					}
+				} else if (branch.getStatus() == 2) {
+					endOffe = i;
+					if (offe == -1) {
+						offe = i;
+					} else {
+						tempNature = branch.getParams()[0];
+						tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+						if (flag) {
+							makeNewTerm();
+						}
+					}
+				} else if (branch.getStatus() == 1) {
+					if (offe == -1) {
+						offe = i;
 					}
 				}
-			} else if (branch.getStatus() == 1) {
-				if (offe == -1) {
-					offe = i;
-				}
 			}
-		}
-		if (offe != -1 && offe < endOffe) {
-			makeNewTerm();
+			if (offe != -1 && offe < endOffe) {
+				makeNewTerm();
+			}
 		}
 	}
 

@@ -97,17 +97,9 @@ public class TermUtil {
 
 		String name = term.getName();
 
-		int offe = term.getOffe();
-
 		if (name.length() <= 3) {
 			return;
 		}
-
-//		List<String> words = MyStaticValue.getMinSplitWord().cut(name);
-//
-//		if (words.size() == 1) {
-//			return;
-//		}
 
 		// 是否是外国人名
 		if (ForeignPersonRecognition.isFName(name)) {
@@ -123,9 +115,7 @@ public class TermUtil {
 		Term last = subTerm.get(subTerm.size() - 1);
 		int[] is = companyMap.get(first.getName());
 		int all = 0;
-		// if(is!=null){
-		// all+=is[0] ;
-		// }
+
 		is = companyMap.get(last.getName());
 		if (is != null) {
 			all += is[1];
@@ -139,6 +129,7 @@ public class TermUtil {
 
 	/**
 	 * 从from到to生成subterm
+	 * 
 	 * @param terms
 	 * @param from
 	 * @param to
@@ -146,12 +137,12 @@ public class TermUtil {
 	 */
 	public static List<Term> getSubTerm(Term from, Term to) {
 		// TODO Auto-generated method stub
-		List<Term> subTerm = new ArrayList<Term>(3) ;
-		
-		while((from=from.getTo())!=to){
-			subTerm.add(from) ;
+		List<Term> subTerm = new ArrayList<Term>(3);
+
+		while ((from = from.getTo()) != to) {
+			subTerm.add(from);
 		}
-		
+
 		return subTerm;
 	}
 

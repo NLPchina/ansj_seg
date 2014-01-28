@@ -2,8 +2,6 @@ package org.ansj.library;
 
 import org.ansj.domain.BigramEntry;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
 import org.ansj.util.MyStaticValue;
 
 /**

@@ -1,11 +1,10 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.recognition.NumRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 
@@ -17,11 +16,6 @@ import org.ansj.util.Graph;
  */
 public class BaseAnalysis extends Analysis {
 
-	public BaseAnalysis(Reader reader) {
-		super(reader);
-		// TODO Auto-generated constructor stub
-	}
-
 	@Override
 	protected List<Term> getResult(final Graph graph) {
 		// TODO Auto-generated method stub
@@ -30,12 +24,6 @@ public class BaseAnalysis extends Analysis {
 			public List<Term> merger() {
 				// TODO Auto-generated method stub
 				graph.walkPath();
-
-				// 数字发现
-				if (graph.hasNum) {
-					NumRecognition.recognition(graph.terms);
-				}
-
 				return getResult();
 			}
 
@@ -56,6 +44,10 @@ public class BaseAnalysis extends Analysis {
 
 	private BaseAnalysis() {
 	};
+
+	public BaseAnalysis(BufferedReader reader) {
+		super.resetContent(reader);
+	}
 
 	public static List<Term> parse(String str) {
 		return new BaseAnalysis().parseStr(str);

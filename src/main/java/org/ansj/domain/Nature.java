@@ -24,6 +24,8 @@ public class Nature {
 
 	public static final Nature NR = NatureLibrary.getNature("nr");
 
+	public static final Nature NULL = NatureLibrary.getNature("null");
+
 	public Nature(String natureStr, int index, int natureIndex, int allFrequency) {
 		this.natureStr = natureStr;
 		this.index = index;

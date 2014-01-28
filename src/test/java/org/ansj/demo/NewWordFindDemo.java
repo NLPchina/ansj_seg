@@ -24,7 +24,7 @@ public class NewWordFindDemo {
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/冒死记录中国神秘事件（真全本）.txt", "GBK");
 		LearnTool learn = new LearnTool();
 		long start = System.currentTimeMillis();
-		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, null, learn);
+		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn);
 		Term term = null;
 		while ((term = nlpAnalysis.next()) != null) {
 			if (!TermNatures.NW.equals(term.getTermNatures())) {

@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,8 +23,6 @@ import org.ansj.util.MyStaticValue;
  * 
  */
 public class ToAnalysis extends Analysis {
-
-	private Forest[] forests = null;
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -52,21 +50,13 @@ public class ToAnalysis extends Analysis {
 				}
 
 				// 用户自定义词典的识别
-				if (forests == null) {
-					userDefineRecognition(graph, null);
-				} else {
-					for (Forest forest : forests) {
-						if (forest == null)
-							continue;
-						userDefineRecognition(graph, forest);
-					}
-				}
+				userDefineRecognition(graph, forests);
 
 				return getResult();
 			}
 
-			private void userDefineRecognition(final Graph graph, Forest forest) {
-				new UserDefineRecognition(graph.terms, forest).recognition();
+			private void userDefineRecognition(final Graph graph, Forest... forests) {
+				new UserDefineRecognition(graph.terms, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}
@@ -94,7 +84,7 @@ public class ToAnalysis extends Analysis {
 	 * 
 	 * @param forest
 	 */
-	public ToAnalysis(Forest[] forests) {
+	public ToAnalysis(Forest... forests) {
 		// TODO Auto-generated constructor stub
 		if (forests == null) {
 			forests = new Forest[] { UserDefineLibrary.FOREST };
@@ -102,16 +92,9 @@ public class ToAnalysis extends Analysis {
 		this.forests = forests;
 	}
 
-	public ToAnalysis(Reader reader) {
-		super(reader);
-	}
-
-	public ToAnalysis(Reader reader, Forest[] forests) {
-		super(reader);
-		if (forests == null) {
-			forests = new Forest[] { UserDefineLibrary.FOREST };
-		}
+	public ToAnalysis(BufferedReader reader, Forest... forests) {
 		this.forests = forests;
+		super.resetContent(reader);
 	}
 
 	public static List<Term> parse(String str) {
@@ -120,6 +103,5 @@ public class ToAnalysis extends Analysis {
 
 	public static List<Term> parse(String str, Forest... forests) {
 		return new ToAnalysis(forests).parseStr(str);
-
 	}
 }

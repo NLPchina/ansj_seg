@@ -2,7 +2,6 @@ package org.ansj.domain;
 
 import java.util.List;
 
-import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.util.MathUtil;
 
 public class Term implements Comparable<Term> {
@@ -11,7 +10,7 @@ public class Term implements Comparable<Term> {
 	// 当前词的起始位置
 	private int offe;
 	// 词性列表
-	private TermNatures termNatures = null;
+	private TermNatures termNatures = TermNatures.NULL;
 	// 同一行内数据
 	private Term next;
 	// 分数
@@ -23,7 +22,7 @@ public class Term implements Comparable<Term> {
 	// 到达位置
 	private Term to;
 	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
-	private Nature nature = TermNature.NW.nature;
+	private Nature nature = Nature.NULL;
 
 	private List<Term> subTerm = null;
 
@@ -31,7 +30,8 @@ public class Term implements Comparable<Term> {
 		super();
 		this.name = name;
 		this.offe = offe;
-		this.termNatures = termNatures;
+		if (termNatures != null)
+			this.termNatures = termNatures;
 	}
 
 	public Term(String name, int offe, String natureStr, int natureFreq) {
@@ -189,11 +189,7 @@ public class Term implements Comparable<Term> {
 
 	@Override
 	public String toString() {
-		if (this.subTerm != null) {
-			return this.subTerm.toString() + "/" + nature.natureStr;
-		} else {
-			return this.name + "/" + nature.natureStr;
-		}
+		return this.name + "/" + nature.natureStr;
 	}
 
 	/**

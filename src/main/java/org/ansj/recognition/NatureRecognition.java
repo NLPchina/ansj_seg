@@ -68,9 +68,6 @@ public class NatureRecognition {
 			} else if ((params = UserDefineLibrary.getParams(word)) != null) {
 				tn = new TermNatures(new TermNature(params[0], 1));
 			}
-			if (tn == null) {
-				tn = TermNatures.NW;
-			}
 			terms.add(new Term(word, offe + tempOffe, tn));
 			tempOffe += word.length();
 		}

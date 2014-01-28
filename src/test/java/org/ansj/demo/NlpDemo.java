@@ -29,6 +29,8 @@ public class NlpDemo {
 		learn.isAsianName = false;
 		// 关闭外国人名识别
 		learn.isForeignName = false;
+		//关闭亚洲人名识别
+		learn.isAsianName = false ;
 
 		for (String string : value) {
 			List<Term> parse = NlpAnalysis.parse(string, learn);

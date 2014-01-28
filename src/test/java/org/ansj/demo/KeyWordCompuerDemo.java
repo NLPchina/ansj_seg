@@ -5,6 +5,11 @@ import java.util.Collection;
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
 
+/**
+ * 关键词提取的例子
+ * @author ansj
+ *
+ */
 public class KeyWordCompuerDemo {
 	public static void main(String[] args) {
 		KeyWordComputer kwc = new KeyWordComputer(5);

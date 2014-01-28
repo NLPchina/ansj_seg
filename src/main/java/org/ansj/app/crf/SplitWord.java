@@ -62,7 +62,7 @@ public class SplitWord {
 	};
 
 	public List<String> cut(String line) {
-		// TODO Auto-generated method stub
+		// TODO 目前这种方式不支持繁体，可能对分出的term也有不好的效果
 
 		if (StringUtil.isBlank(line)) {
 			return Collections.emptyList();

@@ -15,7 +15,7 @@ public class FilterAndUpdateNatureDemo {
 		FilterModifWord.insertStopWord("但是");
 
 		// 加入过滤词性词性
-		FilterModifWord.insertStopNatures("v");
+		FilterModifWord.insertStopNatures("m");
 
 		List<Term> parse = ToAnalysis.parse("停用词过滤了.并且修正词143922950性为用户自定义词性.但是你必须.must.设置停用词性词性词典");
 		new NatureRecognition(parse).recognition();

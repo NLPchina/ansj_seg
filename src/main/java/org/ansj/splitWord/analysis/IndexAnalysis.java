@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
+import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,20 +21,6 @@ import org.ansj.util.MyStaticValue;
  * 
  */
 public class IndexAnalysis extends Analysis {
-	private Forest[] forests = null;
-
-	public IndexAnalysis(Reader reader) {
-		super(reader);
-		// TODO Auto-generated constructor stub
-	}
-
-	private IndexAnalysis() {
-	};
-
-	public IndexAnalysis(Forest[] forests) {
-		// TODO Auto-generated constructor stub
-		this.forests = forests;
-	}
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -53,15 +39,7 @@ public class IndexAnalysis extends Analysis {
 					new AsianPersonRecognition(graph.terms).recognition();
 
 				// 用户自定义词典的识别
-				if (forests == null) {
-					new UserDefineRecognition(graph.terms).recognition();
-				} else {
-					for (Forest forest : forests) {
-						if (forest == null)
-							continue;
-						new UserDefineRecognition(graph.terms, forest).recognition();
-					}
-				}
+				new UserDefineRecognition(graph.terms, forests).recognition();
 
 				return result();
 			}
@@ -94,6 +72,19 @@ public class IndexAnalysis extends Analysis {
 		};
 
 		return merger.merger();
+	}
+
+	private IndexAnalysis() {
+	};
+
+	public IndexAnalysis(Forest... forests) {
+		// TODO Auto-generated constructor stub
+		this.forests = forests;
+	}
+
+	public IndexAnalysis(BufferedReader reader, Forest... forests) {
+		this.forests = forests;
+		super.resetContent(reader);
 	}
 
 	public static List<Term> parse(String str) {

@@ -1,10 +1,11 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.app.crf.Model;
+import love.cq.domain.Forest;
+
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
@@ -31,47 +32,11 @@ public class NlpAnalysis extends Analysis {
 
 	private LearnTool learn = null;
 
-	private SplitWord sw = null;
-
-	private static SplitWord defaultSlitWord = MyStaticValue.getBigSplitWord();
-
-	public NlpAnalysis(Reader reader, Model model, LearnTool learn) {
-		super(reader);
-		if (model != null) {
-			sw = new SplitWord(model);
-		}
-
-		if (learn == null) {
-			this.learn = new LearnTool();
-		} else {
-			this.learn = learn;
-		}
-	}
-
-	/**
-	 * 用户自定义的model，
-	 * 
-	 * @param reader
-	 * @param modelPath
-	 * @param templatePath
-	 */
-	private NlpAnalysis(Model model, LearnTool learn) {
-		if (model != null) {
-			sw = new SplitWord(model);
-		}
-		if (learn == null) {
-			this.learn = new LearnTool();
-		} else {
-			this.learn = learn;
-		}
-	}
+	private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
 		// TODO Auto-generated method stub
-		if (sw == null) {
-			sw = defaultSlitWord;
-		}
 
 		Merger merger = new Merger() {
 			@Override
@@ -88,17 +53,20 @@ public class NlpAnalysis extends Analysis {
 				List<Term> result = getResult();
 				new NatureRecognition(result).recognition();
 
+				if (learn == null) {
+					learn = new LearnTool();
+				}
 				learn.learn(graph);
 
 				// 通过crf分词
-				List<String> words = sw.cut(graph.str);
+				List<String> words = DEFAULT_SLITWORD.cut(graph.str);
 
 				for (String word : words) {
 					if (word.length() < 2) {
 						continue;
 					}
 
-					if (InitDictionary.isInSystemDic(word)  || UserDefineLibrary.contains(word) ) {
+					if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
 						continue;
 					}
 
@@ -106,9 +74,9 @@ public class NlpAnalysis extends Analysis {
 				}
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms).recognition();
+				new UserDefineRecognition(graph.terms, forests).recognition();
 				graph.walkPathByScore();
-				
+
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
 				graph.walkPathByScore();
@@ -138,20 +106,44 @@ public class NlpAnalysis extends Analysis {
 		return merger.merger();
 	}
 
-	public static List<Term> parse(String str, Model model) {
-		return new NlpAnalysis(model, null).parseStr(str);
+	private NlpAnalysis() {
+	};
+
+	/**
+	 * 用户自己定义的词典
+	 * 
+	 * @param forest
+	 */
+
+	public NlpAnalysis(Forest... forests) {
+		this.forests = forests;
 	}
 
-	public static List<Term> parse(String str, LearnTool learn) {
-		return new NlpAnalysis(null, learn).parseStr(str);
+	public NlpAnalysis(LearnTool learn, Forest... forests) {
+		this.forests = forests;
+		this.learn = learn;
+	}
+
+	public NlpAnalysis(BufferedReader reader, Forest... forests) {
+		this.forests = forests;
+		super.resetContent(reader);
+	}
+
+	public NlpAnalysis(BufferedReader reader, LearnTool learn, Forest... forests) {
+		this.forests = forests;
+		this.learn = learn;
+		super.resetContent(reader);
 	}
 
 	public static List<Term> parse(String str) {
-		return new NlpAnalysis(null, null).parseStr(str);
+		return new NlpAnalysis().parseStr(str);
 	}
 
-	public static List<Term> parse(String str, Model model, LearnTool learn) {
-		return new NlpAnalysis(model, learn).parseStr(str);
+	public static List<Term> parse(String str, Forest... forests) {
+		return new NlpAnalysis(forests).parseStr(str);
 	}
 
+	public static List<Term> parse(String str, LearnTool learn, Forest... forests) {
+		return new NlpAnalysis(learn, forests).parseStr(str);
+	}
 }

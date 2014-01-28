@@ -1,5 +1,7 @@
 package org.ansj.test;
 
+import org.ansj.splitWord.analysis.NlpAnalysis;
+
 public class MoneyTest {
 	public static void main(String[] args) throws Exception {
 		System.out.println("最大可用内存" + (Runtime.getRuntime().maxMemory() / 1000000));
@@ -8,11 +10,7 @@ public class MoneyTest {
 
 		long begin = (Runtime.getRuntime().freeMemory() / 1000000);
 
-		// 分词内存占用
-		// ToAnalysis.parse("内存测试123,张三") ;
-		// InitDictionary.initArrays();
-		// new TwoWordLibrary() ;
-		UserDefinedAnalysisTest.main(null);
+		NlpAnalysis.parse("江苏宏宝五金股份有限公司（以下简称“本公司”）于2012年11月9日接到实际控制人") ;
 
 		System.out.println("分词系统使用了的内存" + (begin - Runtime.getRuntime().freeMemory() / 1000000));
 		System.out.println("最大可用内存" + (Runtime.getRuntime().maxMemory() / 1000000));

@@ -50,12 +50,12 @@ public class NewWord {
 	 * @param i
 	 * @param tn
 	 */
-	public void update(double score, Nature tn, int freq) {
+	public void update(double score, Nature nature, int freq) {
 		// TODO Auto-generated method stub
-		this.score += score;
+		this.score += score * freq;
 		this.allFreq += freq;
-		if (Nature.NW == nature) {
-			this.nature = tn;
+		if (Nature.NW != nature) {
+			this.nature = nature;
 		}
 	}
 
