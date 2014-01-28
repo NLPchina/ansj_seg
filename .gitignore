@@ -1,0 +1,36 @@
+# Package Files #
+*.war
+*.ear
+.settings/
+.classpath
+.project
+bin/
+.DS_Store
+.data/
+data/
+org/ansj/training/
+test/org/ansj/test/*
+jrat.output/*
+jrat.xml
+._.DS_Store
+._*
+target/
+*.class
+# Package Files #
+*.war
+*.ear
+.settings/
+.classpath
+.project
+bin/
+.DS_Store
+.data/
+data/
+org/ansj/training/
+test/org/ansj/test/*
+jrat.output/*
+jrat.xml
+._.DS_Store
+._*
+target/
+
