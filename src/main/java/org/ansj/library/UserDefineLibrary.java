@@ -198,6 +198,21 @@ public class UserDefineLibrary {
 		}
 	}
 
+	public static String[] getParams(Forest forest, String word) {
+		WoodInterface temp = forest;
+		for (int i = 0; i < word.length(); i++) {
+			temp = temp.get(word.charAt(i));
+			if (temp == null) {
+				return null;
+			}
+		}
+		if (temp.getStatus() > 1) {
+			return temp.getParams();
+		} else {
+			return null;
+		}
+	}
+
 	public static boolean contains(String word) {
 		return getParams(word) != null;
 	}
