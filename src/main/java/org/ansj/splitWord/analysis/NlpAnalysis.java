@@ -21,6 +21,7 @@ import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
+import org.ansj.util.WordAlert;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -59,20 +60,15 @@ public class NlpAnalysis extends Analysis {
 				learn.learn(graph);
 
 				// 通过crf分词
-				List<String> words = DEFAULT_SLITWORD.cut(graph.str);
+				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2) {
+					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word) || WordAlert.isRuleWord(word)) {
 						continue;
 					}
-
-					if (InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word)) {
-						continue;
-					}
-
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
 				}
-
+				
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
 				graph.walkPathByScore();
@@ -80,6 +76,7 @@ public class NlpAnalysis extends Analysis {
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
 				graph.walkPathByScore();
+				
 
 				// 修复人名左右连接
 				AsianPersonRecognition.nameAmbiguity(graph.terms);

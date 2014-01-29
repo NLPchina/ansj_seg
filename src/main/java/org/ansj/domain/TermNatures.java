@@ -8,7 +8,7 @@ package org.ansj.domain;
  */
 public class TermNatures {
 
-	public static final TermNatures NB = new TermNatures(TermNature.NB);
+	public static final TermNatures M = new TermNatures(TermNature.M);
 
 	public static final TermNatures NR = new TermNatures(TermNature.NR);
 

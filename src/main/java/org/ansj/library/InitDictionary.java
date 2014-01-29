@@ -232,12 +232,28 @@ public class InitDictionary {
 	 *            输入'孫'
 	 * @return 输出'孙'
 	 */
-	public static char conversion(char c) {
+	private static char conversion(char c) {
 		char value = IN_SYSTEM[c];
 		if (value == 0) {
 			return c;
 		}
 		return value;
+	}
+
+	/**
+	 * 简繁体转换,
+	 * 
+	 * @param c
+	 *            输入'孫'
+	 * @return 输出'孙'
+	 */
+	public static char[] conversion(String str) {
+		char[] chars = str.toCharArray();
+
+		for (int i = 0; i < chars.length; i++) {
+			chars[i] = conversion(chars[i]);
+		}
+		return chars;
 	}
 
 }

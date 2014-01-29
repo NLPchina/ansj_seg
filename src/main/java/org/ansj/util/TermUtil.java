@@ -41,21 +41,19 @@ public class TermUtil {
 	}
 
 	/**
-	 * 将一个term插入到链表中的对应位置中,不排序了.
+	 * 将一个term插入到链表中的对应位置中,应该是词长由大到小
 	 * 
 	 * @param terms
 	 * @param term
 	 */
 	public static void insertTerm(Term[] terms, Term term) {
 		Term temp = terms[term.getOffe()];
-		if (temp == null) {
-			terms[term.getOffe()] = term;
-		} else {
-			if (temp.getNext() != null) {
-				term.setNext(temp.getNext());
-			}
-			temp.setNext(term);
+		//插入到最右面
+		Term last = temp ;
+		while((temp = temp.getNext())!=null){
+			last = temp ; 
 		}
+		last.setNext(term) ;
 	}
 
 	public static void insertTermNum(Term[] terms, Term term) {

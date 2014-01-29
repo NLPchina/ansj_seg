@@ -32,7 +32,6 @@ public class ToAnalysis extends Analysis {
 			public List<Term> merger() {
 				// TODO Auto-generated method stub
 				graph.walkPath();
-
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
@@ -85,7 +84,6 @@ public class ToAnalysis extends Analysis {
 	 * @param forest
 	 */
 	public ToAnalysis(Forest... forests) {
-		// TODO Auto-generated constructor stub
 		if (forests == null) {
 			forests = new Forest[] { UserDefineLibrary.FOREST };
 		}

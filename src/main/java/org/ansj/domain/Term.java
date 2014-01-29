@@ -72,7 +72,7 @@ public class Term implements Comparable<Term> {
 	public void setPathScore(Term from) {
 		// 维特比进行最优路径的构建
 		double score = MathUtil.compuScore(from, this);
-		if (this.from == null || this.getScore() >= score) {
+		if (this.from == null || this.score >= score) {
 			this.setFromAndScore(from, score);
 		}
 	}
@@ -83,9 +83,9 @@ public class Term implements Comparable<Term> {
 	 * @param term
 	 */
 	public void setPathSelfScore(Term from) {
-		double score = this.selfScore + from.getScore();
+		double score = this.selfScore + from.score;
 		// 维特比进行最优路径的构建
-		if (this.from == null || this.getScore() > score) {
+		if (this.from == null || this.score > score) {
 			this.setFromAndScore(from, score);
 		}
 	}
@@ -131,11 +131,6 @@ public class Term implements Comparable<Term> {
 	public Term setNext(Term next) {
 		this.next = next;
 		return this;
-	}
-
-	public double getScore() {
-		// TODO Auto-generated method stub
-		return this.score;
 	}
 
 	public Term getFrom() {
@@ -189,6 +184,9 @@ public class Term implements Comparable<Term> {
 
 	@Override
 	public String toString() {
+		if ("null".equals(nature.natureStr)) {
+			return name;
+		}
 		return this.name + "/" + nature.natureStr;
 	}
 

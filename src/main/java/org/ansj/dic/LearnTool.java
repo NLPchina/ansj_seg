@@ -11,7 +11,7 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.RulePecognition;
+import org.ansj.recognition.RuleRecognition;
 import org.ansj.util.Graph;
 
 /**
@@ -62,7 +62,7 @@ public class LearnTool {
 
 	private void findRuleEntry(Graph graph) {
 		// TODO Auto-generated method stub
-		List<NewWord> newWords = RulePecognition.recognition(graph);
+		List<NewWord> newWords = RuleRecognition.recognition(graph);
 		addListToTerm(newWords);
 	}
 

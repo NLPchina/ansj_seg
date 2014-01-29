@@ -15,7 +15,7 @@ import org.ansj.util.Graph;
  * @author ansj
  * 
  */
-public class RulePecognition {
+public class RuleRecognition {
 
 	private static Map<String, String> ruleMap = new HashMap<String, String>();
 
@@ -24,16 +24,16 @@ public class RulePecognition {
 	}
 
 	public static List<NewWord> recognition(Graph graph) {
-		return recognition(graph.str);
+		return recognition(graph.chars);
 	}
 
-	public static List<NewWord> recognition(String str) {
+	public static List<NewWord> recognition(char[] chars) {
 		String end = null;
 		StringBuilder sb = null;
 		String name;
 		List<NewWord> result = new ArrayList<NewWord>();
-		for (int i = 0; i < str.length(); i++) {
-			name = String.valueOf(str.charAt(i));
+		for (int i = 0; i < chars.length; i++) {
+			name = String.valueOf(chars[i]);
 			if (end == null) {
 				if ((end = ruleMap.get(name)) != null) {
 					sb = new StringBuilder();

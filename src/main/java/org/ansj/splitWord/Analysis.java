@@ -1,7 +1,6 @@
 package org.ansj.splitWord;
 
 import static org.ansj.library.InitDictionary.IN_SYSTEM;
-import static org.ansj.library.InitDictionary.conversion;
 import static org.ansj.library.InitDictionary.status;
 
 import java.io.BufferedReader;
@@ -113,7 +112,7 @@ public abstract class Analysis {
 			String[] params = null;
 			while ((gw.getAllWords()) != null) {
 				if (gw.offe > startOffe) {
-					analysis(gp, temp.substring(startOffe, gw.offe), startOffe);
+					analysis(gp, startOffe, gw.offe);
 				}
 				params = gw.getParams();
 				startOffe = gw.offe;
@@ -122,74 +121,68 @@ public abstract class Analysis {
 					startOffe += params[i].length();
 				}
 			}
-			if (startOffe == 0) {
-				analysis(gp, temp, startOffe);
-			} else {
-				analysis(gp, temp.substring(startOffe, temp.length()), startOffe);
-			}
-		} else {
-			analysis(gp, temp, startOffe);
+		}
+		int endOffe = gp.chars.length - startOffe;
+		if (endOffe > 0) {
+			analysis(gp, startOffe, endOffe);
 		}
 		List<Term> result = this.getResult(gp);
 
 		terms.addAll(result);
 	}
 
-	private void analysis(Graph gp, String temp, int startOffe) {
+	private void analysis(Graph gp, int startOffe, int endOffe) {
 		// TODO Auto-generated method stub
 		int start = 0;
 		int end = 0;
-		int length = 0;
-		length = temp.length();
-
-		tempLength = length + 1;
+		char[] chars = gp.chars;
 
 		String str = null;
 		char c = 0;
-		for (int i = 0; i < length; i++) {
-			switch (status[conversion(temp.charAt(i))]) {
+		for (int i = startOffe; i < endOffe; i++) {
+			switch (status[chars[i]]) {
 			case 0:
-				gp.addTerm(new Term(temp.charAt(i) + "", startOffe + i, TermNatures.NW));
+				gp.addTerm(new Term(chars[i] + "", i, TermNatures.NW));
 				break;
 			case 4:
 				start = i;
 				end = 1;
-				while (++i < length && status[temp.charAt(i)] == 4) {
+				while (++i < endOffe && status[chars[i]] == 4) {
 					end++;
 				}
-				str = WordAlert.alertEnglish(temp, start, end);
-				gp.addTerm(new Term(str, start + startOffe, TermNatures.EN));
+				str = WordAlert.alertEnglish(chars, start, end);
+				gp.addTerm(new Term(str, start, TermNatures.EN));
 				i--;
 				break;
 			case 5:
 				start = i;
 				end = 1;
-				while (++i < length && status[temp.charAt(i)] == 5) {
+				while (++i < endOffe && status[chars[i]] == 5) {
 					end++;
 				}
-				str = WordAlert.alertNumber(temp, start, end);
-				gp.addTerm(new Term(str, start + startOffe, TermNatures.NB));
+				str = WordAlert.alertNumber(chars, start, end);
+				gp.addTerm(new Term(str, start, TermNatures.M));
 				i--;
 				break;
 			default:
 				start = i;
 				end = i;
-				c = temp.charAt(start);
+				c = chars[start];
 				while (IN_SYSTEM[c] > 0) {
 					end++;
-					if (++i >= length)
+					if (++i >= endOffe)
 						break;
-					c = temp.charAt(i);
+					c = chars[i];
 				}
 
 				if (start == end) {
-					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NW));
+					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
+					continue ;
 				}
 
-				str = temp.substring(start, end);
-				gwi.setStr(str);
+				gwi.setChars(chars, start, end - start);
 				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe + start + startOffe, gwi.getTermNatures()));
+					gp.addTerm(new Term(str, gwi.offe + start, gwi.getTermNatures()));
 				}
 
 				/**
@@ -198,7 +191,7 @@ public abstract class Analysis {
 				if (IN_SYSTEM[c] > 0 || status[c] > 3) {
 					i -= 1;
 				} else {
-					gp.addTerm(new Term(String.valueOf(c), i + startOffe, TermNatures.NW));
+					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
 				}
 
 				break;

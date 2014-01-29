@@ -14,7 +14,8 @@ import org.ansj.splitWord.Analysis.Merger;
  * 
  */
 public class Graph {
-	public String str = null;
+	public char[] chars = null;
+	public String realStr = null;
 	public Term[] terms = null;
 	protected Term end = null;
 	protected Term root = null;
@@ -28,12 +29,12 @@ public class Graph {
 	// 是否需有歧异
 
 	public Graph(String str) {
-		this.str = str;
-		int size = str.length();
-		terms = new Term[size + 1];
-		end = new Term(E, size, TermNatures.END);
+		realStr = str;
+		this.chars = InitDictionary.conversion(str);
+		terms = new Term[chars.length + 1];
+		end = new Term(E, chars.length, TermNatures.END);
 		root = new Term(B, -1, TermNatures.BEGIN);
-		terms[size] = end;
+		terms[chars.length] = end;
 	}
 
 	/**
@@ -208,9 +209,9 @@ public class Graph {
 			// 找到自身分数对大最长的
 
 			do {
-				if (maxTerm == null || maxScore > term.getScore()) {
+				if (maxTerm == null || maxScore > term.score) {
 					maxTerm = term;
-				} else if (maxScore == term.getScore() && maxTerm.getName().length() < term.getName().length()) {
+				} else if (maxScore == term.score && maxTerm.getName().length() < term.getName().length()) {
 					maxTerm = term;
 				}
 
@@ -296,7 +297,7 @@ public class Graph {
 				term = term.getNext();
 			}
 		} else {
-			char c = str.charAt(to);
+			char c = chars[to];
 			TermNatures tn = InitDictionary.termNatures[c];
 			if (tn == null) {
 				tn = TermNatures.NW;
@@ -326,6 +327,22 @@ public class Graph {
 			}
 		}
 
+	}
+
+	/**
+	 * 对graph进行调试用的
+	 */
+	public void printGraph() {
+		for (Term term : terms) {
+			if (term == null) {
+				continue;
+			}
+			System.out.print(term.getName() + "\t" + term.selfScore + " ,");
+			if ((term = term.getNext()) != null) {
+				System.out.print(term + "\t" + term.selfScore + " ,");
+			}
+			System.out.println();
+		}
 	}
 
 }

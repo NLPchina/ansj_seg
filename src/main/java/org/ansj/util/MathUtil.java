@@ -27,7 +27,7 @@ public class MathUtil {
 		double frequency = from.getTermNatures().allFreq + 1;
 
 		if (frequency < 0) {
-			return from.getScore() + MAX_FREQUENCE;
+			return from.score + MAX_FREQUENCE;
 		}
 
 		int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
@@ -36,7 +36,7 @@ public class MathUtil {
 		if (value < 0) {
 			value += frequency;
 		}
-		return from.getScore() + value;
+		return from.score + value;
 	}
 
 	/**

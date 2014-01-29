@@ -1,12 +1,11 @@
 package org.ansj.splitWord.impl;
 
+import static org.ansj.library.InitDictionary.arrayLength;
 import static org.ansj.library.InitDictionary.base;
 import static org.ansj.library.InitDictionary.check;
-import static org.ansj.library.InitDictionary.conversion;
 import static org.ansj.library.InitDictionary.status;
 import static org.ansj.library.InitDictionary.termNatures;
 import static org.ansj.library.InitDictionary.words;
-import static org.ansj.library.InitDictionary.arrayLength;
 
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.GetWords;
@@ -34,13 +33,18 @@ public class GetWordsImpl implements GetWords {
 	int charsLength = 0;
 
 	@Override
-	public void setStr(String chars) {
+	public void setStr(String str) {
+		setChars(str.toCharArray(), 0, str.length());
+	}
+
+	@Override
+	public void setChars(char[] chars, int start, int end) {
 		this.chars = chars;
-		charsLength = chars.length();
+		charsLength = end;
 		checkValue = 0;
 	}
 
-	public String chars;
+	public char[] chars;
 	private int charHashCode;
 	private int start = 0;
 	public int end = 0;
@@ -53,12 +57,12 @@ public class GetWordsImpl implements GetWords {
 	@Override
 	public String allWords() {
 		for (; i < charsLength; i++) {
-			charHashCode = conversion(chars.charAt(i));
+			charHashCode = chars[i];
 			end++;
 			switch (getStatement()) {
 			case 0:
-				if (baseValue == chars.charAt(i)) {
-					str = String.valueOf(chars.charAt(i));
+				if (baseValue == chars[i]) {
+					str = String.valueOf(chars[i]);
 					offe = i;
 					start = ++i;
 					end = 0;

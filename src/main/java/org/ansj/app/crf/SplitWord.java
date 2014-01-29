@@ -61,15 +61,19 @@ public class SplitWord {
 
 	};
 
+	public List<String> cut(char[] chars) {
+		//FIXME: 都有char数组了。不要再转来转去了好不
+		return cut(new String(chars));
+	}
+
 	public List<String> cut(String line) {
-		// TODO 目前这种方式不支持繁体，可能对分出的term也有不好的效果
 
 		if (StringUtil.isBlank(line)) {
 			return Collections.emptyList();
 		}
 
 		List<Element> elements = vterbi(line);
-		
+
 		LinkedList<String> result = new LinkedList<String>();
 
 		Element e = null;

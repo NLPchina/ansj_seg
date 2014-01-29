@@ -69,8 +69,8 @@ public class WordAlert {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_E);
 			} else if (i >= MIN_UPPER_N && i <= MAX_UPPER_N) {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_N);
-			} else{
-				CHARCOVER[i] = (char) i ;
+			} else {
+				CHARCOVER[i] = (char) i;
 			}
 		}
 		CHARCOVER['-'] = '·';
@@ -312,6 +312,20 @@ public class WordAlert {
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * 判断分词是否是靠规则识别出来的词
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public static boolean isRuleWord(String word) {
+		// TODO Auto-generated method stub
+		if (CHARCOVER[word.charAt(0)] < 256 || CHARCOVER[word.charAt(word.length() - 1)] < 256) {
+			return true;
+		}
+		return false;
 	}
 
 }
