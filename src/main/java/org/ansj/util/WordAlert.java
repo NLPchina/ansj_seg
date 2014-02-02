@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import love.cq.util.StringUtil;
+
 import org.ansj.app.crf.pojo.Element;
 
 public class WordAlert {
@@ -266,13 +268,8 @@ public class WordAlert {
 	 * @param str
 	 * @return
 	 */
-	public static List<Element> str2Elements(String str) {
+	public static List<Element> str2Elements(char[] chars) {
 
-		if (str == null || str.trim().length() == 0) {
-			return Collections.emptyList();
-		}
-
-		char[] chars = alertStr(str);
 		int maxLen = chars.length - 1;
 		List<Element> list = new ArrayList<Element>();
 		Element element = null;

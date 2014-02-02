@@ -40,6 +40,8 @@ public class GetWordsImpl implements GetWords {
 	@Override
 	public void setChars(char[] chars, int start, int end) {
 		this.chars = chars;
+		i = start;
+		this.start = start;
 		charsLength = end;
 		checkValue = 0;
 	}
@@ -97,7 +99,6 @@ public class GetWordsImpl implements GetWords {
 			baseValue = 0;
 			return allWords();
 		}
-		start = 0;
 		end = 0;
 		baseValue = 0;
 		i = 0;

@@ -104,11 +104,10 @@ public abstract class Analysis {
 	 * @param temp
 	 */
 	private void analysisStr(String temp) {
-		// TODO Auto-generated method stub
 		Graph gp = new Graph(temp);
 		int startOffe = 0;
 		if (UserDefineLibrary.ambiguityForest != null) {
-			GetWord gw = new GetWord(UserDefineLibrary.ambiguityForest, temp);
+			GetWord gw = new GetWord(UserDefineLibrary.ambiguityForest, gp.chars);
 			String[] params = null;
 			while ((gw.getAllWords()) != null) {
 				if (gw.offe > startOffe) {
@@ -122,9 +121,8 @@ public abstract class Analysis {
 				}
 			}
 		}
-		int endOffe = gp.chars.length - startOffe;
-		if (endOffe > 0) {
-			analysis(gp, startOffe, endOffe);
+		if (startOffe < gp.chars.length - 1) {
+			analysis(gp, startOffe, gp.chars.length);
 		}
 		List<Term> result = this.getResult(gp);
 
@@ -132,7 +130,6 @@ public abstract class Analysis {
 	}
 
 	private void analysis(Graph gp, int startOffe, int endOffe) {
-		// TODO Auto-generated method stub
 		int start = 0;
 		int end = 0;
 		char[] chars = gp.chars;
@@ -142,7 +139,7 @@ public abstract class Analysis {
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status[chars[i]]) {
 			case 0:
-				gp.addTerm(new Term(chars[i] + "", i, TermNatures.NW));
+				gp.addTerm(new Term(chars[i] + "", i, TermNatures.NULL));
 				break;
 			case 4:
 				start = i;
@@ -177,12 +174,12 @@ public abstract class Analysis {
 
 				if (start == end) {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-					continue ;
+					continue;
 				}
 
-				gwi.setChars(chars, start, end - start);
+				gwi.setChars(chars, start, end);
 				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe + start, gwi.getTermNatures()));
+					gp.addTerm(new Term(str, gwi.offe, gwi.getTermNatures()));
 				}
 
 				/**
