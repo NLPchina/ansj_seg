@@ -61,17 +61,17 @@ public class SplitWord {
 
 	};
 
-	public List<String> cut(String line) {
-		return cut(line.toCharArray());
+	public List<String> cut(char[] chars) {
+		return cut(new String(chars));
 	}
 
-	public List<String> cut(char[] chars) {
+	public List<String> cut(String line) {
 
-		if (chars == null || StringUtil.isBlank(chars)) {
+		if (StringUtil.isBlank(line)) {
 			return Collections.emptyList();
 		}
 
-		List<Element> elements = vterbi(chars);
+		List<Element> elements = vterbi(line);
 
 		LinkedList<String> result = new LinkedList<String>();
 
@@ -84,7 +84,7 @@ public class SplitWord {
 			switch (fixTag(e.getTag())) {
 			case 0:
 				end += e.len;
-				result.add(new String(chars, begin, end - begin));
+				result.add(line.substring(begin, end));
 				begin = end;
 				break;
 			case 1:
@@ -93,7 +93,7 @@ public class SplitWord {
 					end += e.len;
 				}
 				end += e.len;
-				result.add(new String(chars, begin, end - begin));
+				result.add(line.substring(begin, end));
 				begin = end;
 			default:
 				break;
@@ -102,8 +102,8 @@ public class SplitWord {
 		return result;
 	}
 
-	private List<Element> vterbi(char[] chars) {
-		List<Element> elements = WordAlert.str2Elements(chars);
+	private List<Element> vterbi(String line) {
+		List<Element> elements = WordAlert.str2Elements(line);
 
 		int length = elements.size();
 

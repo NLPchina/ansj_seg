@@ -7,7 +7,6 @@ import java.util.List;
 
 import love.cq.util.IOUtil;
 
-import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
@@ -37,7 +36,7 @@ public class SpeedTest {
 		long start = System.currentTimeMillis();
 		int allCount = 0;
 		System.out.println("init ok!");
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 10; j++) {
 			for (String string : all) {
 				allCount += temp.length();
 
