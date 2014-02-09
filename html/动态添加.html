@@ -144,83 +144,37 @@ pre code {
 	}
 }
 </style>
-<title>用户自定义词典</title>
+<title>动态添加</title>
 
 </head>
 <body>
-<h1>用户自定义词典</h1>
+<h1>动态添加</h1>
 
-<blockquote><p>Ansj的一个喜人的功能就是支持用户自定义词典.</p>
+<p>直接看例子.这个功能其实在tree-split中就已经存在的.</p>
 
-<p>词典是基于tree_split项目来的.就是一个超级简单.做过一些优化的tire树结构.它具有使用灵活.内存占用小等特点</p></blockquote>
+<p>说明:</p>
 
-<h3>Ansj目前支持以下的公户自定义词典的操作方式.</h3>
+<p>1..删除只能删除用户自定义词典的词.</p>
 
-<ul>
-<li>从文件中加载词典
+<p>2.对了分词默认把大写都转换为小写了.所以添加新词的时候要求必须是小写.</p>
 
-<ul>
-<li>配置文件</li>
-<li>编码路径</li>
-</ul>
-</li>
-<li>从内存操作词典
-
-<ul>
-<li>增加</li>
-<li>删除</li>
-<li>修改</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>同时Ansj的用户自定义词典.支持多词典.多层次的分词.对于特定领域的分词.就是一神器.O(∩_∩)O~</h3>
-
-<h3>jar包下载地址:</h3>
-
-<p><a href="http://maven.ansj.org/org/ansj/tree_split/1.2/">http://maven.ansj.org/org/ansj/tree_split/</a></p>
-
-<h3>maven</h3>
-
-<hr />
-
-<blockquote><ol>
-<li>第一步在你的pom.xml中加入.</li>
-</ol>
-</blockquote>
-
-<pre><code>&lt;project...&gt;
-    ....
-
-    &lt;repositories&gt;
-        &lt;repository&gt;
-            &lt;id&gt;mvn-repo&lt;/id&gt;
-            &lt;url&gt;http://maven.ansj.org/&lt;/url&gt;
-        &lt;/repository&gt;
-    &lt;/repositories&gt;
-    ....
-&lt;/project&gt;
-</code></pre>
-
-<ol>
-<li>在dependencies标签中粘贴如下:(其实version 以最新的为标准.)</li>
-</ol>
+<pre><code>
+public class DynamicWordDemo {
+    public static void main(String[] args) {
+        //增加新词,中间按照'\t'隔开
+        UserDefineLibrary.insertWord("ansj中文分词  userDefine  1000") ;
+        List<Term> terms = ToAnalysis.paser("我觉得ansj中文分词是一个不错的系统!我是王婆!") ;
+        new NatureRecognition(terms).recogntion() ;
+        System.out.println("增加新词例子:"+terms);        
+        //删除词语,只能删除.用户自定义的词典.
+        UserDefineLibrary.removeWord("ansj中文分词") ;
+        terms = ToAnalysis.paser("我觉得ansj中文分词是一个不错的系统!我是王婆!") ;
+        new NatureRecognition(terms).recogntion() ;
+        System.out.println("删除用户自定义词典例子:"+terms);
+    }
+</pre>
 
 
-<pre><code>    &lt;dependencies&gt;
-        ....
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.ansj&lt;/groupId&gt;
-            &lt;artifactId&gt;tree_split&lt;/artifactId&gt;
-            &lt;version&gt;1.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        ....
-    &lt;/dependencies&gt;
-</code></pre>
-
-<h1>获得源码</h1>
-
-<p>https://github.com/ansjsun/tree_split</p>
+<p></code></p>
 </body>
 </html>

@@ -144,83 +144,49 @@ pre code {
 	}
 }
 </style>
-<title>用户自定义词典</title>
+<title>自定义词性和停用词</title>
 
 </head>
 <body>
-<h1>用户自定义词典</h1>
+<h1>自定义词性和停用词</h1>
 
-<blockquote><p>Ansj的一个喜人的功能就是支持用户自定义词典.</p>
+<blockquote><p>很多时候.系统的内置词性无法满足您的需求.</p>
 
-<p>词典是基于tree_split项目来的.就是一个超级简单.做过一些优化的tire树结构.它具有使用灵活.内存占用小等特点</p></blockquote>
+<p>你需要根据自己的规则对词语进行词性标注.</p>
 
-<h3>Ansj目前支持以下的公户自定义词典的操作方式.</h3>
+<p>最简单的就是用户自定义词典中的词性在分词结果中,并不是优先出现的.</p></blockquote>
 
-<ul>
-<li>从文件中加载词典
+<h2>所以我们通过  FilterModifWord 来对分次结果进一步处理</h2>
 
-<ul>
-<li>配置文件</li>
-<li>编码路径</li>
-</ul>
-</li>
-<li>从内存操作词典
+<h4>1.增加停用词的例子</h4>
 
-<ul>
-<li>增加</li>
-<li>删除</li>
-<li>修改</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>同时Ansj的用户自定义词典.支持多词典.多层次的分词.对于特定领域的分词.就是一神器.O(∩_∩)O~</h3>
-
-<h3>jar包下载地址:</h3>
-
-<p><a href="http://maven.ansj.org/org/ansj/tree_split/1.2/">http://maven.ansj.org/org/ansj/tree_split/</a></p>
-
-<h3>maven</h3>
-
-<hr />
-
-<blockquote><ol>
-<li>第一步在你的pom.xml中加入.</li>
-</ol>
-</blockquote>
-
-<pre><code>&lt;project...&gt;
-    ....
-
-    &lt;repositories&gt;
-        &lt;repository&gt;
-            &lt;id&gt;mvn-repo&lt;/id&gt;
-            &lt;url&gt;http://maven.ansj.org/&lt;/url&gt;
-        &lt;/repository&gt;
-    &lt;/repositories&gt;
-    ....
-&lt;/project&gt;
+<pre><code>//增加两个停用词
+FilterModifWord.insertStopWord("并且") ;
+FilterModifWord.insertStopWord("但是") ;
 </code></pre>
 
-<ol>
-<li>在dependencies标签中粘贴如下:(其实version 以最新的为标准.)</li>
-</ol>
+<h4>2.增加停用词性的例子</h4>
 
-
-<pre><code>    &lt;dependencies&gt;
-        ....
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.ansj&lt;/groupId&gt;
-            &lt;artifactId&gt;tree_split&lt;/artifactId&gt;
-            &lt;version&gt;1.2&lt;/version&gt;
-        &lt;/dependency&gt;
-        ....
-    &lt;/dependencies&gt;
+<pre><code>//加入过滤词性词性
+FilterModifWord.insertStopNatures("v") ;
 </code></pre>
 
-<h1>获得源码</h1>
+<h4>3.以用户自定义的词性优先</h4>
 
-<p>https://github.com/ansjsun/tree_split</p>
+<pre><code>/*
+ * 停用词过滤并且修正词性
+ */
+List&lt;Term&gt; parse = ToAnalysis.parse(string) ;
+new NatureRecognition(parse).recognition() ;
+FilterModifWord.modifResult(parse) ;
+</code></pre>
+
+<h4>4.使用自定义的词典树</h4>
+
+<pre><code>/*
+ * 停用词过滤并且修正词性,
+ */
+public static List&lt;Term&gt; modifResult(List&lt;Term&gt; all, Forest... forests) 
+</code></pre>
 </body>
 </html>

@@ -18,12 +18,12 @@
 <project...>
 	....
 	
-	<distributionManagement>
+	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>scpexe://ansj/home/mvn-repo/ROOT</url>
+			<url>http://maven.ansj.org/</url>
 		</repository>
-	</distributionManagement>
+	</repositories>
 	....
 </project>
 ````
