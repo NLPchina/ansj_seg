@@ -1,9 +1,12 @@
 package org.ansj.util;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -181,6 +184,7 @@ public class MyStaticValue {
 			inputStream = DicReader.getInputStream("person/asian_name_freq.data");
 			objectInputStream = new ObjectInputStream(inputStream);
 			map = (Map<String, int[][]>) objectInputStream.readObject();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -198,6 +202,21 @@ public class MyStaticValue {
 				e.printStackTrace();
 			}
 		}
+//人名识别model作一些删除
+//		map.remove("和") ;
+//		
+//		try {
+//			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/home/ansj/workspace/ansj_seg/src/main/resources/person/asian_name_freq.data")) ;
+//			oos.writeObject(map) ;
+//			oos.flush() ;
+//			oos.close() ;
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return map;
 	}
 

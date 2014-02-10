@@ -6,7 +6,7 @@ import org.ansj.util.MyStaticValue;
 
 public class CRFSegDemo {
 	public static void main(String[] args) {
-		List<String> cut = MyStaticValue.getCRFSplitWord().cut("数据专家跨界的典范，不得不提到火箭队总经理莫雷。他没参加过职业篮球比赛，并说他“对数字的兴趣远远大于任何一项运动。”从MIT毕业开过体育分析公司和担任球队助理了解行业后，他在火箭队将魔球理论发扬光大，用数据模型淘性价比最好的新秀。他的数据团队如今被纷纷挖到别的球队当总经理或数据老大");
+		List<String> cut = MyStaticValue.getCRFSplitWord().cut("由于霍华德、阿尔德里奇(微博)和波什都因伤退出，内线又一次成为美国男篮的问题，以目前球队的大名单，两大内线钱德勒和勒夫出战奥运几乎可以确定。科朗吉洛接受福克斯体育的电话采访时明确表示奥运阵容已确认9人。2008年北京奥运夺冠的科比、詹姆斯、安东尼、保罗和德隆肯定亮相伦敦，2010年世锦赛上帮助球队夺冠的杜兰特、威斯布鲁克、勒夫和钱德勒也会入选奥运名单。");
 		
 		System.out.println(cut);
 	}

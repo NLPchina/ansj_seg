@@ -63,7 +63,7 @@ public class NlpAnalysis extends Analysis {
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || UserDefineLibrary.contains(word) || WordAlert.isRuleWord(word)) {
+					if (word.length() < 2 || InitDictionary.isInSystemDic(word) ||  WordAlert.isRuleWord(word)) {
 						continue;
 					}
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
