@@ -41,10 +41,6 @@ public class AnsjServlet {
 			break;
 		case MIN_NLP:
 			terms = NlpAnalysis.parse(input);
-			String str = terms.toString();
-			if (str.length() > 4) {
-				return str.substring(1, str.length() - 1);
-			}
 		case KEYWORD:
 			KeyWordComputer keyWordComputer = new KeyWordComputer(10);
 			keyWords = keyWordComputer.computeArticleTfidf(input);
@@ -90,7 +86,13 @@ public class AnsjServlet {
 		}
 		StringBuilder sb = new StringBuilder();
 		for (Term term : terms) {
-			String tmp = term.getName();
+			String tmp = null ;
+			if(method == AnsjMethod.MIN_NLP&& term.getSubTerm()!=null){
+				tmp = term.getSubTerm().toString() ;
+			}else{
+				tmp = term.getName();
+			}
+			
 			if (nature) {
 				tmp += "/" + term.getNatrue().natureStr;
 			}

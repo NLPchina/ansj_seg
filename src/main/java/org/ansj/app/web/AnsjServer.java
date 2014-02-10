@@ -14,6 +14,7 @@ import java.util.Map;
 import love.cq.util.IOUtil;
 import love.cq.util.StringUtil;
 
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
 
@@ -175,7 +176,7 @@ public class AnsjServer {
 		}
 		/* warm up ansj engine */
 		/* FIXME: dirty hack here... */
-		ToAnalysis.parse(WARM_UP_WORD);
+		NlpAnalysis.parse(WARM_UP_WORD);
 		/* set up server */
 		int serverPort = Integer.valueOf(args[0]);
 		new AnsjServer().startServer(serverPort);
