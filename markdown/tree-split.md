@@ -39,7 +39,7 @@
 
 
 ###jar包下载地址:
-[http://maven.ansj.org/org/ansj/tree_split/](http://maven.ansj.org/org/ansj/tree_split/1.2/)
+[http://maven.ansj.org/org/ansj/tree_split/](http://maven.ansj.org/org/ansj/tree_split/)
 
 ### maven
 
