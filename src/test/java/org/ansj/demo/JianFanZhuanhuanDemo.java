@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.util.MyStaticValue;
 
 public class JianFanZhuanhuanDemo {
 	public static void main(String[] args) {
+		MyStaticValue.isRealName = true;
 		List<String> all = new ArrayList<String>();
 		all.add("關注十八大：台港澳密集解讀十八大報告”");
 		all.add("关注十八大：台港澳密集解读十八大报告”");

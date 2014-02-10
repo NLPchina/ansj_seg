@@ -69,6 +69,7 @@ public class ToAnalysis extends Analysis {
 						result.add(graph.terms[i]);
 					}
 				}
+				setRealName(graph, result);
 				return result;
 			}
 		};

@@ -51,14 +51,14 @@ public class IndexAnalysis extends Analysis {
 			 */
 			private List<Term> result() {
 				// TODO Auto-generated method stub
-				List<Term> all = new LinkedList<Term>();
+				List<Term> result = new LinkedList<Term>();
 				Term term = null;
 				String temp = null;
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
 					while (term != null) {
-						all.add(term);
+						result.add(term);
 						temp = term.getName();
 						term = term.getNext();
 						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
@@ -67,7 +67,9 @@ public class IndexAnalysis extends Analysis {
 
 					}
 				}
-				return all;
+
+				setRealName(graph, result);
+				return result;
 			}
 		};
 

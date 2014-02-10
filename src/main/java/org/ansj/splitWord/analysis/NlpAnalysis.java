@@ -83,6 +83,9 @@ public class NlpAnalysis extends Analysis {
 
 				// 优化后重新获得最优路径
 				result = getResult();
+				
+				
+				setRealName(graph, result);
 
 				return result;
 			}

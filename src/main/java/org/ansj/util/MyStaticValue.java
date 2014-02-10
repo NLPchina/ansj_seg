@@ -47,6 +47,8 @@ public class MyStaticValue {
 
 	private static SplitWord crfSplitWord = null;
 
+	public static boolean isRealName = false;
+
 	/**
 	 * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
 	 */
@@ -57,7 +59,7 @@ public class MyStaticValue {
 	/**
 	 * 是否用户辞典不加载相同的词
 	 */
-	public static boolean isSkipUserDefine = true ;
+	public static boolean isSkipUserDefine = true;
 
 	static {
 		/**
@@ -71,6 +73,8 @@ public class MyStaticValue {
 				ambiguityLibrary = rb.getString("ambiguityLibrary");
 			if (rb.containsKey("isSkipUserDefine"))
 				isSkipUserDefine = Boolean.valueOf(rb.getString("isSkipUserDefine"));
+			if (rb.containsKey("isRealName"))
+				isRealName = Boolean.valueOf(rb.getString("isRealName"));
 		} catch (Exception e) {
 			LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
 		}
@@ -258,7 +262,6 @@ public class MyStaticValue {
 		return result;
 	}
 
-
 	/**
 	 * 得到默认的模型
 	 * 
@@ -275,10 +278,10 @@ public class MyStaticValue {
 		}
 
 		try {
-			long start = System.currentTimeMillis() ;
+			long start = System.currentTimeMillis();
 			LIBRARYLOG.info("begin init crf big model!");
 			crfSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/crf.model")));
-			LIBRARYLOG.info("load crf crf big use time:"+(System.currentTimeMillis()-start));
+			LIBRARYLOG.info("load crf crf big use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

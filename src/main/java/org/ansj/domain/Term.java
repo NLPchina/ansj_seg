@@ -7,6 +7,8 @@ import org.ansj.util.MathUtil;
 public class Term implements Comparable<Term> {
 	// 当前词
 	private String name;
+	// 真实的词
+	private String realName;
 	// 当前词的起始位置
 	private int offe;
 	// 词性列表
@@ -187,7 +189,7 @@ public class Term implements Comparable<Term> {
 		if ("null".equals(nature.natureStr)) {
 			return name;
 		}
-		return this.name + "/" + nature.natureStr;
+		return this.getRealName() + "/" + nature.natureStr;
 	}
 
 	/**
@@ -204,6 +206,17 @@ public class Term implements Comparable<Term> {
 
 	public List<Term> getSubTerm() {
 		return subTerm;
+	}
+
+	public String getRealName() {
+		if (realName == null) {
+			return name;
+		}
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
 	}
 
 }

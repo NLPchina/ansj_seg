@@ -18,6 +18,7 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.Graph;
+import org.ansj.util.MyStaticValue;
 import org.ansj.util.WordAlert;
 
 /**
@@ -193,6 +194,24 @@ public abstract class Analysis {
 
 				break;
 			}
+		}
+	}
+	
+	/**
+	 * 将为标准化的词语设置到分词中
+	 * @param gp
+	 * @param result
+	 */
+	protected void setRealName(Graph graph ,List<Term> result){
+		
+		if (!MyStaticValue.isRealName) {
+			return ;
+		}
+		
+		String str = graph.realStr ;
+		
+		for (Term term : result) {
+			term.setRealName(str.substring(term.getOffe(),term.getOffe()+term.getName().length())) ;
 		}
 	}
 
