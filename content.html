@@ -4,9 +4,10 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 <link href="./css/github-3edaf451c5611e17e1cd26dd9e684f8c2ff7cdab.css" media="all" rel="stylesheet" type="text/css">
 <link href="./css/github2-456a392493f696a3779ecd85c4913acdef7d9507.css" media="all" rel="stylesheet" type="text/css">
-</style>
-<script src="js/markdown.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.9.0.js"></script>
+<link rel="stylesheet" href="css/default.css">
+<script src="js/highlight.pack.js"></script>
+<script src="js/marked.js"></script>
+<script src="js/jquery-1.9.0.js"></script>
 
 </head>
 
@@ -16,11 +17,8 @@
        
   	<div id="readme" class="blob instapaper_body">
     		<article class="markdown-body entry-content" itemprop="mainContentOfPage" id="content">
-
-
-	 	</article>
+		</article>
 	</div>
-
 
 <script>
 	function getQueryString() {
@@ -29,11 +27,13 @@
 	}
  	$(document).ready(function(){
 		$.get("markdown/"+getQueryString("name")+".md",function(data,status){
-			$("#content").html(markdown.toHTML(data));
+			$("#content").html(marked(data));
+			hljs.initHighlightingOnLoad();
 		});
 	});
 		
 </script>
+
 </body>
 </html>
 
