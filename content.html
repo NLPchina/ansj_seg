@@ -28,7 +28,7 @@
  	$(document).ready(function(){
 		$.get("markdown/"+getQueryString("name")+".md",function(data,status){
 			$("#content").html(marked(data));
-			hljs.initHighlightingOnLoad();
+			hljs.initHighlighting();
 		});
 	});
 		
