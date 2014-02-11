@@ -1,5 +1,5 @@
 #分词http服务
-=============
+
 
 # 摘要
 >ansj_seg 内置了一个用来提供分词 API 的 HttpServer，类名为 org.ansj.web.AnsjServer。
