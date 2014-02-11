@@ -5,7 +5,7 @@
 >ansj_seg 内置了一个用来提供分词 API 的 HttpServer，类名为 org.ansj.web.AnsjServer。
 
 # 启动服务
-====
+
 在开发环境中，可以通过 mvn 运行分词服务：>
 
 mvn exec:java -Dexec.mainClass="org.ansj.web.AnsjServer" -Dexec.args="<端口号>"
@@ -18,7 +18,7 @@ java -classpath [jar包位置] org.ansj.app.web.AnsjServer <端口号>
 <br/>
 
 # API 调用
-=========
+
 假设端口号为 8888。
 
 一个调用例子为：http://127.0.0.1:8888/segment?input=自然语言处理&method=to&nature=true
@@ -40,14 +40,14 @@ java -classpath [jar包位置] org.ansj.app.web.AnsjServer <端口号>
 
 <br/><br/>
 ## 如果需要一个演示界面可以直接访问
-=========
+
 http://127.0.0.1:[]port]/page/index.html 
 
 就可以进行可视化操作了
 
 <br/><br/>
 # 为了方便调用。为了不总解释我搭配好了一套系统大家可以从这里下载。
-=========
+
 
 http://yun.baidu.com/s/1dDBrec5#dir/path=%2Fansj%E5%88%86%E8%AF%8D
 下载ansj_web.jar
