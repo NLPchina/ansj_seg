@@ -12,7 +12,6 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.library.InitDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
@@ -84,6 +83,10 @@ public class NlpAnalysis extends Analysis {
 				// 优化后重新获得最优路径
 				result = getResult();
 				
+				//激活辞典
+				for (Term term : result) {
+					learn.active(term.getName()) ;
+				}
 				
 				setRealName(graph, result);
 

@@ -15,6 +15,8 @@ public class NewWord {
 	private Nature nature;
 	// 总词频
 	private int allFreq;
+	//此词是否被激活
+	private boolean isActive ;
 
 	public NewWord(String name, Nature nature, double score) {
 		this.name = name;
@@ -73,5 +75,14 @@ public class NewWord {
 		// TODO Auto-generated method stub
 		this.score = score;
 	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
+	
 
 }

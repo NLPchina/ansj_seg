@@ -145,6 +145,13 @@ public class Graph {
 				for (int j = i + 1; j < maxTo; j++) {
 					terms[j] = null;
 				}
+				//FIXME: 这里理论上得设置。但是跑了这么久，还不发生错误。应该是不依赖于双向链接。需要确认下。这段代码是否有用
+//				//将下面的to的from设置回来
+//				temp = terms[i+maxTerm.getName().length()] ;
+//				do{
+//					temp.setFrom(maxTerm) ;
+//				}while((temp=temp.getNext())!=null) ;
+						
 			}
 		}
 	}
@@ -246,7 +253,6 @@ public class Graph {
 	}
 
 	public void walkPathByScore() {
-		// TODO Auto-generated method stub
 		Term term = null;
 		// BEGIN先行打分
 		mergerByScore(root, 0);

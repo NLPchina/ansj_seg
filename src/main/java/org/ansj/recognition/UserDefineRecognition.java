@@ -44,6 +44,7 @@ public class UserDefineRecognition {
 			if (forest == null) {
 				continue;
 			}
+			reset() ;
 			this.forest = forest;
 
 			branch = forest;

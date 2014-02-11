@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import love.cq.domain.SmartForest;
 import love.cq.util.CollectionUtil;
 
+import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
-import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.RuleRecognition;
@@ -121,7 +121,7 @@ public class LearnTool {
 		return getTopTree(num, null);
 	}
 
-	public List<Entry<String, Double>> getTopTree(int num, TermNatures nature) {
+	public List<Entry<String, Double>> getTopTree(int num, Nature nature) {
 		if (sf.branches == null) {
 			return null;
 		}
@@ -138,7 +138,7 @@ public class LearnTool {
 		}
 	}
 
-	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, TermNatures nature) {
+	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, Nature nature) {
 		// TODO Auto-generated method stub
 		if (smartForest == null || smartForest.branches == null) {
 			return;
@@ -146,17 +146,29 @@ public class LearnTool {
 		for (int i = 0; i < smartForest.branches.length; i++) {
 			NewWord param = smartForest.branches[i].getParam();
 			if (smartForest.branches[i].getStatus() == 3) {
-				if (nature == null || param.getNature().equals(nature)) {
+				if (param.isActive() && (nature == null || param.getNature().equals(nature))) {
 					hm.put(param.getName(), param.getScore());
 				}
 			} else if (smartForest.branches[i].getStatus() == 2) {
-				if (nature == null || param.getNature().equals(nature)) {
+				if (param.isActive() && (nature == null || param.getNature().equals(nature))) {
 					hm.put(param.getName(), param.getScore());
 				}
 				valueResult(smartForest.branches[i], hm, nature);
 			} else {
 				valueResult(smartForest.branches[i], hm, nature);
 			}
+		}
+	}
+
+	/**
+	 * 尝试激活，新词
+	 * 
+	 * @param name
+	 */
+	public void active(String name) {
+		SmartForest<NewWord> branch = sf.getBranch(name);
+		if (branch != null && branch.getParam() != null) {
+			branch.getParam().setActive(true);
 		}
 	}
 }
