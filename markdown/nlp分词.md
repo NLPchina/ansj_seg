@@ -13,11 +13,22 @@
 
 ### 精准分词具有什么功能
 
->
-| 用户自定义词典|数字识别|人名识别|机构名识别|新词发现|
-|---|:---|:---:|---:|---:|
-|√|√|√|√|√|
-
+><table>
+<thead><tr>
+<th>用户自定义词典</th>
+<th align="left">数字识别</th>
+<th align="center">人名识别</th>
+<th align="right">机构名识别</th>
+<th align="right">新词发现</th>
+</tr></thead>
+<tbody><tr>
+<td>Χ</td>
+<td align="left">√</td>
+<td align="center">√</td>
+<td align="right">√</td>
+<td align="right">√</td>
+</tr></tbody>
+</table>
 
 ### 一个简单的使用方式
 > 
