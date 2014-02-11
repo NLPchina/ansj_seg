@@ -2,24 +2,61 @@ Ansj中文分词
 ==================
 
 
-####使用帮助[http://ansjsun.github.io/ansj_seg/](http://ansjsun.github.io/ansj_seg/)
+#####使用帮助[http://ansjsun.github.io/ansj_seg/](http://ansjsun.github.io/ansj_seg/)
+
+#####在线测试地址<a href="http://demo.ansj.org">http://demo.ansj.org</href>
 
 
+##### 摘要
+> 这是一个基于google语义模型+条件随机场模型的中文分词的java实现.
 
-在线测试地址<a href="http://demo.ansj.org">在线测试地址!</href>,
+> 分词速度达到每秒钟大约200万字左右（mac air下测试），准确率能达到96%以上
+
+> 目前实现了.中文分词. 中文姓名识别 . 用户自定义词典
+
+> 可以应用到自然语言处理等方面,适用于对分词效果要求搞的各种项目.
 
 
-这是一个基于google语义模型+条件随机场模型的中文分词的java实现.
+#####  下载jar
+* 访问 [http://maven.ansj.org/org/ansj/](http://maven.ansj.org/org/ansj/)
+* 下载两个jar 。最好下载最新版 ansj_seg/ 和 tree_split/ 的jar。
+* 导入到eclipse ，开始你的程序吧
 
-分词速度达到每秒钟大约200万字左右（mac air下测试）
 
-准确率能达到96%以上
+#####  maven
+* 第一步在你的pom.xml中加入.
 
-目前实现了.中文分词. 中文姓名识别 . 用户自定义词典
+````
+  <project...>
+    ....
 
-可以应用到自然语言处理等方面,适用于对分词效果要求搞的各种项目.
+    <repositories>
+        <repository>
+            <id>mvn-repo</id>
+            <url>http://maven.ansj.org/</url>
+        </repository>
+    </repositories>
+    ....
+</project>
+````
 
-如果你在eclipse中跑这个项目.需要导入tree-split 的jar包.当然也可以incloud 这个项目https://github.com/ansjsun/tree_split 
+
+* 在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
+
+````
+    <dependencies>
+        ....
+        
+        <dependency>
+            <groupId>org.ansj</groupId>
+            <artifactId>ansj_seg</artifactId>
+            <version>1.3</version>
+        </dependency>
+        ....
+    </dependencies>
+````
+
+#####  调用demo
 
 如果你第一次下载只想测试测试效果可以调用这个简易接口
 
