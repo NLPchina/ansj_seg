@@ -22,7 +22,7 @@
 <th align="right">新词发现</th>
 </tr></thead>
 <tbody><tr>
-<td>Χ</td>
+<td>√</td>
 <td align="left">√</td>
 <td align="center">√</td>
 <td align="right">√</td>
