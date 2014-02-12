@@ -32,7 +32,7 @@ public class UserDefineRecognition {
 
 	public UserDefineRecognition(Term[] terms, Forest... forests) {
 		this.terms = terms;
-		if (forests != null) {
+		if (forests != null && forests.length > 0) {
 			this.forests = forests;
 		}
 
@@ -44,7 +44,7 @@ public class UserDefineRecognition {
 			if (forest == null) {
 				continue;
 			}
-			reset() ;
+			reset();
 			this.forest = forest;
 
 			branch = forest;
