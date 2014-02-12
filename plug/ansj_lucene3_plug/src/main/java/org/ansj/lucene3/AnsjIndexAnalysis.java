@@ -1,11 +1,11 @@
 package org.ansj.lucene3;
 
+import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 
@@ -37,7 +37,7 @@ public class AnsjIndexAnalysis extends Analyzer {
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		// TODO Auto-generated method stub
-		return new AnsjTokenizer(new IndexAnalysis(reader), reader, filter, pstemming);
+		return new AnsjTokenizer(new IndexAnalysis(new BufferedReader(reader)), reader, filter, pstemming);
 	}
 
 }

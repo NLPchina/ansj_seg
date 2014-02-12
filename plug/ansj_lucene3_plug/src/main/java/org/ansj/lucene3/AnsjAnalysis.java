@@ -1,5 +1,6 @@
 package org.ansj.lucene3;
 
+import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class AnsjAnalysis extends Analyzer {
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
 		// TODO Auto-generated method stub
-		return new AnsjTokenizer(new ToAnalysis(reader), reader, filter, pstemming);
+		return new AnsjTokenizer(new ToAnalysis(new BufferedReader(reader)), reader, filter, pstemming);
 	}
 
 }

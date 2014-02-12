@@ -9,9 +9,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.ansj</groupId>
 	<artifactId>ansj_lucene3_plug</artifactId>
-	<version>1.0</version>
+	<version>1.3</version>
 	<packaging>jar</packaging>
 	<name>ansj_lucene3_plug</name>
 
