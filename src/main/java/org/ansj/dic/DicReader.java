@@ -25,7 +25,6 @@ public class DicReader {
 	public static InputStream getInputStream(String name) {
 		// maven工程修改词典加载方式
 		InputStream in = DicReader.class.getResourceAsStream("/" + name);
-
 		return in;
 	}
 }

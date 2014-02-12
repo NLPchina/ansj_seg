@@ -69,8 +69,6 @@ public class WordAlert {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_E);
 			} else if (i >= MIN_UPPER_N && i <= MAX_UPPER_N) {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_N);
-			} else {
-				CHARCOVER[i] = (char) i;
 			}
 		}
 		CHARCOVER['-'] = '·';
@@ -256,8 +254,14 @@ public class WordAlert {
 
 	public static char[] alertStr(String str) {
 		char[] chars = new char[str.length()];
+		char c = 0;
 		for (int i = 0; i < chars.length; i++) {
-			chars[i] = CHARCOVER[str.charAt(i)];
+			c = CHARCOVER[str.charAt(i)];
+			if (c > 0) {
+				chars[i] = c;
+			}else{
+				chars[i] = str.charAt(i);
+			}
 		}
 		return chars;
 	}
@@ -322,8 +326,7 @@ public class WordAlert {
 	 * @return
 	 */
 	public static boolean isRuleWord(String word) {
-		// TODO Auto-generated method stub
-		if (CHARCOVER[word.charAt(0)] > 0 || CHARCOVER[word.charAt(word.length() - 1)] >0 ) {
+		if (CHARCOVER[word.charAt(0)] > 0 || CHARCOVER[word.charAt(word.length() - 1)] > 0) {
 			return true;
 		}
 		return false;

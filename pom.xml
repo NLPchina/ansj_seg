@@ -89,6 +89,7 @@
 							<classifier>min</classifier>
 							<excludes>
 								<excludes>**/crf.model</excludes>
+								<excludes>**/NlpAnalysis.class</excludes>
 							</excludes>
 						</configuration>
 					</execution>

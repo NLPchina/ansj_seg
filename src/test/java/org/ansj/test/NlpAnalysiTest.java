@@ -31,6 +31,7 @@ public class NlpAnalysiTest {
 		list.add("中新网10月20日电 据日本共同社报道，日本民主党代理干事长安住淳20日表示，首相野田佳彦将履行“近期”解散众院举行大选的承诺，预计在“公债发行特例法案”获得通过等条件具备时解散众院。");
 		list.add("邓颖超生前最喜欢的画像");
 		list.add("习近平和朱镕基情切照相");
+		list.add("能不能试试这个 西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区") ;
 		list.add("李克强");
 		for (String string : list) {
 			System.out.println(NlpAnalysis.parse(string));
