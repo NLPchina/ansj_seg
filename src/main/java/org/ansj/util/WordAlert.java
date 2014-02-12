@@ -74,6 +74,7 @@ public class WordAlert {
 			}
 		}
 		CHARCOVER['-'] = '·';
+		CHARCOVER['．'] = '·';
 		CHARCOVER['•'] = '·';
 		CHARCOVER[','] = '。';
 		CHARCOVER['，'] = '。';
@@ -322,7 +323,7 @@ public class WordAlert {
 	 */
 	public static boolean isRuleWord(String word) {
 		// TODO Auto-generated method stub
-		if (CHARCOVER[word.charAt(0)] < 256 || CHARCOVER[word.charAt(word.length() - 1)] < 256) {
+		if (CHARCOVER[word.charAt(0)] > 0 || CHARCOVER[word.charAt(word.length() - 1)] >0 ) {
 			return true;
 		}
 		return false;

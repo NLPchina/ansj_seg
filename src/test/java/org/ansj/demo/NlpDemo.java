@@ -26,11 +26,9 @@ public class NlpDemo {
 		LearnTool learn = new LearnTool();
 
 		// 关闭人名识别
-		learn.isAsianName = false;
+		learn.isAsianName = true;
 		// 关闭外国人名识别
-		learn.isForeignName = false;
-		//关闭亚洲人名识别
-		learn.isAsianName = false ;
+		learn.isForeignName = true;
 
 		for (String string : value) {
 			List<Term> parse = NlpAnalysis.parse(string, learn);
