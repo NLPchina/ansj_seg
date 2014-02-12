@@ -11,5 +11,21 @@
 
     > 找到   ansj_lucene3_plug/ , ansj_lucene4_plug/  从里面下载jar包把。maven的话同理。不多阐述
 
+* 如何用maven集成
+   >````
+   <dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>ansj_seg</artifactId>
+			<version>1.3</version>
+         <classifier>min</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>ansj_lucene4_plug</artifactId>
+			<version>1.3</version>
+		</dependency>
+````
+
+
 * 如何获得Ansj lucene插件的源码：
     > 插件源码我已经集合到ansj_seg的项目中了。在plug目录下有这两个项目的源码。并且也是maven项目。你可以直接作为maven导入。
