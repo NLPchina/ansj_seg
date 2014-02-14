@@ -11,6 +11,21 @@
 
     > 找到   ansj_lucene3_plug/ , ansj_lucene4_plug/  从里面下载jar包把。maven的话同理。不多阐述
 
+    > ````
+        //实际使用中jar最好是最新版本的
+        http://maven.ansj.org/org/ansj/ansj_lucene4_plug/1.3/ansj_lucene4_plug-1.3.jar
+
+        http://maven.ansj.org/org/ansj/ansj_seg/1.3/ansj_seg-1.3-min.jar
+
+        http://maven.ansj.org/org/ansj/tree_split/1.2/tree_split-1.2.jar
+
+        需要这三个jar。。。
+
+        使用例子
+        https://github.com/ansjsun/ansj_seg/wiki/%E6%8A%8Aansj%E9%9B%86%E6%88%90%E5%9C%A8lucene%E4%B8%AD
+
+    ````
+
 * 如何用maven集成
    >````
    <dependency>
