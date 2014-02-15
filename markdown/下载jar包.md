@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
-			<version>1.1</version>
+			<version>1.3</version>
 		</dependency>
 		....
 	</dependencies>
