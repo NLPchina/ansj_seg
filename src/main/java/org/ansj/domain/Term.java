@@ -32,8 +32,12 @@ public class Term implements Comparable<Term> {
 		super();
 		this.name = name;
 		this.offe = offe;
-		if (termNatures != null)
+		if (termNatures != null) {
 			this.termNatures = termNatures;
+			if (termNatures.nature != null) {
+				this.nature = termNatures.nature;
+			}
+		}
 	}
 
 	public Term(String name, int offe, String natureStr, int natureFreq) {

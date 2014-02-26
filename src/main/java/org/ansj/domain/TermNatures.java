@@ -38,11 +38,11 @@ public class TermNatures {
 	 * 人名词性
 	 */
 	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
-	
+
 	/**
 	 * 默认词性
 	 */
-	public Nature nature = null ;
+	public Nature nature = null;
 
 	/**
 	 * 所有的词频
@@ -62,12 +62,27 @@ public class TermNatures {
 	public TermNatures(TermNature[] termNatures, int id) {
 		this.id = id;
 		this.termNatures = termNatures;
+		// find maxNature
+		int maxFreq = -1;
+		TermNature termNature = null;
+		for (int i = 0; i < termNatures.length; i++) {
+			if (maxFreq < termNatures[i].frequency) {
+				maxFreq = termNatures[i].frequency;
+				termNature = termNatures[i];
+			}
+		}
+
+		if (termNature != null) {
+			this.nature = termNature.nature;
+		}
+
 		serAttribute();
 	}
 
 	public TermNatures(TermNature termNature) {
 		termNatures = new TermNature[1];
 		this.termNatures[0] = termNature;
+		this.nature = termNature.nature;
 		serAttribute();
 	}
 

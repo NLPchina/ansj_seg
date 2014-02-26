@@ -176,7 +176,6 @@ public class Test {
 
 		for (String string : all) {
 			List<Term> parse = ToAnalysis.parse(string) ;
-			new NatureRecognition(parse).recognition() ;
 			System.out.println(parse);
 			System.out.println(NlpAnalysis.parse(string));
 		}
