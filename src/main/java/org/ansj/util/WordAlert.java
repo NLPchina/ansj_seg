@@ -69,6 +69,10 @@ public class WordAlert {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_E);
 			} else if (i >= MIN_UPPER_N && i <= MAX_UPPER_N) {
 				CHARCOVER[i] = (char) (i - UPPER_GAP_N);
+			} else if (i >= '0' && i <= '9') {
+				CHARCOVER[i] = (char) i;
+			} else if (i >= 'a' && i <= 'z') {
+				CHARCOVER[i] = (char) i;
 			}
 		}
 		CHARCOVER['-'] = '·';
@@ -259,7 +263,7 @@ public class WordAlert {
 			c = CHARCOVER[str.charAt(i)];
 			if (c > 0) {
 				chars[i] = c;
-			}else{
+			} else {
 				chars[i] = str.charAt(i);
 			}
 		}

@@ -38,6 +38,11 @@ public class TermNatures {
 	 * 人名词性
 	 */
 	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
+	
+	/**
+	 * 默认词性
+	 */
+	public Nature nature = null ;
 
 	/**
 	 * 所有的词频
