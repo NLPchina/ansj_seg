@@ -1,0 +1,41 @@
+#面向索引的分词
+
+### 面向索引的分词是什么
+> 面向索引的分词。故名思议就是适合在lucene等文本检索中用到的分词。
+> 主要考虑以下两点
+> * 召回率 
+    * 召回率是对分词结果尽可能的涵盖。比如对“上海虹桥机场南路” 召回结果是[上海/ns, 上海虹桥机场/nt, 虹桥/ns, 虹桥机场/nz, 机场/n, 南路/nr]
+> * 准确率 
+    * 其实这和召回本身是具有一定矛盾性的Ansj的强大之处是很巧妙的避开了这两个的冲突 。比如我们常见的歧义句“旅游和服务”->对于一般保证召回 。大家会给出的结果是“旅游 和服 服务” 对于ansj不存在跨term的分词。意思就是。召回的词只是针对精准分词之后的结果的一个细分。比较好的解决了这个问题
+
+
+
+### 基本分词具有什么功能
+
+
+
+><table>
+<thead><tr>
+<th>用户自定义词典</th>
+<th align="left">数字识别</th>
+<th align="center">人名识别</th>
+<th align="right">机构名识别</th>
+<th align="right">新词发现</th>
+</tr></thead>
+<tbody><tr>
+<td>√</td>
+<td align="left">√</td>
+<td align="center">√</td>
+<td align="right">Χ</td>
+<td align="right">Χ</td>
+</tr></tbody>
+</table>
+
+### 一个简单的使用方式
+> 
+		List<Term> parse = BaseAnalysis.parse("主副食品");
+		System.out.println(parse);
+		
+
+>		result:[主副食品/n, 主副食, 副食, 副食品, 食品]
+
