@@ -6,11 +6,15 @@ import java.util.List;
 
 import love.cq.domain.Forest;
 
+import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
+import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 
@@ -35,8 +39,11 @@ public class IndexAnalysis extends Analysis {
 					NumRecognition.recognition(graph.terms);
 
 				// 姓名识别
-				if (MyStaticValue.isNameRecognition)
+				if (MyStaticValue.isNameRecognition) {
 					new AsianPersonRecognition(graph.terms).recognition();
+					// 外国人名识别
+					new ForeignPersonRecognition(graph.terms).recognition();
+				}
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
@@ -57,14 +64,30 @@ public class IndexAnalysis extends Analysis {
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
-					while (term != null) {
-						result.add(term);
-						temp = term.getName();
-						term = term.getNext();
-						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
-							break;
-						}
 
+					if (term == null) {
+						continue;
+					}
+
+					if (term.getNext() == null) {
+						result.add(term);
+						if (term.getName().length() > 3) {
+							GetWordsImpl gwi = new GetWordsImpl(term.getName());
+							while ((temp = gwi.allWords()) != null) {
+								if (temp.length() > 1 && temp.length() < term.getName().length()) {
+									result.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
+								}
+							}
+						}
+					} else {
+						while (term != null) {
+							result.add(term);
+							temp = term.getName();
+							term = term.getNext();
+							if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
+								break;
+							}
+						}
 					}
 				}
 

@@ -20,15 +20,20 @@ public class FilterModifWord {
 
 	private static String TAG = "#";
 
+	private static boolean isTag = false;
+
 	public static void insertStopWords(List<String> filterWords) {
 		FILTER.addAll(filterWords);
 	}
 
-	public static void insertStopWord(String filterWord) {
-		FILTER.add(filterWord);
+	public static void insertStopWord(String... filterWord) {
+		for (String word : filterWord) {
+			FILTER.add(word);
+		}
 	}
 
 	public static void insertStopNatures(String... filterNatures) {
+		isTag = true;
 		for (String natureStr : filterNatures) {
 			FILTER.add(TAG + natureStr);
 		}
@@ -42,7 +47,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.getNatrue().natureStr))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.getNatrue().natureStr)))) {
 					continue;
 				}
 				String[] params = UserDefineLibrary.getParams(term.getName());
@@ -82,5 +87,4 @@ public class FilterModifWord {
 		}
 		return result;
 	}
-
 }
