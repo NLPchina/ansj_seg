@@ -173,6 +173,10 @@ public class InitDictionary {
 				IN_SYSTEM[temp.charAt(0)] = temp.charAt(2);
 			}
 		}
+		
+		//特殊字符标准化
+		IN_SYSTEM['％'] = '%' ;
+		
 		reader.close();
 		reader2.close();
 	}
