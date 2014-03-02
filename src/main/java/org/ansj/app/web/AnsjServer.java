@@ -57,7 +57,9 @@ public class AnsjServer {
 					return;
 				}
 
-				String responseMsg = "欢迎使用Ansj中文分词!\ndemo:http://localhost:8888/?input=我日世界&method=to"; // 响应信息
+				String responseMsg = "<html>欢迎使用Ansj中文分词!励志要做最好的java分词器!</br>" +
+						"访问<a href='page/index.html'>展示DEMO</a></br>" +
+						"API:http://[host]:[port]/?input=java中文分词 "; // 响应信息
 				Map<String, String> paramers = parseParamers(httpExchange);
 				String input = paramers.get("input");
 				String method = paramers.get("method");
