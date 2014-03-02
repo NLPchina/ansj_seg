@@ -67,9 +67,10 @@ public class NlpAnalysis extends Analysis {
 					}
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
 				}
-				
+
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
+				graph.rmLittlePath();
 				graph.walkPathByScore();
 
 				// 进行新词发现

@@ -59,7 +59,7 @@ public class MyStaticValue {
 	/**
 	 * 是否用户辞典不加载相同的词
 	 */
-	public static boolean isSkipUserDefine = true;
+	public static boolean isSkipUserDefine = false;
 
 	static {
 		/**
