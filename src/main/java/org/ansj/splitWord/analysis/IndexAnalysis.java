@@ -6,7 +6,6 @@ import java.util.List;
 
 import love.cq.domain.Forest;
 
-import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
