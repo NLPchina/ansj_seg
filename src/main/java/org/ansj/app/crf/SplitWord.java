@@ -72,7 +72,7 @@ public class SplitWord {
 		}
 
 		List<Element> elements = vterbi(line);
-
+		
 		LinkedList<String> result = new LinkedList<String>();
 
 		Element e = null;
@@ -174,6 +174,19 @@ public class SplitWord {
 
 	public int fixTag(int tag) {
 		return tagConver[tag];
+	}
+	
+	/**
+	 * 随便给一个词。计算这个词的内聚分值，可以理解为计算这个词的可信度 
+	 * @param word
+	 */
+	public double cohesion(String word){
+		return 0 ;
+	}
+	
+	
+	public static void main(String[] args) {
+		
 	}
 
 }

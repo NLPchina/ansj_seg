@@ -3,6 +3,8 @@ package org.ansj.app.crf.pojo;
 import org.ansj.app.crf.Model;
 
 public class Element {
+	private static final double MIN = Integer.MIN_VALUE;
+
 	public char name;
 	private int tag = -1;
 	public int len = 1;
@@ -41,7 +43,7 @@ public class Element {
 
 	@Override
 	public String toString() {
-		return name + "/" + len;
+		return name + "/" + tag;
 	}
 
 	public void maxFrom(Model model, Element element) {
@@ -52,9 +54,9 @@ public class Element {
 		double[] pTagScore = element.tagScore;
 		double rate = 0;
 		for (int i = 0; i < this.tagScore.length; i++) {
-			double maxValue = 0;
+			double maxValue = MIN;
 			for (int j = 0; j < pTagScore.length; j++) {
-				if ((rate = model.tagRate(j, i)) == 0) {
+				if ((rate = model.tagRate(j, i)) <= 0) {
 					continue;
 				}
 				double value = (pTagScore[j] + tagScore[i]) + rate;
