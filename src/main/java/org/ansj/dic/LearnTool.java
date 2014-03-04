@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import love.cq.domain.SmartForest;
 import love.cq.util.CollectionUtil;
 
+import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.recognition.AsianPersonRecognition;
@@ -21,6 +22,8 @@ import org.ansj.util.Graph;
  * 
  */
 public class LearnTool {
+
+	private SplitWord splitWord = null;
 
 	/**
 	 * 是否开启学习机
@@ -44,7 +47,9 @@ public class LearnTool {
 	 * 
 	 * @param graph
 	 */
-	public void learn(Graph graph) {
+	public void learn(Graph graph, SplitWord splitWord) {
+
+		this.splitWord = splitWord;
 
 		// 亚洲人名识别
 		if (isAsianName) {
@@ -82,6 +87,7 @@ public class LearnTool {
 			return;
 
 		for (NewWord newWord : newWords) {
+			newWord.setScore(-splitWord.cohesion(newWord.getName()));
 			addTerm(newWord);
 		}
 	}

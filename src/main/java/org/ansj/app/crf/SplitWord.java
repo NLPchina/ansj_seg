@@ -176,4 +176,40 @@ public class SplitWord {
 		return tagConver[tag];
 	}
 
+	/**
+	 * 随便给一个词。计算这个词的内聚分值，可以理解为计算这个词的可信度
+	 * 
+	 * @param word
+	 */
+	public double cohesion(String word) {
+
+		if (word.length() == 0) {
+			return Integer.MIN_VALUE;
+		}
+
+		List<Element> elements = WordAlert.str2Elements(word);
+
+		for (int i = 0; i < elements.size(); i++) {
+			computeTagScore(elements, i);
+		}
+
+		double value = elements.get(0).tagScore[revTagConver[1]];
+
+		int len = elements.size() - 1;
+
+		for (int i = 1; i < len; i++) {
+			value += elements.get(i).tagScore[revTagConver[2]];
+		}
+
+		value += elements.get(len).tagScore[revTagConver[3]];
+		
+		if(value<0){
+			return 1; 
+		}else{
+			value += 1 ;
+		}
+
+		return value;
+	}
+
 }

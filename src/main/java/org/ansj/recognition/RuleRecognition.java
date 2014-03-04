@@ -40,7 +40,7 @@ public class RuleRecognition {
 				}
 			} else {
 				if (end.equals(name)) {
-					result.add(new NewWord(sb.toString(), Nature.NW, -sb.length()));
+					result.add(new NewWord(sb.toString(), Nature.NW, -1000));
 					sb = null;
 					end = null;
 				} else {

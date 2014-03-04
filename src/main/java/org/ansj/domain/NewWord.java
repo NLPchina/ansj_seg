@@ -24,6 +24,12 @@ public class NewWord {
 		this.score = score;
 		this.allFreq = 1;
 	}
+	
+	public NewWord(String name, Nature nature) {
+		this.name = name;
+		this.nature = nature;
+		this.allFreq = 1;
+	}
 
 	public String getName() {
 		return name;

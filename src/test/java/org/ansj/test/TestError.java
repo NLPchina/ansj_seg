@@ -4,7 +4,6 @@ import org.ansj.dic.LearnTool;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.junit.Test;
 
 public class TestError {
@@ -23,5 +22,7 @@ public class TestError {
 		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州",tool));
 		System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道",tool));
 		System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
+		System.out.println(NlpAnalysis.parse("越体越中意"));
+		System.out.println(NlpAnalysis.parse("政大vs"));
 	}
 }

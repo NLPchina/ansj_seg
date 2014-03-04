@@ -56,16 +56,16 @@ public class NlpAnalysis extends Analysis {
 				if (learn == null) {
 					learn = new LearnTool();
 				}
-				learn.learn(graph);
+				learn.learn(graph, DEFAULT_SLITWORD);
 
 				// 通过crf分词
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2 || InitDictionary.isInSystemDic(word) ||  WordAlert.isRuleWord(word)) {
+					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
 						continue;
 					}
-					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw"), -word.length()));
+					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 				}
 
 				// 用户自定义词典的识别
@@ -76,19 +76,18 @@ public class NlpAnalysis extends Analysis {
 				// 进行新词发现
 				new NewWordRecognition(graph.terms, learn).recognition();
 				graph.walkPathByScore();
-				
 
 				// 修复人名左右连接
 				AsianPersonRecognition.nameAmbiguity(graph.terms);
 
 				// 优化后重新获得最优路径
 				result = getResult();
-				
-				//激活辞典
+
+				// 激活辞典
 				for (Term term : result) {
-					learn.active(term.getName()) ;
+					learn.active(term.getName());
 				}
-				
+
 				setRealName(graph, result);
 
 				return result;

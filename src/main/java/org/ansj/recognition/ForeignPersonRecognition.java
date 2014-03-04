@@ -179,7 +179,7 @@ public class ForeignPersonRecognition {
 				for (Term temp : tempList) {
 					sb.append(temp.getName());
 				}
-				all.add(new NewWord(sb.toString(), Nature.NRF, -sb.length()));
+				all.add(new NewWord(sb.toString(), Nature.NRF));
 				reset();
 			}
 		}
