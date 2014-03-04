@@ -37,8 +37,7 @@ public class KeyWordComputer {
 	private List<Keyword> computeArticleTfidf(String content, int titleLength) {
 		Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
-		LearnTool learn = new LearnTool();
-		List<Term> parse = NlpAnalysis.parse(content, learn);
+		List<Term> parse = NlpAnalysis.parse(content);
 
 		for (Term term : parse) {
 			int weight = getWeight(term, content.length(), titleLength);

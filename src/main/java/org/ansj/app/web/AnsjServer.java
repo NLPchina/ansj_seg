@@ -57,9 +57,9 @@ public class AnsjServer {
 					return;
 				}
 
-				String responseMsg = "<html>欢迎使用Ansj中文分词!励志要做最好的java分词器!</br>" +
+				String responseMsg = "<html><head><meta charset='utf-8'>\n</head><body>欢迎使用Ansj中文分词!励志要做最好的java分词器!</br>" +
 						"访问<a href='page/index.html'>展示DEMO</a></br>" +
-						"API:http://[host]:[port]/?input=java中文分词 "; // 响应信息
+						"API:http://[host]:[port]/?input=java中文分词 </body>"; // 响应信息
 				Map<String, String> paramers = parseParamers(httpExchange);
 				String input = paramers.get("input");
 				String method = paramers.get("method");
