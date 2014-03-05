@@ -12,7 +12,6 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.library.InitDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -20,6 +19,7 @@ import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
+import org.ansj.util.NameFix;
 import org.ansj.util.WordAlert;
 
 /**
@@ -78,7 +78,7 @@ public class NlpAnalysis extends Analysis {
 				graph.walkPathByScore();
 
 				// 修复人名左右连接
-				AsianPersonRecognition.nameAmbiguity(graph.terms);
+				NameFix.nameAmbiguity(graph.terms);
 
 				// 优化后重新获得最优路径
 				result = getResult();

@@ -76,7 +76,7 @@ public class WordAlert {
 			}
 		}
 		CHARCOVER['-'] = '·';
-		CHARCOVER['．'] = '·';
+		CHARCOVER['．'] = '.';
 		CHARCOVER['•'] = '·';
 		CHARCOVER[','] = '。';
 		CHARCOVER['，'] = '。';
@@ -141,7 +141,6 @@ public class WordAlert {
 		CHARCOVER['´'] = '。';
 		CHARCOVER['ˊ'] = '。';
 		CHARCOVER['ˋ'] = '。';
-		CHARCOVER['-'] = '。';
 		CHARCOVER['―'] = '。';
 		CHARCOVER['﹫'] = '@';
 		CHARCOVER['︳'] = '。';
@@ -334,6 +333,15 @@ public class WordAlert {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * 将一个char标准化
+	 * @param c
+	 * @return
+	 */
+	public static char CharCover(char c) {
+		return CHARCOVER[c];
 	}
 
 }

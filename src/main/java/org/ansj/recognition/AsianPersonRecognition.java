@@ -175,25 +175,4 @@ public class AsianPersonRecognition {
 		return all;
 	}
 
-	/**
-	 * 人名消歧,比如.邓颖超生前->邓颖 超生 前 fix to 丁颖超 生 前!
-	 */
-	public static void nameAmbiguity(Term[] terms) {
-		Term term = null;
-		Term next = null;
-		for (int i = 0; i < terms.length - 1; i++) {
-			term = terms[i];
-			if (term != null && term.getTermNatures() == TermNatures.NR && term.getName().length() == 2) {
-				next = terms[i + 2];
-				if (next.getTermNatures().personAttr.split > 0) {
-					term.setName(term.getName() + next.getName().charAt(0));
-					terms[i + 2] = null;
-					terms[i + 3] = new Term(next.getName().substring(1), next.getOffe(), TermNatures.NW);
-					TermUtil.termLink(term, terms[i + 3]);
-					TermUtil.termLink(terms[i + 3], next.getTo());
-				}
-			}
-		}
-	}
-
 }

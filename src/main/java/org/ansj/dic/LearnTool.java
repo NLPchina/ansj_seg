@@ -12,7 +12,6 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.RuleRecognition;
 import org.ansj.util.Graph;
 
 /**
@@ -61,15 +60,8 @@ public class LearnTool {
 			findForeignPerson(graph);
 		}
 
-		// 抽取书名号中的实体
-		findRuleEntry(graph);
 	}
 
-	private void findRuleEntry(Graph graph) {
-		// TODO Auto-generated method stub
-		List<NewWord> newWords = RuleRecognition.recognition(graph);
-		addListToTerm(newWords);
-	}
 
 	private void findAsianPerson(Graph graph) {
 		List<NewWord> newWords = new AsianPersonRecognition(graph.terms).getNewWords();

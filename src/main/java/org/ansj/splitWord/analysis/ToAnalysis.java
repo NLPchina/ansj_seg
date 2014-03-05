@@ -15,6 +15,7 @@ import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
+import org.ansj.util.NameFix;
 
 /**
  * 标准分词
@@ -42,7 +43,7 @@ public class ToAnalysis extends Analysis {
 					// 亚洲人名识别
 					new AsianPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
-					AsianPersonRecognition.nameAmbiguity(graph.terms);
+					NameFix.nameAmbiguity(graph.terms);
 					// 外国人名识别
 					new ForeignPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
