@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>tree_split</artifactId>
-			<version>1.2</version>
+			<version>1.3</version>
 		</dependency>
 
 		<dependency>
