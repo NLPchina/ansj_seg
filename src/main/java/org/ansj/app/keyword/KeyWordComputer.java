@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.ansj.dic.LearnTool;
+import love.cq.util.StringUtil;
+
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 
@@ -72,6 +73,12 @@ public class KeyWordComputer {
 	 * @return
 	 */
 	public Collection<Keyword> computeArticleTfidf(String title, String content) {
+		if(StringUtil.isBlank(title)){
+			title = "" ;
+		}
+		if(StringUtil.isBlank(content)){
+			content = "" ;
+		}
 		return computeArticleTfidf(title + "\t" + content, title.length());
 	}
 
@@ -102,6 +109,8 @@ public class KeyWordComputer {
 		int weight = 0;
 
 		if (titleLength > term.getOffe()) {
+			return 50;
+		} else if (length / 5.0 > term.getOffe()) {
 			return 20;
 		}
 

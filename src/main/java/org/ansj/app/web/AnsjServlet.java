@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
+import org.ansj.app.summary.SummaryComputer;
+import org.ansj.app.summary.TagContent;
+import org.ansj.app.summary.pojo.Summary;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
@@ -16,7 +19,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 public class AnsjServlet {
 
 	private enum AnsjMethod {
-		TO, NLP, BASE, KEYWORD, INDEX, MIN_NLP
+		TO, NLP, BASE, KEYWORD, INDEX, MIN_NLP ,SUMMARY
 	}
 
 	public static String processRequest(String input, String strMethod, String strNature) throws IOException {
@@ -45,6 +48,10 @@ public class AnsjServlet {
 			KeyWordComputer keyWordComputer = new KeyWordComputer(10);
 			keyWords = keyWordComputer.computeArticleTfidf(input);
 			break;
+		case SUMMARY:
+			SummaryComputer sc = new SummaryComputer(null, input) ;
+			Summary summary = sc.toSummary() ;
+			return new TagContent("<font color=\"red\">", "</font>").tagContent(summary) ;
 		case INDEX:
 			terms = IndexAnalysis.parse(input);
 			break;
