@@ -39,12 +39,10 @@ public class TagContent {
 		String temp = null;
 		StringBuilder sb = new StringBuilder();
 		while ((temp = sgw.getFrontWords()) != null) {
-			System.out.println(temp+"\t"+beginOffe+"\t"+sgw.offe);
 			sb.append(content.substring(beginOffe, sgw.offe));
 			sb.append(beginTag);
 			sb.append(content.substring(sgw.offe, sgw.offe + temp.length()));
 			sb.append(endTag);
-			System.out.println(sb);
 			beginOffe = sgw.offe + temp.length();
 		}
 

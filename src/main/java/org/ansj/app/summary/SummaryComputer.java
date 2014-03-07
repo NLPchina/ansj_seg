@@ -268,6 +268,10 @@ public class SummaryComputer {
 			}
 		}
 
+		if (sb.length() > 0) {
+			insertIntoList(sb, sentences);
+		}
+
 		return sentences;
 	}
 
