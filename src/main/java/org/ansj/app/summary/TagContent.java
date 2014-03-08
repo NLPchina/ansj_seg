@@ -27,7 +27,6 @@ public class TagContent {
 	}
 
 	public String tagContent(List<String> keyWords, String content) {
-		// TODO Auto-generated method stub
 		SmartForest<Integer> sf = new SmartForest<Integer>();
 		for (String keyWord : keyWords) {
 			sf.add(keyWord.toLowerCase(), 1);

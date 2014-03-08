@@ -189,6 +189,7 @@ public class WordAlert {
 		CHARCOVER['>'] = '》';
 		CHARCOVER['）'] = '》';
 		CHARCOVER['<'] = '《';
+		CHARCOVER[' '] = ' ';
 	}
 
 	/**
@@ -323,20 +324,24 @@ public class WordAlert {
 	}
 
 	/**
-	 * 判断分词是否是靠规则识别出来的词
+	 * 判断新词识别出来的词是否可信
 	 * 
 	 * @param word
 	 * @return
 	 */
 	public static boolean isRuleWord(String word) {
-		if (CHARCOVER[word.charAt(0)] > 0 || CHARCOVER[word.charAt(word.length() - 1)] > 0) {
-			return true;
+		char c = 0;
+		for (int i = 0; i < word.length(); i++) {
+			if ((c = CHARCOVER[word.charAt(i)]) > 0 && c != '·') {
+				return true;
+			}
 		}
 		return false;
 	}
 
 	/**
 	 * 将一个char标准化
+	 * 
 	 * @param c
 	 * @return
 	 */
