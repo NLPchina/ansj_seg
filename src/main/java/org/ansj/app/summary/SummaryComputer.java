@@ -232,7 +232,7 @@ public class SummaryComputer {
 		List<Sentence> sentences = new ArrayList<Sentence>();
 
 		for (int i = 0; i < chars.length; i++) {
-			if (sb.length() == 0 && Character.isWhitespace(chars[i])) {
+			if (sb.length() == 0 && (Character.isWhitespace(chars[i])||chars[i]==' ')) {
 				continue;
 			}
 
@@ -246,6 +246,7 @@ public class SummaryComputer {
 				break;
 			case ' ':
 			case '	':
+			case ' ':
 			case '。':
 				insertIntoList(sb, sentences);
 				sb = new StringBuilder();
