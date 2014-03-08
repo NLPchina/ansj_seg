@@ -107,10 +107,10 @@ public class KeyWordComputer {
 		}
 
 		if (titleLength > term.getOffe()) {
-			return Math.log(length + 3) * 10;
+			return 100;
 		}
 
-		return Math.log(length / (term.getOffe()+1) + 3);
+		return (length - term.getOffe()) / 6 * 100;
 	}
 
 }

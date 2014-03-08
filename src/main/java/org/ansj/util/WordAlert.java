@@ -190,6 +190,7 @@ public class WordAlert {
 		CHARCOVER['）'] = '》';
 		CHARCOVER['<'] = '《';
 		CHARCOVER[' '] = ' ';
+		CHARCOVER['\t'] = '\t';
 	}
 
 	/**
