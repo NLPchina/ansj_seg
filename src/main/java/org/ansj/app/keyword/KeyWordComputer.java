@@ -39,7 +39,6 @@ public class KeyWordComputer {
 		Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
 		List<Term> parse = NlpAnalysis.parse(content);
-System.out.println(parse);
 		for (Term term : parse) {
 			double weight = getWeight(term, content.length(), titleLength);
 			if (weight == 0)
