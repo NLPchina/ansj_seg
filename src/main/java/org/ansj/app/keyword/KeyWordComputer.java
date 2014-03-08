@@ -39,9 +39,9 @@ public class KeyWordComputer {
 		Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
 		List<Term> parse = NlpAnalysis.parse(content);
-
+System.out.println(parse);
 		for (Term term : parse) {
-			int weight = getWeight(term, content.length(), titleLength);
+			double weight = getWeight(term, content.length(), titleLength);
 			if (weight == 0)
 				continue;
 			Keyword keyword = tm.get(term.getName());
@@ -73,11 +73,11 @@ public class KeyWordComputer {
 	 * @return
 	 */
 	public Collection<Keyword> computeArticleTfidf(String title, String content) {
-		if(StringUtil.isBlank(title)){
-			title = "" ;
+		if (StringUtil.isBlank(title)) {
+			title = "";
 		}
-		if(StringUtil.isBlank(content)){
-			content = "" ;
+		if (StringUtil.isBlank(content)) {
+			content = "";
 		}
 		return computeArticleTfidf(title + "\t" + content, title.length());
 	}
@@ -89,10 +89,10 @@ public class KeyWordComputer {
 	 * @return
 	 */
 	public Collection<Keyword> computeArticleTfidf(String content) {
-		return computeArticleTfidf(content, 30);
+		return computeArticleTfidf(content, 0);
 	}
 
-	private int getWeight(Term term, int length, int titleLength) {
+	private double getWeight(Term term, int length, int titleLength) {
 		if (term.getName().matches("(?s)\\d.*")) {
 			return 0;
 		}
@@ -106,21 +106,12 @@ public class KeyWordComputer {
 		if (!pos.startsWith("n") || "num".equals(pos)) {
 			return 0;
 		}
-		int weight = 0;
 
 		if (titleLength > term.getOffe()) {
-			return 50;
-		} else if (length / 5.0 > term.getOffe()) {
-			return 20;
+			return Math.log(length + 3) * 10;
 		}
 
-		// position
-		double position = (term.getOffe() + 0.0) / length;
-		if (position < 0.05)
-			return 10;
-		weight += (5 - 5 * position);
-
-		return weight;
+		return Math.log(length / (term.getOffe()+1) + 3);
 	}
 
 }

@@ -51,7 +51,8 @@ public class AnsjServlet {
 		case SUMMARY:
 			SummaryComputer sc = new SummaryComputer(null, input) ;
 			Summary summary = sc.toSummary() ;
-			return new TagContent("<font color=\"red\">", "</font>").tagContent(summary) ;
+			System.out.println(summary.getKeyWords());
+			return "<html>"+new TagContent("<font color=\"red\">", "</font>").tagContent(summary)+"...</html>" ;
 		case INDEX:
 			terms = IndexAnalysis.parse(input);
 			break;
@@ -100,7 +101,7 @@ public class AnsjServlet {
 				tmp = term.getName();
 			}
 			
-			if (nature) {
+			if (nature && !"null".equals(term.getNatrue().natureStr)) {
 				tmp += "/" + term.getNatrue().natureStr;
 			}
 			sb.append(tmp + "\t");

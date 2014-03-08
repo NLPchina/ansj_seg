@@ -28,8 +28,8 @@ body {
 	$(document).ready(
 			function() {
 				$('#segButton').click(function() {
-					$("#form1").attr("action","../?method=keyword") ;
-					$("#form1").attr("target","KEYWORD") ;
+					$("#form1").attr("action","../?method=summary") ;
+					$("#form1").attr("target","SUMMARY") ;
 					$("#form1").submit();
 					
 					$("#form1").attr("action","../?method=nlp") ;
@@ -80,8 +80,8 @@ body {
 			</div>
 		</form>
 		<div class="starter-template">
-			<h4>关键词提取</h4>
-			<iframe name="KEYWORD" style="width: 100%"></iframe>
+			<h4>摘要计算-关键词标红</h4>
+			<iframe name="SUMMARY" style="width: 100%"></iframe>
 			<h4>NLP 分词方式</h4>
 			<iframe name="NLP" style="width: 100%"></iframe>
 			<h4>MIN_NLP 分词方式</h4>
