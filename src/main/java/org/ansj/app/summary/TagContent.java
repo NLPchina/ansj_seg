@@ -5,6 +5,7 @@ import java.util.List;
 import love.cq.domain.SmartForest;
 import love.cq.splitWord.SmartGetWord;
 
+import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.pojo.Summary;
 
 /**
@@ -26,13 +27,13 @@ public class TagContent {
 		return tagContent(summary.getKeyWords(), summary.getSummary());
 	}
 
-	public String tagContent(List<String> keyWords, String content) {
-		SmartForest<Integer> sf = new SmartForest<Integer>();
-		for (String keyWord : keyWords) {
-			sf.add(keyWord.toLowerCase(), 1);
+	public String tagContent(List<Keyword> keyWords, String content) {
+		SmartForest<Double> sf = new SmartForest<Double>();
+		for (Keyword keyWord : keyWords) {
+			sf.add(keyWord.getName().toLowerCase(), keyWord.getScore());
 		}
 
-		SmartGetWord<Integer> sgw = new SmartGetWord<Integer>(sf, content.toLowerCase());
+		SmartGetWord<Double> sgw = new SmartGetWord<Double>(sf, content.toLowerCase());
 
 		int beginOffe = 0;
 		String temp = null;
