@@ -51,7 +51,6 @@ public class AnsjServlet {
 		case SUMMARY:
 			SummaryComputer sc = new SummaryComputer(null, input) ;
 			Summary summary = sc.toSummary() ;
-			System.out.println(summary.getKeyWords());
 			return "<html>"+new TagContent("<font color=\"red\">", "</font>").tagContent(summary)+"...</html>" ;
 		case INDEX:
 			terms = IndexAnalysis.parse(input);
