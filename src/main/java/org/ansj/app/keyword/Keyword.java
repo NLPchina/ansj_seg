@@ -13,6 +13,13 @@ public class Keyword implements Comparable<Keyword> {
 		freq++;
 	}
 
+	public Keyword(String name, double score) {
+		this.name = name;
+		this.score = score;
+		this.idf = score;
+		freq++;
+	}
+
 	public void updateWeight(int weight) {
 		this.score += weight * idf;
 		freq++;
@@ -46,7 +53,7 @@ public class Keyword implements Comparable<Keyword> {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return name;// "="+score+":"+freq+":"+idf;
+		return name + "/" + score;// "="+score+":"+freq+":"+idf;
 	}
 
 	public String getName() {

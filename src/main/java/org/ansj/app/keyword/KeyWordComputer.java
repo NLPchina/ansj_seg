@@ -1,7 +1,6 @@
 package org.ansj.app.keyword;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,24 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 
 public class KeyWordComputer {
+
+	private static final Map<String, Double> POS_SCORE = new HashMap<String, Double>();
+
+	static {
+		POS_SCORE.put("null", 0.0);
+		POS_SCORE.put("w", 0.0);
+		POS_SCORE.put("en", 0.0);
+		POS_SCORE.put("num", 0.0);
+		POS_SCORE.put("nr", 3.0);
+		POS_SCORE.put("nrf", 3.0);
+		POS_SCORE.put("nw", 3.0);
+		POS_SCORE.put("nt", 3.0);
+		POS_SCORE.put("l", 0.2);
+		POS_SCORE.put("a", 0.2);
+		POS_SCORE.put("nz", 3.0);
+		POS_SCORE.put("v", 0.2);
+
+	}
 
 	private int nKeyword = 5;
 
@@ -71,7 +88,7 @@ public class KeyWordComputer {
 	 *            正文
 	 * @return
 	 */
-	public Collection<Keyword> computeArticleTfidf(String title, String content) {
+	public List<Keyword> computeArticleTfidf(String title, String content) {
 		if (StringUtil.isBlank(title)) {
 			title = "";
 		}
@@ -87,7 +104,7 @@ public class KeyWordComputer {
 	 * @param content
 	 * @return
 	 */
-	public Collection<Keyword> computeArticleTfidf(String content) {
+	public List<Keyword> computeArticleTfidf(String content) {
 		return computeArticleTfidf(content, 0);
 	}
 
@@ -102,15 +119,18 @@ public class KeyWordComputer {
 
 		String pos = term.getNatrue().natureStr;
 
-		if (!pos.startsWith("n") || "num".equals(pos)) {
+		Double posScore = POS_SCORE.get(pos);
+
+		if (posScore == null) {
+			posScore = 1.0;
+		} else if (posScore == 0) {
 			return 0;
 		}
 
 		if (titleLength > term.getOffe()) {
-			return 100;
+			return 5 * posScore;
 		}
-
-		return (length - term.getOffe()) / 6 * 100;
+		return (length - term.getOffe()) * posScore / (double) length;
 	}
 
 }

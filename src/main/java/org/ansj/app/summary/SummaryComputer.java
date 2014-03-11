@@ -1,7 +1,6 @@
 package org.ansj.app.summary;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +62,7 @@ public class SummaryComputer {
 	 * @return
 	 */
 	public Summary toSummary() {
-		return toSummary(new ArrayList<String>());
+		return toSummary(new ArrayList<Keyword>());
 	}
 
 	/**
@@ -75,12 +74,12 @@ public class SummaryComputer {
 
 		List<Term> parse = NlpAnalysis.parse(query);
 
-		List<String> keywords = new ArrayList<String>();
+		List<Keyword> keywords = new ArrayList<Keyword>();
 		for (Term term : parse) {
 			if (FILTER_SET.contains(term.getNatrue().natureStr)) {
 				continue;
 			}
-			keywords.add(term.getName());
+			keywords.add(new Keyword(term.getName(), term.getTermNatures().allFreq, 1));
 		}
 
 		return toSummary(keywords);
@@ -91,19 +90,16 @@ public class SummaryComputer {
 	 * 
 	 * @return
 	 */
-	public Summary toSummary(List<String> keywords) {
+	public Summary toSummary(List<Keyword> keywords) {
 
 		if (keywords == null) {
-			keywords = new ArrayList<String>();
+			keywords = new ArrayList<Keyword>();
 		}
 
 		if (keywords.size() == 0) {
 
-			KeyWordComputer kc = new KeyWordComputer();
-			Collection<Keyword> keyword = kc.computeArticleTfidf(title, content);
-			for (Keyword word : keyword) {
-				keywords.add(word.getName());
-			}
+			KeyWordComputer kc = new KeyWordComputer(10);
+			keywords = kc.computeArticleTfidf(title, content);
 		}
 		return explan(keywords, content);
 	}
@@ -115,12 +111,12 @@ public class SummaryComputer {
 	 * @param content
 	 * @return
 	 */
-	private Summary explan(List<String> keywords, String content) {
+	private Summary explan(List<Keyword> keywords, String content) {
 
 		SmartForest<Double> sf = new SmartForest<Double>();
 
-		for (String keyword : keywords) {
-			sf.add(keyword, (double) keyword.length());
+		for (Keyword keyword : keywords) {
+			sf.add(keyword.getName(), keyword.getScore());
 		}
 
 		// 先断句
@@ -232,7 +228,7 @@ public class SummaryComputer {
 		List<Sentence> sentences = new ArrayList<Sentence>();
 
 		for (int i = 0; i < chars.length; i++) {
-			if (sb.length() == 0 && (Character.isWhitespace(chars[i])||chars[i]==' ')) {
+			if (sb.length() == 0 && (Character.isWhitespace(chars[i]) || chars[i] == ' ')) {
 				continue;
 			}
 
