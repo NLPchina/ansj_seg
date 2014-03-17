@@ -334,7 +334,7 @@ public class WordAlert {
 	public static boolean isRuleWord(String word) {
 		char c = 0;
 		for (int i = 0; i < word.length(); i++) {
-			if ((c = CHARCOVER[word.charAt(i)]) > 0 && c != '·') {
+			if (c < 256 || (c = CHARCOVER[word.charAt(i)]) > 0 && c != '·') {
 				return true;
 			}
 		}
