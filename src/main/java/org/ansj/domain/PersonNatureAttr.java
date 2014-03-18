@@ -83,6 +83,7 @@ public class PersonNatureAttr {
 		for (int i = 0; i < ints.length; i++) {
 			if (ints[i][0] > 0) {
 				flag = true;
+				break ;
 			}
 		}
 		locFreq = ints;

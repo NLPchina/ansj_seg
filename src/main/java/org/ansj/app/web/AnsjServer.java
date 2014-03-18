@@ -57,7 +57,7 @@ public class AnsjServer {
 					return;
 				}
 
-				String responseMsg = "<html>Ansj中文分词演示.这是api接口的页面..<a href='./page/index.html'>我要看演示!</a><script>location.href='./page/index.html'</script></html>"; // 响应信息
+				String responseMsg = "<html>Ansj中文分词演示. 这是api接口的页面..<a href='./page/index.html'>我要看演示!</a><script>location.href='./page/index.html'</script></html>"; // 响应信息
 				Map<String, String> paramers = parseParamers(httpExchange);
 				String input = paramers.get("input");
 				String method = paramers.get("method");
