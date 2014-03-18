@@ -65,7 +65,6 @@ public class NlpAnalysis extends Analysis {
 					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
 						continue;
 					}
-
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 				}
 

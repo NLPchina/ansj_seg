@@ -62,7 +62,6 @@ public class LearnTool {
 
 	}
 
-
 	private void findAsianPerson(Graph graph) {
 		List<NewWord> newWords = new AsianPersonRecognition(graph.terms).getNewWords();
 		addListToTerm(newWords);
@@ -77,9 +76,7 @@ public class LearnTool {
 	private void addListToTerm(List<NewWord> newWords) {
 		if (newWords.size() == 0)
 			return;
-
 		for (NewWord newWord : newWords) {
-			newWord.setScore(-splitWord.cohesion(newWord.getName()));
 			addTerm(newWord);
 		}
 	}
@@ -94,10 +91,10 @@ public class LearnTool {
 		SmartForest<NewWord> smartForest = null;
 		if ((smartForest = sf.getBranch(newWord.getName())) != null && smartForest.getParam() != null) {
 			temp = smartForest.getParam();
-			temp.update(newWord.getScore(), newWord.getNature(), newWord.getAllFreq());
+			temp.update(newWord.getNature(), newWord.getAllFreq());
 		} else {
 			count++;
-			// 设置名字为空,节省内存空间
+			newWord.setScore(-splitWord.cohesion(newWord.getName()));
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
 			}
