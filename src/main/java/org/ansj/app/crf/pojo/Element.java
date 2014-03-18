@@ -47,7 +47,6 @@ public class Element {
 	}
 
 	public void maxFrom(Model model, Element element) {
-		// TODO Auto-generated method stub
 		if (from == null) {
 			from = new int[this.tagScore.length];
 		}
@@ -56,7 +55,7 @@ public class Element {
 		for (int i = 0; i < this.tagScore.length; i++) {
 			double maxValue = MIN;
 			for (int j = 0; j < pTagScore.length; j++) {
-				if ((rate = model.tagRate(j, i)) <= 0) {
+				if ((rate = model.tagRate(j, i)) == Double.MIN_VALUE) {
 					continue;
 				}
 				double value = (pTagScore[j] + tagScore[i]) + rate;

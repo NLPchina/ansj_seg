@@ -295,9 +295,9 @@ public class MyStaticValue {
 
 		try {
 			long start = System.currentTimeMillis();
-			LIBRARYLOG.info("begin init crf big model!");
+			LIBRARYLOG.info("begin init crf model!");
 			crfSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/crf.model")));
-			LIBRARYLOG.info("load crf crf big use time:" + (System.currentTimeMillis() - start));
+			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

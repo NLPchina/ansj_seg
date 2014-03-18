@@ -145,8 +145,6 @@ public class SplitWord {
 	}
 
 	private void computeTagScore(List<Element> elements, int index) {
-		// TODO Auto-generated method stub
-
 		double[] tagScore = new double[model.template.tagNum];
 
 		Template t = model.template;
