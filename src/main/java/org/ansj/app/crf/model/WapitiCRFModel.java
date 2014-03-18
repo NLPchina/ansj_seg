@@ -45,8 +45,6 @@ public class WapitiCRFModel extends Model {
 			}
 		}
 
-		// make status[][]
-
 		for (String str : statusLines) {
 			String[] split = str.split("\t");
 			addStatus(split[1]);
@@ -58,6 +56,22 @@ public class WapitiCRFModel extends Model {
 			String[] split = str.split("\t");
 			status[statusMap.get(split[1])][statusMap.get(split[2])] = Double.parseDouble(split[3]);
 		}
+		
+		//fix status range sbme
+		status[statusMap.get("S")][statusMap.get("E")] = Double.MIN_VALUE ;
+		status[statusMap.get("S")][statusMap.get("M")] = Double.MIN_VALUE ;
+		
+		status[statusMap.get("B")][statusMap.get("B")] = Double.MIN_VALUE ;
+		status[statusMap.get("B")][statusMap.get("S")] = Double.MIN_VALUE ;
+		
+		status[statusMap.get("M")][statusMap.get("S")] = Double.MIN_VALUE ;
+		status[statusMap.get("M")][statusMap.get("B")] = Double.MIN_VALUE ;
+		
+		status[statusMap.get("E")][statusMap.get("M")] = Double.MIN_VALUE ;
+		status[statusMap.get("E")][statusMap.get("E")] = Double.MIN_VALUE ;
+		
+		
+		
 		IOUtil.close(reader);
 
 		// read feature

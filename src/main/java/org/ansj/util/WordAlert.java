@@ -191,6 +191,8 @@ public class WordAlert {
 		CHARCOVER['<'] = '《';
 		CHARCOVER[' '] = ' ';
 		CHARCOVER['\t'] = '\t';
+		CHARCOVER['。'] = '。';
+		CHARCOVER['@'] = '@';
 	}
 
 	/**
