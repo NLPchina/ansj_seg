@@ -22,6 +22,7 @@ public class AnsjAnalysis extends Analyzer {
 	 */
 	public AnsjAnalysis(Set<String> filter, boolean pstemming) {
 		this.filter = filter;
+		this.pstemming = pstemming;
 	}
 
 	/**
