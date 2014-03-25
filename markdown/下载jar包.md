@@ -36,7 +36,8 @@
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
-			<version>1.3</version>
+			<classifier>min</classifier> <!--如果是需要nlp方式分词,就去掉这个标签-->
+			<version>1.4</version>
 		</dependency>
 		....
 	</dependencies>
