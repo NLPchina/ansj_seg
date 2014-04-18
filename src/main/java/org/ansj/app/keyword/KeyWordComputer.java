@@ -109,10 +109,6 @@ public class KeyWordComputer {
 	}
 
 	private double getWeight(Term term, int length, int titleLength) {
-		if (term.getName().matches("(?s)\\d.*")) {
-			return 0;
-		}
-
 		if (term.getName().trim().length() < 2) {
 			return 0;
 		}
