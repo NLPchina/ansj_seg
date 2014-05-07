@@ -1,5 +1,8 @@
 package org.ansj.test;
 
+import love.cq.domain.Value;
+import love.cq.library.Library;
+
 import org.ansj.dic.LearnTool;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.NlpAnalysis;
@@ -32,5 +35,17 @@ public class TestError {
 			
 			System.out.println(MyStaticValue.getCRFSplitWord().cohesion("念地"));
 			System.out.println(MyStaticValue.getCRFSplitWord().cohesion("地藏"));
+			
+			//歧义纠正
+			Value value = new Value("川府办", "川府办", "n");
+			Library.insertWord(UserDefineLibrary.ambiguityForest, value);
+			
+			value = new Value("京财企业务", "京财企", "nt", "业务", "j");
+			Library.insertWord(UserDefineLibrary.ambiguityForest, value);
+			
+			System.out.println(NlpAnalysis.parse("驻京办发文出来了"));;
+			System.out.println(NlpAnalysis.parse("据说川府办发的发文很厉害"));;
+			System.out.println(NlpAnalysis.parse("京财企业务繁忙"));;
+			
 		}
 }
