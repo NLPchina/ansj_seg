@@ -62,7 +62,7 @@ Ansj中文分词
 
 <pre><code>
  String str = "欢迎使用ansj_seg,(ansj中文分词)在这里如果你遇到什么问题都可以联系我.我一定尽我所能.帮助大家.ansj_seg更快,更准,更自由!" ;
- System.out.println(ToAnalysis.paser(str));
+ System.out.println(ToAnalysis.parse(str));
  
  ﻿[欢迎/, 使用/, ansj/, _/, seg/, ,/, (/, ansj/, 中文/, 分词/, )/, 在/, 这里/, 如果/, 你/, 遇到/, 什么/, 问题/, 都/, 可以/, 联系/, 我/, 房/, 我/, 一定/, 尽/, 我/, 所/, 能/, ./, 帮助/, 大家/, ./, ansj/, _/, seg/, 更/, 快/, ,/, 更/, 准/, ,/, 更/, 自由/, !/]
 </code></pre>
