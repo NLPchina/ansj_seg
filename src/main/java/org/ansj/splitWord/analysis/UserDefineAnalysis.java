@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import love.cq.domain.Forest;
-
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.AsianPersonRecognition;
@@ -17,6 +15,7 @@ import org.ansj.util.FilterModifWord;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 默认用户自定义词性优先
