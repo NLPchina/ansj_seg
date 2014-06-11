@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import love.cq.domain.SmartForest;
-import love.cq.util.CollectionUtil;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.util.Graph;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
+import org.nlpcn.commons.lang.util.CollectionUtil;
 
 /**
  * 新词发现,这是个线程安全的.所以可以多个对象公用一个

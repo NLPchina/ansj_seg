@@ -16,11 +16,10 @@ import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import love.cq.domain.SmartForest;
-
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Feature;
 import org.ansj.app.crf.pojo.Template;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 public abstract class Model {
 

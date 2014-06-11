@@ -1,14 +1,13 @@
 package org.ansj.test;
 
-import love.cq.domain.Value;
-import love.cq.library.Library;
-
 import org.ansj.dic.LearnTool;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Value;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 	
@@ -31,6 +30,8 @@ public class TestError {
 			System.out.println(NlpAnalysis.parse("【万维网诞生25周年啦】1989年，《辛普森一家》走上银幕，“哈利波特”出生，伯纳斯-李发明万维网，并在1990年向世界免费公布了代码，把互联网从专业人士和少数狂热分子的数据传输系统转变为普通人的技术。1995年，42%的美国人从未听说过互联网，只有14%的人上过，2014年已达87%http://t.cn/8F1g3Mv"));
 			System.out.println(NlpAnalysis.parse("西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区"));
 			System.out.println(NlpAnalysis.parse("西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区"));
+			
+			System.out.println(ToAnalysis.parse("孙红雷暴打记者中国娱乐界如此蛮横"));
 			
 			
 			System.out.println(MyStaticValue.getCRFSplitWord().cohesion("念地"));

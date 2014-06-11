@@ -65,6 +65,7 @@ public class AnsjTokenizer extends Tokenizer {
 
         if (term != null) {
             positionAttr.setPositionIncrement(position);
+            System.out.println(position+"\t"+term.getName());
             termAtt.setEmpty().append(term.getName());
             offsetAtt.setOffset(term.getOffe(), term.getOffe() + length);
             return true;

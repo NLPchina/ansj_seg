@@ -8,14 +8,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import love.cq.domain.Forest;
-import love.cq.domain.Value;
-import love.cq.domain.WoodInterface;
-import love.cq.library.Library;
-import love.cq.util.IOUtil;
-import love.cq.util.StringUtil;
-
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.Value;
+import org.nlpcn.commons.lang.tire.domain.WoodInterface;
+import org.nlpcn.commons.lang.tire.library.Library;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 ;
 

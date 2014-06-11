@@ -13,14 +13,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
-import love.cq.util.IOUtil;
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.BigramEntry;
 import org.ansj.library.InitDictionary;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 这个类储存一些公用变量.

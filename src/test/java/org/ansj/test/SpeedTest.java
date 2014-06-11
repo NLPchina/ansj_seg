@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import love.cq.util.IOUtil;
-
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 public class SpeedTest {
 	@Test

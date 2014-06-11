@@ -1,14 +1,12 @@
 package org.ansj.recognition;
 
-import love.cq.domain.Forest;
-import love.cq.domain.WoodInterface;
-import love.cq.util.ObjectBean;
-
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -70,7 +68,7 @@ public class UserDefineRecognition {
 				} else if (branch.getStatus() == 3) {
 					endOffe = i;
 					tempNature = branch.getParams()[0];
-					tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+					tempFreq = getInt(branch.getParams()[1], 50);
 					if (offe != -1 && offe < endOffe) {
 						i = offe;
 						makeNewTerm();
@@ -84,7 +82,7 @@ public class UserDefineRecognition {
 						offe = i;
 					} else {
 						tempNature = branch.getParams()[0];
-						tempFreq = ObjectBean.getInt(branch.getParams()[1], 50);
+						tempFreq = getInt(branch.getParams()[1], 50);
 						if (flag) {
 							makeNewTerm();
 						}
@@ -98,6 +96,16 @@ public class UserDefineRecognition {
 			if (offe != -1 && offe < endOffe) {
 				makeNewTerm();
 			}
+		}
+	}
+
+	private int getInt(String str, int def) {
+		try {
+			return Integer.parseInt(str);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return def;
 		}
 	}
 

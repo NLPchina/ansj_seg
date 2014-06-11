@@ -5,11 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import love.cq.domain.Forest;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /*
  * 停用词过滤,修正词性到用户词性.

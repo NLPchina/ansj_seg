@@ -6,14 +6,13 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.dic.DicReader;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 public class InitDictionary {
 

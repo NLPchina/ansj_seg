@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.util.LinkedList;
 import java.util.List;
 
-import love.cq.domain.Forest;
-
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
@@ -16,6 +14,7 @@ import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 用于检索的分词方式

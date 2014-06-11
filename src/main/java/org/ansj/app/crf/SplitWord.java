@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Template;
 import org.ansj.util.MatrixUtil;
 import org.ansj.util.WordAlert;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 分词

@@ -3,9 +3,8 @@ package org.ansj.demo;
 import java.io.File;
 
 import org.ansj.library.UserDefineLibrary;
-
-import love.cq.domain.Forest;
-import love.cq.library.Library;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 /**
  * 重新加载用户自定义辞典的两种方式

@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 public class KeyWordComputer {
 

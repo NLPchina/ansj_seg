@@ -4,8 +4,6 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import love.cq.domain.Forest;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
@@ -21,6 +19,7 @@ import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.WordAlert;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
