@@ -32,12 +32,12 @@ public class NgramLibrary {
 	 * @return
 	 */
 	public static int getTwoWordFreq(Term from, Term to) {
-		if (from.getTermNatures().id < 0) {
+		if (from.termNatures().id < 0) {
 			return 0;
 		}
-		BigramEntry[] be = bigramTables[from.getTermNatures().id];
+		BigramEntry[] be = bigramTables[from.termNatures().id];
 
-		int index = binarySearch(be, to.getTermNatures().id);
+		int index = binarySearch(be, to.termNatures().id);
 
 		if (index < 0) {
 			return 0;

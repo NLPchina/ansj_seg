@@ -43,7 +43,7 @@ public class NatureRecognition {
 	public void recognition() {
 		int length = terms.size();
 		for (int i = 0; i < length; i++) {
-			natureTermTable[i] = getNatureTermArr(terms.get(i).getTermNatures().termNatures);
+			natureTermTable[i] = getNatureTermArr(terms.get(i).termNatures().termNatures);
 		}
 		walk();
 	}

@@ -24,10 +24,12 @@ public class MathUtil {
 	 * @return 分数
 	 */
 	public static double compuScore(Term from, Term to) {
-		double frequency = from.getTermNatures().allFreq + 1;
+		double frequency = from.termNatures().allFreq + 1;
 
 		if (frequency < 0) {
-			return from.score + MAX_FREQUENCE;
+			double score = from.score() + MAX_FREQUENCE;
+			from.score(score);
+			return score;
 		}
 
 		int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
@@ -36,7 +38,7 @@ public class MathUtil {
 		if (value < 0) {
 			value += frequency;
 		}
-		return from.score + value;
+		return from.score() + value;
 	}
 
 	/**
@@ -48,7 +50,7 @@ public class MathUtil {
 	 */
 	public static double compuScoreFreq(Term from, Term term) {
 		// TODO Auto-generated method stub
-		return from.getTermNatures().allFreq + term.getTermNatures().allFreq;
+		return from.termNatures().allFreq + term.termNatures().allFreq;
 	}
 
 	/**

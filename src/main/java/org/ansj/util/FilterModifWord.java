@@ -46,7 +46,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.getNatrue().natureStr)))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.natrue().natureStr)))) {
 					continue;
 				}
 				String[] params = UserDefineLibrary.getParams(term.getName());
@@ -69,7 +69,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.getNatrue().natureStr))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.natrue().natureStr))) {
 					continue;
 				}
 				for (Forest forest : forests) {

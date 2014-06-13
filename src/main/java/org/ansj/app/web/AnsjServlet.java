@@ -100,8 +100,8 @@ public class AnsjServlet {
 				tmp = term.getName();
 			}
 			
-			if (nature && !"null".equals(term.getNatrue().natureStr)) {
-				tmp += "/" + term.getNatrue().natureStr;
+			if (nature && !"null".equals(term.natrue().natureStr)) {
+				tmp += "/" + term.natrue().natureStr;
 			}
 			sb.append(tmp + "\t");
 		}

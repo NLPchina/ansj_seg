@@ -7,7 +7,7 @@ import org.ansj.util.MathUtil;
 public class Term implements Comparable<Term> {
 	// 当前词
 	private String name;
-	// 真实的词
+	// 
 	private String realName;
 	// 当前词的起始位置
 	private int offe;
@@ -16,9 +16,9 @@ public class Term implements Comparable<Term> {
 	// 同一行内数据
 	private Term next;
 	// 分数
-	public double score = 0;
+	private double score = 0;
 	// 本身分数
-	public double selfScore = 1;
+	private double selfScore = 1;
 	// 起始位置
 	private Term from;
 	// 到达位置
@@ -50,7 +50,7 @@ public class Term implements Comparable<Term> {
 	}
 
 	// 可以到达的位置
-	public int getToValue() {
+	public int toValue() {
 		return offe + name.length();
 	}
 
@@ -139,11 +139,11 @@ public class Term implements Comparable<Term> {
 		return this;
 	}
 
-	public Term getFrom() {
+	public Term from() {
 		return from;
 	}
 
-	public Term getTo() {
+	public Term to() {
 		return to;
 	}
 
@@ -160,7 +160,7 @@ public class Term implements Comparable<Term> {
 	 * 
 	 * @return
 	 */
-	public TermNatures getTermNatures() {
+	public TermNatures termNatures() {
 		return termNatures;
 	}
 
@@ -184,10 +184,14 @@ public class Term implements Comparable<Term> {
 	 * 
 	 * @return
 	 */
-	public Nature getNatrue() {
+	public Nature natrue() {
 		return nature;
 	}
-
+	
+	public String getNatureStr(){
+		return nature.natureStr ;
+	}
+	
 	@Override
 	public String toString() {
 		if ("null".equals(nature.natureStr)) {
@@ -221,6 +225,22 @@ public class Term implements Comparable<Term> {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+	
+	public double score(){
+		return this.score ;
+	}
+	
+	public void score(double score){
+		this.score = score ;
+	}
+	
+	public double selfScore(){
+		return this.selfScore ;
+	}
+	
+	public void selfScore(double selfScore){
+		this.selfScore = selfScore ;
 	}
 
 }

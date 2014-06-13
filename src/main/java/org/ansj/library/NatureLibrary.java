@@ -103,8 +103,8 @@ public class NatureLibrary {
 	 * @return
 	 */
 	public static int getTwoTermFreq(Term fromTerm, Term toTerm) {
-		Nature from = fromTerm.getNatrue();
-		Nature to = toTerm.getNatrue();
+		Nature from = fromTerm.natrue();
+		Nature to = toTerm.natrue();
 		if (from.index < 0 || to.index < 0) {
 			return 0;
 		}

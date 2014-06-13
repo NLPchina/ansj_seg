@@ -75,10 +75,10 @@ public class SummaryComputer {
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
 		for (Term term : parse) {
-			if (FILTER_SET.contains(term.getNatrue().natureStr)) {
+			if (FILTER_SET.contains(term.natrue().natureStr)) {
 				continue;
 			}
-			keywords.add(new Keyword(term.getName(), term.getTermNatures().allFreq, 1));
+			keywords.add(new Keyword(term.getName(), term.termNatures().allFreq, 1));
 		}
 
 		return toSummary(keywords);

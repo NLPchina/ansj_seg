@@ -29,7 +29,7 @@ public class UserDefinedAnalysisTest {
 
 		Assert.assertTrue(hs.containsKey(newWord));
 
-		Assert.assertEquals(hs.get(newWord).getNatrue().natureStr, nature);
+		Assert.assertEquals(hs.get(newWord).natrue().natureStr, nature);
 
 		//删除词
 		UserDefineLibrary.removeWord(newWord);
