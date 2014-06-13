@@ -50,7 +50,7 @@ Ansj中文分词
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>1.3</version>
+            <version>1.41</version>
         </dependency>
         ....
     </dependencies>
@@ -79,7 +79,7 @@ Ansj中文分词
 * 修复对reader流偏移量的错误。主要是因为\n\r造成的不可读错误
 * 修复term类的get方法乱用的错误。主要是为了让term对象更好的被json序列号
 * 对核心词典的重构。
-* 放弃tree-split。jar 迁移到nlp-lang.jar中。nlp-lang是我的一个新项目。内容多多大家又兴趣可以到(https://github.com/nlpchina/nlp-lang)[https://github.com/nlpchina/nlp-lang]去看看。
+* 放弃tree-split。jar 迁移到nlp-lang.jar中。nlp-lang是我的一个新项目。内容多多大家又兴趣可以到[https://github.com/nlpchina/nlp-lang](https://github.com/nlpchina/nlp-lang)去看看。
 * 重构crf模块。让每个人可以训练自己的crf。补充文档。
 
 #2014年3月10日
