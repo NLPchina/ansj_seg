@@ -11,6 +11,7 @@ import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
@@ -93,7 +94,7 @@ public class ToAnalysis extends Analysis {
 
 	public ToAnalysis(BufferedReader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

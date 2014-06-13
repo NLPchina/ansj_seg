@@ -1,11 +1,12 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 
 /**
@@ -47,8 +48,8 @@ public class BaseAnalysis extends Analysis {
 	private BaseAnalysis() {
 	};
 
-	public BaseAnalysis(BufferedReader reader) {
-		super.resetContent(reader);
+	public BaseAnalysis(Reader reader) {
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

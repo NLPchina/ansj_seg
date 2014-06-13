@@ -15,6 +15,7 @@ import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
@@ -128,13 +129,13 @@ public class NlpAnalysis extends Analysis {
 
 	public NlpAnalysis(BufferedReader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public NlpAnalysis(BufferedReader reader, LearnTool learn, Forest... forests) {
 		this.forests = forests;
 		this.learn = learn;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

@@ -3,7 +3,6 @@ package org.ansj.splitWord;
 import static org.ansj.library.InitDictionary.IN_SYSTEM;
 import static org.ansj.library.InitDictionary.status;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.WordAlert;
@@ -34,11 +34,6 @@ public abstract class Analysis {
 	public int offe;
 
 	/**
-	 * 记录上一次文本长度
-	 */
-	private int tempLength;
-
-	/**
 	 * 分词的类
 	 */
 	private GetWordsImpl gwi = new GetWordsImpl();
@@ -48,7 +43,7 @@ public abstract class Analysis {
 	/**
 	 * 文档读取流
 	 */
-	private BufferedReader br;
+	private AnsjReader br;
 
 	protected Analysis() {
 	};
@@ -72,18 +67,15 @@ public abstract class Analysis {
 		}
 
 		String temp = br.readLine();
-
+		offe = br.getStart();
 		while (StringUtil.isBlank(temp)) {
 			if (temp == null) {
 				return null;
 			} else {
-				offe = offe + temp.length() + 1;
 				temp = br.readLine();
 			}
 
 		}
-
-		offe += tempLength;
 
 		// 歧异处理字符串
 
@@ -195,22 +187,23 @@ public abstract class Analysis {
 			}
 		}
 	}
-	
+
 	/**
 	 * 将为标准化的词语设置到分词中
+	 * 
 	 * @param gp
 	 * @param result
 	 */
-	protected void setRealName(Graph graph ,List<Term> result){
-		
+	protected void setRealName(Graph graph, List<Term> result) {
+
 		if (!MyStaticValue.isRealName) {
-			return ;
+			return;
 		}
-		
-		String str = graph.realStr ;
-		
+
+		String str = graph.realStr;
+
 		for (Term term : result) {
-			term.setRealName(str.substring(term.getOffe(),term.getOffe()+term.getName().length())) ;
+			term.setRealName(str.substring(term.getOffe(), term.getOffe() + term.getName().length()));
 		}
 	}
 
@@ -231,9 +224,8 @@ public abstract class Analysis {
 	 * 
 	 * @param br
 	 */
-	public void resetContent(BufferedReader br) {
+	public void resetContent(AnsjReader br) {
 		this.offe = 0;
-		this.tempLength = 0;
 		this.br = br;
 	}
 }

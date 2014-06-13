@@ -12,6 +12,7 @@ import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.impl.GetWordsImpl;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -107,7 +108,7 @@ public class IndexAnalysis extends Analysis {
 
 	public IndexAnalysis(BufferedReader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

@@ -119,7 +119,6 @@ public class Term implements Comparable<Term> {
 	 * @param offe
 	 */
 	public void updateOffe(int offe) {
-		// TODO Auto-generated method stub
 		this.offe += offe;
 	}
 
