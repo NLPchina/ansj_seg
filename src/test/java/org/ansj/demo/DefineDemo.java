@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 
@@ -39,7 +40,7 @@ public class DefineDemo {
 				int end = mergerId(parse, sb, i);
 				System.out.println(end);
 				if (end > 0) {
-					newTerm = new Term(sb.toString(), term.getOffe(), null);
+					newTerm = new Term(sb.toString(), term.getOffe(), TermNatures.NULL);
 					newTerm.setNature(userIdNature);
 					result.add(newTerm);
 					i = end;

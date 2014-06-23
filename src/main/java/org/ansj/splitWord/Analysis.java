@@ -1,15 +1,14 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.InitDictionary.IN_SYSTEM;
-import static org.ansj.library.InitDictionary.status;
-
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
+import static org.ansj.library.DATDictionary.*;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
@@ -129,14 +128,14 @@ public abstract class Analysis {
 		String str = null;
 		char c = 0;
 		for (int i = startOffe; i < endOffe; i++) {
-			switch (status[chars[i]]) {
+			switch (status(chars[i])) {
 			case 0:
-				gp.addTerm(new Term(chars[i] + "", i, TermNatures.NULL));
+				gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
 				break;
 			case 4:
 				start = i;
 				end = 1;
-				while (++i < endOffe && status[chars[i]] == 4) {
+				while (++i < endOffe && status(chars[i]) == 4) {
 					end++;
 				}
 				str = WordAlert.alertEnglish(chars, start, end);
@@ -146,7 +145,7 @@ public abstract class Analysis {
 			case 5:
 				start = i;
 				end = 1;
-				while (++i < endOffe && status[chars[i]] == 5) {
+				while (++i < endOffe && status(chars[i]) == 5) {
 					end++;
 				}
 				str = WordAlert.alertNumber(chars, start, end);
@@ -171,13 +170,13 @@ public abstract class Analysis {
 
 				gwi.setChars(chars, start, end);
 				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe, gwi.getTermNatures()));
+					gp.addTerm(new Term(str, gwi.offe, gwi.getItem()));
 				}
 
 				/**
 				 * 如果未分出词.以未知字符加入到gp中
 				 */
-				if (IN_SYSTEM[c] > 0 || status[c] > 3) {
+				if (IN_SYSTEM[c] > 0 || status(c) > 3) {
 					i -= 1;
 				} else {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));

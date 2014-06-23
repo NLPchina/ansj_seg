@@ -7,12 +7,14 @@ import org.ansj.util.MathUtil;
 public class Term implements Comparable<Term> {
 	// 当前词
 	private String name;
-	// 
+	//
 	private String realName;
 	// 当前词的起始位置
 	private int offe;
 	// 词性列表
 	private TermNatures termNatures = TermNatures.NULL;
+	// 词性列表
+	private AnsjItem item = AnsjItem.NULL;
 	// 同一行内数据
 	private Term next;
 	// 分数
@@ -28,15 +30,26 @@ public class Term implements Comparable<Term> {
 
 	private List<Term> subTerm = null;
 
+	public Term(String name, int offe, AnsjItem item) {
+		super();
+		this.name = name;
+		this.offe = offe;
+		this.item = item;
+		if (item.termNatures != null) {
+			this.termNatures = item.termNatures;
+			if (termNatures.nature != null) {
+				this.nature = termNatures.nature;
+			}
+		}
+	}
+
 	public Term(String name, int offe, TermNatures termNatures) {
 		super();
 		this.name = name;
 		this.offe = offe;
-		if (termNatures != null) {
-			this.termNatures = termNatures;
-			if (termNatures.nature != null) {
-				this.nature = termNatures.nature;
-			}
+		this.termNatures = termNatures;
+		if (termNatures.nature != null) {
+			this.nature = termNatures.nature;
 		}
 	}
 
@@ -186,11 +199,11 @@ public class Term implements Comparable<Term> {
 	public Nature natrue() {
 		return nature;
 	}
-	
-	public String getNatureStr(){
-		return nature.natureStr ;
+
+	public String getNatureStr() {
+		return nature.natureStr;
 	}
-	
+
 	@Override
 	public String toString() {
 		if ("null".equals(nature.natureStr)) {
@@ -225,21 +238,25 @@ public class Term implements Comparable<Term> {
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-	
-	public double score(){
-		return this.score ;
+
+	public double score() {
+		return this.score;
 	}
-	
-	public void score(double score){
-		this.score = score ;
+
+	public void score(double score) {
+		this.score = score;
 	}
-	
-	public double selfScore(){
-		return this.selfScore ;
+
+	public double selfScore() {
+		return this.selfScore;
 	}
-	
-	public void selfScore(double selfScore){
-		this.selfScore = selfScore ;
+
+	public void selfScore(double selfScore) {
+		this.selfScore = selfScore;
+	}
+
+	public AnsjItem item() {
+		return this.item;
 	}
 
 }

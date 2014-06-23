@@ -8,7 +8,7 @@ import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.library.InitDictionary;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.NatureLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
@@ -62,7 +62,7 @@ public class NlpAnalysis extends Analysis {
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
+					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
 						continue;
 					}
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));

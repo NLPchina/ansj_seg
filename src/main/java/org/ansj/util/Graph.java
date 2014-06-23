@@ -2,9 +2,10 @@ package org.ansj.util;
 
 import java.util.List;
 
+import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.InitDictionary;
+import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.Analysis.Merger;
 
 /**
@@ -30,10 +31,10 @@ public class Graph {
 
 	public Graph(String str) {
 		realStr = str;
-		this.chars = InitDictionary.conversion(str);
+		this.chars = str.toCharArray();
 		terms = new Term[chars.length + 1];
-		end = new Term(E, chars.length, TermNatures.END);
-		root = new Term(B, -1, TermNatures.BEGIN);
+		end = new Term(E, chars.length, AnsjItem.END);
+		root = new Term(B, -1, AnsjItem.BEGIN);
 		terms[chars.length] = end;
 	}
 
@@ -145,13 +146,13 @@ public class Graph {
 				for (int j = i + 1; j < maxTo; j++) {
 					terms[j] = null;
 				}
-				//FIXME: 这里理论上得设置。但是跑了这么久，还不发生错误。应该是不依赖于双向链接。需要确认下。这段代码是否有用
-//				//将下面的to的from设置回来
-//				temp = terms[i+maxTerm.getName().length()] ;
-//				do{
-//					temp.setFrom(maxTerm) ;
-//				}while((temp=temp.getNext())!=null) ;
-						
+				// FIXME: 这里理论上得设置。但是跑了这么久，还不发生错误。应该是不依赖于双向链接。需要确认下。这段代码是否有用
+				// //将下面的to的from设置回来
+				// temp = terms[i+maxTerm.getName().length()] ;
+				// do{
+				// temp.setFrom(maxTerm) ;
+				// }while((temp=temp.getNext())!=null) ;
+
 			}
 		}
 	}
@@ -304,8 +305,8 @@ public class Graph {
 			}
 		} else {
 			char c = chars[to];
-			TermNatures tn = InitDictionary.termNatures[c];
-			if (tn == null) {
+			TermNatures tn = DATDictionary.getItem(c).termNatures;
+			if (tn == TermNatures.NULL) {
 				tn = TermNatures.NW;
 			}
 			terms[to] = new Term(String.valueOf(c), to, tn);

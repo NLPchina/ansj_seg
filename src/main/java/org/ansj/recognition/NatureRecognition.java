@@ -3,10 +3,11 @@ package org.ansj.recognition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.InitDictionary;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.MathUtil;
 
@@ -61,10 +62,10 @@ public class NatureRecognition {
 		String[] params = null;
 		for (String word : words) {
 			// 获得词性 ， 先从系统辞典。在从用户自定义辞典
-			int wordId = InitDictionary.getWordId(word);
+			AnsjItem ansjItem = DATDictionary.getItem(word);
 			TermNatures tn = null;
-			if (wordId != 0) {
-				tn = InitDictionary.termNatures[wordId];
+			if (ansjItem.termNatures != TermNatures.NULL) {
+				tn = ansjItem.termNatures;
 			} else if ((params = UserDefineLibrary.getParams(word)) != null) {
 				tn = new TermNatures(new TermNature(params[0], 1));
 			}
