@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,12 +127,12 @@ public class NlpAnalysis extends Analysis {
 		this.learn = learn;
 	}
 
-	public NlpAnalysis(BufferedReader reader, Forest... forests) {
+	public NlpAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
 		super.resetContent(new AnsjReader(reader));
 	}
 
-	public NlpAnalysis(BufferedReader reader, LearnTool learn, Forest... forests) {
+	public NlpAnalysis(Reader reader, LearnTool learn, Forest... forests) {
 		this.forests = forests;
 		this.learn = learn;
 		super.resetContent(new AnsjReader(reader));

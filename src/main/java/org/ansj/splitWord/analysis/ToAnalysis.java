@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +92,7 @@ public class ToAnalysis extends Analysis {
 		this.forests = forests;
 	}
 
-	public ToAnalysis(BufferedReader reader, Forest... forests) {
+	public ToAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
 		super.resetContent(new AnsjReader(reader));
 	}

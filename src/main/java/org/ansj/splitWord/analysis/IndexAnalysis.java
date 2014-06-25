@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,37 +58,42 @@ public class IndexAnalysis extends Analysis {
 			private List<Term> result() {
 				// TODO Auto-generated method stub
 				List<Term> result = new LinkedList<Term>();
+				List<Term> last = new LinkedList<Term>();
 				Term term = null;
 				String temp = null;
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
-
 					if (term == null) {
 						continue;
 					}
 
-					if (term.getNext() == null) {
-						result.add(term);
-						if (term.getName().length() > 3) {
-							GetWordsImpl gwi = new GetWordsImpl(term.getName());
-							while ((temp = gwi.allWords()) != null) {
-								if (temp.length() > 1 && temp.length() < term.getName().length()) {
-									result.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
-								}
-							}
+					result.add(term);
+
+					term = term.getNext();
+
+					while (term != null) {
+						last.add(term);
+						temp = term.getName();
+						term = term.getNext();
+						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
+							break;
 						}
-					} else {
-						while (term != null) {
-							result.add(term);
-							temp = term.getName();
-							term = term.getNext();
-							if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
-								break;
+					}
+				}
+
+				for (Term term2 : result) {
+					if (term2.getName().length() >= 3) {
+						GetWordsImpl gwi = new GetWordsImpl(term2.getName());
+						while ((temp = gwi.allWords()) != null) {
+							if (temp.length() > 1 && temp.length() < term2.getName().length()) {
+								last.add(new Term(temp, gwi.offe + term2.getOffe(), TermNatures.NULL));
 							}
 						}
 					}
 				}
+
+				result.addAll(last);
 
 				setRealName(graph, result);
 				return result;
@@ -106,7 +111,7 @@ public class IndexAnalysis extends Analysis {
 		this.forests = forests;
 	}
 
-	public IndexAnalysis(BufferedReader reader, Forest... forests) {
+	public IndexAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
 		super.resetContent(new AnsjReader(reader));
 	}

@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
-			<version>1.4</version>
+			<version>2.0.2</version>
 			<classifier>min</classifier>
 			<scope>provided</scope>
 		</dependency>
