@@ -17,49 +17,53 @@ import org.nlpcn.commons.lang.util.IOUtil;
  */
 public class CoreLibraryMaker {
 	public static void main(String[] args) throws Exception {
-		makeDic() ;
+		makeDic();
 		DATMaker datM = new DATMaker();
 
 		datM.maker("train_file/library.txt", AnsjItem.class);
 
 		Item[] dat = datM.getDAT();
 
-		AnsjItem ansjItem1 = new AnsjItem();
-		ansjItem1.name = String.valueOf((char) '%');
-		ansjItem1.index = '%';
-		ansjItem1.check = -1;
-		ansjItem1.status = 5;
-		ansjItem1.param = "{nb=1}";
-		dat['%'] = ansjItem1;
+		insertToArray(dat, '%', (byte) 5, "{nb=1}");
+		insertToArray(dat, '.', (byte) 5, "{nb=1}");
 		for (int i = '0'; i <= '9'; i++) {
-			AnsjItem ansjItem = new AnsjItem();
-			ansjItem.name = String.valueOf((char) i);
-			ansjItem.index = i;
-			ansjItem.check = -1;
-			ansjItem.status = 5;
-			ansjItem.param = "{nb=1}";
-			dat[i] = ansjItem;
+			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
+		}
+		for (int i = '０'; i <= '９'; i++) {
+			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
 		}
 
-		AnsjItem ansjItem2 = new AnsjItem();
-		ansjItem2.name = String.valueOf((char) '\'');
-		ansjItem2.check = -1;
-		ansjItem2.status = 4;
-		ansjItem2.index = '\'';
-		ansjItem2.param = "{en=1}";
-		dat['\''] = ansjItem2;
+		insertToArray(dat, (char) '\'', (byte) 4, "{en=1}");
+
 		for (int i = 'a'; i <= 'z'; i++) {
-			AnsjItem ansjItem = new AnsjItem();
-			ansjItem.name = String.valueOf((char) i);
-			ansjItem.index = i;
-			ansjItem.check = -1;
-			ansjItem.status = 4;
-			ansjItem.param = "{en=1}";
-			dat[i] = ansjItem;
+			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
+		
+		for (int i = 'ａ'; i <= 'ｚ'; i++) {
+			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+		}
+		
+		for (int i = 'Ａ'; i <= 'Ｚ'; i++) {
+			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+		}
+		
+		for (int i = 'A'; i <= 'Z'; i++) {
+			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+		}
+		
 
 		datM.saveText("src/main/resources/core.dic");
 
+	}
+
+	private static void insertToArray(Item[] dat, char c, byte status, String param) {
+		AnsjItem ansjItem1 = new AnsjItem();
+		ansjItem1.name = String.valueOf(c);
+		ansjItem1.index = c;
+		ansjItem1.check = -1;
+		ansjItem1.status = status;
+		ansjItem1.param = param;
+		dat[c] = ansjItem1;
 	}
 
 	public static void makeDic() throws NumberFormatException, IOException {
@@ -70,11 +74,11 @@ public class CoreLibraryMaker {
 		TreeMap<String, TreeMap<String, Integer>> dic = new TreeMap<String, TreeMap<String, Integer>>();
 
 		while ((temp = br.readLine()) != null) {
-			
-			if(temp.indexOf('#')>-1){
-				continue ;
+
+			if (temp.indexOf('#') > -1) {
+				continue;
 			}
-			
+
 			temp = temp.replace(String.valueOf(((char) 0)), "");
 			String[] split = temp.split("\t");
 			if (dic.containsKey(split[1])) {

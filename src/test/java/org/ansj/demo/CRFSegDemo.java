@@ -8,6 +8,6 @@ public class CRFSegDemo {
 		System.out.println(MyStaticValue.getCRFSplitWord().cut("關注十八大：台港澳密集解讀十八大報告”"));
 		System.out.println(MyStaticValue.getCRFSplitWord().cut("这次回家，我经济南下广州"));
 		System.out.println(MyStaticValue.getCRFSplitWord().cut("从古至今为何经济南强北弱?军事则北强南弱?_百度知道"));
-		System.out.println(MyStaticValue.getCRFSplitWord().cut("越体越中意"));
+		System.out.println(MyStaticValue.getCRFSplitWord().cut("马云说，马云说，马云今天参加马云天天和中粮集团, 天安天安天安天安天安，我在天安门"));
 	}
 }

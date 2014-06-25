@@ -45,7 +45,7 @@
 	<repositories>
 		<repository>
 			<id>mvn-repo</id>
-			<url>http://maven.ansj.org/</url>
+			<url>http://maven.nlpcn.org/</url>
 		</repository>
 	</repositories>
 

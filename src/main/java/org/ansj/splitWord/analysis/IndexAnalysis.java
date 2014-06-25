@@ -69,11 +69,19 @@ public class IndexAnalysis extends Analysis {
 					}
 
 					result.add(term);
+				}
+				
+				
+				for (int i = 0; i < length; i++) {
+					term = graph.terms[i];
+					if (term == null) {
+						continue;
+					}
 
 					term = term.getNext();
 
 					while (term != null) {
-						last.add(term);
+						result.add(term);
 						temp = term.getName();
 						term = term.getNext();
 						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
