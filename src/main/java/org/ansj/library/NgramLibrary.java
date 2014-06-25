@@ -32,7 +32,13 @@ public class NgramLibrary {
 		if (from.item().bigramEntryMap == null) {
 			return 0;
 		}
-		return from.item().bigramEntryMap.getOrDefault(to.item().index, 0);
+		Integer freq = from.item().bigramEntryMap.get(to.item().index);
+
+		if (freq == null) {
+			return 0;
+		} else {
+			return freq;
+		}
 	}
 
 }
