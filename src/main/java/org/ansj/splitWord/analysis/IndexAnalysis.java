@@ -1,8 +1,10 @@
 package org.ansj.splitWord.analysis;
 
 import java.io.Reader;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
@@ -62,12 +64,15 @@ public class IndexAnalysis extends Analysis {
 				Term term = null;
 				String temp = null;
 				int length = graph.terms.length - 1;
+				
+				Set<String> filter = new HashSet<String>() ;
+				
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
 					if (term == null) {
 						continue;
 					}
-
+					filter.add(term.getName()) ;
 					result.add(term);
 				}
 				
@@ -82,6 +87,7 @@ public class IndexAnalysis extends Analysis {
 
 					while (term != null) {
 						result.add(term);
+						filter.add(term.getName()) ;
 						temp = term.getName();
 						term = term.getNext();
 						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
@@ -94,7 +100,8 @@ public class IndexAnalysis extends Analysis {
 					if (term2.getName().length() >= 3) {
 						GetWordsImpl gwi = new GetWordsImpl(term2.getName());
 						while ((temp = gwi.allWords()) != null) {
-							if (temp.length() > 1 && temp.length() < term2.getName().length()) {
+							if (!filter.contains(temp)&&temp.length() < term2.getName().length()) {
+								filter.add(temp) ;
 								last.add(new Term(temp, gwi.offe + term2.getOffe(), TermNatures.NULL));
 							}
 						}
