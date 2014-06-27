@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.ansj.library.UserDefineLibrary;
 import org.ansj.lucene.util.PorterStemmer;
 import org.ansj.lucene4.AnsjAnalysis;
 import org.ansj.lucene4.AnsjIndexAnalysis;
@@ -70,9 +71,10 @@ public class IndexTest {
 		Analyzer analyzer = new AnsjIndexAnalysis(hs, false);
 		Directory directory = null;
 		IndexWriter iwriter = null;
+		String text = "季德胜蛇药片 10片*6板 ";
 
-		String text = "上海虹桥机场我愛北京天安門 onni 喜欢用避孕套";
-
+		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
+		
 		IndexWriterConfig ic = new IndexWriterConfig(Version.LUCENE_44, analyzer);
 		// 建立内存索引对象
 		directory = new RAMDirectory();
@@ -87,9 +89,8 @@ public class IndexTest {
 		;
 
 		System.out.println("index ok to search!");
-		search(queryAnalyzer, directory, "\"上海虹桥\"~1");
+		search(queryAnalyzer, directory, "\"季德胜蛇药片\"");
 		
-		search(queryAnalyzer, directory, "\"避孕\"~1");
 	}
 
 	private void search(Analyzer queryAnalyzer, Directory directory, String queryStr) throws CorruptIndexException, IOException, ParseException {

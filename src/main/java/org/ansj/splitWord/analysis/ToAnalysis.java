@@ -31,7 +31,6 @@ public class ToAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-				// TODO Auto-generated method stub
 				graph.walkPath();
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
@@ -62,7 +61,6 @@ public class ToAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {

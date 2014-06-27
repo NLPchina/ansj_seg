@@ -31,7 +31,7 @@ public class IndexAnalysisTest {
 		
 		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
 
-		System.out.println(ToAnalysis.parse("季德胜蛇药片10片*6板 清热"));
+		System.out.println(ToAnalysis.parse("季德胜蛇药片"));
 //		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
 //		
 //		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
@@ -40,13 +40,13 @@ public class IndexAnalysisTest {
 //		
 //		System.out.println(IndexAnalysis.parse("北京地铁"));
 		
-		long start = System.currentTimeMillis() ;
-				
-		IndexAnalysis indexAnalysis = new IndexAnalysis(new InputStreamReader(new FileInputStream("/home/ansj/temp/one_day_all.txt"))) ;
-		
-		while(indexAnalysis.next()!=null){
-			
-		}
-		System.out.println(System.currentTimeMillis()-start);
+//		long start = System.currentTimeMillis() ;
+//				
+//		IndexAnalysis indexAnalysis = new IndexAnalysis(new InputStreamReader(new FileInputStream("/home/ansj/temp/one_day_all.txt"))) ;
+//		
+//		while(indexAnalysis.next()!=null){
+//			
+//		}
+//		System.out.println(System.currentTimeMillis()-start);
 	}
 }
