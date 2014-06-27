@@ -35,21 +35,46 @@ public class IndexAnalysis extends Analysis {
 			public List<Term> merger() {
 				graph.walkPath();
 
+				List<Term> last = new LinkedList<Term>();
+
+				Set<Long> filter = new HashSet<Long>();
+
 				// 数字发现
 				if (MyStaticValue.isNumRecognition)
 					NumRecognition.recognition(graph.terms);
 
 				// 姓名识别
 				if (MyStaticValue.isNameRecognition) {
-					new AsianPersonRecognition(graph.terms).recognition();
+					List<Term> newTerms = new AsianPersonRecognition(graph.terms).getNewTerms();
+
+					insert2Last(last, filter, newTerms);
+
 					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
+					newTerms = new ForeignPersonRecognition(graph.terms).getNewTerms();
+
+					insert2Last(last, filter, newTerms);
 				}
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
 
-				return result();
+				return result(last, filter);
+			}
+
+			private void insert2Last(List<Term> last, Set<Long> filter, List<Term> newTerms) {
+				for (Term term : newTerms) {
+					long key = term2Key(term);
+					if (filter.contains(key)) {
+						continue;
+					}
+					last.add(term);
+					filter.add(key);
+				}
+			}
+
+			private long term2Key(Term term) {
+				// TODO Auto-generated method stub
+				return (term.getOffe() + 1) * 100 + term.getName().length();
 			}
 
 			/**
@@ -57,40 +82,37 @@ public class IndexAnalysis extends Analysis {
 			 * 
 			 * @return
 			 */
-			private List<Term> result() {
-				// TODO Auto-generated method stub
+			private List<Term> result(List<Term> last, Set<Long> filter) {
 				List<Term> result = new LinkedList<Term>();
-				List<Term> last = new LinkedList<Term>();
 				Term term = null;
 				String temp = null;
 				int length = graph.terms.length - 1;
-				
-				Set<String> filter = new HashSet<String>() ;
-				
+				long key = 0;
+
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
 					if (term == null) {
 						continue;
 					}
-					filter.add(term.getName()) ;
+					filter.add(term2Key(term));
 					result.add(term);
 				}
-				
-				
+
 				for (int i = 0; i < length; i++) {
 					term = graph.terms[i];
 					if (term == null) {
 						continue;
 					}
-
 					term = term.getNext();
 
 					while (term != null) {
-						result.add(term);
-						filter.add(term.getName()) ;
-						temp = term.getName();
+						key = term2Key(term);
+						if (!filter.contains(key)) {
+							result.add(term);
+							filter.add(key);
+						}
 						term = term.getNext();
-						if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
+						if (term == null) {
 							break;
 						}
 					}
@@ -100,8 +122,8 @@ public class IndexAnalysis extends Analysis {
 					if (term2.getName().length() >= 3) {
 						GetWordsImpl gwi = new GetWordsImpl(term2.getName());
 						while ((temp = gwi.allWords()) != null) {
-							if (!filter.contains(temp)&&temp.length() < term2.getName().length()) {
-								filter.add(temp) ;
+							if (!filter.contains(term2.getOffe() + temp.length()) && temp.length() < term2.getName().length()) {
+								filter.add((long) (term2.getOffe() + temp.length()));
 								last.add(new Term(temp, gwi.offe + term2.getOffe(), TermNatures.NULL));
 							}
 						}

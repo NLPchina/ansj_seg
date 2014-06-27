@@ -58,7 +58,6 @@ public class ForeignPersonRecognition {
 	}
 
 	public void recognition() {
-		// TODO Auto-generated method stub
 		String name = null;
 		Term term = null;
 		reset();
@@ -183,5 +182,53 @@ public class ForeignPersonRecognition {
 			}
 		}
 		return all;
+	}
+
+	public List<Term> getNewTerms() {
+		LinkedList<Term> result = new LinkedList<Term>();
+		String name = null;
+		Term term = null;
+		reset();
+		for (int i = 0; i < terms.length; i++) {
+			if (terms[i] == null) {
+				continue;
+			}
+
+			term = terms[i];
+			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
+			if (tempList.size() == 0) {
+				if (term.termNatures().personAttr.end > 10) {
+					continue;
+				}
+
+				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
+					continue;
+				}
+			}
+
+			name = term.getName();
+
+			if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
+				boolean flag = validate(name);
+				if (flag) {
+					tempList.add(term);
+				}
+			} else if (tempList.size() == 1) {
+				reset();
+			} else if (tempList.size() > 1) {
+				result.add(makeNewTerm());
+				reset();
+			}
+		}
+		return result;
+	}
+
+	public Term makeNewTerm() {
+		StringBuilder sb = new StringBuilder();
+		int offe = tempList.get(0).getOffe();
+		for (Term term : tempList) {
+			sb.append(term.getName());
+		}
+		return new Term(sb.toString(), offe, TermNatures.NR);
 	}
 }

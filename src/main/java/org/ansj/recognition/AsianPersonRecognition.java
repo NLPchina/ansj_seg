@@ -174,5 +174,10 @@ public class AsianPersonRecognition {
 		}
 		return all;
 	}
+	
+	
+	public List<Term> getNewTerms() {
+		return recogntion_();
+	}
 
 }
