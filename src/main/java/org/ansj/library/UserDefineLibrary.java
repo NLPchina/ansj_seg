@@ -65,7 +65,7 @@ public class UserDefineLibrary {
 		// TODO Auto-generated method stub
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warning("init ambiguity  waring :" + ambiguityLibrary + " because : not find that file or can not to read !");
+			LIBRARYLOG.warning("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
 			return;
 		}
 		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
@@ -80,7 +80,7 @@ public class UserDefineLibrary {
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
 		} else {
-			LIBRARYLOG.warning("init ambiguity  waring :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
+			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
 		}
 	}
 
@@ -157,7 +157,7 @@ public class UserDefineLibrary {
 		if (path != null) {
 			file = new File(path);
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warning("init userLibrary  waring :" + new File(path).getAbsolutePath() + " because : not find that file or can not to read !");
+				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
 				return;
 			}
 			if (file.isFile()) {
