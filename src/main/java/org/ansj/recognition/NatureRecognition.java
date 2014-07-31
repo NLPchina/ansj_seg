@@ -10,6 +10,7 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.MathUtil;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 词性标注工具类
@@ -68,7 +69,14 @@ public class NatureRecognition {
 				tn = ansjItem.termNatures;
 			} else if ((params = UserDefineLibrary.getParams(word)) != null) {
 				tn = new TermNatures(new TermNature(params[0], 1));
+			}else if(WordAlert.isEnglish(word)){
+				tn = TermNatures.EN ;
+			}else if(WordAlert.isNumber(word)){
+				tn = TermNatures.M ;
+			}else{
+				tn = TermNatures.NULL ;
 			}
+			
 			terms.add(new Term(word, offe + tempOffe, tn));
 			tempOffe += word.length();
 		}
