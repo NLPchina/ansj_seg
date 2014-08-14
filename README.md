@@ -18,8 +18,9 @@ Ansj中文分词
 
 
 #####  下载jar
-* 访问 [http://maven.ansj.org/org/ansj/](http://maven.ansj.org/org/ansj/)
-* 下载两个jar 。最好下载最新版 ansj_seg/ 和 tree_split/ 的jar。
+* 访问 [http://maven.ansj.org/org/ansj/](http://maven.ansj.org/org/ansj/) 最好下载最新版 ansj_seg/
+** 如果你用的是1.x版本需要下载[http://maven.ansj.org/org/ansj/tree_split/](tree_split.jar)。
+** 如果你用的是2.x版本需要下载[http://maven.ansj.org/org/nlpcn/nlp-lang/](nlp-lang.jar)
 * 导入到eclipse ，开始你的程序吧
 
 
