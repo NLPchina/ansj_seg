@@ -38,7 +38,9 @@ public abstract class Analysis {
 	private GetWordsImpl gwi = new GetWordsImpl();
 
 	protected Forest[] forests = null;
-
+	
+	private Forest ambiguityForest = null;
+	
 	/**
 	 * 文档读取流
 	 */
@@ -97,8 +99,14 @@ public abstract class Analysis {
 	private void analysisStr(String temp) {
 		Graph gp = new Graph(temp);
 		int startOffe = 0;
-		if (UserDefineLibrary.ambiguityForest != null) {
-			GetWord gw = new GetWord(UserDefineLibrary.ambiguityForest, gp.chars);
+		
+		Forest forset = UserDefineLibrary.ambiguityForest;
+		if(this.ambiguityForest!=null){
+			forset = this.ambiguityForest;
+		}
+		
+		if (forset != null) {
+			GetWord gw = new GetWord(forset, gp.chars);
 			String[] params = null;
 			while ((gw.getAllWords()) != null) {
 				if (gw.offe > startOffe) {
@@ -226,5 +234,13 @@ public abstract class Analysis {
 	public void resetContent(AnsjReader br) {
 		this.offe = 0;
 		this.br = br;
+	}
+	
+	public Forest getAmbiguityForest() {
+		return ambiguityForest;
+	}
+
+	public void setAmbiguityForest(Forest ambiguityForest) {
+		this.ambiguityForest = ambiguityForest;
 	}
 }
