@@ -1,6 +1,7 @@
 package org.ansj.splitWord;
 
 import java.io.IOException;
+import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -234,6 +235,16 @@ public abstract class Analysis {
 	public void resetContent(AnsjReader br) {
 		this.offe = 0;
 		this.br = br;
+	}
+	
+	public void resetContent(Reader reader) {
+		this.offe = 0;
+		this.br = new AnsjReader(reader);
+	}
+	
+	public void resetContent(Reader reader,int buffer) {
+		this.offe = 0;
+		this.br = new AnsjReader(reader,buffer);
 	}
 	
 	public Forest getAmbiguityForest() {
