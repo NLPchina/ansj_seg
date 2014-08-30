@@ -58,10 +58,10 @@ public abstract class Analysis {
 	 * @return
 	 * @throws IOException
 	 */
-	private Term term = null;
+	
 
 	public Term next() throws IOException {
-
+		Term term = null;
 		if (!terms.isEmpty()) {
 			term = terms.poll();
 			term.updateOffe(offe);
