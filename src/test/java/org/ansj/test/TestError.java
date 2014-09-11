@@ -1,7 +1,11 @@
 package org.ansj.test;
 
+import java.util.List;
+
 import org.ansj.dic.LearnTool;
+import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
@@ -20,6 +24,13 @@ public class TestError {
 		// System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
 
 		UserDefineLibrary.insertWord("日历", "n", 1000);
+		
+		List<Term> parse = ToAnalysis.parse("我得了感冒") ;
+		System.out.println(parse);
+		
+		new NatureRecognition(parse).recognition();;
+		
+		System.out.println(parse);
 
 		System.out.println(ToAnalysis.parse("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作"));
 //		System.out.println(ToAnalysis.parse("365日历，日历-万年历"));

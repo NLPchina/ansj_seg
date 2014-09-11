@@ -102,7 +102,7 @@ public abstract class Analysis {
 		if (this.ambiguityForest != null) {
 			GetWord gw = new GetWord(this.ambiguityForest, gp.chars);
 			String[] params = null;
-			while ((gw.getAllWords()) != null) {
+			while ((gw.getFrontWords()) != null) {
 				if (gw.offe > startOffe) {
 					analysis(gp, startOffe, gw.offe);
 				}

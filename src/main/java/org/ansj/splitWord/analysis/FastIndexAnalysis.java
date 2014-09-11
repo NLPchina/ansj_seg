@@ -19,8 +19,7 @@ public class FastIndexAnalysis extends Analysis {
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Documents/temp/test.txt", "utf-8");
 		Term temp = null;
 
-		
-		System.out.println(FastIndexAnalysis.parse("中国人民123adfsf.m,.sdfjiweu3u03  dsfds"));
+		System.out.println(FastIndexAnalysis.parse("河北省"));
 		long start = System.currentTimeMillis();
 
 		FastIndexAnalysis fia = new FastIndexAnalysis(reader);
@@ -29,7 +28,6 @@ public class FastIndexAnalysis extends Analysis {
 		while ((temp = fia.next()) != null) {
 			length += temp.getName().length();
 		}
-		;
 
 		System.out.println(length * 1000L / (System.currentTimeMillis() - start));
 
@@ -42,23 +40,25 @@ public class FastIndexAnalysis extends Analysis {
 	public FastIndexAnalysis(Reader br) {
 		super.resetContent(br);
 	}
-	
+
 	public FastIndexAnalysis() {
 	}
-	
+
 	public static List<Term> parse(String str) {
 		return new FastIndexAnalysis().parseStr(str);
 	}
 
 	@Override
 	protected List<Term> getResult(Graph graph) {
-		graph.rmLittlePath();
-
 		List<Term> result = new LinkedList<Term>();
 		int length = graph.terms.length - 1;
+		Term term = null;
 		for (int i = 0; i < length; i++) {
-			if (graph.terms[i] != null) {
-				result.add(graph.terms[i]);
+			if ((term=graph.terms[i]) != null) {
+				result.add(term);
+				while((term =term.getNext())!=null){
+					result.add(term);
+				}
 			}
 		}
 
