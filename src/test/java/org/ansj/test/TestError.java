@@ -6,6 +6,7 @@ import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.NatureRecognition;
+import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
@@ -32,7 +33,10 @@ public class TestError {
 		
 		System.out.println(parse);
 
-		System.out.println(ToAnalysis.parse("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作"));
+		
+		System.out.println(IndexAnalysis.parse("主副食品 软件设计"));
+		
+//		System.out.println(ToAnalysis.parse("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作"));
 //		System.out.println(ToAnalysis.parse("365日历，日历-万年历"));
 //		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州", tool));
 //		System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道", tool));

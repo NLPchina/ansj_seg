@@ -86,7 +86,7 @@ public class IndexAnalysis extends Analysis {
 					if (term.getName().length() >= 3) {
 						GetWordsImpl gwi = new GetWordsImpl(term.getName());
 						while ((temp = gwi.allWords()) != null) {
-							if (temp.length() < term.getName().length()) {
+							if (temp.length() < term.getName().length() && temp.length()>1) {
 								last.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
 							}
 						}
