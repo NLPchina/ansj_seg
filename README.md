@@ -2,7 +2,7 @@ Ansj中文分词
 ==================
 
 
-#####使用帮助[http://ansjsun.github.io/ansj_seg/](http://ansjsun.github.io/ansj_seg/)
+#####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
 
 #####在线测试地址<a href="http://demo.ansj.org">http://demo.ansj.org</href>
 
