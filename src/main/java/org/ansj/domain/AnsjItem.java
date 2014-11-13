@@ -29,7 +29,7 @@ public class AnsjItem extends Item {
 	/**
 	 * frequency : 词性词典,以及词性的相关权重
 	 */
-	public TermNatures termNatures = TermNatures.NULL;
+	public TermNatures termNatures = null ;
 
 	public Map<Integer,Integer> bigramEntryMap =  null ;
 
@@ -48,6 +48,8 @@ public class AnsjItem extends Item {
 		if (status > 1) {
 			name = split[1];
 			termNatures = new TermNatures(TermNature.setNatureStrToArray(split[5]), index);
+		}else{
+			termNatures = new TermNatures(TermNature.NULL); 
 		}
 	}
 

@@ -1,40 +1,35 @@
 package org.ansj.test;
 
-import java.util.List;
-
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
 	@Test
 	public void test() {
 
-		LearnTool tool = new LearnTool();
+//		LearnTool tool = new LearnTool();
 		// System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州",tool));
 		// System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道",tool));
 		// System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
-
-		UserDefineLibrary.insertWord("日历", "n", 1000);
+//		System.out.println(ToAnalysis.parse("美白面膜"));
+//
+//		UserDefineLibrary.insertWord("面膜", "n", 1000);
+//		
+////		System.out.println(ToAnalysis.parse("美白面膜"));
+//		System.out.println("aa");
+//		System.out.println(ToAnalysis.parse("999牌 感冒灵颗粒 10g*9包  解热镇痛，用于感冒引起的头痛、发热"));
 		
-		List<Term> parse = ToAnalysis.parse("我得了感冒") ;
-		System.out.println(parse);
-		
-		new NatureRecognition(parse).recognition();;
-		
-		System.out.println(parse);
-
-		
-		System.out.println(IndexAnalysis.parse("主副食品 软件设计"));
+//		List<Term> parse = ToAnalysis.parse("我得了感冒") ;
+//		System.out.println(parse);
+//		
+//		new NatureRecognition(parse).recognition();;
+//		
+//		System.out.println(parse);
+//
+//		
+//		System.out.println(IndexAnalysis.parse("主副食品 软件设计"));
 		
 //		System.out.println(ToAnalysis.parse("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作"));
 //		System.out.println(ToAnalysis.parse("365日历，日历-万年历"));
@@ -42,6 +37,7 @@ public class TestError {
 //		System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道", tool));
 //		System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
 //		System.out.println(NlpAnalysis.parse("越体越中意"));
+//		System.out.println(NlpAnalysis.parse("在类似：1.三（接汉字数字时），会把这个汉字数字和1.放在一块作为一个数字 "));
 //		System.out
 //				.println(NlpAnalysis
 //						.parse("一、概述正如上一篇博客，程序并没有主动设置PersonService实例的name属性值，而是通过Spring配置文件配置的，这就是说，PersonService实例的属性值并不是程序主动设置的，而是由Spring容器来负责注入的。在依赖注入的模式下，创建被调用者的工作不再由调用者来完成，因此称为控制反转（IoC）。创建被调用者实例的工作通常由Spring容器来完成，然后注入调用者，因此也称为......"));
@@ -68,9 +64,21 @@ public class TestError {
 //		System.out.println(NlpAnalysis.parse("据说川府办发的发文很厉害"));
 //		;
 //		System.out.println(NlpAnalysis.parse("京财企业务繁忙"));
-		MyStaticValue.isNumRecognition = false ;
-		System.out.println(ToAnalysis.parse("0.46毫克"));
+//		MyStaticValue.isNumRecognition = false ;
+//		System.out.println(ToAnalysis.parse("0.46毫克"));
 //		;
+		
+		
 
+		System.out.println(ToAnalysis.parse("上海马勒别墅"));
+		System.out.println(ToAnalysis.parse("电话卡+周杰伦摩天轮"));
+		System.out.println(ToAnalysis.parse("陆成恩和孙健是好朋友"));
+		System.out.println(ToAnalysis.parse("热海景区+"));
+		
+		UserDefineLibrary.insertWord("地黄丸", "aa", 1000);
+		
+		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
+		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));
+		
 	}
 }
