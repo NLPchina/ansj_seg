@@ -306,8 +306,8 @@ public class Graph {
 		} else {
 			char c = chars[to];
 			TermNatures tn = DATDictionary.getItem(c).termNatures;
-			if (tn == TermNatures.NULL) {
-				tn = TermNatures.NW;
+			if (tn == null || tn == TermNatures.NULL) {
+				tn = TermNatures.NULL;
 			}
 			terms[to] = new Term(String.valueOf(c), to, tn);
 			terms[to].setPathScore(fromTerm);

@@ -70,15 +70,20 @@ public class TestError {
 		
 		
 
-		System.out.println(ToAnalysis.parse("上海马勒别墅"));
-		System.out.println(ToAnalysis.parse("电话卡+周杰伦摩天轮"));
-		System.out.println(ToAnalysis.parse("陆成恩和孙健是好朋友"));
-		System.out.println(ToAnalysis.parse("热海景区+"));
+//		System.out.println(ToAnalysis.parse("上海马勒别墅"));
+//		System.out.println(ToAnalysis.parse("电话卡+周杰伦摩天轮"));
+//		System.out.println(ToAnalysis.parse("陆成恩和孙健是好朋友"));
+//		System.out.println(ToAnalysis.parse("热海景区+"));
+//		
+//		UserDefineLibrary.insertWord("地黄丸", "aa", 1000);
+//		
+//		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
+//		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));
 		
-		UserDefineLibrary.insertWord("地黄丸", "aa", 1000);
+		System.out.println(ToAnalysis.parse("联合国;"));
 		
-		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
-		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));
+		System.out.println(ToAnalysis.parse(";"));
+		
 		
 	}
 }
