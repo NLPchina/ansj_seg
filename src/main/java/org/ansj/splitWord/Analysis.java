@@ -209,7 +209,6 @@ public abstract class Analysis {
 	}
 
 	protected List<Term> parseStr(String temp) {
-		// TODO Auto-generated method stub
 		analysisStr(temp);
 		return terms;
 	}

@@ -1,7 +1,7 @@
 package org.ansj.domain;
 
 /**
- * 没一个term都拥有一个词性集合
+ * 每一个term都拥有一个词性集合
  * 
  * @author ansj
  * 

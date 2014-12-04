@@ -111,7 +111,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getArraysReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("arrays.dic");
 	}
 
@@ -121,7 +120,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getNumberReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("numberLibrary.dic");
 	}
 
@@ -131,7 +129,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getEnglishReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("englishLibrary.dic");
 	}
 
@@ -141,7 +138,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getNatureMapReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("nature/nature.map");
 	}
 
@@ -151,7 +147,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getNatureTableReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("nature/nature.table");
 	}
 
@@ -161,7 +156,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getPersonFreqReader() {
-		// TODO Auto-generated method stub
 		return DicReader.getReader("person/name_freq.dic");
 	}
 
@@ -181,10 +175,8 @@ public class MyStaticValue {
 			map = (Map<String, int[][]>) objectInputStream.readObject();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -193,7 +185,6 @@ public class MyStaticValue {
 				if (inputStream != null)
 					inputStream.close();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -243,13 +234,10 @@ public class MyStaticValue {
 
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			IOUtil.close(reader);
@@ -263,7 +251,6 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static SplitWord getCRFSplitWord() {
-		// TODO Auto-generated method stub
 		if (crfSplitWord != null) {
 			return crfSplitWord;
 		}
@@ -278,7 +265,6 @@ public class MyStaticValue {
 			crfSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/crf.model")));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			LOCK.unlock();
