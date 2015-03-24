@@ -27,15 +27,15 @@ Ansj中文分词
 #####  maven
 1.  使用git下载本项目：
 
-````
+```
 git clone https://github.com/NLPchina/ansj_seg
-````
+```
 
 2.  进入ansj_seg目录，使用maven安装项目：
 
-````
+```
 mvn clean install -Dmaven.test.skip=true
-````
+```
 
 3.  在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
 
