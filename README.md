@@ -25,24 +25,9 @@ Ansj中文分词
 
 
 #####  maven
-* 第一步在你的pom.xml中加入.
-
-````
-  <project...>
-    ....
-
-    <repositories>
-        <repository>
-            <id>mvn-repo</id>
-            <url>http://maven.ansj.org/</url>
-        </repository>
-    </repositories>
-    ....
-</project>
-````
-
-
-* 在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
+1.  使用git下载本项目：git clone https://github.com/NLPchina/ansj_seg
+2.  使用maven安装项目：mvn clean install -Dmaven.test.skip=true
+3.  在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
 
 ````
     <dependencies>
