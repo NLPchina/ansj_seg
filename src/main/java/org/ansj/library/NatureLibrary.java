@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有预料无法训练
@@ -104,8 +103,8 @@ public class NatureLibrary {
 	 * @return
 	 */
 	public static int getTwoTermFreq(Term fromTerm, Term toTerm) {
-		Nature from = fromTerm.getNatrue();
-		Nature to = toTerm.getNatrue();
+		Nature from = fromTerm.natrue();
+		Nature to = toTerm.natrue();
 		if (from.index < 0 || to.index < 0) {
 			return 0;
 		}

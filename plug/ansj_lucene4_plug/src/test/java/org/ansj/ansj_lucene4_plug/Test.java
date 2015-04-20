@@ -8,6 +8,7 @@ import org.ansj.lucene4.AnsjAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 public class Test {
 	public static void main(String[] args) {
@@ -20,7 +21,12 @@ public class Test {
                         + "在测试里有这样的一些问题："
                         + "你是个喜欢动手的人吗？ 你喜欢修东西吗？你喜欢体育运动吗？你喜欢在室外工作吗？你是个喜欢思考的人吗？你喜欢数学和科学课吗？你喜欢一个人工作吗？你对自己的智力自信吗？你的创造能力很强吗？你喜欢艺术，音乐和戏剧吗？  你喜欢自由自在的工作环境吗？你喜欢尝试新的东西吗？ 你喜欢帮助别人吗？你喜欢教别人吗？你喜欢和机器和工具打交道吗？你喜欢当领导吗？你喜欢组织活动吗？你什么和数字打交道吗？");
         try {
-			TokenStream ts = ca.tokenStream("myfield", "Hello");
+			TokenStream tokenStream = ca.tokenStream("content", sentence) ;
+			
+			while(tokenStream.incrementToken()){
+				CharTermAttribute attribute = tokenStream.getAttribute(CharTermAttribute.class)  ;
+				System.out.println(attribute);
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

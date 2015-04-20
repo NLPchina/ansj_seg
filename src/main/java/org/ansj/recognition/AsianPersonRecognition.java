@@ -51,33 +51,33 @@ public class AsianPersonRecognition {
 		int beginFreq = 10;
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			if (term == null || !term.getTermNatures().personAttr.flag) {
+			if (term == null || !term.termNatures().personAttr.flag) {
 				continue;
 			}
-			term.score = 0;
-			term.selfScore = 0;
+			term.score(0);
+			term.selfScore(0);
 			int freq = 0;
 			for (int j = 2; j > -1; j--) {
-				freq = term.getTermNatures().personAttr.getFreq(j, 0);
+				freq = term.termNatures().personAttr.getFreq(j, 0);
 				if ((freq > 10) || (term.getName().length() == 2 && freq > 10)) {
 					tempTerm = nameFind(i, beginFreq, j);
 					if (tempTerm != null) {
 						termList.add(tempTerm);
 						// 如果是无争议性识别
 						if (skip) {
-							for (int j2 = i; j2 < tempTerm.getToValue(); j2++) {
+							for (int j2 = i; j2 < tempTerm.toValue(); j2++) {
 								if (terms[j2] != null) {
-									terms[j2].score = 0;
-									terms[j2].selfScore = 0;
+									terms[j2].score(0);
+									terms[j2].selfScore(0);
 								}
 							}
-							i = tempTerm.getToValue() - 1;
+							i = tempTerm.toValue() - 1;
 							break;
 						}
 					}
 				}
 			}
-			beginFreq = term.getTermNatures().personAttr.begin + 1;
+			beginFreq = term.termNatures().personAttr.begin + 1;
 		}
 		return termList;
 	}
@@ -107,7 +107,7 @@ public class AsianPersonRecognition {
 				continue;
 			}
 			term = terms[i];
-			pna = term.getTermNatures().personAttr;
+			pna = term.termNatures().personAttr;
 			// 在这个长度的这个位置的词频,如果没有可能就干掉,跳出循环
 			if ((freq = pna.getFreq(size, index)) == 0) {
 				return null;
@@ -117,7 +117,7 @@ public class AsianPersonRecognition {
 				undefinite++;
 			}
 			sb.append(term.getName());
-			allFreq += Math.log(term.getTermNatures().allFreq + 1);
+			allFreq += Math.log(term.termNatures().allFreq + 1);
 			allFreq += -Math.log((freq));
 			index++;
 
@@ -141,7 +141,7 @@ public class AsianPersonRecognition {
 				if (twoWordFreq > 3) {
 					return null;
 				}
-				endFreq = terms[i].getTermNatures().personAttr.end + 1;
+				endFreq = terms[i].termNatures().personAttr.end + 1;
 				flag = false;
 			}
 		}
@@ -159,7 +159,7 @@ public class AsianPersonRecognition {
 
 		skip = undefinite == 0;
 		term = new Term(sb.toString(), offe, TermNatures.NR);
-		term.selfScore = score;
+		term.selfScore(score);
 
 		return term;
 
@@ -173,6 +173,11 @@ public class AsianPersonRecognition {
 			all.add(new NewWord(term2.getName(), Nature.NR));
 		}
 		return all;
+	}
+	
+	
+	public List<Term> getNewTerms() {
+		return recogntion_();
 	}
 
 }

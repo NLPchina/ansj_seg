@@ -6,10 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import love.cq.util.IOUtil;
-
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 public class TestSigHan {
 	public static void main(String[] args) throws IOException {

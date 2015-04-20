@@ -1,6 +1,5 @@
 package org.ansj.lucene4;
 
-import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ public class AnsjIndexAnalysis extends Analyzer {
 	@Override
 	protected TokenStreamComponents createComponents(String fieldName, final Reader reader) {
 		// TODO Auto-generated method stub
-		Tokenizer tokenizer = new AnsjTokenizer(new IndexAnalysis(new BufferedReader(reader)), reader, filter, pstemming);
+		Tokenizer tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), reader, filter, pstemming);
 		return new TokenStreamComponents(tokenizer);
 	}
 

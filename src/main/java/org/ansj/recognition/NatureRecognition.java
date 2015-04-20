@@ -3,12 +3,14 @@ package org.ansj.recognition;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.InitDictionary;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.MathUtil;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 词性标注工具类
@@ -43,7 +45,7 @@ public class NatureRecognition {
 	public void recognition() {
 		int length = terms.size();
 		for (int i = 0; i < length; i++) {
-			natureTermTable[i] = getNatureTermArr(terms.get(i).getTermNatures().termNatures);
+			natureTermTable[i] = getNatureTermArr(terms.get(i).termNatures().termNatures);
 		}
 		walk();
 	}
@@ -61,13 +63,20 @@ public class NatureRecognition {
 		String[] params = null;
 		for (String word : words) {
 			// 获得词性 ， 先从系统辞典。在从用户自定义辞典
-			int wordId = InitDictionary.getWordId(word);
+			AnsjItem ansjItem = DATDictionary.getItem(word);
 			TermNatures tn = null;
-			if (wordId != 0) {
-				tn = InitDictionary.termNatures[wordId];
+			if (ansjItem.termNatures != TermNatures.NULL) {
+				tn = ansjItem.termNatures;
 			} else if ((params = UserDefineLibrary.getParams(word)) != null) {
 				tn = new TermNatures(new TermNature(params[0], 1));
+			}else if(WordAlert.isEnglish(word)){
+				tn = TermNatures.EN ;
+			}else if(WordAlert.isNumber(word)){
+				tn = TermNatures.M ;
+			}else{
+				tn = TermNatures.NULL ;
 			}
+			
 			terms.add(new Term(word, offe + tempOffe, tn));
 			tempOffe += word.length();
 		}

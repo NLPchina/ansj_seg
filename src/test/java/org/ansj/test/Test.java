@@ -175,6 +175,7 @@ public class Test {
 		long start = System.currentTimeMillis();
 
 		for (String string : all) {
+			System.out.println(string);
 			List<Term> parse = ToAnalysis.parse(string) ;
 			System.out.println(parse);
 			System.out.println(NlpAnalysis.parse(string));

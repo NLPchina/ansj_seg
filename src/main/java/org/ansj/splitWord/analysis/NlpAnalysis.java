@@ -1,26 +1,26 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
-import love.cq.domain.Forest;
 
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.library.InitDictionary;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.NatureLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.WordAlert;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -62,7 +62,7 @@ public class NlpAnalysis extends Analysis {
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2 || InitDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
+					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
 						continue;
 					}
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
@@ -127,15 +127,15 @@ public class NlpAnalysis extends Analysis {
 		this.learn = learn;
 	}
 
-	public NlpAnalysis(BufferedReader reader, Forest... forests) {
+	public NlpAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
-	public NlpAnalysis(BufferedReader reader, LearnTool learn, Forest... forests) {
+	public NlpAnalysis(Reader reader, LearnTool learn, Forest... forests) {
 		this.forests = forests;
 		this.learn = learn;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

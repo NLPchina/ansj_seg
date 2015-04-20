@@ -3,12 +3,11 @@ package org.ansj.demo;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import love.cq.util.IOUtil;
-
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
  * 对文件进行分词的例子
@@ -21,7 +20,8 @@ public class FileDemo {
 	public static void main(String[] args) throws IOException {
 		//
 		// MyStaticValue.isRealName = true;
-		BufferedReader reader = IOUtil.getReader("/Users/ansj/Documents/temp/test.txt", "utf-8");
+		BufferedReader reader = IOUtil.getReader("/home/ansj/temp/360baikeData/360tag_all.txt", "utf-8");
+		
 		ToAnalysis.parse("test 123 孙");
 
 		Analysis na = new BaseAnalysis(reader);
@@ -30,6 +30,8 @@ public class FileDemo {
 		int allCount = 0;
 		Term term = null;
 		while ((term = na.next()) != null) {
+			if(term.getOffe()%10000==0)
+			System.out.println(term.getOffe() + "\t" + term.getName());
 			allCount += term.getName().length();
 
 			if (allCount > 30000000) {

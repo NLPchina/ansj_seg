@@ -1,12 +1,11 @@
 package org.ansj.recognition;
 
-import love.cq.domain.SmartForest;
-
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.util.TermUtil;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
  * 新词识别
@@ -54,9 +53,9 @@ public class NewWordRecognition {
 			if (terms[i] == null) {
 				continue;
 			} else {
-				from = terms[i].getFrom();
-				terms[i].score = 0;
-				terms[i].selfScore = 0;
+				from = terms[i].from();
+				terms[i].score(0);
+				terms[i].selfScore(0);
 			}
 
 			branch = branch.getBranch(terms[i].getName());
@@ -72,11 +71,11 @@ public class NewWordRecognition {
 			term = terms[i];
 			sb.append(term.getName());
 			if (branch.getStatus() == 2) {
-				term.selfScore = branch.getParam().getScore();
+				term.selfScore(branch.getParam().getScore());
 			}
 			boolean flag = true;
 			while (flag) {
-				term = term.getTo();
+				term = term.to();
 				branch = branch.getBranch(term.getName());
 				// 如果没有找到跳出
 				if (branch == null) {
@@ -91,14 +90,14 @@ public class NewWordRecognition {
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
 					tempNature = branch.getParam().getNature();
-					to = term.getTo();
+					to = term.to();
 					makeNewTerm();
 					continue;
 				case 3:
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
 					tempNature = branch.getParam().getNature();
-					to = term.getTo();
+					to = term.to();
 					makeNewTerm();
 					flag = false;
 					break;
@@ -114,7 +113,7 @@ public class NewWordRecognition {
 	private void makeNewTerm() {
 		// TODO Auto-generated method stub
 		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
-		term.selfScore = score;
+		term.selfScore(score);
 		term.setNature(tempNature);
 		if (sb.length() > 3) {
 			term.setSubTerm(TermUtil.getSubTerm(from, to));

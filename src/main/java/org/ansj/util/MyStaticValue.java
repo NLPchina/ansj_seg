@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -13,14 +12,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
-import love.cq.util.IOUtil;
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
-import org.ansj.domain.BigramEntry;
-import org.ansj.library.InitDictionary;
+import org.ansj.domain.AnsjItem;
+import org.ansj.library.DATDictionary;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 这个类储存一些公用变量.
@@ -181,7 +179,7 @@ public class MyStaticValue {
 			inputStream = DicReader.getInputStream("person/asian_name_freq.data");
 			objectInputStream = new ObjectInputStream(inputStream);
 			map = (Map<String, int[][]>) objectInputStream.readObject();
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -199,21 +197,6 @@ public class MyStaticValue {
 				e.printStackTrace();
 			}
 		}
-//人名识别model作一些删除
-//		map.remove("和") ;
-//		
-//		try {
-//			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("/home/ansj/workspace/ansj_seg/src/main/resources/person/asian_name_freq.data")) ;
-//			oos.writeObject(map) ;
-//			oos.flush() ;
-//			oos.close() ;
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		return map;
 	}
 
@@ -222,45 +205,41 @@ public class MyStaticValue {
 	 * 
 	 * @return
 	 */
-	public static BigramEntry[][] getBigramTables() {
-		BigramEntry[][] result = new BigramEntry[0][0];
+	public static void initBigramTables() {
 		BufferedReader reader = null;
 		try {
 			reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8");
 			String temp = null;
 			String[] strs = null;
-			result = new BigramEntry[InitDictionary.arrayLength][0];
-			int fromId = 0;
-			int toId = 0;
 			int freq = 0;
-			BigramEntry to = null;
 			while ((temp = reader.readLine()) != null) {
 				if (StringUtil.isBlank(temp)) {
 					continue;
 				}
-
 				strs = temp.split("\t");
 				freq = Integer.parseInt(strs[1]);
 				strs = strs[0].split("@");
-				if ((fromId = InitDictionary.getWordId(strs[0])) <= 0) {
-					fromId = 0;
-				}
-				if ((toId = InitDictionary.getWordId(strs[1])) <= 0) {
-					toId = -1;
+				AnsjItem fromItem = DATDictionary.getItem(strs[0]);
+
+				AnsjItem toItem = DATDictionary.getItem(strs[1]);
+
+				if (fromItem == AnsjItem.NULL && strs[0].contains("#")) {
+					fromItem = AnsjItem.BEGIN;
 				}
 
-				to = new BigramEntry(toId, freq);
-				int index = Arrays.binarySearch(result[fromId], to);
-				if (index > -1) {
-					continue;
-				} else {
-					BigramEntry[] newBranches = new BigramEntry[result[fromId].length + 1];
-					int insert = -(index + 1);
-					System.arraycopy(result[fromId], 0, newBranches, 0, insert);
-					System.arraycopy(result[fromId], insert, newBranches, insert + 1, result[fromId].length - insert);
-					newBranches[insert] = to;
-					result[fromId] = newBranches;
+				if (toItem == AnsjItem.NULL && strs[1].contains("#")) {
+					toItem = AnsjItem.END;
 				}
+
+				if (fromItem == AnsjItem.NULL || toItem == AnsjItem.NULL) {
+					continue;
+				}
+				
+				if(fromItem.bigramEntryMap==null){
+					fromItem.bigramEntryMap = new HashMap<Integer, Integer>() ;
+				}
+
+				fromItem.bigramEntryMap.put(toItem.index, freq) ;
 
 			}
 		} catch (NumberFormatException e) {
@@ -275,7 +254,7 @@ public class MyStaticValue {
 		} finally {
 			IOUtil.close(reader);
 		}
-		return result;
+		
 	}
 
 	/**
@@ -307,4 +286,5 @@ public class MyStaticValue {
 
 		return crfSplitWord;
 	}
+
 }

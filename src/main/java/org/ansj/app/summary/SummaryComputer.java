@@ -5,14 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import love.cq.domain.SmartForest;
-import love.cq.splitWord.SmartGetWord;
-
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.pojo.Summary;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.tire.SmartGetWord;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
  * 自动摘要,同时返回关键词
@@ -76,10 +75,10 @@ public class SummaryComputer {
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
 		for (Term term : parse) {
-			if (FILTER_SET.contains(term.getNatrue().natureStr)) {
+			if (FILTER_SET.contains(term.natrue().natureStr)) {
 				continue;
 			}
-			keywords.add(new Keyword(term.getName(), term.getTermNatures().allFreq, 1));
+			keywords.add(new Keyword(term.getName(), term.termNatures().allFreq, 1));
 		}
 
 		return toSummary(keywords);

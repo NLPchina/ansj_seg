@@ -7,18 +7,20 @@ import org.ansj.util.MathUtil;
 public class Term implements Comparable<Term> {
 	// 当前词
 	private String name;
-	// 真实的词
+	//
 	private String realName;
 	// 当前词的起始位置
 	private int offe;
 	// 词性列表
 	private TermNatures termNatures = TermNatures.NULL;
+	// 词性列表
+	private AnsjItem item = AnsjItem.NULL;
 	// 同一行内数据
 	private Term next;
 	// 分数
-	public double score = 0;
+	private double score = 0;
 	// 本身分数
-	public double selfScore = 1;
+	private double selfScore = 1;
 	// 起始位置
 	private Term from;
 	// 到达位置
@@ -28,15 +30,26 @@ public class Term implements Comparable<Term> {
 
 	private List<Term> subTerm = null;
 
+	public Term(String name, int offe, AnsjItem item) {
+		super();
+		this.name = name;
+		this.offe = offe;
+		this.item = item;
+		if (item.termNatures != null) {
+			this.termNatures = item.termNatures;
+			if (termNatures.nature != null) {
+				this.nature = termNatures.nature;
+			}
+		}
+	}
+
 	public Term(String name, int offe, TermNatures termNatures) {
 		super();
 		this.name = name;
 		this.offe = offe;
-		if (termNatures != null) {
-			this.termNatures = termNatures;
-			if (termNatures.nature != null) {
-				this.nature = termNatures.nature;
-			}
+		this.termNatures = termNatures;
+		if (termNatures.nature != null) {
+			this.nature = termNatures.nature;
 		}
 	}
 
@@ -50,7 +63,7 @@ public class Term implements Comparable<Term> {
 	}
 
 	// 可以到达的位置
-	public int getToValue() {
+	public int toValue() {
 		return offe + name.length();
 	}
 
@@ -119,7 +132,6 @@ public class Term implements Comparable<Term> {
 	 * @param offe
 	 */
 	public void updateOffe(int offe) {
-		// TODO Auto-generated method stub
 		this.offe += offe;
 	}
 
@@ -139,11 +151,11 @@ public class Term implements Comparable<Term> {
 		return this;
 	}
 
-	public Term getFrom() {
+	public Term from() {
 		return from;
 	}
 
-	public Term getTo() {
+	public Term to() {
 		return to;
 	}
 
@@ -160,7 +172,7 @@ public class Term implements Comparable<Term> {
 	 * 
 	 * @return
 	 */
-	public TermNatures getTermNatures() {
+	public TermNatures termNatures() {
 		return termNatures;
 	}
 
@@ -184,8 +196,12 @@ public class Term implements Comparable<Term> {
 	 * 
 	 * @return
 	 */
-	public Nature getNatrue() {
+	public Nature natrue() {
 		return nature;
+	}
+
+	public String getNatureStr() {
+		return nature.natureStr;
 	}
 
 	@Override
@@ -221,6 +237,26 @@ public class Term implements Comparable<Term> {
 
 	public void setRealName(String realName) {
 		this.realName = realName;
+	}
+
+	public double score() {
+		return this.score;
+	}
+
+	public void score(double score) {
+		this.score = score;
+	}
+
+	public double selfScore() {
+		return this.selfScore;
+	}
+
+	public void selfScore(double selfScore) {
+		this.selfScore = selfScore;
+	}
+
+	public AnsjItem item() {
+		return this.item;
 	}
 
 }

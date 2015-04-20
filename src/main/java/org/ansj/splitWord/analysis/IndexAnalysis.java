@@ -1,10 +1,8 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
-
-import love.cq.domain.Forest;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
@@ -14,8 +12,11 @@ import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.impl.GetWordsImpl;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
+import org.ansj.util.NameFix;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 用于检索的分词方式
@@ -34,21 +35,33 @@ public class IndexAnalysis extends Analysis {
 				graph.walkPath();
 
 				// 数字发现
-				if (MyStaticValue.isNumRecognition)
+				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
+				}
 
 				// 姓名识别
-				if (MyStaticValue.isNameRecognition) {
+				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+					// 亚洲人名识别
 					new AsianPersonRecognition(graph.terms).recognition();
+					graph.walkPathByScore();
+					NameFix.nameAmbiguity(graph.terms);
 					// 外国人名识别
 					new ForeignPersonRecognition(graph.terms).recognition();
+					graph.walkPathByScore();
 				}
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				userDefineRecognition(graph, forests);
 
 				return result();
 			}
+
+			private void userDefineRecognition(final Graph graph, Forest... forests) {
+				new UserDefineRecognition(graph.terms, forests).recognition();
+				graph.rmLittlePath();
+				graph.walkPathByScore();
+			}
+
 
 			/**
 			 * 检索的分词
@@ -56,40 +69,32 @@ public class IndexAnalysis extends Analysis {
 			 * @return
 			 */
 			private List<Term> result() {
-				// TODO Auto-generated method stub
-				List<Term> result = new LinkedList<Term>();
-				Term term = null;
+
+
 				String temp = null;
+
+				List<Term> result = new LinkedList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
-					term = graph.terms[i];
-
-					if (term == null) {
-						continue;
+					if (graph.terms[i] != null) {
+						result.add(graph.terms[i]);
 					}
+				}
 
-					if (term.getNext() == null) {
-						result.add(term);
-						if (term.getName().length() > 3) {
-							GetWordsImpl gwi = new GetWordsImpl(term.getName());
-							while ((temp = gwi.allWords()) != null) {
-								if (temp.length() > 1 && temp.length() < term.getName().length()) {
-									result.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
-								}
-							}
-						}
-					} else {
-						while (term != null) {
-							result.add(term);
-							temp = term.getName();
-							term = term.getNext();
-							if (term == null || term.getName().length() == 1 || temp.equals(term.getName())) {
-								break;
+				LinkedList<Term> last = new LinkedList<Term>() ;
+				for (Term term : result) {
+					if (term.getName().length() >= 3) {
+						GetWordsImpl gwi = new GetWordsImpl(term.getName());
+						while ((temp = gwi.allWords()) != null) {
+							if (temp.length() < term.getName().length() && temp.length()>1) {
+								last.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
 							}
 						}
 					}
 				}
 
+				result.addAll(last) ;
+				
 				setRealName(graph, result);
 				return result;
 			}
@@ -102,13 +107,12 @@ public class IndexAnalysis extends Analysis {
 	};
 
 	public IndexAnalysis(Forest... forests) {
-		// TODO Auto-generated constructor stub
 		this.forests = forests;
 	}
 
-	public IndexAnalysis(BufferedReader reader, Forest... forests) {
+	public IndexAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {

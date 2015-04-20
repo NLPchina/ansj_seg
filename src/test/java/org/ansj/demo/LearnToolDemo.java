@@ -1,22 +1,16 @@
 package org.ansj.demo;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import love.cq.domain.SmartForest;
-import love.cq.util.IOUtil;
 
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
  * 新词发现工具

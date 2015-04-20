@@ -4,13 +4,12 @@ import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import love.cq.util.IOUtil;
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.pojo.Feature;
 import org.ansj.app.crf.pojo.TempFeature;
 import org.ansj.app.crf.pojo.Template;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 public class CRFModel extends Model {
 

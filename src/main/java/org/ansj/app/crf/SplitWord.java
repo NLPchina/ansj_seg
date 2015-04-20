@@ -6,12 +6,11 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Template;
 import org.ansj.util.MatrixUtil;
 import org.ansj.util.WordAlert;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 分词
@@ -106,7 +105,9 @@ public class SplitWord {
 		List<Element> elements = WordAlert.str2Elements(line);
 
 		int length = elements.size();
-
+		if (length == 0) { // 避免空list，下面get(0)操作越界
+			return elements;
+		}
 		if (length == 1) {
 			elements.get(0).updateTag(revTagConver[0]);
 			return elements;

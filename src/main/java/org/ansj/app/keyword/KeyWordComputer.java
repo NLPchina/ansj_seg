@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import love.cq.util.StringUtil;
-
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 public class KeyWordComputer {
 
@@ -62,7 +61,7 @@ public class KeyWordComputer {
 				continue;
 			Keyword keyword = tm.get(term.getName());
 			if (keyword == null) {
-				keyword = new Keyword(term.getName(), term.getNatrue().allFrequency, weight);
+				keyword = new Keyword(term.getName(), term.natrue().allFrequency, weight);
 				tm.put(term.getName(), keyword);
 			} else {
 				keyword.updateWeight(1);
@@ -113,7 +112,7 @@ public class KeyWordComputer {
 			return 0;
 		}
 
-		String pos = term.getNatrue().natureStr;
+		String pos = term.natrue().natureStr;
 
 		Double posScore = POS_SCORE.get(pos);
 

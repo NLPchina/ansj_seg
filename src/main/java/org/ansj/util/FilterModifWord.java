@@ -5,11 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import love.cq.domain.Forest;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /*
  * 停用词过滤,修正词性到用户词性.
@@ -47,7 +46,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.getNatrue().natureStr)))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.natrue().natureStr)))) {
 					continue;
 				}
 				String[] params = UserDefineLibrary.getParams(term.getName());
@@ -70,7 +69,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.getNatrue().natureStr))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.natrue().natureStr))) {
 					continue;
 				}
 				for (Forest forest : forests) {

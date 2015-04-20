@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import love.cq.util.StringUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
  * 解析crf++模板

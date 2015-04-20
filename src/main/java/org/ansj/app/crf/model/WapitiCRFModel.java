@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import love.cq.util.IOUtil;
-import love.cq.util.StringUtil;
-
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.pojo.Feature;
 import org.ansj.app.crf.pojo.Template;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 public class WapitiCRFModel extends Model {
 

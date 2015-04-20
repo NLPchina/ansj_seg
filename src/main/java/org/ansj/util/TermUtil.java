@@ -27,9 +27,9 @@ public class TermUtil {
 	 */
 	public static Term makeNewTermNum(Term from, Term to, TermNatures termNatures) {
 		Term term = new Term(from.getName() + to.getName(), from.getOffe(), termNatures);
-		term.getTermNatures().numAttr = from.getTermNatures().numAttr;
-		TermUtil.termLink(term, to.getTo());
-		TermUtil.termLink(term.getFrom(), term);
+		term.termNatures().numAttr = from.termNatures().numAttr;
+		TermUtil.termLink(term, to.to());
+		TermUtil.termLink(term.from(), term);
 		return term;
 	}
 
@@ -89,7 +89,7 @@ public class TermUtil {
 	 * @return 返回是null说明已经是最细颗粒度
 	 */
 	public static void parseNature(Term term) {
-		if (!Nature.NW.equals(term.getNatrue())) {
+		if (!Nature.NW.equals(term.natrue())) {
 			return;
 		}
 
@@ -137,7 +137,7 @@ public class TermUtil {
 		// TODO Auto-generated method stub
 		List<Term> subTerm = new ArrayList<Term>(3);
 
-		while ((from = from.getTo()) != to) {
+		while ((from = from.to()) != to) {
 			subTerm.add(from);
 		}
 

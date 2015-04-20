@@ -1,10 +1,8 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
-
-import love.cq.domain.Forest;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
@@ -13,9 +11,11 @@ import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 标准分词
@@ -31,7 +31,6 @@ public class ToAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-				// TODO Auto-generated method stub
 				graph.walkPath();
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
@@ -62,7 +61,6 @@ public class ToAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
@@ -92,9 +90,9 @@ public class ToAnalysis extends Analysis {
 		this.forests = forests;
 	}
 
-	public ToAnalysis(BufferedReader reader, Forest... forests) {
+	public ToAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
-		super.resetContent(reader);
+		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {
