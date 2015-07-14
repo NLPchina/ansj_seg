@@ -14,12 +14,14 @@ public class UserDefinedAnalysisTest {
 
 	@Test
 	public void test() {
+		final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+
 		String newWord = "爸爸去哪儿";
 		String nature = "aaaaa";
 		String str = "上海电力2012年财务报表如下怎爸爸去哪儿么办";
 		
 		//增加新词
-		UserDefineLibrary.insertWord(newWord, nature, 1000);
+		userDefineLibrary.insertWord(newWord, nature, 1000);
 		
 		List<Term> parse = ToAnalysis.parse(str);
 		HashMap<String, Term> hs = new HashMap<String, Term>();
@@ -32,9 +34,9 @@ public class UserDefinedAnalysisTest {
 		Assert.assertEquals(hs.get(newWord).natrue().natureStr, nature);
 
 		//删除词
-		UserDefineLibrary.removeWord(newWord);
+		userDefineLibrary.removeWord(newWord);
 		parse = ToAnalysis.parse(str);
-		hs = new HashMap<String, Term>();
+		hs = new HashMap<>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
 		}

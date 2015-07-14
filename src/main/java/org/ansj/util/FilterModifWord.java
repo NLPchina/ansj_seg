@@ -12,12 +12,13 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /*
  * 停用词过滤,修正词性到用户词性.
+ * TODO 改掉static
  */
 public class FilterModifWord {
 
-	private static Set<String> FILTER = new HashSet<String>();
+	private static final Set<String> FILTER = new HashSet<>();
 
-	private static String TAG = "#";
+	private static final String TAG = "#";
 
 	private static boolean isTag = false;
 
@@ -43,13 +44,13 @@ public class FilterModifWord {
 	 * 停用词过滤并且修正词性
 	 */
 	public static List<Term> modifResult(List<Term> all) {
-		List<Term> result = new ArrayList<Term>();
+		final List<Term> result = new ArrayList<>();
 		try {
 			for (Term term : all) {
 				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.natrue().natureStr)))) {
 					continue;
 				}
-				String[] params = UserDefineLibrary.getParams(term.getName());
+				String[] params = UserDefineLibrary.getInstance().getParams(term.getName());
 				if (params != null) {
 					term.setNature(new Nature(params[0]));
 				}
@@ -64,10 +65,10 @@ public class FilterModifWord {
 	/*
 	 * 停用词过滤并且修正词性
 	 */
-	public static List<Term> modifResult(List<Term> all, Forest... forests) {
-		List<Term> result = new ArrayList<Term>();
+	public static List<Term> modifResult(final List<Term> all, final Forest... forests) {
+		final List<Term> result = new ArrayList<>();
 		try {
-			for (Term term : all) {
+			for (final Term term : all) {
 				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.natrue().natureStr))) {
 					continue;
 				}

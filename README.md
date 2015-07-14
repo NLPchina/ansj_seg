@@ -1,3 +1,14 @@
+Ansj中文分词重构项目
+==================
+目标: 
+
+* 升级到目前最新的maven-3.3.3
+* 在不改变原来代码逻辑的前提下进行重构
+* 消灭 过多的 全局性的 static 变量
+* 清理 精简 代码使之更易读切不易产生bug
+* 更多地使用值对象等不可变对象
+* 改善字典重加载
+
 Ansj中文分词
 ==================
 
@@ -46,7 +57,7 @@ mvn clean install -Dmaven.test.skip=true
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>1.4.1</version>
+            <version>1.41</version>
         </dependency>
         ....
     </dependencies>

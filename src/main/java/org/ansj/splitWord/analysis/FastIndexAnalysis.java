@@ -1,68 +1,69 @@
 package org.ansj.splitWord.analysis;
 
+import org.ansj.domain.Term;
+import org.ansj.splitWord.Analysis;
+import org.ansj.util.Graph;
+import org.nlpcn.commons.lang.util.IOUtil;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.ansj.domain.Term;
-import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.impl.GetWordsImpl;
-import org.ansj.util.Graph;
-import org.nlpcn.commons.lang.util.IOUtil;
-
 public class FastIndexAnalysis extends Analysis {
 
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
 
-		BufferedReader reader = IOUtil.getReader("/Users/ansj/Documents/temp/test.txt", "utf-8");
-		Term temp = null;
+        BufferedReader reader = IOUtil.getReader("/Users/ansj/Documents/temp/test.txt", "utf-8");
 
-		System.out.println(FastIndexAnalysis.parse("河北省"));
-		long start = System.currentTimeMillis();
+        System.out.println(FastIndexAnalysis.parse("河北省"));
+        long start = System.currentTimeMillis();
 
-		FastIndexAnalysis fia = new FastIndexAnalysis(reader);
-		long length = 0;
+        FastIndexAnalysis fia = new FastIndexAnalysis(reader);
+        long length = 0;
 
-		while ((temp = fia.next()) != null) {
-			length += temp.getName().length();
-		}
+        Term temp;
+        while ((temp = fia.next()) != null) {
+            length += temp.getName().length();
+        }
 
-		System.out.println(length * 1000L / (System.currentTimeMillis() - start));
+        System.out.println(length * 1000L / (System.currentTimeMillis() - start));
 
-		System.out.println(System.currentTimeMillis() - start);
+        System.out.println(System.currentTimeMillis() - start);
 
-		System.out.println(length);
+        System.out.println(length);
+    }
 
-	}
+    public FastIndexAnalysis(final Reader br) {
+        super(null);
+        if (br != null) {
+            super.resetContent(br);
+        }
+    }
 
-	public FastIndexAnalysis(Reader br) {
-		super.resetContent(br);
-	}
+    public FastIndexAnalysis() {
+        this(null);
+    }
 
-	public FastIndexAnalysis() {
-	}
+    public static List<Term> parse(final String str) {
+        return new FastIndexAnalysis().parseStr(str);
+    }
 
-	public static List<Term> parse(String str) {
-		return new FastIndexAnalysis().parseStr(str);
-	}
+    @Override
+    protected List<Term> getResult(final Graph graph) {
+        final List<Term> result = new LinkedList<>();
+        final int length = graph.terms.length - 1;
+        Term term;
+        for (int i = 0; i < length; i++) {
+            if ((term = graph.terms[i]) != null) {
+                result.add(term);
+                while ((term = term.getNext()) != null) {
+                    result.add(term);
+                }
+            }
+        }
 
-	@Override
-	protected List<Term> getResult(Graph graph) {
-		List<Term> result = new LinkedList<Term>();
-		int length = graph.terms.length - 1;
-		Term term = null;
-		for (int i = 0; i < length; i++) {
-			if ((term=graph.terms[i]) != null) {
-				result.add(term);
-				while((term =term.getNext())!=null){
-					result.add(term);
-				}
-			}
-		}
-
-		return result;
-	}
-
+        return result;
+    }
 }

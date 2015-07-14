@@ -12,11 +12,11 @@ import java.io.Reader;
  */
 public class AnsjReader extends Reader {
 
-	private Reader in;
+	public static final int defaultCharBufferSize = 8192;
 
-	private char cb[];
+	private final Reader in;
 
-	private static int defaultCharBufferSize = 8192;
+	private final char cb[];
 
 	/**
 	 * Creates a buffering character-input stream that uses an input buffer of
@@ -30,12 +30,13 @@ public class AnsjReader extends Reader {
 	 * @exception IllegalArgumentException
 	 *                If {@code sz <= 0}
 	 */
-	public AnsjReader(Reader in, int sz) {
+	public AnsjReader(final Reader in, final int sz) {
 		super(in);
-		if (sz <= 0)
+		if (sz <= 0) {
 			throw new IllegalArgumentException("Buffer size <= 0");
+		}
 		this.in = in;
-		cb = new char[sz];
+		this.cb = new char[sz];
 	}
 
 	/**
@@ -45,7 +46,7 @@ public class AnsjReader extends Reader {
 	 * @param in
 	 *            A Reader
 	 */
-	public AnsjReader(Reader in) {
+	public AnsjReader(final Reader in) {
 		this(in, defaultCharBufferSize);
 	}
 
@@ -195,25 +196,18 @@ public class AnsjReader extends Reader {
 		} else {
 			offe = i;
 		}
-
 	}
 
+	@Override
 	public void close() throws IOException {
 		synchronized (lock) {
-			if (in == null)
-				return;
-			try {
-				in.close();
-			} finally {
-				in = null;
-				cb = null;
+			if (this.in != null) {
+				this.in.close();
 			}
 		}
 	}
 
-
 	public int getStart() {
 		return this.start;
 	}
-
 }

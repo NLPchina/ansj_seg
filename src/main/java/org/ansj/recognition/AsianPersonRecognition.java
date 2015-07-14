@@ -85,9 +85,9 @@ public class AsianPersonRecognition {
 	/**
 	 * 人名识别
 	 * 
-	 * @param term
-	 * @param offe
-	 * @param freq
+	 * @param offe offe
+	 * @param beginFreq beginFreq
+	 * @param size size
 	 */
 
 	private Term nameFind(int offe, int beginFreq, int size) {

@@ -1,55 +1,54 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 基本的分词.只做了.ngram模型.和数字发现.其他一律不管
- * 
+ *
  * @author ansj
- * 
  */
 public class BaseAnalysis extends Analysis {
 
-	@Override
-	protected List<Term> getResult(final Graph graph) {
-		Merger merger = new Merger() {
-			@Override
-			public List<Term> merger() {
-				graph.walkPath();
-				return getResult();
-			}
+    public BaseAnalysis(final Reader reader) {
+        super(null);
+        if (reader != null) {
+            super.resetContent(new AnsjReader(reader));
+        }
+    }
 
-			private List<Term> getResult() {
-				List<Term> result = new ArrayList<Term>();
-				int length = graph.terms.length - 1;
-				for (int i = 0; i < length; i++) {
-					if (graph.terms[i] != null) {
-						result.add(graph.terms[i]);
-					}
-				}
+    @Override
+    protected List<Term> getResult(final Graph graph) {
+        return new Merger() {
 
-				setRealName(graph, result);
-				return result;
-			}
-		};
-		return merger.merger();
-	}
+            @Override
+            public List<Term> merger() {
+                graph.walkPath();
+                return getResult();
+            }
 
-	private BaseAnalysis() {
-	};
+            private List<Term> getResult() {
+                final List<Term> result = new ArrayList<>();
+                int length = graph.terms.length - 1;
+                for (int i = 0; i < length; i++) {
+                    if (graph.terms[i] != null) {
+                        result.add(graph.terms[i]);
+                    }
+                }
 
-	public BaseAnalysis(Reader reader) {
-		super.resetContent(new AnsjReader(reader));
-	}
+                setRealName(graph, result);
+                return result;
+            }
+        }.merger();
+    }
 
-	public static List<Term> parse(String str) {
-		return new BaseAnalysis().parseStr(str);
-	}
+    public static List<Term> parse(final String str) {
+        return new BaseAnalysis(null).parseStr(str);
+    }
 }

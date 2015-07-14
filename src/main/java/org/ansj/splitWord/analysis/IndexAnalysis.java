@@ -1,9 +1,5 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
@@ -18,109 +14,112 @@ import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
+import java.io.Reader;
+import java.util.LinkedList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 /**
  * 用于检索的分词方式
- * 
+ *
  * @author ansj
- * 
  */
 public class IndexAnalysis extends Analysis {
 
-	@Override
-	protected List<Term> getResult(final Graph graph) {
-		Merger merger = new Merger() {
+    @Override
+    protected List<Term> getResult(final Graph graph) {
+        return new Merger() {
 
-			@Override
-			public List<Term> merger() {
-				graph.walkPath();
+            @Override
+            public List<Term> merger() {
+                graph.walkPath();
 
-				// 数字发现
-				if (MyStaticValue.isNumRecognition && graph.hasNum) {
-					NumRecognition.recognition(graph.terms);
-				}
+                // 数字发现
+                if (MyStaticValue.isNumRecognition && graph.hasNum) {
+                    NumRecognition.recognition(graph.terms);
+                }
 
-				// 姓名识别
-				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
-					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recognition();
-					graph.walkPathByScore();
-					NameFix.nameAmbiguity(graph.terms);
-					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
-					graph.walkPathByScore();
-				}
+                // 姓名识别
+                if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+                    // 亚洲人名识别
+                    new AsianPersonRecognition(graph.terms).recognition();
+                    graph.walkPathByScore();
+                    NameFix.nameAmbiguity(graph.terms);
+                    // 外国人名识别
+                    new ForeignPersonRecognition(graph.terms).recognition();
+                    graph.walkPathByScore();
+                }
 
-				// 用户自定义词典的识别
-				userDefineRecognition(graph, forests);
+                // 用户自定义词典的识别
+                userDefineRecognition(graph, forests);
 
-				return result();
-			}
+                return result();
+            }
 
-			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, forests).recognition();
-				graph.rmLittlePath();
-				graph.walkPathByScore();
-			}
-
-
-			/**
-			 * 检索的分词
-			 * 
-			 * @return
-			 */
-			private List<Term> result() {
+            private void userDefineRecognition(final Graph graph, final List<Forest> forests) {
+                new UserDefineRecognition(graph.terms, forests).recognition();
+                graph.rmLittlePath();
+                graph.walkPathByScore();
+            }
 
 
-				String temp = null;
+            /**
+             * 检索的分词
+             *
+             * @return terms
+             */
+            private List<Term> result() {
+                String temp;
 
-				List<Term> result = new LinkedList<Term>();
-				int length = graph.terms.length - 1;
-				for (int i = 0; i < length; i++) {
-					if (graph.terms[i] != null) {
-						result.add(graph.terms[i]);
-					}
-				}
+                final List<Term> result = new LinkedList<>();
+                int length = graph.terms.length - 1;
+                for (int i = 0; i < length; i++) {
+                    if (graph.terms[i] != null) {
+                        result.add(graph.terms[i]);
+                    }
+                }
 
-				LinkedList<Term> last = new LinkedList<Term>() ;
-				for (Term term : result) {
-					if (term.getName().length() >= 3) {
-						GetWordsImpl gwi = new GetWordsImpl(term.getName());
-						while ((temp = gwi.allWords()) != null) {
-							if (temp.length() < term.getName().length() && temp.length()>1) {
-								last.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
-							}
-						}
-					}
-				}
+                final LinkedList<Term> last = new LinkedList<>();
+                for (Term term : result) {
+                    if (term.getName().length() >= 3) {
+                        GetWordsImpl gwi = new GetWordsImpl(term.getName());
+                        while ((temp = gwi.allWords()) != null) {
+                            if (temp.length() < term.getName().length() && temp.length() > 1) {
+                                last.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
+                            }
+                        }
+                    }
+                }
 
-				result.addAll(last) ;
-				
-				setRealName(graph, result);
-				return result;
-			}
-		};
+                result.addAll(last);
 
-		return merger.merger();
-	}
+                setRealName(graph, result);
+                return result;
+            }
+        }.merger();
+    }
 
-	private IndexAnalysis() {
-	};
+    public IndexAnalysis(final Reader reader, final List<Forest> forests) {
+        super(forests);
+        if (reader != null) {
+            super.resetContent(new AnsjReader(reader));
+        }
+    }
 
-	public IndexAnalysis(Forest... forests) {
-		this.forests = forests;
-	}
+    public IndexAnalysis(final Reader reader, final Forest... forests) {
+        this(reader, asList(forests));
+    }
 
-	public IndexAnalysis(Reader reader, Forest... forests) {
-		this.forests = forests;
-		super.resetContent(new AnsjReader(reader));
-	}
+    public IndexAnalysis(final List<Forest> forests) {
+        this(null, forests);
+    }
 
-	public static List<Term> parse(String str) {
-		return new IndexAnalysis().parseStr(str);
-	}
+    public static List<Term> parse(final String str) {
+        return parse(str, null);
+    }
 
-	public static List<Term> parse(String str, Forest... forests) {
-		return new IndexAnalysis(forests).parseStr(str);
-
-	}
+    public static List<Term> parse(final String str, final List<Forest> forests) {
+        return new IndexAnalysis(forests).parseStr(str);
+    }
 }

@@ -9,10 +9,13 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.FilterModifWord;
 
 public class UserDefineLibraryNatureDemo {
-	public static void main(String[] args) {
+
+	public static void main(final String[] args) {
+		final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+
 		//增加词汇
-		UserDefineLibrary.insertWord("ansj大神", "作者", 1000);
-		UserDefineLibrary.insertWord("eye.kuyun.com", "网站", 1000);
+		userDefineLibrary.insertWord("ansj大神", "作者", 1000);
+		userDefineLibrary.insertWord("eye.kuyun.com", "网站", 1000);
 		
 		List<Term> parse = ToAnalysis.parse("Ansj大神是eye.kuyun.com网站的开发者") ;
 		
