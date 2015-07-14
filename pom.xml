@@ -91,10 +91,13 @@
                     <!-- remote branch name -->
                     <branch>refs/heads/mvn-repo</branch>
                     <includes>
-                        <include>
-                            **/*
-                        </include>
+                        <include>releases/**/*</include>
+                        <include>snapshots/**/*</include>
                     </includes>
+                    <excludes>
+                        <exclued>**/.DS_Store</exclued>
+                        <exclued>**/.git</exclued>
+                    </excludes>
                     <!-- github repo name -->
                     <repositoryName>mvn-repo</repositoryName>
                     <!-- github username  -->
