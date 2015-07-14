@@ -1,13 +1,24 @@
 Ansj中文分词重构项目
 ==================
 目标: 
-
 * 升级到目前最新的maven-3.3.3
 * 在不改变原来代码逻辑的前提下进行重构
 * 消灭 过多的 全局性的 static 变量
 * 清理 精简 代码使之更易读切不易产生bug
 * 更多地使用值对象等不可变对象
 * 改善字典重加载
+
+打包发布:
+    
+    mvn clean compile package deploy;
+    cd plug; mvn clean compile package deploy;
+
+#####github as mvn-repo
+see: http://www.cnblogs.com/lhfcws/p/3503707.html
+see: https://github.com/github/maven-plugins
+see: http://stackoverflow.com/questions/14013644/hosting-a-maven-repository-on-github
+
+POM方言 https://github.com/takari/polyglot-maven
 
 Ansj中文分词
 ==================
