@@ -10,7 +10,7 @@ import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
- * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有预料无法训练
+ * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有语料无法训练
  * 
  * @author ansj
  * 

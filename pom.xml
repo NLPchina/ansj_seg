@@ -54,7 +54,7 @@
 		<dependency>
 			<groupId>org.nlpcn</groupId>
 			<artifactId>nlp-lang</artifactId>
-			<version>0.2</version>
+			<version>0.3</version>
 			<scope>compile</scope>
 		</dependency>
 

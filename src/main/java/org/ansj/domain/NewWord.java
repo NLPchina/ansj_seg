@@ -59,7 +59,6 @@ public class NewWord {
 	 * @param tn
 	 */
 	public void update(Nature nature, int freq) {
-		// TODO Auto-generated method stub
 		this.score += score * freq;
 		this.allFreq += freq;
 		if (Nature.NW != nature) {
@@ -69,7 +68,6 @@ public class NewWord {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return this.name + "\t" + this.score + "\t" + this.getNature().natureStr;
 	}
 
@@ -78,7 +76,6 @@ public class NewWord {
 	}
 
 	public void setScore(double score) {
-		// TODO Auto-generated method stub
 		this.score = score;
 	}
 

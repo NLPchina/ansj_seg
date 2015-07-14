@@ -19,17 +19,14 @@ public class BaseAnalysis extends Analysis {
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
-		// TODO Auto-generated method stub
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-				// TODO Auto-generated method stub
 				graph.walkPath();
 				return getResult();
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {

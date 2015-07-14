@@ -56,7 +56,6 @@ public class FilterModifWord {
 				result.add(term);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			System.err.println("FilterStopWord.updateDic can not be null , " + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
 		}
 		return result;
@@ -81,7 +80,6 @@ public class FilterModifWord {
 				result.add(term);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			System.err.println("FilterStopWord.updateDic can not be null , " + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
 		}
 		return result;
