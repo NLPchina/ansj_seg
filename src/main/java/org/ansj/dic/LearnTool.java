@@ -86,8 +86,8 @@ public class LearnTool {
 	 * @param newWord
 	 */
 	public void addTerm(NewWord newWord) {
-		NewWord temp = null;
-		SmartForest<NewWord> smartForest = null;
+		NewWord temp;
+		SmartForest<NewWord> smartForest;
 		if ((smartForest = sf.getBranch(newWord.getName())) != null && smartForest.getParam() != null) {
 			temp = smartForest.getParam();
 			temp.update(newWord.getNature(), newWord.getAllFreq());
@@ -95,7 +95,7 @@ public class LearnTool {
 			count++;
 			newWord.setScore(-splitWord.cohesion(newWord.getName()));
 			synchronized (sf) {
-				sf.add(newWord.getName(), newWord);
+				sf.addBranch(newWord.getName(), newWord);
 			}
 		}
 	}
@@ -116,12 +116,12 @@ public class LearnTool {
 	}
 
 	public List<Entry<String, Double>> getTopTree(int num, Nature nature) {
-		if (sf.branches == null) {
+		if (sf.getBranches() == null) {
 			return null;
 		}
-		HashMap<String, Double> hm = new HashMap<String, Double>();
-		for (int i = 0; i < sf.branches.length; i++) {
-			valueResult(sf.branches[i], hm, nature);
+		HashMap<String, Double> hm = new HashMap<>();
+		for (int i = 0; i < sf.getBranches().length; i++) {
+			valueResult(sf.getBranches()[i], hm, nature);
 		}
 		List<Entry<String, Double>> sortMapByValue = CollectionUtil.sortMapByValue(hm, -1);
 		if (num == 0) {
@@ -134,22 +134,22 @@ public class LearnTool {
 
 	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, Nature nature) {
 		// TODO Auto-generated method stub
-		if (smartForest == null || smartForest.branches == null) {
+		if (smartForest == null || smartForest.getBranches() == null) {
 			return;
 		}
-		for (int i = 0; i < smartForest.branches.length; i++) {
-			NewWord param = smartForest.branches[i].getParam();
-			if (smartForest.branches[i].getStatus() == 3) {
+		for (int i = 0; i < smartForest.getBranches().length; i++) {
+			NewWord param = smartForest.getBranches()[i].getParam();
+			if (smartForest.getBranches()[i].getStatus() == 3) {
 				if (param.isActive() && (nature == null || param.getNature().equals(nature))) {
 					hm.put(param.getName(), param.getScore());
 				}
-			} else if (smartForest.branches[i].getStatus() == 2) {
+			} else if (smartForest.getBranches()[i].getStatus() == 2) {
 				if (param.isActive() && (nature == null || param.getNature().equals(nature))) {
 					hm.put(param.getName(), param.getScore());
 				}
-				valueResult(smartForest.branches[i], hm, nature);
+				valueResult(smartForest.getBranches()[i], hm, nature);
 			} else {
-				valueResult(smartForest.branches[i], hm, nature);
+				valueResult(smartForest.getBranches()[i], hm, nature);
 			}
 		}
 	}

@@ -86,7 +86,7 @@ public class Term implements Comparable<Term> {
 	/**
 	 * 核心构建最优的路径
 	 * 
-	 * @param term
+	 * @param from
 	 */
 	public void setPathScore(Term from) {
 		// 维特比进行最优路径的构建
@@ -99,7 +99,7 @@ public class Term implements Comparable<Term> {
 	/**
 	 * 核心分数的最优的路径,越小越好
 	 * 
-	 * @param term
+	 * @param from
 	 */
 	public void setPathSelfScore(Term from) {
 		double score = this.selfScore + from.score;
@@ -118,8 +118,8 @@ public class Term implements Comparable<Term> {
 	/**
 	 * 进行term合并
 	 * 
-	 * @param term
-	 * @param maxNature
+	 * @param to
+	 * @return  term
 	 */
 	public Term merage(Term to) {
 		this.name = this.name + to.getName();

@@ -3,7 +3,6 @@ package org.ansj.app.crf;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +22,9 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 public abstract class Model {
 
-	public static enum MODEL_TYPE {
-		CRF, EMM
-	};
+//	public enum MODEL_TYPE {
+//		CRF, EMM
+//	}
 
 	protected Template template = null;
 
@@ -48,31 +47,31 @@ public abstract class Model {
 	/**
 	 * 根据模板文件解析特征
 	 * 
-	 * @param template
+	 * @param left l
+	 * @param right r
 	 * @throws IOException
 	 */
 	private void makeSide(int left, int right) throws IOException {
 		// TODO Auto-generated method stub
 
-		leftList = new ArrayList<Element>(Math.abs(left));
+		leftList = new ArrayList<>(Math.abs(left));
 		for (int i = left; i < 0; i++) {
 			leftList.add(new Element((char) ('B' + i)));
 		}
 
-		rightList = new ArrayList<Element>(right);
+		rightList = new ArrayList<>(right);
 		for (int i = 1; i < right + 1; i++) {
 			rightList.add(new Element((char) ('B' + i)));
 		}
 	}
 
 	/**
-	 * 讲模型写入
+	 * 将模型写入
 	 * 
-	 * @param path
-	 * @throws FileNotFoundException
+	 * @param path path
 	 * @throws IOException
 	 */
-	public void writeModel(String path) throws FileNotFoundException, IOException {
+	public void writeModel(String path) throws IOException {
 		// TODO Auto-generated method stub
 
 		System.out.println("compute ok now to save model!");
@@ -85,7 +84,7 @@ public abstract class Model {
 		oos.writeObject(status);
 		// 总共的特征数
 		oos.writeInt(myGrad.size());
-		double[] ds = null;
+		double[] ds;
 		for (Entry<String, Feature> entry : myGrad.entrySet()) {
 			oos.writeUTF(entry.getKey());
 			for (int i = 0; i < template.ft.length; i++) {
@@ -100,18 +99,14 @@ public abstract class Model {
 
 		oos.flush();
 		oos.close();
-
 	}
 
 	/**
 	 * 模型读取
 	 * 
-	 * @param path
-	 * @return
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
-	 * @throws ClassNotFoundException
+	 * @param modelPath modelPath
+	 * @return model
+	 * @throws Exception
 	 */
 	public static Model loadModel(String modelPath) throws Exception {
 		return loadModel(new FileInputStream(modelPath));
@@ -126,8 +121,7 @@ public abstract class Model {
 			Model model = new Model() {
 
 				@Override
-				public void writeModel(String path) throws FileNotFoundException, IOException {
-					// TODO Auto-generated method stub
+				public void writeModel(String path) throws IOException {
 					throw new RuntimeException("you can not to calculate ,this model only use by cut ");
 				}
 
@@ -141,13 +135,13 @@ public abstract class Model {
 
 			int featureNum = model.template.ft.length;
 
-			model.smartForest = new SmartForest<double[][]>(0.8);
+			model.smartForest = new SmartForest<>(0.8);
 
 			model.status = (double[][]) ois.readObject();
 
 			// 总共的特征数
-			double[][] w = null;
-			String key = null;
+			double[][] w;
+			String key;
 			int b = 0;
 			int featureCount = ois.readInt();
 			for (int i = 0; i < featureCount; i++) {
@@ -161,7 +155,7 @@ public abstract class Model {
 						w[j][b] = ois.readFloat();
 					}
 				}
-				model.smartForest.add(key, w);
+				model.smartForest.addBranch(key, w);
 			}
 
 			return model;
@@ -183,15 +177,11 @@ public abstract class Model {
 	}
 
 	/**
-	 * tag转移率
-	 * 
-	 * @param s1
-	 * @param s2
-	 * @return
+	 * @param s1 s1
+	 * @param s2 s2
+	 * @return tag转移率
 	 */
 	public double tagRate(int s1, int s2) {
-		// TODO Auto-generated method stub
 		return status[s1][s2];
 	}
-
 }

@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import lombok.Synchronized;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.GetWord;
+import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
@@ -110,14 +111,14 @@ public final class UserDefineLibrary {
     }
 
     public static String[] getParams(final Forest forest, final String word) {
-        WoodInterface temp = forest;
+        WoodInterface<String[], Branch> temp = forest;
         for (final char ch : word.toCharArray()) {
-            temp = temp.get(ch);
+            temp = temp.getBranch(ch);
             if (temp == null) {
                 return null;
             }
         }
-        return temp.getStatus() > 1 ? temp.getParams() : null;
+        return temp.getStatus() > 1 ? temp.getParam() : null;
     }
 
     /**

@@ -76,7 +76,7 @@ public class GetWordsImpl implements GetWords {
 				i++;
 				offe = start;
 				tempBaseValue = baseValue;
-				return DATDictionary.getItem(tempBaseValue).name;
+				return DATDictionary.getItem(tempBaseValue).getName();
 			case 3:
 				offe = start;
 				start++;
@@ -84,7 +84,7 @@ public class GetWordsImpl implements GetWords {
 				end = 0;
 				tempBaseValue = baseValue;
 				baseValue = 0;
-				return DATDictionary.getItem(tempBaseValue).name;
+				return DATDictionary.getItem(tempBaseValue).getName();
 			}
 
 		}
@@ -101,15 +101,14 @@ public class GetWordsImpl implements GetWords {
 
 	/**
 	 * 根据用户传入的c得到单词的状态. 0.代表这个字不在词典中 1.继续 2.是个词但是还可以继续 3.停止已经是个词了
-	 * 
-	 * @param c
+	 *
 	 * @return
 	 */
 	private int getStatement() {
 		checkValue = baseValue;
-		baseValue = DATDictionary.getItem(checkValue).base + charHashCode;
-		if (baseValue < DATDictionary.arrayLength && (DATDictionary.getItem(baseValue).check == checkValue || DATDictionary.getItem(baseValue).check == -1)) {
-			return DATDictionary.getItem(baseValue).status;
+		baseValue = DATDictionary.getItem(checkValue).getBase() + charHashCode;
+		if (baseValue < DATDictionary.arrayLength && (DATDictionary.getItem(baseValue).getCheck() == checkValue || DATDictionary.getItem(baseValue).getCheck() == -1)) {
+			return DATDictionary.getItem(baseValue).getStatus();
 		}
 		return 0;
 	}

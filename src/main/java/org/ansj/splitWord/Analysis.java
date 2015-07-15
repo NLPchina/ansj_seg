@@ -106,7 +106,7 @@ public abstract class Analysis {
                 if (gw.offe > startOffe) {
                     analysis(gp, startOffe, gw.offe);
                 }
-                params = gw.getParams();
+                params = (String[]) gw.getParam();
                 startOffe = gw.offe;
                 for (int i = 0; i < params.length; i += 2) {
                     gp.addTerm(new Term(params[i], startOffe, new TermNatures(new TermNature(params[i + 1], 1))));

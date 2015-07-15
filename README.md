@@ -9,9 +9,21 @@ Ansj中文分词重构项目
 * 改善字典重加载
 
 打包发布:
+分词器
     
     mvn clean compile package deploy;
+
+Lucene插件
+
     cd plug; mvn clean compile package deploy;
+    
+重构动机:
+* 非常喜欢ansj分词器, 它基本能达到预期的效果
+* 但是代码风格不够好, 包括nlp-lang包
+* 在性能够用的情况下, 代码的可读性优先于性能
+* 不好读的代码不易维护, 容易隐藏bug或导致用户使用不当引发bug
+* 这么好的一个库, 代码不应该仅仅实现功能, 应该便于更多人参考或学习
+* 过一遍手完全搞懂它的算法
 
 #####github as mvn-repo
 see: http://www.cnblogs.com/lhfcws/p/3503707.html

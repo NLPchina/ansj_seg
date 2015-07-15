@@ -21,7 +21,7 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
  */
 public class SummaryComputer {
 
-	private static final Set<String> FILTER_SET = new HashSet<String>();
+	private static final Set<String> FILTER_SET = new HashSet<>();
 
 	static {
 		FILTER_SET.add("w");
@@ -106,16 +106,16 @@ public class SummaryComputer {
 	/**
 	 * 计算摘要
 	 * 
-	 * @param keyword
-	 * @param content
-	 * @return
+	 * @param keywords keywords
+	 * @param content content
+	 * @return summary
 	 */
 	private Summary explan(List<Keyword> keywords, String content) {
 
-		SmartForest<Double> sf = new SmartForest<Double>();
+		SmartForest<Double> sf = new SmartForest<>();
 
 		for (Keyword keyword : keywords) {
-			sf.add(keyword.getName(), keyword.getScore());
+			sf.addBranch(keyword.getName(), keyword.getScore());
 		}
 
 		// 先断句
@@ -204,12 +204,12 @@ public class SummaryComputer {
 
 	/**
 	 * 计算一个句子的分数
-	 * 
-	 * @param sentence
-	 * @param sf
+	 *
+	 * @param sentence sentence
+	 * @param forest forest
 	 */
 	private void computeScore(Sentence sentence, SmartForest<Double> forest) {
-		SmartGetWord<Double> sgw = new SmartGetWord<Double>(forest, sentence.value);
+		SmartGetWord<Double> sgw = new SmartGetWord<>(forest, sentence.value);
 		while (sgw.getFrontWords() != null) {
 			sentence.score += sgw.getParam();
 		}
@@ -298,5 +298,4 @@ public class SummaryComputer {
 			return value;
 		}
 	}
-
 }

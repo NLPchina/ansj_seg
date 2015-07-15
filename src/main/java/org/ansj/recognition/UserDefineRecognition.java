@@ -5,6 +5,7 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
+import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 
@@ -21,15 +22,15 @@ import static java.util.Collections.unmodifiableList;
 public class UserDefineRecognition {
 
     private final Term[] terms;
-    private final List<? extends WoodInterface> forests;
+    private final List<WoodInterface<String[], Branch>> forests;
 
     private int offe = -1;
     private int endOffe = -1;
     private int tempFreq = 50;
     private String tempNature;
 
-    private WoodInterface branch = null;
-    private WoodInterface forest = null;
+    private WoodInterface<String[], Branch> branch = null;
+    private WoodInterface<String[], Branch> forest = null;
 
     public UserDefineRecognition(final Term[] terms, final List<Forest> forests) {
         this.terms = terms;
@@ -39,7 +40,7 @@ public class UserDefineRecognition {
     }
 
     public void recognition() {
-        for (final WoodInterface forest : forests) {
+        for (final WoodInterface<String[], Branch> forest : forests) {
             if (forest == null) {
                 continue;
             }
@@ -61,8 +62,8 @@ public class UserDefineRecognition {
                     reset();
                 } else if (this.branch.getStatus() == 3) {
                     this.endOffe = i;
-                    this.tempNature = this.branch.getParams()[0];
-                    this.tempFreq = getInt(this.branch.getParams()[1], 50);
+                    this.tempNature = this.branch.getParam()[0];
+                    this.tempFreq = getInt(this.branch.getParam()[1], 50);
                     if (this.offe != -1 && this.offe < this.endOffe) {
                         i = this.offe;
                         makeNewTerm();
@@ -75,8 +76,8 @@ public class UserDefineRecognition {
                     if (this.offe == -1) {
                         this.offe = i;
                     } else {
-                        this.tempNature = this.branch.getParams()[0];
-                        this.tempFreq = getInt(this.branch.getParams()[1], 50);
+                        this.tempNature = this.branch.getParam()[0];
+                        this.tempFreq = getInt(this.branch.getParam()[1], 50);
                         if (flag) {
                             makeNewTerm();
                         }
@@ -132,10 +133,10 @@ public class UserDefineRecognition {
      * @param term   term
      * @return branch
      */
-    private WoodInterface termStatus(WoodInterface branch, final Term term) {
+    private WoodInterface<String[], Branch> termStatus(WoodInterface<String[], Branch> branch, final Term term) {
         final String name = term.getName();
         for (int j = 0; j < name.length(); j++) {
-            branch = branch.get(name.charAt(j));
+            branch = branch.getBranch(name.charAt(j));
             if (branch == null) {
                 return null;
             }

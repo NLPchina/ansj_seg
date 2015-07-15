@@ -239,7 +239,7 @@ public class MyStaticValue {
 					fromItem.bigramEntryMap = new HashMap<Integer, Integer>() ;
 				}
 
-				fromItem.bigramEntryMap.put(toItem.index, freq) ;
+				fromItem.bigramEntryMap.put(toItem.getIndex(), freq) ;
 
 			}
 		} catch (NumberFormatException e) {

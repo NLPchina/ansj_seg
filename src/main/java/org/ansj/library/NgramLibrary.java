@@ -32,7 +32,7 @@ public class NgramLibrary {
 		if (from.item().bigramEntryMap == null) {
 			return 0;
 		}
-		Integer freq = from.item().bigramEntryMap.get(to.item().index);
+		Integer freq = from.item().bigramEntryMap.get(to.item().getIndex());
 
 		if (freq == null) {
 			return 0;
