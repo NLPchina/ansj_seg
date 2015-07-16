@@ -14,6 +14,7 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +51,7 @@ public abstract class Analysis {
 
     protected Analysis(final List<Forest> forests) {
         this.gwi = new GetWordsImpl();
-        this.forests = Collections.unmodifiableList(forests);
+        this.forests = Collections.unmodifiableList(forests != null ? forests : new ArrayList<>());
         this.terms = new LinkedList<>();
     }
 
