@@ -12,7 +12,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
 
 public class KeyWordComputer {
 
-	private static final Map<String, Double> POS_SCORE = new HashMap<String, Double>();
+	private static final Map<String, Double> POS_SCORE = new HashMap<>();
 
 	static {
 		POS_SCORE.put("null", 0.0);
@@ -27,7 +27,6 @@ public class KeyWordComputer {
 		POS_SCORE.put("a", 0.2);
 		POS_SCORE.put("nz", 3.0);
 		POS_SCORE.put("v", 0.2);
-
 	}
 
 	private int nKeyword = 5;
@@ -42,7 +41,6 @@ public class KeyWordComputer {
 	 */
 	public KeyWordComputer(int nKeyword) {
 		this.nKeyword = nKeyword;
-
 	}
 
 	/**
@@ -52,7 +50,7 @@ public class KeyWordComputer {
 	 * @return
 	 */
 	private List<Keyword> computeArticleTfidf(String content, int titleLength) {
-		Map<String, Keyword> tm = new HashMap<String, Keyword>();
+		Map<String, Keyword> tm = new HashMap<>();
 
 		List<Term> parse = NlpAnalysis.parse(content);
 		for (Term term : parse) {
@@ -68,9 +66,9 @@ public class KeyWordComputer {
 			}
 		}
 
-		TreeSet<Keyword> treeSet = new TreeSet<Keyword>(tm.values());
+		TreeSet<Keyword> treeSet = new TreeSet<>(tm.values());
 
-		ArrayList<Keyword> arrayList = new ArrayList<Keyword>(treeSet);
+		ArrayList<Keyword> arrayList = new ArrayList<>(treeSet);
 		if (treeSet.size() <= nKeyword) {
 			return arrayList;
 		} else {

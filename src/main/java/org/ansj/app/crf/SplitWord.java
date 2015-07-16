@@ -4,13 +4,12 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Template;
 import org.ansj.util.MatrixUtil;
 import org.ansj.util.WordAlert;
-import org.nlpcn.commons.lang.util.StringUtil;
+import static org.apache.commons.lang3.StringUtils.*;
 
 /**
  * 分词
@@ -20,78 +19,81 @@ import org.nlpcn.commons.lang.util.StringUtil;
  */
 public class SplitWord {
 
-	private Model model = null;
+	private final Model model;
 
-	private int[] tagConver = null;
+	private final int[] tagConver;
 
-	private int[] revTagConver = null;
+	private final int[] revTagConver;
+
+    private final int modelEnd1;
+
+    private final int modelEnd2;
 
 	/**
-	 * 这个对象比较重。支持多线程，请尽量重复使用
+	 * 这个对象比较重. 支持多线程, 请尽量重复使用
 	 * 
 	 * @param model
-	 * @throws Exception
 	 */
-	public SplitWord(Model model) {
-		this.model = model;
-		tagConver = new int[model.template.tagNum];
-		revTagConver = new int[model.template.tagNum];
-		Set<Entry<String, Integer>> entrySet = model.template.statusMap.entrySet();
+	public SplitWord(final Model model) {
+		this.tagConver = new int[model.template.tagNum];
+		this.revTagConver = new int[model.template.tagNum];
 
 		// case 0:'S';case 1:'B';case 2:'M';3:'E';
-		for (Entry<String, Integer> entry : entrySet) {
-			if ("S".equals(entry.getKey())) {
-				tagConver[entry.getValue()] = 0;
-				revTagConver[0] = entry.getValue();
-			} else if ("B".equals(entry.getKey())) {
-				tagConver[entry.getValue()] = 1;
-				revTagConver[1] = entry.getValue();
-			} else if ("M".equals(entry.getKey())) {
-				tagConver[entry.getValue()] = 2;
-				revTagConver[2] = entry.getValue();
-			} else if ("E".equals(entry.getKey())) {
-				tagConver[entry.getValue()] = 3;
-				revTagConver[3] = entry.getValue();
-			}
-		}
+        model.template.statusMap.forEach((statKey, statVal) -> {
+            switch (statKey) {
+                case "S":
+                    this.tagConver[statVal] = 0;
+                    this.revTagConver[0] = statVal;
+                    break;
+                case "B":
+                    this.tagConver[statVal] = 1;
+                    this.revTagConver[1] = statVal;
+                    break;
+                case "M":
+                    this.tagConver[statVal] = 2;
+                    this.revTagConver[2] = statVal;
+                    break;
+                case "E":
+                    this.tagConver[statVal] = 3;
+                    this.revTagConver[3] = statVal;
+                    break;
+                default:
+                    break;
+            }
+        });
 
-		model.end1 = model.template.statusMap.get("S");
-		model.end2 = model.template.statusMap.get("E");
-
-	};
-
-	public List<String> cut(char[] chars) {
-		return cut(new String(chars));
+        this.model = model;
+		this.modelEnd1 = model.template.statusMap.get("S");
+		this.modelEnd2 = model.template.statusMap.get("E");
 	}
 
-	public List<String> cut(String line) {
+	public List<String> cut(final char[] chars) {
+        return cut(new String(chars));
+	}
 
-		if (StringUtil.isBlank(line)) {
+	public List<String> cut(final String line) {
+		if (isBlank(line)) {
 			return Collections.emptyList();
 		}
 
-		List<Element> elements = vterbi(line);
-
-		LinkedList<String> result = new LinkedList<String>();
-
-		Element e = null;
+		final List<Element> elements = vterbi(line);
+		final List<String> result = new LinkedList<>();
 		int begin = 0;
 		int end = 0;
-
 		for (int i = 0; i < elements.size(); i++) {
-			e = elements.get(i);
-			switch (fixTag(e.getTag())) {
+            Element element = elements.get(i);
+			switch (fixTag(element.getTag())) {
 			case 0:
-				end += e.len;
+				end += element.len;
 				result.add(line.substring(begin, end));
 				begin = end;
 				break;
 			case 1:
-				end += e.len;
-				while (fixTag((e = elements.get(++i)).getTag()) != 3) {
-					end += e.len;
+				end += element.len;
+				while (fixTag((element = elements.get(++i)).getTag()) != 3) {
+					end += element.len;
 				}
-				end += e.len;
+				end += element.len;
 				result.add(line.substring(begin, end));
 				begin = end;
 			default:
@@ -124,13 +126,15 @@ public class SplitWord {
 		elements.get(0).tagScore[revTagConver[2]] = -1000;
 		elements.get(0).tagScore[revTagConver[3]] = -1000;
 		for (int i = 1; i < length; i++) {
-			elements.get(i).maxFrom(model, elements.get(i - 1));
+			elements.get(i).maxFrom(this.model, elements.get(i - 1));
 		}
 
 		// 末位置只能从S,E开始
 		Element next = elements.get(elements.size() - 1);
 		Element self = null;
-		int maxStatus = next.tagScore[model.end1] > next.tagScore[model.end2] ? model.end1 : model.end2;
+		int maxStatus = next.tagScore[this.modelEnd1] > next.tagScore[this.modelEnd2] ?
+				this.modelEnd1 :
+				this.modelEnd2;
 		next.updateTag(maxStatus);
 		maxStatus = next.from[maxStatus];
 		// 逆序寻找
@@ -145,23 +149,21 @@ public class SplitWord {
 
 	}
 
-	private void computeTagScore(List<Element> elements, int index) {
-		double[] tagScore = new double[model.template.tagNum];
+	private void computeTagScore(final List<Element> elements, final int index) {
+        final Template tmpl = this.model.template;
 
-		Template t = model.template;
-		char[] chars = null;
-		for (int i = 0; i < t.ft.length; i++) {
-			chars = new char[t.ft[i].length];
+		final double[] tagScore = new double[tmpl.tagNum];
+		for (int i = 0; i < tmpl.ft.length; i++) {
+			final char[] chars = new char[tmpl.ft[i].length];
 			for (int j = 0; j < chars.length; j++) {
-				chars[j] = getElement(elements, index + t.ft[i][j]).name;
+				chars[j] = getElement(elements, index + tmpl.ft[i][j]).name;
 			}
-			MatrixUtil.dot(tagScore, model.getFeature(i, chars));
+			MatrixUtil.dot(tagScore, this.model.getFeature(i, chars));
 		}
 		elements.get(index).tagScore = tagScore;
 	}
 
-	private Element getElement(List<Element> elements, int i) {
-		// TODO Auto-generated method stub
+	private Element getElement(final List<Element> elements, final int i) {
 		if (i < 0) {
 			return new Element((char) ('B' + i));
 		} else if (i >= elements.size()) {
@@ -171,44 +173,33 @@ public class SplitWord {
 		}
 	}
 
-	public int fixTag(int tag) {
-		return tagConver[tag];
+	public int fixTag(final int tag) {
+        return this.tagConver[tag];
 	}
 
 	/**
-	 * 随便给一个词。计算这个词的内聚分值，可以理解为计算这个词的可信度
+	 * 随便给一个词. 计算这个词的内聚分值, 可以理解为计算这个词的可信度
 	 * 
-	 * @param word
+	 * @param word word
 	 */
-	public double cohesion(String word) {
-
+	public double cohesion(final String word) {
 		if (word.length() == 0) {
 			return Integer.MIN_VALUE;
 		}
 
-		List<Element> elements = WordAlert.str2Elements(word);
-
+		final List<Element> elements = WordAlert.str2Elements(word);
 		for (int i = 0; i < elements.size(); i++) {
 			computeTagScore(elements, i);
 		}
 
+        final int len = elements.size() - 1;
+
 		double value = elements.get(0).tagScore[revTagConver[1]];
-
-		int len = elements.size() - 1;
-
 		for (int i = 1; i < len; i++) {
 			value += elements.get(i).tagScore[revTagConver[2]];
 		}
-
 		value += elements.get(len).tagScore[revTagConver[3]];
-		
-		if(value<0){
-			return 1; 
-		}else{
-			value += 1 ;
-		}
 
-		return value;
+        return value < 0 ? 1 : value + 1;
 	}
-
 }

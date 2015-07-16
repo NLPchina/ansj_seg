@@ -1,187 +1,161 @@
 package org.ansj.app.crf;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
-
+import lombok.SneakyThrows;
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Feature;
 import org.ansj.app.crf.pojo.Template;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
-public abstract class Model {
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.zip.GZIPInputStream;
+
+public class Model {
 
 //	public enum MODEL_TYPE {
 //		CRF, EMM
 //	}
+//    public int allFeatureCount = 0;
 
-	protected Template template = null;
+    public final Template template;
 
-	protected double[][] status = null;
+    private final double[][] status;
 
-	protected Map<String, Feature> myGrad;
+    private final Map<String, Feature> myGrad;
 
-	protected SmartForest<double[][]> smartForest = null;
+    private final SmartForest<double[][]> smartForest;
 
-	public int allFeatureCount = 0;
+    /**
+     * for parse crf++
+     */
+    Model(final Template template, double[][] status, final Map<String, Feature> myGrad) {
+        this.template = template;
+        this.status = status;
+        this.myGrad = myGrad;
+        this.smartForest = null;
+    }
 
-	private List<Element> leftList = null;
+    /**
+     * for load model
+     */
+    protected Model(final Template template, final SmartForest<double[][]> smartForest, final double[][] status) {
+        this.template = template;
+        this.status = status;
+        this.myGrad = null;
+        this.smartForest = smartForest;
+    }
 
-	private List<Element> rightList = null;
+    public double[] getFeature(final int featureIndex, final char... chars) {
+        final SmartForest<double[][]> sf = this.smartForest.getBranch(chars);
+        return sf != null && sf.getParam() != null ? sf.getParam()[featureIndex] : null;
+    }
 
-	public int end1;
+    /**
+     * @param s1 s1
+     * @param s2 s2
+     * @return tag转移率
+     */
+    public double tagRate(final int s1, final int s2) {
+        return this.status[s1][s2];
+    }
 
-	public int end2;
+    public boolean canWrite() {
+        return true;
+    }
 
-	/**
-	 * 根据模板文件解析特征
-	 * 
-	 * @param left l
-	 * @param right r
-	 * @throws IOException
-	 */
-	private void makeSide(int left, int right) throws IOException {
-		// TODO Auto-generated method stub
+    /**
+     * 将模型写入
+     */
+    @Deprecated
+    @SneakyThrows
+    public static void writeModel(final Model model, final OutputStream outputStream) {
+        //new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(path)))
+        //new ByteArrayOutputStream()
 
-		leftList = new ArrayList<>(Math.abs(left));
-		for (int i = left; i < 0; i++) {
-			leftList.add(new Element((char) ('B' + i)));
-		}
+        if (!model.canWrite()) {
+            // cant write a loaded Model
+            throw new RuntimeException("you can not to calculate ,this model only use by cut");
+        }
 
-		rightList = new ArrayList<>(right);
-		for (int i = 1; i < right + 1; i++) {
-			rightList.add(new Element((char) ('B' + i)));
-		}
-	}
+        try (final ObjectOutputStream oos = new ObjectOutputStream(outputStream)) {
+            oos.writeObject(model.template); // 配置模板
+            oos.writeObject(model.status); // 特征转移率
+            oos.writeInt(model.myGrad.size()); // 总共的特征数
+            double[] ds;
+            for (final Entry<String, Feature> entry : model.myGrad.entrySet()) {
+                oos.writeUTF(entry.getKey());
+                for (int i = 0; i < model.template.ft.length; i++) {
+                    ds = entry.getValue().w[i];
+                    for (int j = 0; j < ds.length; j++) {
+                        oos.writeByte(j);
+                        oos.writeFloat((float) ds[j]);
+                    }
+                    oos.writeByte(-1);
+                }
+            }
+            oos.flush();
+        }
+    }
 
-	/**
-	 * 将模型写入
-	 * 
-	 * @param path path
-	 * @throws IOException
-	 */
-	public void writeModel(String path) throws IOException {
-		// TODO Auto-generated method stub
+    @SneakyThrows
+    public static Model loadModel(final InputStream inputStream) {
+        try (final ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(inputStream)))) {
 
-		System.out.println("compute ok now to save model!");
-		// 写模型
-		ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(path))));
+            final Template template = (Template) ois.readObject();
+            final int tagNum = template.tagNum;
+            final int featureNum = template.ft.length;
 
-		// 配置模板
-		oos.writeObject(template);
-		// 特征转移率
-		oos.writeObject(status);
-		// 总共的特征数
-		oos.writeInt(myGrad.size());
-		double[] ds;
-		for (Entry<String, Feature> entry : myGrad.entrySet()) {
-			oos.writeUTF(entry.getKey());
-			for (int i = 0; i < template.ft.length; i++) {
-				ds = entry.getValue().w[i];
-				for (int j = 0; j < ds.length; j++) {
-					oos.writeByte(j);
-					oos.writeFloat((float) ds[j]);
-				}
-				oos.writeByte(-1);
-			}
-		}
+            final SmartForest<double[][]> smartForest = new SmartForest<>(0.8);
+            final double[][] status = (double[][]) ois.readObject();
 
-		oos.flush();
-		oos.close();
-	}
+            // 总共的特征数
+            final int featureCount = ois.readInt();
+            for (int fIdx = 0; fIdx < featureCount; fIdx++) {
+                final String key = ois.readUTF();
+                final double[][] w = new double[featureNum][0];
+                for (int j = 0; j < featureNum; j++) {
+                    int b;
+                    while ((b = ois.readByte()) != -1) {
+                        if (w[j].length == 0) {
+                            w[j] = new double[tagNum];
+                        }
+                        w[j][b] = ois.readFloat();
+                    }
+                }
+                smartForest.addBranch(key, w);
+            }
 
-	/**
-	 * 模型读取
-	 * 
-	 * @param modelPath modelPath
-	 * @return model
-	 * @throws Exception
-	 */
-	public static Model loadModel(String modelPath) throws Exception {
-		return loadModel(new FileInputStream(modelPath));
+            final Model model = new Model(template, smartForest, status) {
 
-	}
+                @Override
+                public boolean canWrite() {
+                    return false;
+                }
+            };
+            model.makeSide(template.left, template.right);
+            return model;
+        }
+    }
 
-	public static Model loadModel(InputStream modelStream) throws Exception {
-		ObjectInputStream ois = null;
-		try {
-			ois = new ObjectInputStream(new BufferedInputStream(new GZIPInputStream(modelStream)));
+    /**
+     * 根据模板文件解析特征
+     *
+     * @param left  l
+     * @param right r
+     * @throws IOException
+     */
+    private void makeSide(final int left, final int right) throws IOException {
+        final List<Element> leftList = new ArrayList<>(Math.abs(left));
+        for (int i = left; i < 0; i++) {
+            leftList.add(new Element((char) ('B' + i)));
+        }
 
-			Model model = new Model() {
-
-				@Override
-				public void writeModel(String path) throws IOException {
-					throw new RuntimeException("you can not to calculate ,this model only use by cut ");
-				}
-
-			};
-
-			model.template = (Template) ois.readObject();
-
-			model.makeSide(model.template.left, model.template.right);
-
-			int tagNum = model.template.tagNum;
-
-			int featureNum = model.template.ft.length;
-
-			model.smartForest = new SmartForest<>(0.8);
-
-			model.status = (double[][]) ois.readObject();
-
-			// 总共的特征数
-			double[][] w;
-			String key;
-			int b = 0;
-			int featureCount = ois.readInt();
-			for (int i = 0; i < featureCount; i++) {
-				key = ois.readUTF();
-				w = new double[featureNum][0];
-				for (int j = 0; j < featureNum; j++) {
-					while ((b = ois.readByte()) != -1) {
-						if (w[j].length == 0) {
-							w[j] = new double[tagNum];
-						}
-						w[j][b] = ois.readFloat();
-					}
-				}
-				model.smartForest.addBranch(key, w);
-			}
-
-			return model;
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
-		}
-	}
-
-	public double[] getFeature(int featureIndex, char... chars) {
-		// TODO Auto-generated method stub
-		SmartForest<double[][]> sf = smartForest;
-		sf = sf.getBranch(chars);
-		if (sf == null || sf.getParam() == null) {
-			return null;
-		}
-		return sf.getParam()[featureIndex];
-	}
-
-	/**
-	 * @param s1 s1
-	 * @param s2 s2
-	 * @return tag转移率
-	 */
-	public double tagRate(int s1, int s2) {
-		return status[s1][s2];
-	}
+        final List<Element> rightList = new ArrayList<>(right);
+        for (int i = 1; i < right + 1; i++) {
+            rightList.add(new Element((char) ('B' + i)));
+        }
+    }
 }

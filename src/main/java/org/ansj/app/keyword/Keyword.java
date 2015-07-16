@@ -1,75 +1,55 @@
 package org.ansj.app.keyword;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Keyword implements Comparable<Keyword> {
-	private String name;
-	private double score;
-	private double idf;
-	private int freq;
 
-	public Keyword(String name, int docFreq, double weight) {
-		this.name = name;
-		this.idf = Math.log(10000 + 10000.0 / (docFreq + 1));
-		this.score = idf * weight;
-		freq++;
-	}
+    @Setter
+    @Getter
+    private String name;
+    @Getter
+    private double score;
+    private final double idf;
+    @Getter
+    private int freq;
 
-	public Keyword(String name, double score) {
-		this.name = name;
-		this.score = score;
-		this.idf = score;
-		freq++;
-	}
+    public Keyword(final String name, final int docFreq, final double weight) {
+        this.name = name;
+        this.idf = Math.log(10000 + 10000.0 / (docFreq + 1));
+        this.score = this.idf * weight;
+        this.freq++;
+    }
 
-	public void updateWeight(int weight) {
-		this.score += weight * idf;
-		freq++;
-	}
+    public Keyword(final String name, final double score) {
+        this.name = name;
+        this.score = score;
+        this.idf = score;
+        this.freq++;
+    }
 
-	public int getFreq() {
-		return freq;
-	}
+    public void updateWeight(int weight) {
+        this.score += weight * this.idf;
+        this.freq++;
+    }
 
-	@Override
-	public int compareTo(Keyword o) {
-		if (this.score < o.score) {
-			return 1;
-		} else {
-			return -1;
-		}
+    @Override
+    public int compareTo(final Keyword o) {
+        return this.score < o.score ? 1 : -1;
+    }
 
-	}
+    @Override
+    public int hashCode() {
+        return this.name.hashCode();
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		if (obj instanceof Keyword) {
-			Keyword k = (Keyword) obj;
-			return k.name.equals(name);
-		} else {
-			return false;
-		}
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        return (obj instanceof Keyword) && ((Keyword) obj).name.equals(this.name);
+    }
 
-	@Override
-	public String toString() {
-		// TODO Auto-generated method stub
-		return name + "/" + score;// "="+score+":"+freq+":"+idf;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public double getScore() {
-		return score;
-	}
-
-	public void setScore(double score) {
-		this.score = score;
-	}
-
+    @Override
+    public String toString() {
+        return name + "/" + score;// "="+score+":"+freq+":"+idf;
+    }
 }
