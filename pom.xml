@@ -5,7 +5,7 @@
 	<artifactId>ansj_seg</artifactId>
 	<packaging>jar</packaging>
 	<name>ansj_seg</name>
-	<version>2.0.8</version>
+	<version>3.0</version>
 	<description>best java chinese word seg ! </description>
 	<url>https://github.com/ansjsun/ansj_seg</url>
 	<licenses>
@@ -54,8 +54,7 @@
 		<dependency>
 			<groupId>org.nlpcn</groupId>
 			<artifactId>nlp-lang</artifactId>
-			<version>0.3</version>
-			<scope>compile</scope>
+			<version>1.0</version>			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
@@ -76,25 +75,6 @@
 					<target>1.6</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<phase>package</phase>
-						<configuration>
-							<classifier>min</classifier>
-							<excludes>
-								<excludes>**/crf.model</excludes>
-								<excludes>**/NlpAnalysis.class</excludes>
-							</excludes>
-						</configuration>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 
