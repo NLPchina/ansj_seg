@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
-import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;
 import org.nlpcn.commons.lang.util.IOUtil;
@@ -84,7 +83,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getPersonReader() {
-		return DicReader.getReader("person/person.dic");
+		return AnsjUtils.getReader("person/person.dic");
 	}
 
 	/**
@@ -93,7 +92,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getCompanReader() {
-		return DicReader.getReader("company/company.data");
+		return AnsjUtils.getReader("company/company.data");
 	}
 
 	/**
@@ -102,7 +101,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getNewWordReader() {
-		return DicReader.getReader("newWord/new_word_freq.dic");
+		return AnsjUtils.getReader("newWord/new_word_freq.dic");
 	}
 
 	/**
@@ -112,7 +111,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getArraysReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("arrays.dic");
+		return AnsjUtils.getReader("arrays.dic");
 	}
 
 	/**
@@ -122,7 +121,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getNumberReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("numberLibrary.dic");
+		return AnsjUtils.getReader("numberLibrary.dic");
 	}
 
 	/**
@@ -132,7 +131,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getEnglishReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("englishLibrary.dic");
+		return AnsjUtils.getReader("englishLibrary.dic");
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getNatureMapReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("nature/nature.map");
+		return AnsjUtils.getReader("nature/nature.map");
 	}
 
 	/**
@@ -152,7 +151,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getNatureTableReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("nature/nature.table");
+		return AnsjUtils.getReader("nature/nature.table");
 	}
 
 	/**
@@ -162,7 +161,7 @@ public class MyStaticValue {
 	 */
 	public static BufferedReader getPersonFreqReader() {
 		// TODO Auto-generated method stub
-		return DicReader.getReader("person/name_freq.dic");
+		return AnsjUtils.getReader("person/name_freq.dic");
 	}
 
 	/**
@@ -176,7 +175,7 @@ public class MyStaticValue {
 		ObjectInputStream objectInputStream = null;
 		Map<String, int[][]> map = new HashMap<String, int[][]>(0);
 		try {
-			inputStream = DicReader.getInputStream("person/asian_name_freq.data");
+			inputStream = AnsjUtils.getInputStream("person/asian_name_freq.data");
 			objectInputStream = new ObjectInputStream(inputStream);
 			map = (Map<String, int[][]>) objectInputStream.readObject();
 
@@ -208,7 +207,7 @@ public class MyStaticValue {
 	public static void initBigramTables() {
 		BufferedReader reader = null;
 		try {
-			reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8");
+			reader = IOUtil.getReader(AnsjUtils.getInputStream("bigramdict.dic"), "UTF-8");
 			String temp = null;
 			String[] strs = null;
 			int freq = 0;
@@ -275,7 +274,7 @@ public class MyStaticValue {
 		try {
 			long start = System.currentTimeMillis();
 			LIBRARYLOG.info("begin init crf model!");
-			crfSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/crf.model")));
+			crfSplitWord = new SplitWord(Model.loadModel(AnsjUtils.getInputStream("crf/crf.model")));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

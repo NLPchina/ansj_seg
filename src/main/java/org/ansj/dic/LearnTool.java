@@ -106,10 +106,9 @@ public class LearnTool {
 
 	/**
 	 * 返回学习到的新词.
-	 * 
-	 * @param num
-	 *            返回数目.0为全部返回
-	 * @return
+	 *
+	 * @param num 返回数目.0为全部返回
+	 * @return 学习到的新词
 	 */
 	public List<Entry<String, Double>> getTopTree(int num) {
 		return getTopTree(num, null);
@@ -133,7 +132,6 @@ public class LearnTool {
 	}
 
 	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, Nature nature) {
-		// TODO Auto-generated method stub
 		if (smartForest == null || smartForest.getBranches() == null) {
 			return;
 		}

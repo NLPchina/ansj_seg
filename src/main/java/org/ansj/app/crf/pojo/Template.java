@@ -22,15 +22,15 @@ public class Template implements Serializable {
 
     public final int right;
 
-    public Template() {
-        this(
-                new int[][]{{-2}, {-1}, {0}, {1}, {2}, {-2, -1}, {-1, 0}, {0, 1}, {1, 2}, {-1, 1}},
-                2,
-                2,
-                0,
-                new HashMap<>()
-        );
-    }
+//    public Template() {
+//        this(
+//                new int[][]{{-2}, {-1}, {0}, {1}, {2}, {-2, -1}, {-1, 0}, {0, 1}, {1, 2}, {-1, 1}},
+//                2,
+//                2,
+//                0,
+//                new HashMap<>()
+//        );
+//    }
 
     public Template(final int[][] ft, final int left, final int right) {
         this(

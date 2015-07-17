@@ -1,13 +1,12 @@
 package org.ansj.app.keyword;
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class Keyword implements Comparable<Keyword> {
 
-    @Setter
+    //@Setter
     @Getter
-    private String name;
+    private final String name;
     @Getter
     private double score;
     private final double idf;
@@ -28,7 +27,7 @@ public class Keyword implements Comparable<Keyword> {
         this.freq++;
     }
 
-    public void updateWeight(int weight) {
+    public void updateWeight(final int weight) {
         this.score += weight * this.idf;
         this.freq++;
     }
@@ -50,6 +49,6 @@ public class Keyword implements Comparable<Keyword> {
 
     @Override
     public String toString() {
-        return name + "/" + score;// "="+score+":"+freq+":"+idf;
+        return this.name + "/" + this.score;// "="+score+":"+freq+":"+idf;
     }
 }

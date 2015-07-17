@@ -3,8 +3,7 @@ package org.ansj.util;
 import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.function.Function;
 
@@ -23,5 +22,20 @@ public class AnsjUtils {
                 .filter(line -> isNotBlank(line) && !line.trim().startsWith("#"))
                 .map(mapper)
                 .collect(toList());
+    }
+
+    public static BufferedReader getReader(final String name) {
+        final InputStream in = getInputStream(name);
+        try {
+            return new BufferedReader(new InputStreamReader(in, "UTF-8"));
+        } catch (final UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static InputStream getInputStream(final String name) {
+        // maven工程修改词典加载方式
+        return AnsjUtils.class.getResourceAsStream("/" + name);
     }
 }

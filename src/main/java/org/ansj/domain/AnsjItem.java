@@ -3,6 +3,8 @@ package org.ansj.domain;
 import java.util.Map;
 
 import org.nlpcn.commons.lang.dat.Item;
+import static java.lang.Integer.parseInt;
+import static java.lang.Byte.parseByte;
 
 public class AnsjItem extends Item {
 
@@ -29,9 +31,9 @@ public class AnsjItem extends Item {
 	/**
 	 * frequency : 词性词典,以及词性的相关权重
 	 */
-	public TermNatures termNatures = null ;
+	public TermNatures termNatures;
 
-	public Map<Integer,Integer> bigramEntryMap =  null ;
+	public Map<Integer,Integer> bigramEntryMap;
 
 	@Override
 	public void init(String[] split) {
@@ -40,16 +42,16 @@ public class AnsjItem extends Item {
 	}
 
 	@Override
-	public void initValue(String[] split) {
-		index = Integer.parseInt(split[0]);
-		base = Integer.parseInt(split[2]);
-		check = Integer.parseInt(split[3]);
-		status = Byte.parseByte(split[4]);
-		if (status > 1) {
-			name = split[1];
-			termNatures = new TermNatures(TermNature.setNatureStrToArray(split[5]), index);
+	public void initValue(final String[] split) {
+		this.index = parseInt(split[0]);
+        this.base = parseInt(split[2]);
+        this.check = parseInt(split[3]);
+        this.status = parseByte(split[4]);
+		if (this.status > 1) {
+            this.name = split[1];
+            this.termNatures = new TermNatures(TermNature.setNatureStrToArray(split[5]), this.index);
 		}else{
-			termNatures = new TermNatures(TermNature.NULL); 
+            this.termNatures = new TermNatures(TermNature.NULL);
 		}
 	}
 
@@ -57,5 +59,4 @@ public class AnsjItem extends Item {
 	public String toText() {
 		return index + "\t" + name + "\t" + base + "\t" + check + "\t" + status + "\t" + param;
 	}
-
 }
