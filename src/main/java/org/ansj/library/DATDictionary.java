@@ -10,6 +10,7 @@ import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -46,7 +47,7 @@ public class DATDictionary {
             /**
              * 人名识别必备的
              */
-            personNameFull(dat);
+            personNameFull(dat, MyStaticValue.getPersonReader());
 
             /**
              * 记录词典中的词语，并且清除部分数据
@@ -79,8 +80,8 @@ public class DATDictionary {
         return null;
     }
 
-    private static void personNameFull(DoubleArrayTire dat) throws NumberFormatException, IOException {
-        HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
+    private static void personNameFull(final DoubleArrayTire dat, BufferedReader personReader) {
+        HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap(personReader);
 
         AnsjItem ansjItem;
         // 人名词性补录

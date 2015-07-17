@@ -23,19 +23,15 @@ public class NlpDemo {
 		// 学习机器是有状态的
 		long start = System.currentTimeMillis();
 		// 此对象可以公用一个.随着语料的增多可以学习新的词语
-		LearnTool learn = new LearnTool();
-
-		// 关闭人名识别
-		learn.isAsianName = true;
-		// 关闭外国人名识别
-		learn.isForeignName = true;
+        // 关闭人名识别 关闭外国人名识别
+		LearnTool learn = new LearnTool(true, true);
 
 		for (String string : value) {
-			List<Term> parse = NlpAnalysis.parse(string, learn);
+			List<Term> parse = NlpAnalysis.nlpParse(learn, string);
 			System.out.println(parse);
 		}
 
-		System.out.println("这次训练已经学到了: " + learn.count + " 个词!");
+		System.out.println("这次训练已经学到了: " + learn.getCount() + " 个词!");
 		System.out.println(System.currentTimeMillis() - start);
 		System.out.println(learn.getTopTree(100));
 	}

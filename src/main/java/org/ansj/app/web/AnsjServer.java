@@ -174,7 +174,7 @@ public class AnsjServer {
 		}
 		/* warm up ansj engine */
 		/* FIXME: dirty hack here... */
-		NlpAnalysis.parse(WARM_UP_WORD);
+		NlpAnalysis.nlpParse(WARM_UP_WORD);
 		/* set up server */
 		int serverPort = Integer.valueOf(args[0]);
 		new AnsjServer().startServer(serverPort);

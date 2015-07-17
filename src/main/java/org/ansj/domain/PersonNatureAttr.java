@@ -2,101 +2,127 @@ package org.ansj.domain;
 
 /**
  * 人名标注pojo类
- * 
+ *
  * @author ansj
- * 
  */
 public class PersonNatureAttr {
-	// public int B = -1;//0 姓氏
-	// public int C = -1;//1 双名的首字
-	// public int D = -1;//2 双名的末字
-	// public int E = -1;//3 单名
-	// public int N = -1; //4任意字
-	// public int L = -1;//11 人名的下文
-	// public int M = -1;//12 两个中国人名之间的成分
-	// public int m = -1;//44 可拆分的姓名
-	// String[] parretn = {"BC", "BCD", "BCDE", "BCDEN"}
-	// double[] factory = {"BC", "BCD", "BCDE", "BCDEN"}
+    // public int B = -1;//0 姓氏
+    // public int C = -1;//1 双名的首字
+    // public int D = -1;//2 双名的末字
+    // public int E = -1;//3 单名
+    // public int N = -1; //4任意字
+    // public int L = -1;//11 人名的下文
+    // public int M = -1;//12 两个中国人名之间的成分
+    // public int m = -1;//44 可拆分的姓名
+    // String[] parretn = {"BC", "BCD", "BCDE", "BCDEN"}
+    // double[] factory = {"BC", "BCD", "BCDE", "BCDEN"}
 
-	public static final PersonNatureAttr NULL = new PersonNatureAttr();
+    public static final PersonNatureAttr NULL = new PersonNatureAttr(null, null, null, null, null, null);
 
-	private int[][] locFreq = null;
+    // 12
+    public final Integer begin;
+    // 11+12
+    public final Integer end;
+    public final Integer split;
+    public final Integer allFreq;
 
-	public int split;
-	// 12
-	public int begin;
-	// 11+12
-	public int end;
+    // 是否有可能是名字的第一个字
+    public final Boolean flag;
 
-	public int allFreq;
+    private final int[][] locFreq;
 
-	// 是否有可能是名字的第一个字
-	public boolean flag;
+    private PersonNatureAttr(
+            final Integer begin,
+            final Integer end,
+            final Integer split,
+            final Integer allFreq,
+            final Boolean flag,
+            final int[][] locFreq
+    ) {
+        this.begin = begin != null ? begin : 0;
+        this.end = end != null ? end : 0;
+        this.split = split != null ? split : 0;
+        this.allFreq = allFreq != null ? allFreq : 0;
+        this.flag = flag != null ? flag : false;
+        this.locFreq = locFreq;
+    }
 
-	/**
-	 * 设置
-	 * 
-	 * @param index
-	 * @param freq
-	 */
-	public void addFreq(int index, int freq) {
-		switch (index) {
-		case 11:
-			this.end += freq;
-			allFreq += freq;
-			break;
-		case 12:
-			this.end += freq;
-			this.begin += freq;
-			allFreq += freq;
-			break;
-		case 44:
-			this.split += freq;
-			allFreq += freq;
-			break;
-		}
-	}
+    private PersonNatureAttr withNewEndAndAllFreq(final int freq) {
+        return new PersonNatureAttr(this.begin, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
+    }
 
-	/**
-	 * 得道某一个位置的词频
-	 * 
-	 * @param length
-	 * @param loc
-	 * @return
-	 */
-	public int getFreq(int length, int loc) {
-		if (locFreq == null)
-			return 0;
-		if (length > 3)
-			length = 3;
-		if (loc > 4)
-			loc = 4;
-		return locFreq[length][loc];
-	}
+    private PersonNatureAttr withNewBeginAndEndAndAllFreq(final int freq) {
+        return new PersonNatureAttr(this.begin + freq, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
+    }
 
-	/**
-	 * 词频记录表
-	 * 
-	 * @param ints
-	 */
-	public void setlocFreq(int[][] ints) {
-		for (int i = 0; i < ints.length; i++) {
-			if (ints[i][0] > 0) {
-				flag = true;
-				break ;
-			}
-		}
-		locFreq = ints;
-	}
+    private PersonNatureAttr withNewSplitAndAllFreq(final int freq) {
+        return new PersonNatureAttr(this.begin, this.end, this.split + freq, this.allFreq + freq, this.flag, this.locFreq);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("begin=" + begin);
-		sb.append(",");
-		sb.append("end=" + end);
-		sb.append(",");
-		sb.append("split=" + split);
-		return sb.toString();
-	}
+    /**
+     * 设置
+     *
+     * @param idx  idx
+     * @param freq freq
+     */
+    public PersonNatureAttr addFreq(final int idx, final int freq) {
+        final PersonNatureAttr newVal;
+        switch (idx) {
+            case 11:
+                newVal = this.withNewEndAndAllFreq(freq);
+                break;
+            case 12:
+                newVal = this.withNewBeginAndEndAndAllFreq(freq);
+                break;
+            case 44:
+                newVal = this.withNewSplitAndAllFreq(freq);
+                break;
+            default:
+                newVal = this;
+                break;
+        }
+        return newVal;
+    }
+
+    private PersonNatureAttr withNewFlatAndLocFreq(final boolean flag, final int[][] locFreq) {
+        return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, flag, locFreq);
+    }
+
+    private PersonNatureAttr withNewLocFreq(final int[][] locFreq) {
+        return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, this.flag, locFreq);
+    }
+
+    /**
+     * 词频记录表
+     *
+     * @param ints ints
+     */
+    public PersonNatureAttr setlocFreq(final int[][] ints) {
+        for (final int[] anInt : ints) {
+            if (anInt[0] > 0) {
+                return this.withNewFlatAndLocFreq(true, ints);
+            }
+        }
+        return this.withNewLocFreq(ints);
+    }
+
+    /**
+     * 得道某一个位置的词频
+     *
+     * @param length length
+     * @param loc    loc
+     * @return 位置的词频
+     */
+    public int getFreq(final int length, final int loc) {
+        return this.locFreq != null ? this.locFreq[length > 3 ? 3 : length][loc > 4 ? 4 : loc] : 0;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder()
+                .append("begin=").append(this.begin).append(",")
+                .append("end=").append(this.end).append(",")
+                .append("split=").append(this.split)
+                .toString();
+    }
 }

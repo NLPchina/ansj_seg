@@ -11,10 +11,8 @@ import lombok.Setter;
 @Getter
 public class NewWord {
     // 名字
-    @Setter
-    private String name;
+    private final String name;
     // 词性
-    @Setter
     private Nature nature;
     // 分数
     @Setter
@@ -25,7 +23,7 @@ public class NewWord {
     @Setter
     private boolean isActive;
 
-    public NewWord(String name, Nature nature, double score) {
+    public NewWord(final String name, final Nature nature, final double score) {
         this.name = name;
         this.nature = nature;
         this.score = score;
@@ -33,9 +31,7 @@ public class NewWord {
     }
 
     public NewWord(final String name, final Nature nature) {
-        this.name = name;
-        this.nature = nature;
-        this.allFreq = 1;
+        this(name, nature, 0);
     }
 
     /**

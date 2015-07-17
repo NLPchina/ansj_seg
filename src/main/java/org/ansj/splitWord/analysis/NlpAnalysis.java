@@ -27,17 +27,46 @@ import static java.util.Arrays.asList;
  */
 public class NlpAnalysis extends Analysis {
 
-    private LearnTool learn = null;
-
     private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
+
+    private final LearnTool learn;
+
+    /**
+     * 用户自己定义的词典
+     *
+     * @param forests forests
+     */
+    private NlpAnalysis(final List<Forest> forests) {
+        this(forests, null, null);
+    }
+
+    private NlpAnalysis(final List<Forest> forests, final LearnTool learn) {
+        this(forests, learn, null);
+    }
+
+    public NlpAnalysis(final List<Forest> forests, final LearnTool learn, final Reader reader) {
+        super(forests);
+        this.learn = learn;
+        if (reader != null) {
+            super.resetContent(new AnsjReader(reader));
+        }
+    }
+
+    public static List<Term> nlpParse(final LearnTool learn, final String str, final Forest... forests) {
+        return new NlpAnalysis(asList(forests), learn).parseStr(str);
+    }
+
+    public static List<Term> nlpParse(final String str, final Forest... forests) {
+        return new NlpAnalysis(asList(forests)).parseStr(str);
+    }
 
     @Override
     protected List<Term> getResult(final Graph graph) {
+        final LearnTool learn = this.learn != null ? this.learn : new LearnTool();
         return new Merger() {
 
             @Override
             public List<Term> merger() {
-                // TODO Auto-generated method stub
                 graph.walkPath();
 
                 // 数字发现
@@ -49,9 +78,6 @@ public class NlpAnalysis extends Analysis {
                 List<Term> result = getResult();
                 new NatureRecognition(result).recognition();
 
-                if (learn == null) {
-                    learn = new LearnTool();
-                }
                 learn.learn(graph, DEFAULT_SLITWORD);
 
                 // 通过crf分词
@@ -61,7 +87,7 @@ public class NlpAnalysis extends Analysis {
                     if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
                         continue;
                     }
-                    learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
+                    learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")), DEFAULT_SLITWORD);
                 }
 
                 // 用户自定义词典的识别
@@ -101,51 +127,5 @@ public class NlpAnalysis extends Analysis {
                 return result;
             }
         }.merger();
-    }
-
-    /**
-     * 用户自己定义的词典
-     *
-     * @param forests forests
-     */
-
-    public NlpAnalysis(final List<Forest> forests) {
-        this(null, null, forests);
-    }
-
-    public NlpAnalysis(final LearnTool learn, final List<Forest> forests) {
-        this(null, learn, forests);
-    }
-
-    public NlpAnalysis(final Reader reader, final List<Forest> forests) {
-        this(reader, null, forests);
-    }
-
-    public NlpAnalysis(final Reader reader, final LearnTool learn, final Forest... forests) {
-        this(reader, learn, asList(forests));
-    }
-
-    public NlpAnalysis(final Reader reader, final LearnTool learn, final List<Forest> forests) {
-        super(forests);
-        this.learn = learn;
-        if (reader != null) {
-            super.resetContent(new AnsjReader(reader));
-        }
-    }
-
-    public static List<Term> parse(final String str, final LearnTool learn, final List<Forest> forests) {
-        return new NlpAnalysis(learn, forests).parseStr(str);
-    }
-
-    public static List<Term> parse(final String str, final LearnTool learn, final Forest... forests) {
-        return parse(str, learn, asList(forests));
-    }
-
-    public static List<Term> parse(final String str) {
-        return parse(str, null, new Forest[0]);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return parse(str, null, forests);
     }
 }

@@ -48,7 +48,7 @@ public class KeyWordComputer {
     private List<Keyword> computeArticleTfidf(final String content, final int titleLength) {
         final Map<String, Keyword> termMap = new HashMap<>();
 
-        for (final Term term : NlpAnalysis.parse(content)) {
+        for (final Term term : NlpAnalysis.nlpParse(content)) {
             final double weight = getWeight(term, content.length(), titleLength);
             if (weight != 0) {
                 final Keyword keyword = termMap.get(term.getName());

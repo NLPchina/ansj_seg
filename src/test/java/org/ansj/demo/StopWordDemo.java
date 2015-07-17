@@ -9,7 +9,7 @@ import org.ansj.util.FilterModifWord;
 public class StopWordDemo {
 	public static void main(String[] args) {
         FilterModifWord.insertStopWord("五一");
-        List<Term> parseResultList = NlpAnalysis.parse("五一，劳动节快乐");
+        List<Term> parseResultList = NlpAnalysis.nlpParse("五一，劳动节快乐");
         parseResultList = FilterModifWord.modifResult(parseResultList);
         System.out.println(parseResultList);
 	}

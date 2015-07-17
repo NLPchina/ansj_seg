@@ -40,10 +40,10 @@ public class AnsjServlet {
                 terms = ToAnalysis.parse(input);
                 break;
             case NLP:
-                terms = NlpAnalysis.parse(input);
+                terms = NlpAnalysis.nlpParse(input);
                 break;
             case MIN_NLP:
-                terms = NlpAnalysis.parse(input);
+                terms = NlpAnalysis.nlpParse(input);
             case KEYWORD:
                 KeyWordComputer keyWordComputer = new KeyWordComputer(10);
                 keyWords = keyWordComputer.computeArticleTfidf(input);

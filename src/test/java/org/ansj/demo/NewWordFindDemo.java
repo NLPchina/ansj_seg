@@ -2,15 +2,12 @@ package org.ansj.demo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.CollectionUtil;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
@@ -23,7 +20,7 @@ public class NewWordFindDemo {
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/三国演义.txt", "GBK");
 		LearnTool learn = new LearnTool();
-		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn);
+		NlpAnalysis nlpAnalysis = new NlpAnalysis(new ArrayList<>(), learn, reader);
 
 		while (nlpAnalysis.next() != null) {
 		}

@@ -34,7 +34,7 @@ public class NlpAnalysiTest {
 		list.add("能不能试试这个 西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区") ;
 		list.add("李克强");
 		for (String string : list) {
-			System.out.println(NlpAnalysis.parse(string));
+			System.out.println(NlpAnalysis.nlpParse(string));
 		}
 	}
 

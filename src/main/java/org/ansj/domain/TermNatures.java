@@ -95,38 +95,33 @@ public class TermNatures {
 	}
 
 	private void serAttribute() {
-		TermNature termNature = null;
 		int max = 0;
-		NumNatureAttr numNatureAttr = null;
-		for (int i = 0; i < termNatures.length; i++) {
-			termNature = termNatures[i];
-			allFreq += termNature.frequency;
-			max = Math.max(max, termNature.frequency);
-			switch (termNature.nature.index) {
-			case 18:
-				if (numNatureAttr == null) {
-					numNatureAttr = new NumNatureAttr();
-				}
-				numNatureAttr.numFreq = termNature.frequency;
-				break;
-			case 29:
-				if (numNatureAttr == null) {
-					numNatureAttr = new NumNatureAttr();
-				}
-				numNatureAttr.numEndFreq = termNature.frequency;
-				break;
+		NumNatureAttr numAttr = null;
+        for (final TermNature termNature : termNatures) {
+            allFreq += termNature.frequency;
+            max = Math.max(max, termNature.frequency);
+            switch (termNature.nature.index) {
+                case 18:
+                    numAttr = numAttr == null ?
+                            NumNatureAttr.NULL :
+                            numAttr.withNumFreq(termNature.frequency);
+                    break;
+                case 29:
+                    numAttr = numAttr == null ?
+                            NumNatureAttr.NULL :
+                            numAttr.withNumEndFreq(termNature.frequency);
+                    break;
+            }
+        }
+		if (numAttr != null) {
+			if (max == numAttr.numFreq) {
+                numAttr = numAttr.withFlag(true);
 			}
-		}
-		if (numNatureAttr != null) {
-			if (max == numNatureAttr.numFreq) {
-				numNatureAttr.flag = true;
-			}
-			this.numAttr = numNatureAttr;
+			this.numAttr = numAttr;
 		}
 	}
 
-	public void setPersonNatureAttr(PersonNatureAttr personAttr) {
+	public void setPersonNatureAttr(final PersonNatureAttr personAttr) {
 		this.personAttr = personAttr;
 	}
-
 }

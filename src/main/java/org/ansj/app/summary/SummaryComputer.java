@@ -60,7 +60,7 @@ public class SummaryComputer {
      * 根据用户查询串计算摘要
      */
     public Summary toSummary(final String query) {
-        final List<Keyword> keywords = NlpAnalysis.parse(query)
+        final List<Keyword> keywords = NlpAnalysis.nlpParse(query)
                 .stream()
                 .filter(term -> !FILTER_SET.contains(term.natrue().natureStr))
                 .map(term -> new Keyword(term.getName(), term.termNatures().allFreq, 1))
