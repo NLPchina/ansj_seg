@@ -1,5 +1,6 @@
 package org.ansj.domain;
 
+import static java.lang.Integer.parseInt;
 import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
@@ -21,25 +22,29 @@ public class TermNature {
     public static final TermNature NW = new TermNature("nw", 1);
     public static final TermNature NULL = new TermNature("null", 1);
 
-    public Nature nature;
+    public final Nature nature;
 
-    public int frequency;
+    public final int frequency;
 
-    public TermNature(final String natureStr, final int frequency) {
-        this.nature = NATURE_LIBRARY.getNature(natureStr);
+    private TermNature(final Nature nature, final int frequency) {
+        this.nature = nature;
         this.frequency = frequency;
     }
 
-    public static TermNature[] setNatureStrToArray(String natureStr) {
-        // TODO Auto-generated method stub
-        natureStr = natureStr.substring(1, natureStr.length() - 1);
-        String[] split = natureStr.split(",");
-        String[] strs = null;
-        Integer frequency = null;
-        TermNature[] all = new TermNature[split.length];
+    public TermNature(final String natureStr, final int frequency) {
+        this(NATURE_LIBRARY.getNature(natureStr), frequency);
+    }
+
+    public TermNature withFrequency(final int frequency) {
+        return new TermNature(this.nature, frequency);
+    }
+
+    public static TermNature[] setNatureStrToArray(final String natureStr) {
+        final String[] split = natureStr.substring(1, natureStr.length() - 1).split(",");
+        final TermNature[] all = new TermNature[split.length];
         for (int i = 0; i < split.length; i++) {
-            strs = split[i].split("=");
-            frequency = Integer.parseInt(strs[1]);
+            final String[] strs = split[i].split("=");
+            final Integer frequency = parseInt(strs[1]);
             all[i] = new TermNature(strs[0].trim(), frequency);
         }
         return all;
@@ -47,6 +52,6 @@ public class TermNature {
 
     @Override
     public String toString() {
-        return this.nature.natureStr + "/" + frequency;
+        return this.nature.natureStr + "/" + this.frequency;
     }
 }

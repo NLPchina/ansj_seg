@@ -49,7 +49,7 @@ public class AnsjItem extends Item {
         this.status = parseByte(split[4]);
 		if (this.status > 1) {
             this.name = split[1];
-            this.termNatures = new TermNatures(TermNature.setNatureStrToArray(split[5]), this.index);
+            this.termNatures = new TermNatures(this.index, TermNature.setNatureStrToArray(split[5]));
 		}else{
             this.termNatures = new TermNatures(TermNature.NULL);
 		}
