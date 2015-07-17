@@ -30,7 +30,7 @@ public class NatureRecognition {
     /**
      * 构造方法.传入分词的最终结果
      *
-     * @param terms
+     * @param terms terms
      */
     public NatureRecognition(final List<Term> terms) {
         this.root = new NatureTerm(TermNature.BEGIN);
@@ -52,6 +52,16 @@ public class NatureRecognition {
     }
 
     /**
+     * 传入一组词, 对词语进行词性标注
+     *
+     * @param words words
+     * @return terms
+     */
+    public static List<Term> recognition(final List<String> words) {
+        return recognition(words, 0);
+    }
+
+    /**
      * 传入一组。词对词语进行。词性标注
      *
      * @param words words
@@ -68,7 +78,7 @@ public class NatureRecognition {
             final AnsjItem ansjItem = DATDictionary.getItem(word);
 
             final TermNatures tn;
-            if (ansjItem.termNatures != TermNatures.NULL) {
+            if (ansjItem != AnsjItem.NULL) {
                 tn = ansjItem.termNatures;
             } else if ((params = UserDefineLibrary.getInstance().getParams(word)) != null) {
                 tn = new TermNatures(new TermNature(params[0], 1));

@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.ansj</groupId>
     <artifactId>MavenAccount-aggregator</artifactId>
-    <version>0.0.1</version>
+    <version>3.0.1</version>
     <packaging>pom</packaging>
     <name>plug-template</name>
 
@@ -22,7 +22,7 @@
         </license>
     </licenses>
 
-    <!--scm>
+    <scm>
         <connection>scm:git:git@github.com:ansjsun/ansj_seg.git</connection>
         <developerConnection>scm:git:git@github.com:ansjsun/ansj_seg.git</developerConnection>
         <url>git@github.com:ansjsun/ansj_seg.git</url>
@@ -39,40 +39,14 @@
             <id>mvn-repo</id>
             <url>scpexe://ansj/home/mvn-repo/ROOT</url>
         </repository>
-    </distributionManagement-->
-
-    <scm>
-        <connection>scm:git:git@home1-public.github.com:home1-public/ansj_seg.git</connection>
-        <developerConnection>scm:git:git@home1-public.github.com:home1-public/ansj_seg.git</developerConnection>
-        <url>git@home1-public.github.com:home1-public/ansj_seg.git</url>
-    </scm>
+    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <github.global.server>home1-public</github.global.server>
     </properties>
 
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <url>file://${user.home}/ws/home1-public/mvn-repo/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>file://${user.home}/ws/home1-public/mvn-repo/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
     <repositories>
-        <repository>
-            <id>home1-public-mvn-repo</id>
-            <url>https://raw.githubusercontent.com/home1-public/mvn-repo/mvn-repo/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
         <repository>
             <id>mvn-repo</id>
             <url>http://maven.nlpcn.org/</url>
@@ -80,40 +54,6 @@
     </repositories>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.github.github</groupId>
-                    <artifactId>site-maven-plugin</artifactId>
-                    <version>0.12</version>
-                    <configuration>
-                        <message>Maven artifacts for ${project.version}</message>
-                        <noJekyll>true</noJekyll>
-                        <outputDirectory>${user.home}/ws/home1-public/mvn-repo</outputDirectory>
-                        <branch>refs/heads/mvn-repo</branch>
-                        <includes>
-                            <include>releases/**/*</include>
-                            <include>snapshots/**/*</include>
-                        </includes>
-                        <excludes>
-                            <exclued>**/.DS_Store</exclued>
-                            <exclued>**/.git</exclued>
-                        </excludes>
-                        <repositoryName>mvn-repo</repositoryName>
-                        <repositoryOwner>home1-public</repositoryOwner>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>site</goal>
-                            </goals>
-                            <phase>deploy</phase>
-                        </execution>
-                    </executions>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -129,14 +69,9 @@
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-webdav-jackrabbit</artifactId>
-                <version>2.9</version>
-            </extension>
-            <!--extension>
-                <groupId>org.apache.maven.wagon</groupId>
                 <artifactId>wagon-ssh-external</artifactId>
                 <version>2.9</version>
-            </extension-->
+            </extension>
         </extensions>
     </build>
 
