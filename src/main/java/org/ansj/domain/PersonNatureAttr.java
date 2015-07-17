@@ -17,7 +17,7 @@ public class PersonNatureAttr {
     // String[] parretn = {"BC", "BCD", "BCDE", "BCDEN"}
     // double[] factory = {"BC", "BCD", "BCDE", "BCDEN"}
 
-    public static final PersonNatureAttr NULL = new PersonNatureAttr(null, null, null, null, null, null);
+    public static final PersonNatureAttr NULL_PERSON_NATURE_ATTR = new PersonNatureAttr(null, null, null, null, null, null);
 
     // 12
     public final Integer begin;

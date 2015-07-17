@@ -43,7 +43,7 @@ public class PersonAttrLibrary {
                         strs[0],
                         pna != null ?
                                 pna.addFreq(parseInt(strs[1]), parseInt(strs[2])) :
-                                PersonNatureAttr.NULL.addFreq(parseInt(strs[1]), parseInt(strs[2]))
+                                PersonNatureAttr.NULL_PERSON_NATURE_ATTR.addFreq(parseInt(strs[1]), parseInt(strs[2]))
                 );
             }
         } finally {
@@ -57,7 +57,7 @@ public class PersonAttrLibrary {
                     entry.getKey(),
                     pna != null ?
                             pna.setlocFreq(entry.getValue()) :
-                            PersonNatureAttr.NULL.setlocFreq(entry.getValue())
+                            PersonNatureAttr.NULL_PERSON_NATURE_ATTR.setlocFreq(entry.getValue())
             );
         }
         return pnMap;

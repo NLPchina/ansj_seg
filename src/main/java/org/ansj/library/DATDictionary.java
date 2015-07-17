@@ -108,7 +108,7 @@ public class DATDictionary {
             if ((ansjItem.termNatures) == null) {
                 ansjItem.termNatures = new TermNatures(TermNature.NR);
             }
-            ansjItem.termNatures.setPersonNatureAttr(entry.getValue());
+            ansjItem.termNatures = ansjItem.termNatures.withPersonAttr(entry.getValue());
         }
     }
 

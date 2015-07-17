@@ -50,7 +50,7 @@ public class Graph {
 	 * 
 	 * @param term
 	 */
-	public void addTerm(Term term) {
+	public void addTerm(final Term term) {
 		// 是否有数字
 		if (!hasNum && term.termNatures().numAttr.numFreq > 0) {
 			hasNum = true;

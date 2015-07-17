@@ -2,7 +2,7 @@ package org.ansj.domain;
 
 public class NumNatureAttr {
 
-    public static final NumNatureAttr NULL = new NumNatureAttr(null, null, null);
+    public static final NumNatureAttr NULL_NUM_NATURE_ATTR = new NumNatureAttr(null, null, null);
 
     // 是有可能是一个数字
     public final Integer numFreq;
