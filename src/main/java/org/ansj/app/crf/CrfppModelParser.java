@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
-import static org.ansj.util.AnsjUtils.parseFile;
+import static org.ansj.util.AnsjUtils.parseWithoutBlankOrComment;
 import static org.ansj.util.AnsjUtils.toStream;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -119,7 +119,7 @@ public class CrfppModelParser {
     }
 
     public static Template parseTemplate(final InputStream inputStream) {
-        final List<String> lines = parseFile(inputStream, line -> line);
+        final List<String> lines = parseWithoutBlankOrComment(inputStream, line -> line);
 
         final int[][] ft = new int[lines.size() - 1][0]; // bug?
         for (int l = 0; l < lines.size() - 1; l++) {

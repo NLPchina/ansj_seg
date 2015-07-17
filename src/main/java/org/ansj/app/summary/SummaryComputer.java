@@ -2,7 +2,6 @@ package org.ansj.app.summary;
 
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.tire.SmartGetWord;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
@@ -11,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
 
 /**
  * 自动摘要,同时返回关键词
@@ -60,7 +61,7 @@ public class SummaryComputer {
      * 根据用户查询串计算摘要
      */
     public Summary toSummary(final String query) {
-        final List<Keyword> keywords = NlpAnalysis.nlpParse(query)
+        final List<Keyword> keywords = nlpParse(query)
                 .stream()
                 .filter(term -> !FILTER_SET.contains(term.natrue().natureStr))
                 .map(term -> new Keyword(term.getName(), term.termNatures().allFreq, 1))

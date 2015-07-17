@@ -2,7 +2,6 @@ package org.ansj.demo;
 
 import lombok.SneakyThrows;
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.nlpcn.commons.lang.util.IOUtil;
 
@@ -11,6 +10,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
+import static org.ansj.util.MyStaticValue.NATURE_NR;
+import static org.ansj.util.MyStaticValue.NATURE_NW;
 
 /**
  * 新词发现工具
@@ -34,7 +35,7 @@ public class LearnToolDemo {
         System.out.println(learnTool.getTopTree(10));
 
         // 只取得词性为Nature.NR的新词
-        System.out.println(learnTool.getTopTree(10, Nature.NR));
+        System.out.println(learnTool.getTopTree(10, NATURE_NR()));
 
         /**
          * 将训练结果序列写入到硬盘中
@@ -53,7 +54,7 @@ public class LearnToolDemo {
         learnTool = new LearnTool();
         HashMap<String, Double> loadMap = IOUtil.loadMap("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, String.class, Double.class);
         for (Entry<String, Double> entry : loadMap.entrySet()) {
-            learnTool.addTerm(new NewWord(entry.getKey(), Nature.NW, entry.getValue()), null);
+            learnTool.addTerm(new NewWord(entry.getKey(), NATURE_NW(), entry.getValue()), null);
             learnTool.active(entry.getKey());
         }
         System.out.println(learnTool.getTopTree(10));

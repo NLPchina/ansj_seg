@@ -9,12 +9,13 @@ import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+
+import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
 
 public class AnsjServlet {
 
@@ -40,10 +41,10 @@ public class AnsjServlet {
                 terms = ToAnalysis.parse(input);
                 break;
             case NLP:
-                terms = NlpAnalysis.nlpParse(input);
+                terms = nlpParse(input);
                 break;
             case MIN_NLP:
-                terms = NlpAnalysis.nlpParse(input);
+                terms = nlpParse(input);
             case KEYWORD:
                 KeyWordComputer keyWordComputer = new KeyWordComputer(10);
                 keyWords = keyWordComputer.computeArticleTfidf(input);

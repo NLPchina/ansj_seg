@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -87,7 +88,7 @@ public class NlpAnalysis extends Analysis {
                     if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
                         continue;
                     }
-                    learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")), DEFAULT_SLITWORD);
+                    learn.addTerm(new NewWord(word, NATURE_LIBRARY.getNature("nw")), DEFAULT_SLITWORD);
                 }
 
                 // 用户自定义词典的识别

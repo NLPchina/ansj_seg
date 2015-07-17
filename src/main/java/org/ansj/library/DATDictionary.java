@@ -11,7 +11,6 @@ import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -42,7 +41,7 @@ public class DATDictionary {
         final long start = System.currentTimeMillis();
 
         try {
-            DoubleArrayTire dat = DoubleArrayTire.loadText(AnsjUtils.getInputStream("core.dic"), AnsjItem.class);
+            DoubleArrayTire dat = DoubleArrayTire.loadText(AnsjUtils.getClasspathResource("core.dic"), AnsjItem.class);
 
             /**
              * 人名识别必备的

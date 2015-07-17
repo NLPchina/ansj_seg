@@ -3,6 +3,8 @@ package org.ansj.domain;
 import lombok.Getter;
 import lombok.Setter;
 
+import static org.ansj.util.MyStaticValue.NATURE_NW;
+
 /**
  * 新词发现,实体名
  *
@@ -43,7 +45,7 @@ public class NewWord {
     public void update(final Nature nature, final int freq) {
         this.score += this.score * freq;
         this.allFreq += freq;
-        if (Nature.NW != nature) {
+        if (NATURE_NW() != nature) {
             this.nature = nature;
         }
     }

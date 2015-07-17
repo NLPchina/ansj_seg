@@ -4,17 +4,16 @@ import lombok.SneakyThrows;
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.AnsjItem;
+import org.ansj.domain.Nature;
 import org.ansj.library.DATDictionary;
+import org.ansj.library.NatureLibrary;
 import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
@@ -27,6 +26,8 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author ansj
  */
 public class MyStaticValue {
+
+    public static final String TAB = "\t";
 
     public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
@@ -60,6 +61,16 @@ public class MyStaticValue {
      * 是否用户辞典不加载相同的词
      */
     public static boolean isSkipUserDefine = false;
+
+    public static Nature NATURE_NW(){return NATURE_LIBRARY.getNature("nw");}
+    public static Nature NATURE_NRF(){return NATURE_LIBRARY.getNature("nrf");}
+    public static Nature NATURE_NR(){return NATURE_LIBRARY.getNature("nr");}
+    public static Nature NATURE_NULL(){return NATURE_LIBRARY.getNature("null");}
+
+    public static final NatureLibrary NATURE_LIBRARY = new NatureLibrary(
+            AnsjUtils.rawLinesFromClasspath("nature/nature.map"), // 词性表
+            AnsjUtils.rawLinesFromClasspath("nature/nature.table") // 词性关联表
+    );
 
     static {
         init();
@@ -105,63 +116,49 @@ public class MyStaticValue {
      * 人名词典
      */
     public static BufferedReader getPersonReader() {
-        return AnsjUtils.getReader("person/person.dic");
+        return AnsjUtils.getClasspathResourceReader("person/person.dic");
     }
 
     /**
      * 机构名词典
      */
     public static BufferedReader getCompanReader() {
-        return AnsjUtils.getReader("company/company.data");
-    }
-
-    /**
-     * 词性表
-     */
-    public static BufferedReader getNatureMapReader() {
-        return AnsjUtils.getReader("nature/nature.map");
-    }
-
-    /**
-     * 词性关联表
-     */
-    public static BufferedReader getNatureTableReader() {
-        return AnsjUtils.getReader("nature/nature.table");
+        return AnsjUtils.getClasspathResourceReader("company/company.data");
     }
 
     /**
      * 得道姓名单字的词频词典
      */
     public static BufferedReader getPersonFreqReader() {
-        return AnsjUtils.getReader("person/name_freq.dic");
+        return AnsjUtils.getClasspathResourceReader("person/name_freq.dic");
     }
 
     /**
      * 机构名词典
      */
     public static BufferedReader getNewWordReader() {
-        return AnsjUtils.getReader("newWord/new_word_freq.dic");
+        return AnsjUtils.getClasspathResourceReader("newWord/new_word_freq.dic");
     }
 
     /**
      * 核心词典
      */
     public static BufferedReader getArraysReader() {
-        return AnsjUtils.getReader("arrays.dic");
+        return AnsjUtils.getClasspathResourceReader("arrays.dic");
     }
 
     /**
      * 数字词典
      */
     public static BufferedReader getNumberReader() {
-        return AnsjUtils.getReader("numberLibrary.dic");
+        return AnsjUtils.getClasspathResourceReader("numberLibrary.dic");
     }
 
     /**
      * 英文词典
      */
     public static BufferedReader getEnglishReader() {
-        return AnsjUtils.getReader("englishLibrary.dic");
+        return AnsjUtils.getClasspathResourceReader("englishLibrary.dic");
     }
 
     /**
@@ -170,7 +167,7 @@ public class MyStaticValue {
     @SneakyThrows
     @SuppressWarnings("unchecked")
     public static Map<String, int[][]> getPersonFreqMap() {
-        try (final ObjectInputStream os = new ObjectInputStream(AnsjUtils.getInputStream("person/asian_name_freq.data"))) {
+        try (final ObjectInputStream os = new ObjectInputStream(AnsjUtils.getClasspathResource("person/asian_name_freq.data"))) {
             return (Map<String, int[][]>) os.readObject();
         }
     }
@@ -180,7 +177,7 @@ public class MyStaticValue {
      */
     @SneakyThrows
     public static void initBigramTables() {
-        try (final BufferedReader reader = IOUtil.getReader(AnsjUtils.getInputStream("bigramdict.dic"), "UTF-8")) {
+        try (final BufferedReader reader = IOUtil.getReader(AnsjUtils.getClasspathResource("bigramdict.dic"), "UTF-8")) {
             String temp;
             while ((temp = reader.readLine()) != null) {
                 if (isBlank(temp)) {

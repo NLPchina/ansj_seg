@@ -17,24 +17,31 @@ public class AnsjUtils {
     }
 
     @SneakyThrows
-    public static <T> List<T> parseFile(final InputStream inputStream, Function<String, T> mapper) {
-        return IOUtils.readLines(inputStream).stream()
+    public static <T> List<T> parseWithoutBlankOrComment(final InputStream inputStream, final Function<String, T> mapper) {
+        return IOUtils.readLines(inputStream)
+                .stream()
                 .filter(line -> isNotBlank(line) && !line.trim().startsWith("#"))
                 .map(mapper)
                 .collect(toList());
     }
 
-    public static BufferedReader getReader(final String name) {
-        final InputStream in = getInputStream(name);
-        try {
-            return new BufferedReader(new InputStreamReader(in, "UTF-8"));
-        } catch (final UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static List<String> rawLinesFromClasspath(final String file) {
+        return rawLines(getClasspathResource(file));
     }
 
-    public static InputStream getInputStream(final String name) {
+    @SneakyThrows
+    public static List<String> rawLines(final InputStream inputStream) {
+        return IOUtils.readLines(inputStream)
+                .stream()
+                .collect(toList());
+    }
+
+    @SneakyThrows
+    public static BufferedReader getClasspathResourceReader(final String name) {
+        return new BufferedReader(new InputStreamReader(getClasspathResource(name), "UTF-8"));
+    }
+
+    public static InputStream getClasspathResource(final String name) {
         // maven工程修改词典加载方式
         return AnsjUtils.class.getResourceAsStream("/" + name);
     }

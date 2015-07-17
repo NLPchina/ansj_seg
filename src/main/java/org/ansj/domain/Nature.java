@@ -1,21 +1,11 @@
 package org.ansj.domain;
 
-import org.ansj.library.NatureLibrary;
-
 /**
  * 这里面封装了一些基本的词性.
  *
  * @author ansj
  */
 public class Nature {
-
-    public static final Nature NW = NatureLibrary.getNature("nw");
-
-    public static final Nature NRF = NatureLibrary.getNature("nrf");
-
-    public static final Nature NR = NatureLibrary.getNature("nr");
-
-    public static final Nature NULL = NatureLibrary.getNature("null");
 
     // 词性的名称
     public final String natureStr;
@@ -33,7 +23,7 @@ public class Nature {
         this.allFrequency = allFrequency;
     }
 
-    public Nature(String natureStr) {
+    public Nature(final String natureStr) {
         this.natureStr = natureStr;
         this.index = 0;
         this.natureIndex = 0;
@@ -42,6 +32,6 @@ public class Nature {
 
     @Override
     public String toString() {
-        return natureStr + ":" + index + ":" + natureIndex;
+        return this.natureStr + ":" + this.index + ":" + this.natureIndex;
     }
 }

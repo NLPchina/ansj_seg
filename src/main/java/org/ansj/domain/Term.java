@@ -1,32 +1,35 @@
 package org.ansj.domain;
 
-import java.util.List;
-
 import org.ansj.util.MathUtil;
 
+import java.util.List;
+
+import static org.ansj.util.MyStaticValue.NATURE_NULL;
+
 public class Term implements Comparable<Term> {
+
     // 当前词
-    private String      name;
+    private String name;
     //
-    private String      realName;
+    private String realName;
     // 当前词的起始位置
-    private int         offe;
+    private int offe;
     // 词性列表
     private TermNatures termNatures = TermNatures.NULL;
     // 词性列表
-    private AnsjItem    item        = AnsjItem.NULL;
+    private AnsjItem item = AnsjItem.NULL;
     // 同一行内数据
-    private Term        next;
+    private Term next;
     // 分数
-    private double      score       = 0;
+    private double score = 0;
     // 本身分数
-    private double      selfScore   = 1;
+    private double selfScore = 1;
     // 起始位置
-    private Term        from;
+    private Term from;
     // 到达位置
-    private Term        to;
+    private Term to;
     // 本身这个term的词性.需要在词性识别之后才会有值,默认是空
-    private Nature      nature      = Nature.NULL;
+    private Nature nature = NATURE_NULL();
 
     private List<Term> subTerm = null;
 
@@ -141,8 +144,7 @@ public class Term implements Comparable<Term> {
     /**
      * 返回他自己
      *
-     * @param next
-     *            设置他的下一个
+     * @param next 设置他的下一个
      * @return
      */
     public Term setNext(Term next) {

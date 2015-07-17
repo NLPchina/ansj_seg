@@ -2,10 +2,10 @@ package org.ansj.app.keyword;
 
 import com.google.common.collect.ImmutableMap;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 
 import java.util.*;
 
+import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class KeyWordComputer {
@@ -48,7 +48,7 @@ public class KeyWordComputer {
     private List<Keyword> computeArticleTfidf(final String content, final int titleLength) {
         final Map<String, Keyword> termMap = new HashMap<>();
 
-        for (final Term term : NlpAnalysis.nlpParse(content)) {
+        for (final Term term : nlpParse(content)) {
             final double weight = getWeight(term, content.length(), titleLength);
             if (weight != 0) {
                 final Keyword keyword = termMap.get(term.getName());
