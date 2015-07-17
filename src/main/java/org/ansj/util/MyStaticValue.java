@@ -56,6 +56,8 @@ public class MyStaticValue {
     public static String userLibrary = "library/default.dic";
 
     public static String ambiguityLibrary = "library/ambiguity.dic";
+    
+    public static String crfModel = "library/crf.model";
 
     /**
      * 是否用户辞典不加载相同的词
@@ -83,16 +85,19 @@ public class MyStaticValue {
 
         if (rb == null) {
             LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
-        }
+        } else {
 
-        if (rb.containsKey("userLibrary"))
-            userLibrary = rb.getString("userLibrary");
-        if (rb.containsKey("ambiguityLibrary"))
-            ambiguityLibrary = rb.getString("ambiguityLibrary");
-        if (rb.containsKey("isSkipUserDefine"))
-            isSkipUserDefine = Boolean.valueOf(rb.getString("isSkipUserDefine"));
-        if (rb.containsKey("isRealName"))
-            isRealName = Boolean.valueOf(rb.getString("isRealName"));
+            if (rb.containsKey("userLibrary"))
+                userLibrary = rb.getString("userLibrary");
+            if (rb.containsKey("ambiguityLibrary"))
+                ambiguityLibrary = rb.getString("ambiguityLibrary");
+            if (rb.containsKey("isSkipUserDefine"))
+                isSkipUserDefine = Boolean.valueOf(rb.getString("isSkipUserDefine"));
+            if (rb.containsKey("isRealName"))
+                isRealName = Boolean.valueOf(rb.getString("isRealName"));
+            if (rb.containsKey("crfModel"))
+                crfModel = rb.getString("crfModel");
+        }
     }
 
     /**
@@ -279,7 +284,7 @@ public class MyStaticValue {
         try {
             long start = System.currentTimeMillis();
             LIBRARYLOG.info("begin init crf model!");
-            crfSplitWord = new SplitWord(Model.loadModel(DicReader.getInputStream("crf/crf.model")));
+            crfSplitWord = new SplitWord(Model.loadModel(IOUtil.getInputStream(crfModel)));
             LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
         } catch (Exception e) {
             e.printStackTrace();
