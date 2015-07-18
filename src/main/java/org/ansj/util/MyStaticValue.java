@@ -13,7 +13,10 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.ObjectInputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
@@ -74,10 +77,21 @@ public class MyStaticValue {
      */
     public static boolean isSkipUserDefine = false;
 
-    public static Nature NATURE_NW(){return NATURE_LIBRARY.getNature("nw");}
-    public static Nature NATURE_NRF(){return NATURE_LIBRARY.getNature("nrf");}
-    public static Nature NATURE_NR(){return NATURE_LIBRARY.getNature("nr");}
-    public static Nature NATURE_NULL(){return NATURE_LIBRARY.getNature("null");}
+    public static Nature NATURE_NW() {
+        return NATURE_LIBRARY.getNature("nw");
+    }
+
+    public static Nature NATURE_NRF() {
+        return NATURE_LIBRARY.getNature("nrf");
+    }
+
+    public static Nature NATURE_NR() {
+        return NATURE_LIBRARY.getNature("nr");
+    }
+
+    public static Nature NATURE_NULL() {
+        return NATURE_LIBRARY.getNature("null");
+    }
 
     public static final NatureLibrary NATURE_LIBRARY = new NatureLibrary(
             AnsjUtils.rawLinesFromClasspath("nature/nature.map"), // 词性表
