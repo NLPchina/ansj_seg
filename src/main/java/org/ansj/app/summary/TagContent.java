@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class TagContent {
 
-    private String beginTag, endTag;
+    private final String beginTag, endTag;
 
     public TagContent(final String beginTag, final String endTag) {
         this.beginTag = beginTag;

@@ -102,10 +102,10 @@ public class CrfppModelParser {
             final Feature feature = myGrad.get(tmpFeature.name) != null ?
                     myGrad.get(tmpFeature.name) :
                     new Feature(featureNum, tagNum);
-            myGrad.put(tmpFeature.name, feature);
             for (int j = 0; j < tagNum; j++) {
                 feature.update(tmpFeature.featureId, j, parseDouble(reader.readLine()));
             }
+            myGrad.put(tmpFeature.name, feature);
         }
 
         return new Model(template, status, myGrad);

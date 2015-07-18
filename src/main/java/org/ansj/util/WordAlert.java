@@ -279,15 +279,14 @@ public class WordAlert {
 	 * @return
 	 */
 	public static List<Element> str2Elements(String str) {
-
 		if (str == null || str.trim().length() == 0) {
 			return Collections.emptyList();
 		}
 
-		char[] chars = alertStr(str);
-		int maxLen = chars.length - 1;
-		List<Element> list = new ArrayList<Element>();
-		Element element = null;
+		final char[] chars = alertStr(str);
+		final int maxLen = chars.length - 1;
+		List<Element> list = new ArrayList<>();
+		Element element;
 		out: for (int i = 0; i < chars.length; i++) {
 			if (chars[i] >= '0' && chars[i] <= '9') {
 				element = new Element('M');
@@ -301,7 +300,7 @@ public class WordAlert {
 						break out;
 					}
 					c = chars[++i];
-					element.len();
+					element = element.withLenPlusOne();
 				}
 				i--;
 			} else if (chars[i] >= 'a' && chars[i] <= 'z') {
@@ -316,7 +315,7 @@ public class WordAlert {
 						break out;
 					}
 					c = chars[++i];
-					element.len();
+					element = element.withLenPlusOne();
 				}
 				i--;
 			} else {

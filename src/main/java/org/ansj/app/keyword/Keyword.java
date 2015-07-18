@@ -27,7 +27,7 @@ public class Keyword implements Comparable<Keyword> {
         this.freq++;
     }
 
-    public void updateWeight(final int weight) {
+    public void updateWeight(final int weight) { // TODO 改成withWeight, 使score和freq成为不变量
         this.score += weight * this.idf;
         this.freq++;
     }

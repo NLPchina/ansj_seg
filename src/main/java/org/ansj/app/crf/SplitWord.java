@@ -31,7 +31,7 @@ public class SplitWord {
     /**
      * 这个对象比较重. 支持多线程, 请尽量重复使用
      *
-     * @param model
+     * @param model model
      */
     public SplitWord(final Model model) {
         this.tagConver = new int[model.template.tagNum];
@@ -81,7 +81,7 @@ public class SplitWord {
         int end = 0;
         for (int i = 0; i < elements.size(); i++) {
             Element element = elements.get(i);
-            switch (fixTag(element.getTag())) {
+            switch (fixTag(element.tag)) {
                 case 0:
                     end += element.len;
                     result.add(line.substring(begin, end));
@@ -89,7 +89,7 @@ public class SplitWord {
                     break;
                 case 1:
                     end += element.len;
-                    while (fixTag((element = elements.get(++i)).getTag()) != 3) {
+                    while (fixTag((element = elements.get(++i)).tag) != 3) {
                         end += element.len;
                     }
                     end += element.len;
@@ -109,7 +109,7 @@ public class SplitWord {
         if (length == 0) { // 避免空list，下面get(0)操作越界
             return elements;
         } else if (length == 1) {
-            elements.get(0).updateTag(revTagConver[0]);
+            elements.set(0, elements.get(0).withTag(revTagConver[0]));
             return elements;
         }
 
@@ -121,27 +121,29 @@ public class SplitWord {
         }
 
         // 如果是开始不可能从 m，e开始 ，所以将它设为一个很小的值
-        elements.get(0).tagScore[revTagConver[2]] = -1000;
-        elements.get(0).tagScore[revTagConver[3]] = -1000;
+        elements.set(0, elements.get(0)
+                .withTagScore(revTagConver[2], -1000)
+                .withTagScore(revTagConver[3], -1000));
         for (int i = 1; i < length; i++) {
-            elements.get(i).maxFrom(this.model, elements.get(i - 1));
+            elements.set(i, elements.get(i).maxFrom(this.model, elements.get(i - 1)));
         }
 
         // 末位置只能从S,E开始
         Element next = elements.get(elements.size() - 1);
-        int maxStatus = next.tagScore[this.modelEnd1] > next.tagScore[this.modelEnd2] ?
+        int maxStatus = next.tagScore(this.modelEnd1) > next.tagScore(this.modelEnd2) ?
                 this.modelEnd1 :
                 this.modelEnd2;
-        next.updateTag(maxStatus);
+        next = next.withTag(maxStatus);
+        elements.set(elements.size() - 1, next);
         maxStatus = next.from[maxStatus];
         // 逆序寻找
         for (int i = elements.size() - 2; i > 0; i--) {
+            elements.set(i, elements.get(i).withTag(maxStatus));
             final Element self = elements.get(i);
-            self.updateTag(maxStatus);
-            maxStatus = self.from[self.getTag()];
+            maxStatus = self.from[self.tag];
             next = self;
         }
-        elements.get(0).updateTag(maxStatus);
+        elements.set(0, elements.get(0).withTag(maxStatus));
         return elements;
     }
 
@@ -156,7 +158,7 @@ public class SplitWord {
             }
             MatrixUtil.dot(tagScore, this.model.getFeature(i, chars));
         }
-        elements.get(index).tagScore = tagScore;
+        elements.set(index, elements.get(index).withTagScore(tagScore));
     }
 
     private Element getElement(final List<Element> elements, final int i) {
@@ -190,11 +192,11 @@ public class SplitWord {
 
         final int len = elements.size() - 1;
 
-        double value = elements.get(0).tagScore[revTagConver[1]];
+        double value = elements.get(0).tagScore(revTagConver[1]);
         for (int i = 1; i < len; i++) {
-            value += elements.get(i).tagScore[revTagConver[2]];
+            value += elements.get(i).tagScore(revTagConver[2]);
         }
-        value += elements.get(len).tagScore[revTagConver[3]];
+        value += elements.get(len).tagScore(revTagConver[3]);
 
         return value < 0 ? 1 : value + 1;
     }

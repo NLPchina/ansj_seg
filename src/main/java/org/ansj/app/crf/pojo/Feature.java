@@ -4,19 +4,15 @@ import java.util.Arrays;
 
 public class Feature {
 
-	public double[][] w;
+	public final double[][] w;
 
-	public int tagNum;
+	public final int tagNum;
 
     public double value = 0;
 
 	public Feature(final int featureNum, final int tagNum) {
 		this.w = new double[featureNum][0];
 		this.tagNum = tagNum;
-	}
-
-	public Feature(final double[][] w) {
-		this.w = w;
 	}
 
 	public void update(final int fIndex, final int sta, final double step) {

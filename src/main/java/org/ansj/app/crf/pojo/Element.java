@@ -1,54 +1,72 @@
 package org.ansj.app.crf.pojo;
 
-import lombok.Getter;
 import org.ansj.app.crf.Model;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class Element {
 
     private static final double MIN = Integer.MIN_VALUE;
 
     public final char name;
-    @Getter
-    private int tag = -1;
+    public final int tag;
+    public final int len;
 
-    public int len = 1;
-
-    public Element(final char name) {
-        this.name = name;
-    }
-
-    public Element updateTag(final int tag) {
-        this.tag = tag;
-        return this;
-    }
-
-    public void len() {
-        this.len++;
-    }
-
-    public double[] tagScore;
-
+    private final double[] tagScore;
     public int[] from;
 
-    public void maxFrom(final Model model, final Element element) {
-        if (this.from == null) {
-            this.from = new int[this.tagScore.length];
-        }
+    private Element(final char name, final int tag, final int len, final double[] tagScore, int[] from) {
+        this.name = name;
+        this.tag = tag;
+        this.len = len;
+        this.tagScore = tagScore;
+        this.from = from;
+    }
+
+    public Element(final char name) {
+        this(name, -1, 1, null, null);
+    }
+
+    public Element withTag(final int tag) {
+        return new Element(this.name, tag, this.len, this.tagScore, this.from);
+    }
+
+    public Element withLenPlusOne() {
+        return new Element(this.name, this.tag, this.len + 1, this.tagScore, this.from);
+    }
+
+    public double tagScore(final int idx) {
+        return this.tagScore[idx];
+    }
+
+    public Element withTagScore(final int idx, final double newVal) {
+        final double[] tagScore = ArrayUtils.clone(this.tagScore);
+        tagScore[idx] = newVal;
+        return withTagScore(tagScore);
+    }
+
+    public Element withTagScore(final double[] tagScore) {
+        return new Element(this.name, this.tag, this.len, tagScore, this.from);
+    }
+
+    public Element maxFrom(final Model model, final Element element) {
+        final double[] tagScore = this.tagScore;//ArrayUtils.clone(this.tagScore);
+        final int[] from = this.from != null ? ArrayUtils.clone(this.from) : new int[this.tagScore.length];
         final double[] pTagScore = element.tagScore;
-        for (int i = 0; i < this.tagScore.length; i++) {
+        for (int i = 0; i < tagScore.length; i++) {
             double maxValue = MIN;
             for (int j = 0; j < pTagScore.length; j++) {
-                double rate = model.tagRate(j, i);
+                final double rate = model.tagRate(j, i);
                 if (rate != Double.MIN_VALUE) {
-                    final double value = (pTagScore[j] + this.tagScore[i]) + rate;
+                    final double value = (pTagScore[j] + tagScore[i]) + rate;
                     if (value > maxValue) {
                         maxValue = value;
-                        this.from[i] = j;
+                        from[i] = j;
                     }
                 }
             }
-            this.tagScore[i] = maxValue;
+            tagScore[i] = maxValue;
         }
+        return new Element(this.name, this.tag, this.len, tagScore, from);
     }
 
     @Override
