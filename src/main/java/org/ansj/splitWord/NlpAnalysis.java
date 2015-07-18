@@ -3,12 +3,12 @@ package org.ansj.splitWord;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
-import org.ansj.library.DATDictionary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.*;
+import org.ansj.util.MyStaticValue;
+import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.Reader;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
 import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
@@ -79,7 +80,7 @@ public class NlpAnalysis extends Analysis {
         List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
         for (String word : words) {
-            if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
+            if (word.length() < 2 || DAT_DICTIONARY.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
                 continue;
             }
             learn.addTerm(new NewWord(word, NATURE_LIBRARY.getNature("nw")), DEFAULT_SLITWORD);

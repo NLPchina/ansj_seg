@@ -4,152 +4,119 @@ import org.ansj.domain.AnsjItem;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.util.AnsjUtils;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
 
-import java.io.BufferedReader;
-import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Set;
+
+import static org.ansj.util.MyStaticValue.PERSON_ATTR_LIBRARY;
 
 public class DATDictionary {
 
     /**
-     * 所有在词典中出现的词,并且承担简繁体转换的任务.
-     */
-    public static final char[] IN_SYSTEM = new char[65536];
-
-    /**
      * 核心词典
      */
-    private static final DoubleArrayTire DAT = loadDAT();
-
+    private final DoubleArrayTire trie;
     /**
      * 数组长度
      */
-    public static int arrayLength = DAT.arrayLength;
+    public int arrayLength;
+    /**
+     * 所有在词典中出现的词,并且承担简繁体转换的任务.
+     */
+    private final char[] inSystem;
+
+    public DATDictionary(final DoubleArrayTire coreDic) {
+        this.inSystem = new char[65536];
+        this.trie = init(coreDic);
+        this.arrayLength = trie.arrayLength;
+    }
 
     /**
      * 加载词典
-     *
-     * @return
      */
-    private static DoubleArrayTire loadDAT() {
+    private DoubleArrayTire init(final DoubleArrayTire coreDic) {
         final long start = System.currentTimeMillis();
 
-        try {
-            DoubleArrayTire dat = DoubleArrayTire.loadText(AnsjUtils.getClasspathResource("core.dic"), AnsjItem.class);
+        personNameFull(coreDic);
 
-            /**
-             * 人名识别必备的
-             */
-            personNameFull(dat, MyStaticValue.getPersonReader());
-
-            /**
-             * 记录词典中的词语，并且清除部分数据
-             */
-            for (Item item : dat.getDAT()) {
-                if (item == null || item.getName() == null) {
-                    continue;
-                }
-
+        /**
+         * 记录词典中的词语，并且清除部分数据
+         */
+        for (final Item item : coreDic.getDAT()) {
+            if (item != null && item.getName() != null) {
                 if (item.getStatus() < 4) {
                     for (int i = 0; i < item.getName().length(); i++) {
-                        IN_SYSTEM[item.getName().charAt(i)] = item.getName().charAt(i);
+                        this.inSystem[item.getName().charAt(i)] = item.getName().charAt(i);
                     }
                 }
                 if (item.getStatus() < 2) {
                     item.setName(null);
-                    continue;
                 }
             }
-            // 特殊字符标准化
-            IN_SYSTEM['％'] = '%';
-
-            MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start));
-
-            return dat;
-        } catch (final Exception e) {
-            e.printStackTrace();
         }
-
-        return null;
+        this.inSystem['％'] = '%';// 特殊字符标准化
+        MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start));
+        return coreDic;
     }
 
-    private static void personNameFull(final DoubleArrayTire dat, BufferedReader personReader) {
-        HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap(personReader);
-
-        AnsjItem ansjItem;
+    /**
+     * 人名识别必备的
+     */
+    private void personNameFull(final DoubleArrayTire dat) {
         // 人名词性补录
-        Set<Entry<String, PersonNatureAttr>> entrySet = personMap.entrySet();
-        char c = 0;
-        String temp;
-        for (Entry<String, PersonNatureAttr> entry : entrySet) {
-            temp = entry.getKey();
+        final char c = 0;
+        for (Entry<String, PersonNatureAttr> entry : PERSON_ATTR_LIBRARY.getPersonMap().entrySet()) {
+            final String temp = entry.getKey();
 
-            if (temp.length() == 1 && (ansjItem = (AnsjItem) dat.getDAT()[temp.charAt(0)]) == null) {
-                ansjItem = new AnsjItem();
-                ansjItem.setBase(c);
-                ansjItem.setCheck(-1);
-                ansjItem.setStatus((byte) 3);
-                ansjItem.setName(temp);
-                dat.getDAT()[temp.charAt(0)] = ansjItem;
+            AnsjItem item;
+            if (temp.length() == 1 && dat.getDAT()[temp.charAt(0)] == null) {
+                item = new AnsjItem();
+                item.setBase(c);
+                item.setCheck(-1);
+                item.setStatus((byte) 3);
+                item.setName(temp);
+                dat.getDAT()[temp.charAt(0)] = item;
             } else {
-                ansjItem = dat.getItem(temp);
+                item = dat.getItem(temp);
             }
-
-            if (ansjItem == null) {
-                continue;
+            if (item != null) {
+                item.termNatures = item.termNatures != null ?
+                        item.termNatures.withPersonAttr(entry.getValue()) :
+                        new TermNatures(TermNature.NR).withPersonAttr(entry.getValue());
             }
-
-            if ((ansjItem.termNatures) == null) {
-                ansjItem.termNatures = new TermNatures(TermNature.NR);
-            }
-            ansjItem.termNatures = ansjItem.termNatures.withPersonAttr(entry.getValue());
         }
     }
 
-    public static int status(char c) {
-        Item item = DAT.getDAT()[c];
-        if (item == null) {
-            return 0;
-        }
-        return item.getStatus();
+    public boolean inSystem(final char c) {
+        return this.inSystem[c] > 0;
+    }
+
+    public int status(final char c) {
+        final Item item = trie.getDAT()[c];
+        return item != null ? item.getStatus() : 0;
     }
 
     /**
      * 判断一个词语是否在词典中
-     *
-     * @param word
-     * @return
      */
-    public static boolean isInSystemDic(String word) {
-        Item item = DAT.getItem(word);
+    public boolean isInSystemDic(final String word) {
+        final Item item = trie.getItem(word);
         return item != null && item.getStatus() > 1;
     }
 
-    public static AnsjItem getItem(int index) {
-        AnsjItem item = DAT.getItem(index);
-        if (item == null) {
-            return AnsjItem.NULL;
-        }
-
-        return item;
+    public AnsjItem getItem(final int index) {
+        final AnsjItem item = trie.getItem(index);
+        return item != null ? item : AnsjItem.NULL_ITEM;
     }
 
-    public static AnsjItem getItem(String str) {
-        AnsjItem item = DAT.getItem(str);
-        if (item == null) {
-            return AnsjItem.NULL;
-        }
-
-        return item;
+    public AnsjItem getItem(final String str) {
+        final AnsjItem item = trie.getItem(str);
+        return item != null ? item : AnsjItem.NULL_ITEM;
     }
 
-    public static int getId(String str) {
-        return DAT.getId(str);
+    public int getId(final String str) {
+        return trie.getId(str);
     }
-
 }

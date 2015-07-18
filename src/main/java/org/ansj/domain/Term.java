@@ -2,13 +2,11 @@ package org.ansj.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.ansj.library.NgramLibrary;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.ansj.util.MyStaticValue.*;
-import static org.ansj.util.MyStaticValue.dTemp;
 
 public class Term implements Comparable<Term> {
 
@@ -24,7 +22,7 @@ public class Term implements Comparable<Term> {
     @Getter//这个term的所有词性
     private TermNatures termNatures = TermNatures.NULL;// 词性列表
     @Getter
-    private AnsjItem item = AnsjItem.NULL;// 词性列表
+    private AnsjItem item = AnsjItem.NULL_ITEM;// 词性列表
     @Setter
     @Getter
     private Term next;// 同一行内下一个数据
@@ -90,7 +88,7 @@ public class Term implements Comparable<Term> {
             return score;
         }
 
-        int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
+        int nTwoWordsFreq = NGRAM_LIBRARY.getTwoWordFreq(from, to);
         double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
 
         if (value < 0) {

@@ -5,15 +5,13 @@ import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Nature;
-import org.ansj.library.DATDictionary;
-import org.ansj.library.NatureLibrary;
+import org.ansj.library.*;
+import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.util.FileFinder;
-import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
@@ -21,7 +19,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Logger;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
+import static com.google.common.base.Charsets.UTF_8;
+import static org.ansj.util.AnsjUtils.*;
 
 /**
  * 这个类储存一些公用变量.
@@ -43,6 +42,7 @@ public class MyStaticValue {
 
 
     public static final String TAB = "\t";
+    public static final String NEW_LINE = "\n";
 
     public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
@@ -98,6 +98,32 @@ public class MyStaticValue {
             AnsjUtils.rawLinesFromClasspath("nature/nature.table") // 词性关联表
     );
 
+    /**
+     * 机构名词典
+     */
+    public static final CompanyAttrLibrary COMPANY_ATTR_LIBRARY = new CompanyAttrLibrary(
+            AnsjUtils.rawLinesFromClasspath("company/company.data")
+    );
+
+    public static final PersonAttrLibrary PERSON_ATTR_LIBRARY = PERSON_ATTR_LIBRARY();
+
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    public static PersonAttrLibrary PERSON_ATTR_LIBRARY() {
+        return new PersonAttrLibrary(
+                AnsjUtils.rawLinesFromClasspath("person/person.dic"),
+                (Map<String, int[][]>) new ObjectInputStream(AnsjUtils.classpathResource("person/asian_name_freq.data")).readObject()//名字词性对象反序列化
+        );
+    }
+
+    private static final DoubleArrayTire CORE_DIC = DoubleArrayTire.loadText(AnsjUtils.classpathResource("core.dic"), AnsjItem.class);
+    public static final DATDictionary DAT_DICTIONARY = new DATDictionary(CORE_DIC);
+
+    public static final NgramLibrary NGRAM_LIBRARY = new NgramLibrary(
+            rawLinesFromClasspath("bigramdict.dic", UTF_8),
+            DAT_DICTIONARY
+    );
+
     static {
         init();
     }
@@ -114,7 +140,7 @@ public class MyStaticValue {
             try {
                 File find = FileFinder.find("library.properties");
                 if (find != null) {
-                    rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
+                    rb = new PropertyResourceBundle(reader(filesystemResource(find.getAbsolutePath()), System.getProperty("file.encoding")));
                     LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
                 }
             } catch (Exception e1) {
@@ -139,100 +165,31 @@ public class MyStaticValue {
     }
 
     /**
-     * 人名词典
-     */
-    public static BufferedReader getPersonReader() {
-        return AnsjUtils.getClasspathResourceReader("person/person.dic");
-    }
-
-    /**
-     * 机构名词典
-     */
-    public static BufferedReader getCompanReader() {
-        return AnsjUtils.getClasspathResourceReader("company/company.data");
-    }
-
-    /**
-     * 得道姓名单字的词频词典
-     */
-    public static BufferedReader getPersonFreqReader() {
-        return AnsjUtils.getClasspathResourceReader("person/name_freq.dic");
-    }
-
-    /**
      * 机构名词典
      */
     public static BufferedReader getNewWordReader() {
-        return AnsjUtils.getClasspathResourceReader("newWord/new_word_freq.dic");
+        return reader(classpathResource("newWord/new_word_freq.dic"));
     }
 
     /**
      * 核心词典
      */
     public static BufferedReader getArraysReader() {
-        return AnsjUtils.getClasspathResourceReader("arrays.dic");
+        return reader(classpathResource("arrays.dic"));
     }
 
     /**
      * 数字词典
      */
     public static BufferedReader getNumberReader() {
-        return AnsjUtils.getClasspathResourceReader("numberLibrary.dic");
+        return reader(classpathResource("numberLibrary.dic"));
     }
 
     /**
      * 英文词典
      */
     public static BufferedReader getEnglishReader() {
-        return AnsjUtils.getClasspathResourceReader("englishLibrary.dic");
-    }
-
-    /**
-     * 名字词性对象反序列化
-     */
-    @SneakyThrows
-    @SuppressWarnings("unchecked")
-    public static Map<String, int[][]> getPersonFreqMap() {
-        try (final ObjectInputStream os = new ObjectInputStream(AnsjUtils.getClasspathResource("person/asian_name_freq.data"))) {
-            return (Map<String, int[][]>) os.readObject();
-        }
-    }
-
-    /**
-     * 词与词之间的关联表数据
-     */
-    @SneakyThrows
-    public static void initBigramTables() {
-        try (final BufferedReader reader = IOUtil.getReader(AnsjUtils.getClasspathResource("bigramdict.dic"), "UTF-8")) {
-            String temp;
-            while ((temp = reader.readLine()) != null) {
-                if (isBlank(temp)) {
-                    continue;
-                }
-                final String[] split = temp.split("\t");
-                final int freq = Integer.parseInt(split[1]);
-                final String[] strs = split[0].split("@");
-
-                AnsjItem fromItem = DATDictionary.getItem(strs[0]);
-                AnsjItem toItem = DATDictionary.getItem(strs[1]);
-
-                if (fromItem == AnsjItem.NULL && strs[0].contains("#")) {
-                    fromItem = AnsjItem.BEGIN;
-                }
-                if (toItem == AnsjItem.NULL && strs[1].contains("#")) {
-                    toItem = AnsjItem.END;
-                }
-                if (fromItem == AnsjItem.NULL || toItem == AnsjItem.NULL) {
-                    continue;
-                }
-
-                if (fromItem.bigramEntryMap == null) {
-                    fromItem.bigramEntryMap = new HashMap<>();
-                }
-
-                fromItem.bigramEntryMap.put(toItem.getIndex(), freq);
-            }
-        }
+        return reader(classpathResource("englishLibrary.dic"));
     }
 
     /**
@@ -251,7 +208,7 @@ public class MyStaticValue {
         try {
             long start = System.currentTimeMillis();
             LIBRARYLOG.info("begin init crf model!");
-            crfSplitWord = new SplitWord(Model.loadModel(IOUtil.getInputStream(crfModel)));
+            crfSplitWord = new SplitWord(Model.loadModel(filesystemResource(crfModel)));
             LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
         } finally {
             LOCK.unlock();

@@ -4,9 +4,11 @@ import lombok.SneakyThrows;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.google.common.base.Charsets.UTF_8;
 import static java.util.stream.Collectors.toList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -26,22 +28,36 @@ public class AnsjUtils {
     }
 
     public static List<String> rawLinesFromClasspath(final String file) {
-        return rawLines(getClasspathResource(file));
+        return rawLines(classpathResource(file), null);
+    }
+
+    public static List<String> rawLinesFromClasspath(final String file, final Charset charset) {
+        return rawLines(classpathResource(file), charset);
     }
 
     @SneakyThrows
-    public static List<String> rawLines(final InputStream inputStream) {
-        return IOUtils.readLines(inputStream)
-                .stream()
-                .collect(toList());
+    public static List<String> rawLines(final InputStream inputStream, final Charset charset) {
+        return charset != null ?
+                IOUtils.readLines(inputStream, charset).stream().collect(toList()) :
+                IOUtils.readLines(inputStream).stream().collect(toList());
     }
 
     @SneakyThrows
-    public static BufferedReader getClasspathResourceReader(final String name) {
-        return new BufferedReader(new InputStreamReader(getClasspathResource(name), "UTF-8"));
+    public static BufferedReader reader(final InputStream resource, final String charsetName) {
+        return new BufferedReader(new InputStreamReader(resource, charsetName));
     }
 
-    public static InputStream getClasspathResource(final String name) {
+    @SneakyThrows
+    public static BufferedReader reader(final InputStream resource) {
+        return reader(resource, UTF_8.name());
+    }
+
+    @SneakyThrows
+    public static InputStream filesystemResource(final String file) {
+        return new FileInputStream(file);
+    }
+
+    public static InputStream classpathResource(final String name) {
         // maven工程修改词典加载方式
         return AnsjUtils.class.getResourceAsStream("/" + name);
     }

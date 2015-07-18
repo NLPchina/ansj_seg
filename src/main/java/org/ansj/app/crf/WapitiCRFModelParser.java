@@ -15,6 +15,7 @@ import java.util.Map;
 import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 import static org.ansj.app.crf.CrfppModelParser.parseTemplate;
+import static org.ansj.util.MyStaticValue.TAB;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public abstract class WapitiCRFModelParser {
@@ -45,14 +46,14 @@ public abstract class WapitiCRFModelParser {
         int tagNum = 0;
         final Map<String, Integer> statusMap = new HashMap<>();
         for (final String str : statusLines) {
-            String[] split = str.split("\t");
+            String[] split = str.split(TAB);
             tagNum = addStatus(statusMap, split[1], tagNum);
             tagNum = addStatus(statusMap, split[2], tagNum);
         }
 
         final double[][] status = new double[tagNum][tagNum];
         for (final String str : statusLines) {
-            String[] split = str.split("\t");
+            String[] split = str.split(TAB);
             status[statusMap.get(split[1])][statusMap.get(split[2])] = parseDouble(split[3]);
         }
 
@@ -115,7 +116,7 @@ public abstract class WapitiCRFModelParser {
             final int featureNum,
             final int tagNum
     ) {
-        final String[] fragments = temp.split("\t");
+        final String[] fragments = temp.split(TAB);
 
         final int mIndex = fragments[0].indexOf(":");
 

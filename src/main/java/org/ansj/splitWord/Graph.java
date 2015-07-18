@@ -3,7 +3,9 @@ package org.ansj.splitWord;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.DATDictionary;
+
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
+import static org.ansj.util.MyStaticValue.TAB;
 
 /**
  * 最短路径
@@ -29,8 +31,8 @@ public class Graph {
         realStr = str;
         this.chars = str.toCharArray();
         terms = new Term[chars.length + 1];
-        end = new Term(E, chars.length, AnsjItem.END);
-        root = new Term(B, -1, AnsjItem.BEGIN);
+        end = new Term(E, chars.length, AnsjItem.END_ITEM);
+        root = new Term(B, -1, AnsjItem.BEGIN_ITEM);
         terms[chars.length] = end;
     }
 
@@ -289,7 +291,7 @@ public class Graph {
             }
         } else {
             char c = chars[to];
-            TermNatures tn = DATDictionary.getItem(c).termNatures;
+            TermNatures tn = DAT_DICTIONARY.getItem(c).termNatures;
             if (tn == null || tn == TermNatures.NULL) {
                 tn = TermNatures.NULL;
             }
@@ -322,9 +324,9 @@ public class Graph {
             if (term == null) {
                 continue;
             }
-            System.out.print(term.getName() + "\t" + term.getSelfScore() + " ,");
+            System.out.print(term.getName() + TAB + term.getSelfScore() + " ,");
             if ((term = term.getNext()) != null) {
-                System.out.print(term + "\t" + term.getSelfScore() + " ,");
+                System.out.print(term + TAB + term.getSelfScore() + " ,");
             }
             System.out.println();
         }

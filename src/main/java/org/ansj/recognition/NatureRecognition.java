@@ -4,13 +4,13 @@ import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
 import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
@@ -76,10 +76,10 @@ public class NatureRecognition {
         int tempOffe = 0;
         for (final String word : words) {
             // 获得词性, 先从系统辞典, 再从用户自定义辞典
-            final AnsjItem ansjItem = DATDictionary.getItem(word);
+            final AnsjItem ansjItem = DAT_DICTIONARY.getItem(word);
 
             final TermNatures tn;
-            if (ansjItem != AnsjItem.NULL) {
+            if (ansjItem != AnsjItem.NULL_ITEM) {
                 tn = ansjItem.termNatures;
             } else if ((params = UserDefineLibrary.getInstance().getParams(word)) != null) {
                 tn = new TermNatures(new TermNature(params[0], 1));

@@ -1,8 +1,8 @@
 package org.ansj.demo;
 
 import lombok.SneakyThrows;
-import org.ansj.splitWord.LearnTool;
 import org.ansj.domain.NewWord;
+import org.ansj.splitWord.LearnTool;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.util.HashMap;
@@ -10,8 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
-import static org.ansj.util.MyStaticValue.NATURE_NR;
-import static org.ansj.util.MyStaticValue.NATURE_NW;
+import static org.ansj.util.MyStaticValue.*;
 
 /**
  * 新词发现工具
@@ -43,7 +42,7 @@ public class LearnToolDemo {
         List<Entry<String, Double>> topTree = learnTool.getTopTree(0);
         StringBuilder sb = new StringBuilder();
         for (Entry<String, Double> entry : topTree) {
-            sb.append(entry.getKey() + "\t" + entry.getValue() + "\n");
+            sb.append(entry.getKey()).append(TAB).append(entry.getValue()).append(NEW_LINE);
         }
         IOUtil.Writer("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, sb.toString());
         sb = null;

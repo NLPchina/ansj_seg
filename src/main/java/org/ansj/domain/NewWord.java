@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import static org.ansj.util.MyStaticValue.NATURE_NW;
+import static org.ansj.util.MyStaticValue.TAB;
 
 /**
  * 新词发现,实体名
@@ -52,6 +53,6 @@ public class NewWord {
 
     @Override
     public String toString() {
-        return this.name + "\t" + this.score + "\t" + this.getNature().natureStr;
+        return this.name + TAB + this.score + TAB + this.getNature().natureStr;
     }
 }

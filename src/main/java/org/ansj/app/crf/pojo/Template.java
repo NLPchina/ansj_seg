@@ -7,6 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.ansj.util.MyStaticValue.NEW_LINE;
+import static org.ansj.util.MyStaticValue.TAB;
+
 /**
  * 解析crf++模板
  *
@@ -83,10 +86,10 @@ public class Template implements Serializable {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder()
-                .append("left:").append(this.left).append("\t")
-                .append("rightr:").append(this.right).append("\n");
+                .append("left:").append(this.left).append(TAB)
+                .append("rightr:").append(this.right).append(NEW_LINE);
         for (final int[] ints : this.ft) {
-            sb.append(Arrays.toString(ints)).append("\n");
+            sb.append(Arrays.toString(ints)).append(NEW_LINE);
         }
         return sb.toString();
     }

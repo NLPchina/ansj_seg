@@ -1,58 +1,38 @@
 package org.ansj.library;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.HashMap;
+import com.google.common.collect.ImmutableMap;
 
-import org.ansj.util.MyStaticValue;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.lang.Integer.parseInt;
+import static org.ansj.util.MyStaticValue.TAB;
 
 /**
  * 机构名识别词典加载类
- * 
+ *
  * @author ansj
- * 
  */
 public class CompanyAttrLibrary {
-	private static HashMap<String, int[]> cnMap = null;
 
-	private CompanyAttrLibrary() {
-	}
+    private final Map<String, int[]> map;
 
-	public static HashMap<String, int[]> getCompanyMap() {
-		if (cnMap != null) {
-			return cnMap;
-		}
-		try {
-			init();
-		} catch (Exception e) {
-			e.printStackTrace();
-			cnMap = new HashMap<String, int[]>();
-		}
-		return cnMap;
-	}
+    public CompanyAttrLibrary(final List<String> lines) {
+        final HashMap<String, int[]> cnMap = new LinkedHashMap<>();
+        for (final String line : lines) {
+            final String[] strs = line.split(TAB);
+            final int[] cna = new int[]{
+                    parseInt(strs[1]),
+                    parseInt(strs[2])
+            };
+            cnMap.put(strs[0], cna);
+        }
+        this.map = ImmutableMap.copyOf(cnMap);
+    }
 
-	// company_freq
-
-	private static void init() throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = null;
-		try {
-			cnMap = new HashMap<String, int[]>();
-			br = MyStaticValue.getCompanReader();
-			String temp = null;
-			String[] strs = null;
-			int[] cna = null;
-			while ((temp = br.readLine()) != null) {
-				strs = temp.split("\t");
-				cna = new int[2];
-				cna[0] = Integer.parseInt(strs[1]);
-				cna[1] = Integer.parseInt(strs[2]);
-				cnMap.put(strs[0], cna);
-			}
-		} finally {
-			if (br != null)
-				br.close();
-		}
-	}
-
+    public Map<String, int[]> getCompanyMap() {
+        return this.map;
+    }
 }

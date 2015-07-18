@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
+import static org.ansj.util.MyStaticValue.TAB;
 
 public class AnsjServlet {
 
@@ -78,7 +79,7 @@ public class AnsjServlet {
             if (nature) {
                 sb.append("/").append(k.getScore());
             }
-            sb.append("\t");
+            sb.append(TAB);
         }
         return sb.toString();
     }
@@ -99,7 +100,7 @@ public class AnsjServlet {
             if (nature && !"null".equals(term.getNature().natureStr)) {
                 tmp += "/" + term.getNature().natureStr;
             }
-            sb.append(tmp).append("\t");
+            sb.append(tmp).append(TAB);
         }
         return sb.toString();
     }

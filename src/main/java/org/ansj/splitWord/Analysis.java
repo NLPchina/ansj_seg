@@ -16,8 +16,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.ansj.library.DATDictionary.IN_SYSTEM;
-import static org.ansj.library.DATDictionary.status;
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
 import static org.nlpcn.commons.lang.util.StringUtil.isBlank;
 
 /**
@@ -125,14 +124,14 @@ public abstract class Analysis {
         int end;
         String str;
         for (int i = startOffe; i < endOffe; i++) {
-            switch (status(chars[i])) {
+            switch (DAT_DICTIONARY.status(chars[i])) {
                 case 0:
                     gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
                     break;
                 case 4:
                     start = i;
                     end = 1;
-                    while (++i < endOffe && status(chars[i]) == 4) {
+                    while (++i < endOffe && DAT_DICTIONARY.status(chars[i]) == 4) {
                         end++;
                     }
                     str = WordAlert.alertEnglish(chars, start, end);
@@ -142,7 +141,7 @@ public abstract class Analysis {
                 case 5:
                     start = i;
                     end = 1;
-                    while (++i < endOffe && status(chars[i]) == 5) {
+                    while (++i < endOffe && DAT_DICTIONARY.status(chars[i]) == 5) {
                         end++;
                     }
                     str = WordAlert.alertNumber(chars, start, end);
@@ -153,7 +152,7 @@ public abstract class Analysis {
                     start = i;
                     end = i;
                     char c = chars[start];
-                    while (IN_SYSTEM[c] > 0) {
+                    while (DAT_DICTIONARY.inSystem(c)) {
                         end++;
                         if (++i >= endOffe)
                             break;
@@ -173,7 +172,7 @@ public abstract class Analysis {
                     /**
                      * 如果未分出词.以未知字符加入到gp中
                      */
-                    if (IN_SYSTEM[c] > 0 || status(c) > 3) {
+                    if (DAT_DICTIONARY.inSystem(c) || DAT_DICTIONARY.status(c) > 3) {
                         i -= 1;
                     } else {
                         gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));

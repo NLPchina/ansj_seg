@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
 import static org.ansj.util.MyStaticValue.LIBRARYLOG;
+import static org.ansj.util.MyStaticValue.TAB;
 import static org.nlpcn.commons.lang.util.StringUtil.isBlank;
 
 
@@ -183,11 +185,11 @@ public final class UserDefineLibrary {
         try (final BufferedReader br = IOUtil.getReader(new FileInputStream(file), "UTF-8")) {
             while ((temp = br.readLine()) != null) {
                 if (!isBlank(temp)) {
-                    final String[] strs = temp.split("\t");
+                    final String[] strs = temp.split(TAB);
                     strs[0] = strs[0].toLowerCase();
 
                     // 如何核心辞典存在那么就放弃
-                    if (isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {
+                    if (isSkipUserDefine && DAT_DICTIONARY.getId(strs[0]) > 0) {
                         continue;
                     }
 
