@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
 
 /**
  * 自动摘要,同时返回关键词

@@ -27,6 +27,18 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class MyStaticValue {
 
+    // 平滑参数
+    public static final double dSmoothingPara = 0.1;
+    // 一个参数
+    public static final int MAX_FREQUENCE = 2079997;// 7528283+329805;
+    // ﻿Two linked Words frequency
+    public static final double dTemp = (double) 1 / MAX_FREQUENCE;
+
+//    public static void main(String[] args) {
+//        System.out.println(Math.log(dTemp * 2));
+//    }
+
+
     public static final String TAB = "\t";
 
     public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");

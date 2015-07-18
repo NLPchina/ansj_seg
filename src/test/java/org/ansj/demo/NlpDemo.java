@@ -1,12 +1,12 @@
 package org.ansj.demo;
 
-import org.ansj.dic.LearnTool;
+import org.ansj.splitWord.LearnTool;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
 
 public class NlpDemo {
 

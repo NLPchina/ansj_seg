@@ -8,7 +8,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.BaseAnalysis;
 
 /**
  * @author ansj

@@ -2,7 +2,6 @@ package org.ansj.app.crf;
 
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Template;
-import org.ansj.util.MatrixUtil;
 import org.ansj.util.WordAlert;
 
 import java.util.Collections;
@@ -156,7 +155,7 @@ public class SplitWord {
             for (int j = 0; j < chars.length; j++) {
                 chars[j] = getElement(elements, index + tmpl.ft[i][j]).name;
             }
-            MatrixUtil.dot(tagScore, this.model.getFeature(i, chars));
+            MatrixUtils.dot(tagScore, this.model.getFeature(i, chars));
         }
         elements.set(index, elements.get(index).withTagScore(tagScore));
     }

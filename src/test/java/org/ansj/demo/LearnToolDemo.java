@@ -1,7 +1,7 @@
 package org.ansj.demo;
 
 import lombok.SneakyThrows;
-import org.ansj.dic.LearnTool;
+import org.ansj.splitWord.LearnTool;
 import org.ansj.domain.NewWord;
 import org.nlpcn.commons.lang.util.IOUtil;
 
@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
 import static org.ansj.util.MyStaticValue.NATURE_NR;
 import static org.ansj.util.MyStaticValue.NATURE_NW;
 

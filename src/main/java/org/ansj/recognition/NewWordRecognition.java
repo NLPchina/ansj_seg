@@ -1,11 +1,14 @@
 package org.ansj.recognition;
 
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.domain.Term;
-import org.ansj.util.TermUtil;
+import org.ansj.library.CompanyAttrLibrary;
+import org.ansj.splitWord.LearnTool;
+import org.ansj.domain.*;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
+
+import java.util.HashMap;
+
+import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
+import static org.ansj.util.MyStaticValue.NATURE_NW;
 
 /**
  * 新词识别
@@ -111,16 +114,16 @@ public class NewWordRecognition {
 	}
 
 	private void makeNewTerm() {
-		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
+		Term term = new Term(sb.toString(), offe, new TermNatures(new TermNature(tempNature.natureStr, 1)));
 		term.setSelfScore(score);
 		term.setNature(tempNature);
 		if (sb.length() > 3) {
-			term.setSubTerm(TermUtil.getSubTerm(from, to));
+			term.setSubTerm(Term.subTerms(from, to));
 		}
-		TermUtil.termLink(from, term);
-		TermUtil.termLink(term, to);
-		TermUtil.insertTerm(terms, term);
-		TermUtil.parseNature(term);
+		Term.termLink(from, term);
+		Term.termLink(term, to);
+		Term.insertTerm(terms, term);
+		parseNature(term);
 	}
 
 	/**
@@ -133,4 +136,38 @@ public class NewWordRecognition {
 		score = 0;
 		sb = new StringBuilder();
 	}
+
+
+    private static final HashMap<String, int[]> companyMap = CompanyAttrLibrary.getCompanyMap();
+
+    /**
+     * 得到细颗粒度的分词，并且确定词性
+     * <p>
+     * 返回是null说明已经是最细颗粒度
+     */
+    static void parseNature(final Term term) {
+        if (!NATURE_NW().equals(term.getNature())) {
+            return;
+        }
+        if (term.getName().length() <= 3) {
+            return;
+        }
+        if (ForeignPersonRecognition.isFName(term.getName())) {// 是否是外国人名
+            term.setNature(NATURE_LIBRARY.getNature("nrf"));
+            return;
+        }
+
+        // 判断是否是机构名
+        final Term first = term.getSubTerm().get(0);
+        final Term last = term.getSubTerm().get(term.getSubTerm().size() - 1);
+        final int[] is = companyMap.get(last.getName());
+        int all = 0;
+        if (is != null) {
+            all += is[1];
+        }
+
+        if (all > 1000) {
+            term.setNature(NATURE_LIBRARY.getNature("nt"));
+        }
+    }
 }

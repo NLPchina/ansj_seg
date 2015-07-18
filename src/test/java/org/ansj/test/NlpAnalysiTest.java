@@ -3,7 +3,7 @@ package org.ansj.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
 import org.junit.Test;
 
 public class NlpAnalysiTest {

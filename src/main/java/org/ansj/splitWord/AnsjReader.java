@@ -1,4 +1,4 @@
-package org.ansj.util;
+package org.ansj.splitWord;
 
 import java.io.IOException;
 import java.io.Reader;

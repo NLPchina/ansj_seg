@@ -3,7 +3,7 @@ package org.ansj.lucene.util;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.splitWord.Analysis;
-import org.ansj.util.AnsjReader;
+import org.ansj.splitWord.AnsjReader;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
@@ -55,17 +55,15 @@ public class AnsjTokenizer extends Tokenizer {
             if (term == null) {
                 return false;
             }
-            String name = term.getName();
-            final int nameLength = name.length();
-            if (this.pstemming && term.termNatures() == TermNatures.EN) {
-                name = this.stemmer.stem(name);
-                term.setName(name);
-            }
+            final int nameLength = term.getName().length();
+            final String name = !this.pstemming || term.getTermNatures() != TermNatures.EN ?
+                    term.getName() :
+                    this.stemmer.stem(term.getName());
 
             if (this.filter == null || !this.filter.contains(name)) {
                 position++;
                 this.positionAttr.setPositionIncrement(position);
-                this.termAtt.setEmpty().append(term.getName());
+                this.termAtt.setEmpty().append(name);
                 this.offsetAtt.setOffset(term.getOffe(), term.getOffe() + nameLength);
                 return true;
             }

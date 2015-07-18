@@ -5,7 +5,6 @@ import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NgramLibrary;
-import org.ansj.util.TermUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +40,7 @@ public class AsianPersonRecognition {
     public void recognition() {
         List<Term> termList = recogntion_();
         for (Term term2 : termList) {
-            TermUtil.insertTerm(terms, term2);
+            Term.insertTerm(terms, term2);
         }
     }
 

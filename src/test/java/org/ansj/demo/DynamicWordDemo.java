@@ -2,7 +2,7 @@ package org.ansj.demo;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 import java.util.List;
 

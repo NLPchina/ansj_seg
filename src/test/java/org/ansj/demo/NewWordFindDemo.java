@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.ansj.dic.LearnTool;
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.LearnTool;
+import org.ansj.splitWord.NlpAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 /**

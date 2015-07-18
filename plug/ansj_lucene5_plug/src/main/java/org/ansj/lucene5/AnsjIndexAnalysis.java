@@ -1,7 +1,7 @@
 package org.ansj.lucene5;
 
 import org.ansj.lucene.util.AnsjTokenizer;
-import org.ansj.splitWord.analysis.IndexAnalysis;
+import org.ansj.splitWord.IndexAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 

@@ -7,7 +7,7 @@
 //
 //import org.ansj.domain.Nature;
 //import org.ansj.domain.NewWord;
-//import org.ansj.util.Graph;
+//import org.ansj.splitWord.Graph;
 //
 ///**
 // * 基于规则的新词发现 jijiang feidiao 

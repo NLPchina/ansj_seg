@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 public class Test {
 

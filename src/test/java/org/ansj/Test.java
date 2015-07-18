@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;

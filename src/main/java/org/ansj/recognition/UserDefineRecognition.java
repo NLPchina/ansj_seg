@@ -4,7 +4,6 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
@@ -111,7 +110,7 @@ public class UserDefineRecognition {
         final TermNatures termNatures = new TermNatures(new TermNature(this.tempNature, this.tempFreq));
         final Term term = new Term(sb.toString(), this.offe, termNatures);
         term.setSelfScore(-1 * this.tempFreq);
-        TermUtil.insertTerm(this.terms, term);
+        Term.insertTerm(this.terms, term);
         // reset();
     }
 

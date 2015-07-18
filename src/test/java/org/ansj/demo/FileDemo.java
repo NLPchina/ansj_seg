@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.BaseAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 /**

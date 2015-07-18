@@ -2,11 +2,13 @@ package org.ansj.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.ansj.util.MathUtil;
+import org.ansj.library.NgramLibrary;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.util.MyStaticValue.NATURE_NULL;
+import static org.ansj.util.MyStaticValue.*;
+import static org.ansj.util.MyStaticValue.dTemp;
 
 public class Term implements Comparable<Term> {
 
@@ -23,8 +25,9 @@ public class Term implements Comparable<Term> {
     private TermNatures termNatures = TermNatures.NULL;// 词性列表
     @Getter
     private AnsjItem item = AnsjItem.NULL;// 词性列表
+    @Setter
     @Getter
-    private Term next;// 同一行内数据
+    private Term next;// 同一行内下一个数据
     @Setter
     @Getter
     private double score = 0;// 分数
@@ -42,49 +45,18 @@ public class Term implements Comparable<Term> {
     private Nature nature = NATURE_NULL();// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
     @Setter
     @Getter
-    private List<Term> subTerm = null;
-
-    public Term(final String name, final int offe, final AnsjItem item) {
-        super();
-        this.name = name;
-        this.offe = offe;
-        this.item = item;
-        if (item.termNatures != null) {
-            this.termNatures = item.termNatures;
-            if (termNatures.nature != null) {
-                this.nature = termNatures.nature;
-            }
-        }
-    }
+    private List<Term> subTerm;
 
     public Term(final String name, final int offe, final TermNatures termNatures) {
-        super();
         this.name = name;
         this.offe = offe;
         this.termNatures = termNatures;
-        if (termNatures.nature != null) {
-            this.nature = termNatures.nature;
-        }
+        this.nature = this.termNatures != null ? this.termNatures.nature : null;
     }
 
-    public Term(final String name, final int offe, final String natureStr, final int natureFreq) {
-        super();
-        this.name = name;
-        this.offe = offe;
-        TermNature termNature = new TermNature(natureStr, natureFreq);
-        this.nature = termNature.nature;
-        this.termNatures = new TermNatures(termNature);
-    }
-
-    /**
-     * 返回他自己
-     *
-     * @param next 设置他的下一个
-     * @return
-     */
-    public Term setNext(Term next) {
-        this.next = next;
-        return this;
+    public Term(final String name, final int offe, final AnsjItem item) {
+        this(name, offe, item.termNatures);
+        this.item = item;
     }
 
     // 可以到达的位置
@@ -94,25 +66,44 @@ public class Term implements Comparable<Term> {
 
     /**
      * 核心构建最优的路径
-     *
-     * @param from
      */
-    public void setPathScore(final Term from) {
-        // 维特比进行最优路径的构建
-        double score = MathUtil.compuScore(from, this);
+    public void setPathScore(final Term from) {// 维特比进行最优路径的构建
+        final double score = compuScore(from, this);
         if (this.from == null || this.score >= score) {
             this.setFromAndScore(from, score);
         }
     }
 
     /**
-     * 核心分数的最优的路径,越小越好
+     * 从一个词的词性到另一个词的词的分数
      *
-     * @param from
+     * @param from 前面的词
+     * @param to   后面的词
+     * @return 分数
      */
-    public void setPathSelfScore(final Term from) {
-        double score = this.selfScore + from.score;
-        // 维特比进行最优路径的构建
+    static double compuScore(final Term from, final Term to) {
+        double frequency = from.getTermNatures().allFreq + 1;
+
+        if (frequency < 0) {
+            double score = from.getScore() + MAX_FREQUENCE;
+            from.setScore(score);
+            return score;
+        }
+
+        int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
+        double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
+
+        if (value < 0) {
+            value += frequency;
+        }
+        return from.getScore() + value;
+    }
+
+    /**
+     * 核心分数的最优的路径,越小越好
+     */
+    public void setPathSelfScore(final Term from) {// 维特比进行最优路径的构建
+        final double score = this.selfScore + from.score;
         if (this.from == null || this.score > score) {
             this.setFromAndScore(from, score);
         }
@@ -128,7 +119,7 @@ public class Term implements Comparable<Term> {
      *
      * @param offe
      */
-    public void updateOffe(int offe) {
+    public void updateOffe(final int offe) {
         this.offe += offe;
     }
 
@@ -150,5 +141,39 @@ public class Term implements Comparable<Term> {
         return "null".equals(this.nature.natureStr) ?
                 this.name :
                 (this.realName != null ? this.realName : this.name) + "/" + this.nature.natureStr;
+    }
+
+    /**
+     * 将一个term插入到链表中的对应位置中,应该是词长由大到小
+     *
+     * @param terms
+     * @param term
+     */
+    public static void insertTerm(final Term[] terms, final Term term) {
+        Term temp = terms[term.getOffe()];
+        Term last = temp;//插入到最右面
+        while ((temp = temp.getNext()) != null) {
+            last = temp;
+        }
+        last.setNext(term);
+    }
+
+    public static void termLink(final Term from, final Term to) {
+        if (from == null || to == null)
+            return;
+        from.setTo(to);
+        to.setFrom(from);
+    }
+
+    /**
+     * 从from到to生成subterm
+     */
+    public static List<Term> subTerms(final Term from, final Term to) {
+        final List<Term> subTerms = new ArrayList<>(3);
+        Term pointer = from;
+        while ((pointer = pointer.getTo()) != to) {
+            subTerms.add(pointer);
+        }
+        return subTerms;
     }
 }

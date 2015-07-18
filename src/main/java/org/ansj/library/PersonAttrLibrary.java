@@ -1,4 +1,4 @@
-package org.ansj.library.name;
+package org.ansj.library;
 
 import lombok.SneakyThrows;
 import org.ansj.domain.PersonNatureAttr;

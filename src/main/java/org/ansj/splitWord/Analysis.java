@@ -4,9 +4,6 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.impl.GetWordsImpl;
-import org.ansj.util.AnsjReader;
-import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.GetWord;
@@ -193,7 +190,7 @@ public abstract class Analysis {
      * @param graph  graph
      * @param result result
      */
-    protected void setRealName(final Graph graph, final List<Term> result) {
+    protected static void setRealName(final Graph graph, final List<Term> result) {
         if (!MyStaticValue.isRealName) {
             return;
         }
@@ -210,10 +207,6 @@ public abstract class Analysis {
     }
 
     protected abstract List<Term> getResult(final Graph graph);
-
-    public abstract class Merger {
-        public abstract List<Term> merger();
-    }
 
     /**
      * 重置分词器

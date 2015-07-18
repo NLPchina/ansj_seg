@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
 import org.ansj.util.MyStaticValue;
 
 public class JianFanZhuanhuanDemo {

@@ -2,7 +2,7 @@ package org.ansj.test;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 import org.junit.Test;
 
 import java.util.HashMap;

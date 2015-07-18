@@ -1,4 +1,4 @@
-package org.ansj.dic;
+package org.ansj.splitWord;
 
 import lombok.Getter;
 import org.ansj.app.crf.SplitWord;
@@ -6,7 +6,6 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.util.Graph;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.CollectionUtil;
 

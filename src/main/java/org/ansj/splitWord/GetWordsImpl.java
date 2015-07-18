@@ -1,4 +1,4 @@
-package org.ansj.splitWord.impl;
+package org.ansj.splitWord;
 
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;

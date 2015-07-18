@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 public class TestSigHan {

@@ -1,6 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
 
 public class MoneyTest {
 	public static void main(String[] args) throws Exception {

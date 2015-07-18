@@ -4,8 +4,7 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 import org.ansj.util.FilterModifWord;
 
 public class UserDefineLibraryNatureDemo {

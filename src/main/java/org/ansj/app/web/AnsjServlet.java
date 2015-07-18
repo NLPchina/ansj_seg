@@ -7,15 +7,15 @@ import org.ansj.app.summary.SummaryComputer;
 import org.ansj.app.summary.TagContent;
 import org.ansj.domain.Term;
 import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.BaseAnalysis;
+import org.ansj.splitWord.IndexAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
-import static org.ansj.splitWord.analysis.NlpAnalysis.nlpParse;
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
 
 public class AnsjServlet {
 

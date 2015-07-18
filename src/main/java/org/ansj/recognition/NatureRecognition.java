@@ -6,11 +6,12 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.util.MathUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
  * 词性标注工具类
@@ -156,7 +157,7 @@ public class NatureRecognition {
         }
 
         public void setScore(final NatureTerm natureTerm) {
-            double tempScore = MathUtil.compuNatureFreq(natureTerm, this);
+            double tempScore = compuNatureFreq(natureTerm, this);
             if (this.from == null || this.score < tempScore) {
                 this.score = tempScore;
                 this.from = natureTerm;
@@ -167,5 +168,20 @@ public class NatureRecognition {
         public String toString() {
             return this.termNature.nature.natureStr + "/" + this.selfScore;
         }
+    }
+
+    /**
+     * 两个词性之间的分数计算
+     *
+     * @param from from
+     * @param to   to
+     * @return score
+     */
+    public static double compuNatureFreq(final NatureTerm from, final NatureTerm to) {
+        double twoWordFreq = NATURE_LIBRARY.getNatureFreq(from.termNature.nature, to.termNature.nature);
+        if (twoWordFreq == 0) {
+            twoWordFreq = Math.log(from.selfScore + to.selfScore);
+        }
+        return from.score + Math.log((from.selfScore + to.selfScore) * twoWordFreq) + to.selfScore;
     }
 }

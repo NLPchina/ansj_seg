@@ -3,7 +3,6 @@ package org.ansj.recognition;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.util.*;
@@ -85,10 +84,25 @@ public class ForeignPersonRecognition {
             } else if (tempList.size() == 1) {
                 reset();
             } else if (tempList.size() > 1) {
-                TermUtil.insertTerm(terms, tempList, TermNatures.NR);
+                insertTerm(terms, tempList);
                 reset();
             }
         }
+    }
+
+    static void insertTerm(Term[] terms, List<Term> tempList) {
+        StringBuilder sb = new StringBuilder();
+        int offe = tempList.get(0).getOffe();
+        for (Term term : tempList) {
+            sb.append(term.getName());
+            terms[term.getOffe()] = null;
+        }
+        Term term = new Term(sb.toString(), offe, TermNatures.NR);
+        insertTermNum(terms, term);
+    }
+
+    static void insertTermNum(final Term[] terms, final Term term) {
+        terms[term.getOffe()] = term;
     }
 
     private boolean validate(String name) {
