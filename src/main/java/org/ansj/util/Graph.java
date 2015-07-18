@@ -52,11 +52,11 @@ public class Graph {
 	 */
 	public void addTerm(final Term term) {
 		// 是否有数字
-		if (!hasNum && term.termNatures().numAttr.numFreq > 0) {
+		if (!hasNum && term.getTermNatures().numAttr.numFreq > 0) {
 			hasNum = true;
 		}
 		// 是否有人名
-		if (!hasPerson && term.termNatures().personAttr.flag) {
+		if (!hasPerson && term.getTermNatures().personAttr.flag) {
 			hasPerson = true;
 		}
 		// 将词放到图的位置
@@ -76,7 +76,7 @@ public class Graph {
 		Term to = end;
 		to.clearScore();
 		Term from = null;
-		while ((from = to.from()) != null) {
+		while ((from = to.getFrom()) != null) {
 			for (int i = from.getOffe() + 1; i < to.getOffe(); i++) {
 				terms[i] = null;
 			}
@@ -217,9 +217,9 @@ public class Graph {
 			// 找到自身分数对大最长的
 
 			do {
-				if (maxTerm == null || maxScore > term.score()) {
+				if (maxTerm == null || maxScore > term.getScore()) {
 					maxTerm = term;
-				} else if (maxScore == term.score() && maxTerm.getName().length() < term.getName().length()) {
+				} else if (maxScore == term.getScore() && maxTerm.getName().length() < term.getName().length()) {
 					maxTerm = term;
 				}
 
@@ -227,7 +227,7 @@ public class Graph {
 			term = maxTerm;
 			do {
 				maxTo = term.toValue();
-				maxScore = term.score();
+				maxScore = term.getScore();
 				if (maxTo - i == 1 || i + 1 == terms.length)
 					continue;
 				boolean flag = true;// 可以删除
@@ -237,7 +237,7 @@ public class Graph {
 						continue;
 					}
 					do {
-						if (temp.toValue() > maxTo || temp.score() < maxScore) {
+						if (temp.toValue() > maxTo || temp.getScore() < maxScore) {
 							flag = false;
 							break out;
 						}
@@ -260,7 +260,7 @@ public class Graph {
 		// 从第一个词开始往后打分
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			while (term != null && term.from() != null && term != end) {
+			while (term != null && term.getFrom() != null && term != end) {
 				int to = term.toValue();
 				mergerByScore(term, to);
 				term = term.getNext();
@@ -276,7 +276,7 @@ public class Graph {
 		// 从第一个词开始往后打分
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			while (term != null && term.from() != null && term != end) {
+			while (term != null && term.getFrom() != null && term != end) {
 				int to = term.toValue();
 				merger(term, to);
 				term = term.getNext();
@@ -287,12 +287,6 @@ public class Graph {
 
 	/**
 	 * 具体的遍历打分方法
-	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
-	 * @param to
 	 */
 	private void merger(Term fromTerm, int to) {
 		Term term = null;
@@ -316,12 +310,6 @@ public class Graph {
 
 	/**
 	 * 根据分数
-	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
-	 * @param to
 	 */
 	private void mergerByScore(Term fromTerm, int to) {
 		Term term = null;
@@ -344,12 +332,11 @@ public class Graph {
 			if (term == null) {
 				continue;
 			}
-			System.out.print(term.getName() + "\t" + term.selfScore() + " ,");
+			System.out.print(term.getName() + "\t" + term.getSelfScore() + " ,");
 			if ((term = term.getNext()) != null) {
-				System.out.print(term + "\t" + term.selfScore() + " ,");
+				System.out.print(term + "\t" + term.getSelfScore() + " ,");
 			}
 			System.out.println();
 		}
 	}
-
 }

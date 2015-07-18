@@ -63,8 +63,8 @@ public class SummaryComputer {
     public Summary toSummary(final String query) {
         final List<Keyword> keywords = nlpParse(query)
                 .stream()
-                .filter(term -> !FILTER_SET.contains(term.natrue().natureStr))
-                .map(term -> new Keyword(term.getName(), term.termNatures().allFreq, 1))
+                .filter(term -> !FILTER_SET.contains(term.getNature().natureStr))
+                .map(term -> new Keyword(term.getName(), term.getTermNatures().allFreq, 1))
                 .collect(Collectors.toList());
         return toSummary(keywords);
     }

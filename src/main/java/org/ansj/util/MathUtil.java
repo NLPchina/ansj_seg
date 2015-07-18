@@ -24,11 +24,11 @@ public class MathUtil {
 	 * @return 分数
 	 */
 	public static double compuScore(final Term from, final Term to) {
-		double frequency = from.termNatures().allFreq + 1;
+		double frequency = from.getTermNatures().allFreq + 1;
 
 		if (frequency < 0) {
-			double score = from.score() + MAX_FREQUENCE;
-			from.score(score);
+			double score = from.getScore() + MAX_FREQUENCE;
+			from.setScore(score);
 			return score;
 		}
 
@@ -38,7 +38,7 @@ public class MathUtil {
 		if (value < 0) {
 			value += frequency;
 		}
-		return from.score() + value;
+		return from.getScore() + value;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class MathUtil {
 	 * @return
 	 */
 	public static double compuScoreFreq(final Term from, final Term term) {
-		return from.termNatures().allFreq + term.termNatures().allFreq;
+		return from.getTermNatures().allFreq + term.getTermNatures().allFreq;
 	}
 
 	/**

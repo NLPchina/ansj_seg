@@ -32,12 +32,8 @@ public class PersonNatureAttr {
     private final int[][] locFreq;
 
     private PersonNatureAttr(
-            final Integer begin,
-            final Integer end,
-            final Integer split,
-            final Integer allFreq,
-            final Boolean flag,
-            final int[][] locFreq
+            final Integer begin, final Integer end, final Integer split,
+            final Integer allFreq, final Boolean flag, final int[][] locFreq
     ) {
         this.begin = begin != null ? begin : 0;
         this.end = end != null ? end : 0;
@@ -47,16 +43,15 @@ public class PersonNatureAttr {
         this.locFreq = locFreq;
     }
 
-    private PersonNatureAttr withNewEndAndAllFreq(final int freq) {
-        return new PersonNatureAttr(this.begin, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
-    }
-
-    private PersonNatureAttr withNewBeginAndEndAndAllFreq(final int freq) {
-        return new PersonNatureAttr(this.begin + freq, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
-    }
-
-    private PersonNatureAttr withNewSplitAndAllFreq(final int freq) {
-        return new PersonNatureAttr(this.begin, this.end, this.split + freq, this.allFreq + freq, this.flag, this.locFreq);
+    /**
+     * 得道某一个位置的词频
+     *
+     * @param length length
+     * @param loc    loc
+     * @return 位置的词频
+     */
+    public int getFreq(final int length, final int loc) {
+        return this.locFreq != null ? this.locFreq[length > 3 ? 3 : length][loc > 4 ? 4 : loc] : 0;
     }
 
     /**
@@ -69,13 +64,13 @@ public class PersonNatureAttr {
         final PersonNatureAttr newVal;
         switch (idx) {
             case 11:
-                newVal = this.withNewEndAndAllFreq(freq);
+                newVal = new PersonNatureAttr(this.begin, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
                 break;
             case 12:
-                newVal = this.withNewBeginAndEndAndAllFreq(freq);
+                newVal = new PersonNatureAttr(this.begin + freq, this.end + freq, this.split, this.allFreq + freq, this.flag, this.locFreq);
                 break;
             case 44:
-                newVal = this.withNewSplitAndAllFreq(freq);
+                newVal = new PersonNatureAttr(this.begin, this.end, this.split + freq, this.allFreq + freq, this.flag, this.locFreq);
                 break;
             default:
                 newVal = this;
@@ -84,37 +79,16 @@ public class PersonNatureAttr {
         return newVal;
     }
 
-    private PersonNatureAttr withNewFlatAndLocFreq(final boolean flag, final int[][] locFreq) {
-        return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, flag, locFreq);
-    }
-
-    private PersonNatureAttr withNewLocFreq(final int[][] locFreq) {
-        return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, this.flag, locFreq);
-    }
-
     /**
      * 词频记录表
-     *
-     * @param ints ints
      */
-    public PersonNatureAttr setlocFreq(final int[][] ints) {
-        for (final int[] anInt : ints) {
+    public PersonNatureAttr withNewLocFreq(final int[][] locFreq) {
+        for (final int[] anInt : locFreq) {
             if (anInt[0] > 0) {
-                return this.withNewFlatAndLocFreq(true, ints);
+                return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, true, locFreq);
             }
         }
-        return this.withNewLocFreq(ints);
-    }
-
-    /**
-     * 得道某一个位置的词频
-     *
-     * @param length length
-     * @param loc    loc
-     * @return 位置的词频
-     */
-    public int getFreq(final int length, final int loc) {
-        return this.locFreq != null ? this.locFreq[length > 3 ? 3 : length][loc > 4 ? 4 : loc] : 0;
+        return new PersonNatureAttr(this.begin, this.end, this.split, this.allFreq, this.flag, locFreq);
     }
 
     @Override

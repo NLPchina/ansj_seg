@@ -29,10 +29,10 @@ public class NgramLibrary {
 	 * @return
 	 */
 	public static int getTwoWordFreq(Term from, Term to) {
-		if (from.item().bigramEntryMap == null) {
+		if (from.getItem().bigramEntryMap == null) {
 			return 0;
 		}
-		Integer freq = from.item().bigramEntryMap.get(to.item().getIndex());
+		Integer freq = from.getItem().bigramEntryMap.get(to.getItem().getIndex());
 
 		if (freq == null) {
 			return 0;
@@ -40,5 +40,4 @@ public class NgramLibrary {
 			return freq;
 		}
 	}
-
 }

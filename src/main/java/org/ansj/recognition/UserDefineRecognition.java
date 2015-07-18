@@ -110,7 +110,7 @@ public class UserDefineRecognition {
         }
         final TermNatures termNatures = new TermNatures(new TermNature(this.tempNature, this.tempFreq));
         final Term term = new Term(sb.toString(), this.offe, termNatures);
-        term.selfScore(-1 * this.tempFreq);
+        term.setSelfScore(-1 * this.tempFreq);
         TermUtil.insertTerm(this.terms, term);
         // reset();
     }
@@ -143,5 +143,4 @@ public class UserDefineRecognition {
         }
         return branch;
     }
-
 }

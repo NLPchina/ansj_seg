@@ -21,33 +21,33 @@ public class NumRecognition {
 				continue;
 			} else if (".".equals(terms[i].getName()) || "．".equals(terms[i].getName())) {
 				// 如果是.前后都为数字进行特殊处理
-				to = terms[i].to();
-				from = terms[i].from();
-				if (from.termNatures().numAttr.flag && to.termNatures().numAttr.flag) {
+				to = terms[i].getTo();
+				from = terms[i].getFrom();
+				if (from.getTermNatures().numAttr.flag && to.getTermNatures().numAttr.flag) {
 					from.setName(from.getName() + "." + to.getName());
-					TermUtil.termLink(from, to.to());
+					TermUtil.termLink(from, to.getTo());
 					terms[to.getOffe()] = null;
 					terms[i] = null;
 					i = from.getOffe() - 1;
 				}
 				continue;
-			} else if (!terms[i].termNatures().numAttr.flag) {
+			} else if (!terms[i].getTermNatures().numAttr.flag) {
 				continue;
 			}
 
 			temp = terms[i];
 			// 将所有的数字合并
-			while ((temp = temp.to()).termNatures().numAttr.flag) {
+			while ((temp = temp.getTo()).getTermNatures().numAttr.flag) {
 				terms[i].setName(terms[i].getName() + temp.getName());
 			}
 			// 如果是数字结尾
-			if (MyStaticValue.isQuantifierRecognition && temp.termNatures().numAttr.numEndFreq > 0) {
+			if (MyStaticValue.isQuantifierRecognition && temp.getTermNatures().numAttr.numEndFreq > 0) {
 				terms[i].setName(terms[i].getName() + temp.getName());
-				temp = temp.to();
+				temp = temp.getTo();
 			}
 
 			// 如果不等,说明terms[i]发生了改变
-			if (terms[i].to() != temp) {
+			if (terms[i].getTo() != temp) {
 				TermUtil.termLink(terms[i], temp);
 				// 将中间无用元素设置为null
 				for (int j = i + 1; j < temp.getOffe(); j++) {

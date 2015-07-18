@@ -66,7 +66,7 @@ public class ForeignPersonRecognition {
             term = terms[i];
             // 如果名字的开始是人名的前缀,或者后缀.那么忽略
             if (tempList.size() == 0) {
-                if (term.termNatures().personAttr.end > 10) {
+                if (term.getTermNatures().personAttr.end > 10) {
                     continue;
                 }
 
@@ -77,7 +77,7 @@ public class ForeignPersonRecognition {
 
             name = term.getName();
 
-            if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
+            if (term.getTermNatures() == TermNatures.NR || term.getTermNatures() == TermNatures.NW || name.length() == 1) {
                 boolean flag = validate(name);
                 if (flag) {
                     tempList.add(term);
@@ -152,7 +152,7 @@ public class ForeignPersonRecognition {
             term = terms[i];
             // 如果名字的开始是人名的前缀,或者后缀.那么忽略
             if (tempList.size() == 0) {
-                if (term.termNatures().personAttr.end > 10) {
+                if (term.getTermNatures().personAttr.end > 10) {
                     continue;
                 }
 
@@ -162,7 +162,7 @@ public class ForeignPersonRecognition {
             }
 
             name = term.getName();
-            if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
+            if (term.getTermNatures() == TermNatures.NR || term.getTermNatures() == TermNatures.NW || name.length() == 1) {
                 boolean flag = validate(name);
                 if (flag) {
                     tempList.add(term);
@@ -194,7 +194,7 @@ public class ForeignPersonRecognition {
             term = terms[i];
             // 如果名字的开始是人名的前缀,或者后缀.那么忽略
             if (tempList.size() == 0) {
-                if (term.termNatures().personAttr.end > 10) {
+                if (term.getTermNatures().personAttr.end > 10) {
                     continue;
                 }
 
@@ -205,7 +205,7 @@ public class ForeignPersonRecognition {
 
             name = term.getName();
 
-            if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
+            if (term.getTermNatures() == TermNatures.NR || term.getTermNatures() == TermNatures.NW || name.length() == 1) {
                 boolean flag = validate(name);
                 if (flag) {
                     tempList.add(term);

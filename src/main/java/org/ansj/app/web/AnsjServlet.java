@@ -96,8 +96,8 @@ public class AnsjServlet {
                     term.getSubTerm().toString() :
                     term.getName();
 
-            if (nature && !"null".equals(term.natrue().natureStr)) {
-                tmp += "/" + term.natrue().natureStr;
+            if (nature && !"null".equals(term.getNature().natureStr)) {
+                tmp += "/" + term.getNature().natureStr;
             }
             sb.append(tmp).append("\t");
         }

@@ -53,9 +53,9 @@ public class NewWordRecognition {
 			if (terms[i] == null) {
 				continue;
 			} else {
-				from = terms[i].from();
-				terms[i].score(0);
-				terms[i].selfScore(0);
+				from = terms[i].getFrom();
+				terms[i].setScore(0);
+				terms[i].setSelfScore(0);
 			}
 
 			branch = branch.getBranch(terms[i].getName());
@@ -71,11 +71,11 @@ public class NewWordRecognition {
 			term = terms[i];
 			sb.append(term.getName());
 			if (branch.getStatus() == 2) {
-				term.selfScore(branch.getParam().getScore());
+				term.setSelfScore(branch.getParam().getScore());
 			}
 			boolean flag = true;
 			while (flag) {
-				term = term.to();
+				term = term.getTo();
 				branch = branch.getBranch(term.getName());
 				// 如果没有找到跳出
 				if (branch == null) {
@@ -90,14 +90,14 @@ public class NewWordRecognition {
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
 					tempNature = branch.getParam().getNature();
-					to = term.to();
+					to = term.getTo();
 					makeNewTerm();
 					continue;
 				case 3:
 					sb.append(term.getName());
 					score = branch.getParam().getScore();
 					tempNature = branch.getParam().getNature();
-					to = term.to();
+					to = term.getTo();
 					makeNewTerm();
 					flag = false;
 					break;
@@ -111,9 +111,8 @@ public class NewWordRecognition {
 	}
 
 	private void makeNewTerm() {
-		// TODO Auto-generated method stub
 		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
-		term.selfScore(score);
+		term.setSelfScore(score);
 		term.setNature(tempNature);
 		if (sb.length() > 3) {
 			term.setSubTerm(TermUtil.getSubTerm(from, to));
@@ -134,5 +133,4 @@ public class NewWordRecognition {
 		score = 0;
 		sb = new StringBuilder();
 	}
-
 }

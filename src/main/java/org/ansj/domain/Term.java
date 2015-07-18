@@ -1,5 +1,7 @@
 package org.ansj.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.ansj.util.MathUtil;
 
 import java.util.List;
@@ -8,32 +10,41 @@ import static org.ansj.util.MyStaticValue.NATURE_NULL;
 
 public class Term implements Comparable<Term> {
 
-    // 当前词
-    private String name;
-    //
+    @Setter
+    @Getter
+    private String name;// 当前词
+    @Setter
+    @Getter
     private String realName;
-    // 当前词的起始位置
-    private int offe;
-    // 词性列表
-    private TermNatures termNatures = TermNatures.NULL;
-    // 词性列表
-    private AnsjItem item = AnsjItem.NULL;
-    // 同一行内数据
-    private Term next;
-    // 分数
-    private double score = 0;
-    // 本身分数
-    private double selfScore = 1;
-    // 起始位置
-    private Term from;
-    // 到达位置
-    private Term to;
-    // 本身这个term的词性.需要在词性识别之后才会有值,默认是空
-    private Nature nature = NATURE_NULL();
-
+    @Setter
+    @Getter
+    private int offe;// 当前词的起始位置
+    @Getter//这个term的所有词性
+    private TermNatures termNatures = TermNatures.NULL;// 词性列表
+    @Getter
+    private AnsjItem item = AnsjItem.NULL;// 词性列表
+    @Getter
+    private Term next;// 同一行内数据
+    @Setter
+    @Getter
+    private double score = 0;// 分数
+    @Setter
+    @Getter
+    private double selfScore = 1;// 本身分数
+    @Setter
+    @Getter
+    private Term from;// 起始位置
+    @Setter
+    @Getter
+    private Term to;// 到达位置
+    @Setter
+    @Getter//获得这个词的词性.词性计算后才可生效
+    private Nature nature = NATURE_NULL();// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
+    @Setter
+    @Getter
     private List<Term> subTerm = null;
 
-    public Term(String name, int offe, AnsjItem item) {
+    public Term(final String name, final int offe, final AnsjItem item) {
         super();
         this.name = name;
         this.offe = offe;
@@ -46,7 +57,7 @@ public class Term implements Comparable<Term> {
         }
     }
 
-    public Term(String name, int offe, TermNatures termNatures) {
+    public Term(final String name, final int offe, final TermNatures termNatures) {
         super();
         this.name = name;
         this.offe = offe;
@@ -56,89 +67,13 @@ public class Term implements Comparable<Term> {
         }
     }
 
-    public Term(String name, int offe, String natureStr, int natureFreq) {
+    public Term(final String name, final int offe, final String natureStr, final int natureFreq) {
         super();
         this.name = name;
         this.offe = offe;
         TermNature termNature = new TermNature(natureStr, natureFreq);
         this.nature = termNature.nature;
         this.termNatures = new TermNatures(termNature);
-    }
-
-    // 可以到达的位置
-    public int toValue() {
-        return offe + name.length();
-    }
-
-    public int getOffe() {
-        return offe;
-    }
-
-    public void setOffe(int offe) {
-        this.offe = offe;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * 核心构建最优的路径
-     *
-     * @param from
-     */
-    public void setPathScore(Term from) {
-        // 维特比进行最优路径的构建
-        double score = MathUtil.compuScore(from, this);
-        if (this.from == null || this.score >= score) {
-            this.setFromAndScore(from, score);
-        }
-    }
-
-    /**
-     * 核心分数的最优的路径,越小越好
-     *
-     * @param from
-     */
-    public void setPathSelfScore(Term from) {
-        double score = this.selfScore + from.score;
-        // 维特比进行最优路径的构建
-        if (this.from == null || this.score > score) {
-            this.setFromAndScore(from, score);
-        }
-    }
-
-    private void setFromAndScore(Term from, double score) {
-        // TODO Auto-generated method stub
-        this.from = from;
-        this.score = score;
-    }
-
-    /**
-     * 进行term合并
-     *
-     * @param to
-     */
-    public Term merage(Term to) {
-        this.name = this.name + to.getName();
-        return this;
-    }
-
-    /**
-     * 更新偏移量
-     *
-     * @param offe
-     */
-    public void updateOffe(int offe) {
-        this.offe += offe;
-    }
-
-    public Term getNext() {
-        return next;
     }
 
     /**
@@ -152,63 +87,49 @@ public class Term implements Comparable<Term> {
         return this;
     }
 
-    public Term from() {
-        return from;
+    // 可以到达的位置
+    public int toValue() {
+        return this.offe + this.name.length();
     }
 
-    public Term to() {
-        return to;
+    /**
+     * 核心构建最优的路径
+     *
+     * @param from
+     */
+    public void setPathScore(final Term from) {
+        // 维特比进行最优路径的构建
+        double score = MathUtil.compuScore(from, this);
+        if (this.from == null || this.score >= score) {
+            this.setFromAndScore(from, score);
+        }
     }
 
-    public void setFrom(Term from) {
+    /**
+     * 核心分数的最优的路径,越小越好
+     *
+     * @param from
+     */
+    public void setPathSelfScore(final Term from) {
+        double score = this.selfScore + from.score;
+        // 维特比进行最优路径的构建
+        if (this.from == null || this.score > score) {
+            this.setFromAndScore(from, score);
+        }
+    }
+
+    private void setFromAndScore(final Term from, final double score) {
         this.from = from;
-    }
-
-    public void setTo(Term to) {
-        this.to = to;
+        this.score = score;
     }
 
     /**
-     * 获得这个term的所有词性
+     * 更新偏移量
      *
-     * @return
+     * @param offe
      */
-    public TermNatures termNatures() {
-        return termNatures;
-    }
-
-    @Override
-    public int compareTo(Term o) {
-        if (this.score > o.score) {
-            return 0;
-        } else {
-            return 1;
-        }
-    }
-
-    public void setNature(Nature nature) {
-        this.nature = nature;
-    }
-
-    /**
-     * 获得这个词的词性.词性计算后才可生效
-     *
-     * @return
-     */
-    public Nature natrue() {
-        return nature;
-    }
-
-    public String getNatureStr() {
-        return nature.natureStr;
-    }
-
-    @Override
-    public String toString() {
-        if ("null".equals(nature.natureStr)) {
-            return name;
-        }
-        return this.getRealName() + "/" + nature.natureStr;
+    public void updateOffe(int offe) {
+        this.offe += offe;
     }
 
     /**
@@ -219,42 +140,15 @@ public class Term implements Comparable<Term> {
         this.selfScore = 0;
     }
 
-    public void setSubTerm(List<Term> subTerm) {
-        this.subTerm = subTerm;
+    @Override
+    public int compareTo(final Term o) {
+        return this.score > o.score ? 0 : 1;
     }
 
-    public List<Term> getSubTerm() {
-        return subTerm;
-    }
-
-    public String getRealName() {
-        if (realName == null) {
-            return name;
-        }
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
-    public double score() {
-        return this.score;
-    }
-
-    public void score(double score) {
-        this.score = score;
-    }
-
-    public double selfScore() {
-        return this.selfScore;
-    }
-
-    public void selfScore(double selfScore) {
-        this.selfScore = selfScore;
-    }
-
-    public AnsjItem item() {
-        return this.item;
+    @Override
+    public String toString() {
+        return "null".equals(this.nature.natureStr) ?
+                this.name :
+                (this.realName != null ? this.realName : this.name) + "/" + this.nature.natureStr;
     }
 }

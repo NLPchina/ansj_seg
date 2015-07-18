@@ -55,7 +55,7 @@ public class KeyWordComputer {
                 if (keyword != null) {
                     keyword.updateWeight(1);
                 } else {
-                    termMap.put(term.getName(), new Keyword(term.getName(), term.natrue().allFrequency, weight));
+                    termMap.put(term.getName(), new Keyword(term.getName(), term.getNature().allFrequency, weight));
                 }
             }
         }
@@ -86,7 +86,7 @@ public class KeyWordComputer {
             return 0;
         }
 
-        final String pos = term.natrue().natureStr;
+        final String pos = term.getNature().natureStr;
         final Double posScore = POS_SCORE.get(pos) != null ? POS_SCORE.get(pos) : 1.0;
         if (posScore == 0) {
             return 0;

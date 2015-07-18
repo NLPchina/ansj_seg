@@ -24,10 +24,7 @@ public class Nature {
     }
 
     public Nature(final String natureStr) {
-        this.natureStr = natureStr;
-        this.index = 0;
-        this.natureIndex = 0;
-        this.allFrequency = 0;
+        this(natureStr, 0, 0, 0);
     }
 
     @Override

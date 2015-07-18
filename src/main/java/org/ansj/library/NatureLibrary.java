@@ -98,6 +98,6 @@ public class NatureLibrary {
      * @return 获得两个term的nature之间的频率
      */
     public int getNatureFreq(final Term from, final Term to) {
-        return getNatureFreq(from.natrue(), to.natrue());
+        return getNatureFreq(from.getNature(), to.getNature());
     }
 }

@@ -46,7 +46,7 @@ public class NatureRecognition {
      */
     public void recognition() {
         for (int i = 0; i < this.terms.size(); i++) {
-            this.natureTermTable[i] = getNatureTermArr(this.terms.get(i).termNatures().termNatures);
+            this.natureTermTable[i] = getNatureTermArr(this.terms.get(i).getTermNatures().termNatures);
         }
         walk();
     }

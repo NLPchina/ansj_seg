@@ -20,12 +20,11 @@ public class TermNatures {
 
     public static final TermNatures BEGIN = new TermNatures(0, TermNature.BEGIN.withFrequency(50610));
 
-    public static final TermNatures NT = new TermNatures(TermNature.NT);
+//    public static final TermNatures NT = new TermNatures(TermNature.NT);
 
     public static final TermNatures NW = new TermNatures(TermNature.NW);
 
     public static final TermNatures NULL = new TermNatures(TermNature.NULL);
-    ;
 
     /**
      * 词的id
