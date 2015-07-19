@@ -3,11 +3,13 @@ package org.ansj.splitWord;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
+import org.ansj.library.DATDictionary;
+import org.ansj.library.NatureLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.recognition.NewWordRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.MyStaticValue;
+import org.ansj.util.AnsjContext;
 import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
@@ -16,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
-import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -25,8 +26,6 @@ import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
  * @author ansj
  */
 public class NlpAnalysis extends Analysis {
-
-    private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
 
     private final LearnTool learn;
 
@@ -61,6 +60,10 @@ public class NlpAnalysis extends Analysis {
 
     @Override
     protected List<Term> getResult(final Graph graph) {
+        final NatureLibrary natureLibrary = AnsjContext.natureLibrary;
+        final DATDictionary dat = CONTEXT().datDictionary;
+        final SplitWord crfSplitWord = CONTEXT().getCrfSplitWord();
+
         final LearnTool learn = this.learn != null ? this.learn : new LearnTool();
 
         graph.walkPath();
@@ -74,16 +77,16 @@ public class NlpAnalysis extends Analysis {
         List<Term> result = getResult2(graph);
         new NatureRecognition(result).recognition();
 
-        learn.learn(graph, DEFAULT_SLITWORD);
+        learn.learn(graph, crfSplitWord);
 
         // 通过crf分词
-        List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+        List<String> words = crfSplitWord.cut(graph.chars);
 
         for (String word : words) {
-            if (word.length() < 2 || DAT_DICTIONARY.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
+            if (word.length() < 2 || dat.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
                 continue;
             }
-            learn.addTerm(new NewWord(word, NATURE_LIBRARY.getNature("nw")), DEFAULT_SLITWORD);
+            learn.addTerm(new NewWord(word, natureLibrary.getNature("nw")), crfSplitWord);
         }
 
         // 用户自定义词典的识别

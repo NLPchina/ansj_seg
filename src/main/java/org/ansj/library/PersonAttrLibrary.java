@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import static java.lang.Integer.parseInt;
 import static org.ansj.domain.PersonNatureAttr.NULL_PERSON_NATURE_ATTR;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 人名标注所用的词典就是简单的hashmap简单方便谁用谁知道,只在加载词典的时候用

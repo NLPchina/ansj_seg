@@ -5,7 +5,6 @@ import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.Reader;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 标准分词
@@ -23,14 +23,15 @@ public class ToAnalysis extends Analysis {
 
     @Override
     protected List<Term> getResult(final Graph graph) {
+
         graph.walkPath();
         // 数字发现
-        if (MyStaticValue.isNumRecognition && graph.hasNum) {
+        if (CONTEXT().isNumRecognition && graph.hasNum) {
             NumRecognition.recognition(graph.terms);
         }
 
         // 姓名识别
-        if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+        if (graph.hasPerson && CONTEXT().isNameRecognition) {
             // 亚洲人名识别
             new AsianPersonRecognition(graph.terms).recognition();
             graph.walkPathByScore();

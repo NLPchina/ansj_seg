@@ -1,8 +1,9 @@
 package org.ansj.splitWord;
 
 import org.ansj.domain.AnsjItem;
+import org.ansj.library.DATDictionary;
 
-import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 public class GetWordsImpl implements GetWords {
 
@@ -76,7 +77,7 @@ public class GetWordsImpl implements GetWords {
                     i++;
                     offe = start;
                     tempBaseValue = baseValue;
-                    return DAT_DICTIONARY.getItem(tempBaseValue).getName();
+                    return CONTEXT().datDictionary.getItem(tempBaseValue).getName();
                 case 3:
                     offe = start;
                     start++;
@@ -84,7 +85,7 @@ public class GetWordsImpl implements GetWords {
                     end = 0;
                     tempBaseValue = baseValue;
                     baseValue = 0;
-                    return DAT_DICTIONARY.getItem(tempBaseValue).getName();
+                    return CONTEXT().datDictionary.getItem(tempBaseValue).getName();
             }
 
         }
@@ -105,16 +106,18 @@ public class GetWordsImpl implements GetWords {
      * @return
      */
     private int getStatement() {
+        final DATDictionary dat = CONTEXT().datDictionary;
+
         checkValue = baseValue;
-        baseValue = DAT_DICTIONARY.getItem(checkValue).getBase() + charHashCode;
-        if (baseValue < DAT_DICTIONARY.arrayLength && (DAT_DICTIONARY.getItem(baseValue).getCheck() == checkValue || DAT_DICTIONARY.getItem(baseValue).getCheck() == -1)) {
-            return DAT_DICTIONARY.getItem(baseValue).getStatus();
+        baseValue = dat.getItem(checkValue).getBase() + charHashCode;
+        if (baseValue < dat.arrayLength && (dat.getItem(baseValue).getCheck() == checkValue || dat.getItem(baseValue).getCheck() == -1)) {
+            return dat.getItem(baseValue).getStatus();
         }
         return 0;
     }
 
     public AnsjItem getItem() {
-        return DAT_DICTIONARY.getItem(tempBaseValue);
+        return CONTEXT().datDictionary.getItem(tempBaseValue);
     }
 
     @Override

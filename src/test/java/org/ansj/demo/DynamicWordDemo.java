@@ -6,6 +6,8 @@ import org.ansj.splitWord.ToAnalysis;
 
 import java.util.List;
 
+import static org.ansj.util.AnsjContext.CONTEXT;
+
 /**
  * 动态添加删除用户自定义词典!
  *
@@ -14,7 +16,7 @@ import java.util.List;
 public class DynamicWordDemo {
 
     public static void main(final String[] args) {
-        final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
 
         // 增加新词,中间按照'\t'隔开
         userDefineLibrary.insertWord("ansj中文分词", "userDefine", 1000);

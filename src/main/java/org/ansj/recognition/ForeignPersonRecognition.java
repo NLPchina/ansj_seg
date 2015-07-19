@@ -3,11 +3,12 @@ package org.ansj.recognition;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.util.AnsjContext;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.util.*;
 
-import static org.ansj.util.MyStaticValue.NATURE_NRF;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 外国人名识别
@@ -16,11 +17,11 @@ import static org.ansj.util.MyStaticValue.NATURE_NRF;
  */
 public class ForeignPersonRecognition {
 
-    private static final LinkedList<NameChar> PRLIST = new LinkedList<NameChar>();
+    private static final LinkedList<NameChar> PRLIST = new LinkedList<>();
 
     private static NameChar INNAME = null;
 
-    private static HashSet<Character> ISNOTFIRST = new HashSet<Character>();
+    private static HashSet<Character> ISNOTFIRST = new HashSet<>();
 
     static {
         NameChar trans_english = new NameChar(
@@ -45,7 +46,7 @@ public class ForeignPersonRecognition {
         ISNOTFIRST.add('—');
     }
 
-    private List<Term> tempList = new ArrayList<Term>();
+    private List<Term> tempList = new ArrayList<>();
     private LinkedList<NameChar> prList = null;
     private Term[] terms = null;
 
@@ -188,7 +189,7 @@ public class ForeignPersonRecognition {
                 for (Term temp : tempList) {
                     sb.append(temp.getName());
                 }
-                all.add(new NewWord(sb.toString(), NATURE_NRF()));
+                all.add(new NewWord(sb.toString(), AnsjContext.natureLibrary.NATURE_NRF()));
                 reset();
             }
         }

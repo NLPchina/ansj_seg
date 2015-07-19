@@ -3,7 +3,6 @@ package org.ansj.recognition;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
 import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
@@ -12,6 +11,7 @@ import java.util.List;
 
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 用户自定义词典. 又称补充词典
@@ -35,7 +35,7 @@ public class UserDefineRecognition {
         this.terms = terms;
         this.forests = forests != null && forests.size() > 0 ?
                 unmodifiableList(forests) :
-                singletonList(UserDefineLibrary.getInstance().getForest());
+                singletonList(CONTEXT().getUserDefineLibrary().getForest());
     }
 
     public void recognition() {

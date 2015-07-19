@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ansj.util.MyStaticValue.NEW_LINE;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.NEW_LINE;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 解析crf++模板

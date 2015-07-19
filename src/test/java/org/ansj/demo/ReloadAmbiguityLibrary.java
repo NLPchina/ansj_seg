@@ -5,6 +5,8 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
+import static org.ansj.util.AnsjContext.CONTEXT;
+
 /**
  * 重新加载用户自定义辞典的两种方式
  *
@@ -13,12 +15,12 @@ import org.nlpcn.commons.lang.tire.library.Library;
 public class ReloadAmbiguityLibrary {
 
     public static void main(String[] args) throws Exception {
-        UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+        UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
 
         // 从文件中reload
-        userDefineLibrary = UserDefineLibrary.getInstance(null, loadFormFile());
+        userDefineLibrary = new UserDefineLibrary(null, loadFormFile());
         // 通过内存中reload
-        userDefineLibrary = UserDefineLibrary.getInstance(null, loadFormStr());
+        userDefineLibrary = new UserDefineLibrary(null, loadFormStr());
 
         // 歧义辞典增加新词
 

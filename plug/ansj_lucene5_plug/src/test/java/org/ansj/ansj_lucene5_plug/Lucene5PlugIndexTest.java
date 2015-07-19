@@ -1,20 +1,18 @@
 package org.ansj.ansj_lucene5_plug;
 
-//package org.ansj.lucene3;
-//
-
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.lucene.util.PorterStemmer;
 import org.ansj.lucene5.AnsjAnalysis;
 import org.ansj.lucene5.AnsjIndexAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.CorruptIndexException;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -27,7 +25,6 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.Version;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -35,6 +32,8 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Date;
 import java.util.HashSet;
+
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 public class Lucene5PlugIndexTest {
 
@@ -62,20 +61,18 @@ public class Lucene5PlugIndexTest {
 
     @Test
     public void indexTest() throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {
-        MyStaticValue.userLibrary = "/home/ansj/workspace/ansj_seg/library/default.dic";
+        // TODO 支持修改配置 CONTEXT().userLibrary = "/home/ansj/workspace/ansj_seg/library/default.dic";
+
         final HashSet<String> hs = new HashSet<>();
         hs.add("的");
         Analyzer analyzer = new AnsjIndexAnalysis(hs, false);
-        Directory directory = null;
-        IndexWriter iwriter = null;
         String text = "季德胜蛇药片 10片*6板 ";
 
-        UserDefineLibrary.getInstance().insertWord("蛇药片", "n", 1000);
+        CONTEXT().getUserDefineLibrary().insertWord("蛇药片", "n", 1000);
 
         IndexWriterConfig ic = new IndexWriterConfig(analyzer);
-        // 建立内存索引对象
-        directory = new RAMDirectory();
-        iwriter = new IndexWriter(directory, ic);
+        final Directory directory = new RAMDirectory();// 建立内存索引对象
+        final IndexWriter iwriter = new IndexWriter(directory, ic);
         addContent(iwriter, text);
         iwriter.commit();
         iwriter.close();

@@ -9,7 +9,7 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 对文件进行分词的例子

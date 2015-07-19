@@ -1,11 +1,13 @@
 package org.ansj.library;
 
 import org.ansj.domain.Nature;
-import org.ansj.util.AnsjUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
+
+import static org.ansj.util.AnsjUtils.classpathResource;
+import static org.ansj.util.AnsjUtils.rawLines;
 
 public class NatureLibraryTest {
 
@@ -14,8 +16,8 @@ public class NatureLibraryTest {
     @Before
     public void setUp() {
         this.natureLibrary = new NatureLibrary(
-                AnsjUtils.rawLinesFromClasspath("nature/nature.map"), // 词性表
-                AnsjUtils.rawLinesFromClasspath("nature/nature.table") // 词性关联表
+                rawLines(classpathResource("nature/nature.map")),// 词性表
+                rawLines(classpathResource("nature/nature.table")) // 词性关联表
         );
     }
 

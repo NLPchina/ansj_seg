@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import static org.ansj.util.MyStaticValue.NEW_LINE;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.NEW_LINE;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 这是一个新词发现的简单例子.

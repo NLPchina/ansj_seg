@@ -1,7 +1,8 @@
 package org.ansj.domain;
 
+import org.ansj.util.AnsjContext;
+
 import static java.lang.Integer.parseInt;
-import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
  * 一个词里面会有一些词性
@@ -32,7 +33,7 @@ public class TermNature {
     }
 
     public TermNature(final String natureStr, final int frequency) {
-        this(NATURE_LIBRARY.getNature(natureStr), frequency);
+        this(AnsjContext.natureLibrary.getNature(natureStr), frequency);
     }
 
     public TermNature withFrequency(final int frequency) {

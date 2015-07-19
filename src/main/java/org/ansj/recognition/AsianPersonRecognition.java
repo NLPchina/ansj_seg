@@ -4,13 +4,13 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.util.AnsjContext;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.ansj.util.MyStaticValue.NATURE_NR;
-import static org.ansj.util.MyStaticValue.NGRAM_LIBRARY;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 人名识别工具类
@@ -137,7 +137,7 @@ public class AsianPersonRecognition {
                 endFreq = 10;
                 flag = false;
             } else if (terms[i] != null) {
-                int twoWordFreq = NGRAM_LIBRARY.getTwoWordFreq(term, terms[i]);
+                int twoWordFreq = CONTEXT().ngramLibrary.getTwoWordFreq(term, terms[i]);
                 if (twoWordFreq > 3) {
                     return null;
                 }
@@ -168,7 +168,7 @@ public class AsianPersonRecognition {
     public List<NewWord> getNewWords() {
         return recogntion_()
                 .stream()
-                .map(term -> new NewWord(term.getName(), NATURE_NR()))
+                .map(term -> new NewWord(term.getName(), AnsjContext.natureLibrary.NATURE_NR()))
                 .collect(Collectors.toList());
     }
 

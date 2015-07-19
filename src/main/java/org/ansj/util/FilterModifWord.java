@@ -9,6 +9,7 @@ import java.util.*;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 停用词过滤,修正词性到用户词性.
@@ -51,7 +52,7 @@ public class FilterModifWord {
             if (this.contains(term)) {
                 continue;
             }
-            final String[] params = UserDefineLibrary.getInstance().getParams(term.getName());
+            final String[] params = CONTEXT().getUserDefineLibrary().getParams(term.getName());
             if (params != null) {
                 term.setNature(new Nature(params[0]));
             }

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**
@@ -20,6 +20,22 @@ public class NatureLibrary {
 
     private static final int ONE = 1;
     private static final int MINUS_ONE = -1;
+
+    public Nature NATURE_NW() {
+        return this.getNature("nw");
+    }
+
+    public Nature NATURE_NRF() {
+        return this.getNature("nrf");
+    }
+
+    public Nature NATURE_NR() {
+        return this.getNature("nr");
+    }
+
+    public Nature NATURE_NULL() {
+        return this.getNature("null");
+    }
 
     /**
      * 词性的字符串对照索引位的hashmap(我发现我又效率狂了.不能这样啊)

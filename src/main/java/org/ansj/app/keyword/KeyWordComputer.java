@@ -6,7 +6,7 @@ import org.ansj.domain.Term;
 import java.util.*;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class KeyWordComputer {

@@ -8,10 +8,12 @@ import org.ansj.util.FilterModifWord;
 
 import java.util.List;
 
+import static org.ansj.util.AnsjContext.CONTEXT;
+
 public class FilterAndUpdateNatureDemo {
 
     public static void main(final String[] args) {
-        final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
 
         // 加入停用词, 过滤词性词性
         final FilterModifWord filterModifWord = new FilterModifWord()
