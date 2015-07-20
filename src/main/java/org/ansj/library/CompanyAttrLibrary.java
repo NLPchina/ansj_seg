@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 机构名识别词典加载类

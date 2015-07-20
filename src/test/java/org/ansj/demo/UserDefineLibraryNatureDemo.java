@@ -7,10 +7,12 @@ import org.ansj.util.FilterModifWord;
 
 import java.util.List;
 
+import static org.ansj.util.AnsjContext.CONTEXT;
+
 public class UserDefineLibraryNatureDemo {
 
     public static void main(final String[] args) {
-        final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
         final FilterModifWord filterModifWord = new FilterModifWord();
 
         //增加词汇

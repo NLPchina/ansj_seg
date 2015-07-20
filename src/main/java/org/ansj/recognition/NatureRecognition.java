@@ -5,13 +5,13 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.util.AnsjContext;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
-import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 词性标注工具类
@@ -76,12 +76,12 @@ public class NatureRecognition {
         int tempOffe = 0;
         for (final String word : words) {
             // 获得词性, 先从系统辞典, 再从用户自定义辞典
-            final AnsjItem ansjItem = DAT_DICTIONARY.getItem(word);
+            final AnsjItem ansjItem = CONTEXT().datDictionary.getItem(word);
 
             final TermNatures tn;
             if (ansjItem != AnsjItem.NULL_ITEM) {
                 tn = ansjItem.termNatures;
-            } else if ((params = UserDefineLibrary.getInstance().getParams(word)) != null) {
+            } else if ((params = CONTEXT().getUserDefineLibrary().getParams(word)) != null) {
                 tn = new TermNatures(new TermNature(params[0], 1));
             } else if (WordAlert.isEnglish(word)) {
                 tn = TermNatures.EN;
@@ -178,7 +178,7 @@ public class NatureRecognition {
      * @return score
      */
     public static double compuNatureFreq(final NatureTerm from, final NatureTerm to) {
-        double twoWordFreq = NATURE_LIBRARY.getNatureFreq(from.termNature.nature, to.termNature.nature);
+        double twoWordFreq = AnsjContext.natureLibrary.getNatureFreq(from.termNature.nature, to.termNature.nature);
         if (twoWordFreq == 0) {
             twoWordFreq = Math.log(from.selfScore + to.selfScore);
         }

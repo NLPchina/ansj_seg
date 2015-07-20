@@ -11,19 +11,12 @@ import static org.ansj.domain.PersonNatureAttr.NULL_PERSON_NATURE_ATTR;
 public class TermNatures {
 
     public static final TermNatures M = new TermNatures(TermNature.M);
-
-    public static final TermNatures NR = new TermNatures(TermNature.NR);
-
     public static final TermNatures EN = new TermNatures(TermNature.EN);
-
-    public static final TermNatures END = new TermNatures(-1, TermNature.END.withFrequency(50610));
-
     public static final TermNatures BEGIN = new TermNatures(0, TermNature.BEGIN.withFrequency(50610));
-
+    public static final TermNatures END = new TermNatures(-1, TermNature.END.withFrequency(50610));
+    public static final TermNatures NR = new TermNatures(TermNature.NR);
 //    public static final TermNatures NT = new TermNatures(TermNature.NT);
-
     public static final TermNatures NW = new TermNatures(TermNature.NW);
-
     public static final TermNatures NULL = new TermNatures(TermNature.NULL);
 
     /**

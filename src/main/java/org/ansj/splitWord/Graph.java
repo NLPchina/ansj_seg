@@ -4,8 +4,8 @@ import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 
-import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 最短路径
@@ -291,7 +291,7 @@ public class Graph {
             }
         } else {
             char c = chars[to];
-            TermNatures tn = DAT_DICTIONARY.getItem(c).termNatures;
+            TermNatures tn = CONTEXT().datDictionary.getItem(c).termNatures;
             if (tn == null || tn == TermNatures.NULL) {
                 tn = TermNatures.NULL;
             }

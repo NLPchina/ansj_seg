@@ -2,7 +2,9 @@ package org.ansj.demo;
 
 import lombok.SneakyThrows;
 import org.ansj.domain.NewWord;
+import org.ansj.library.NatureLibrary;
 import org.ansj.splitWord.LearnTool;
+import org.ansj.util.AnsjContext;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.util.HashMap;
@@ -10,7 +12,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
-import static org.ansj.util.MyStaticValue.*;
+import static org.ansj.util.AnsjContext.NEW_LINE;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 新词发现工具
@@ -21,6 +24,7 @@ public class LearnToolDemo {
 
     @SneakyThrows
     public static void main(final String[] args) {
+        final NatureLibrary natureLibrary = AnsjContext.natureLibrary;
 
         // 构建一个新词学习的工具类。这个对象。保存了所有分词中出现的新词。出现次数越多。相对权重越大。
         LearnTool learnTool = new LearnTool();
@@ -34,7 +38,7 @@ public class LearnToolDemo {
         System.out.println(learnTool.getTopTree(10));
 
         // 只取得词性为Nature.NR的新词
-        System.out.println(learnTool.getTopTree(10, NATURE_NR()));
+        System.out.println(learnTool.getTopTree(10, natureLibrary.NATURE_NR()));
 
         /**
          * 将训练结果序列写入到硬盘中
@@ -53,7 +57,7 @@ public class LearnToolDemo {
         learnTool = new LearnTool();
         HashMap<String, Double> loadMap = IOUtil.loadMap("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, String.class, Double.class);
         for (Entry<String, Double> entry : loadMap.entrySet()) {
-            learnTool.addTerm(new NewWord(entry.getKey(), NATURE_NW(), entry.getValue()), null);
+            learnTool.addTerm(new NewWord(entry.getKey(), natureLibrary.NATURE_NW(), entry.getValue()), null);
             learnTool.active(entry.getKey());
         }
         System.out.println(learnTool.getTopTree(10));

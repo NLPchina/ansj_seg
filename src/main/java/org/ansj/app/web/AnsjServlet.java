@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 
 public class AnsjServlet {
 

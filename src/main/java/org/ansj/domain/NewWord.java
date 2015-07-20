@@ -2,9 +2,10 @@ package org.ansj.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.ansj.util.AnsjContext;
 
-import static org.ansj.util.MyStaticValue.NATURE_NW;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 新词发现,实体名
@@ -46,7 +47,7 @@ public class NewWord {
     public void update(final Nature nature, final int freq) {
         this.score += this.score * freq;
         this.allFreq += freq;
-        if (NATURE_NW() != nature) {
+        if (AnsjContext.natureLibrary.NATURE_NW() != nature) {
             this.nature = nature;
         }
     }

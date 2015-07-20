@@ -1,10 +1,12 @@
 package org.ansj.recognition;
 
 import org.ansj.domain.*;
+import org.ansj.library.NatureLibrary;
 import org.ansj.splitWord.LearnTool;
+import org.ansj.util.AnsjContext;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
-import static org.ansj.util.MyStaticValue.*;
+import static org.ansj.util.AnsjContext.CONTEXT;
 
 /**
  * 新词识别
@@ -139,28 +141,30 @@ public class NewWordRecognition {
      * 返回是null说明已经是最细颗粒度
      */
     static void parseNature(final Term term) {
-        if (!NATURE_NW().equals(term.getNature())) {
+        final NatureLibrary natureLibrary = AnsjContext.natureLibrary;
+
+        if (!natureLibrary.NATURE_NW().equals(term.getNature())) {
             return;
         }
         if (term.getName().length() <= 3) {
             return;
         }
         if (ForeignPersonRecognition.isFName(term.getName())) {// 是否是外国人名
-            term.setNature(NATURE_LIBRARY.getNature("nrf"));
+            term.setNature(natureLibrary.getNature("nrf"));
             return;
         }
 
         // 判断是否是机构名
         final Term first = term.getSubTerm().get(0);
         final Term last = term.getSubTerm().get(term.getSubTerm().size() - 1);
-        final int[] is = COMPANY_ATTR_LIBRARY.getCompanyMap().get(last.getName());
+        final int[] is = CONTEXT().companyAttrLibrary.getCompanyMap().get(last.getName());
         int all = 0;
         if (is != null) {
             all += is[1];
         }
 
         if (all > 1000) {
-            term.setNature(NATURE_LIBRARY.getNature("nt"));
+            term.setNature(natureLibrary.getNature("nt"));
         }
     }
 }

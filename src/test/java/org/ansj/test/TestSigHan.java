@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.TAB;
 
 public class TestSigHan {
     public static void main(String[] args) throws IOException {

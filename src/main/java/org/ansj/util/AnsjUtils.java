@@ -19,7 +19,7 @@ public class AnsjUtils {
     }
 
     @SneakyThrows
-    public static <T> List<T> parseWithoutBlankOrComment(final InputStream inputStream, final Function<String, T> mapper) {
+    public static <T> List<T> linesWithoutBlankAndComments(final InputStream inputStream, final Function<String, T> mapper) {
         return IOUtils.readLines(inputStream)
                 .stream()
                 .filter(line -> isNotBlank(line) && !line.trim().startsWith("#"))
@@ -27,12 +27,9 @@ public class AnsjUtils {
                 .collect(toList());
     }
 
-    public static List<String> rawLinesFromClasspath(final String file) {
-        return rawLines(classpathResource(file), null);
-    }
-
-    public static List<String> rawLinesFromClasspath(final String file, final Charset charset) {
-        return rawLines(classpathResource(file), charset);
+    @SneakyThrows
+    public static List<String> rawLines(final InputStream inputStream) {
+        return rawLines(inputStream, UTF_8);
     }
 
     @SneakyThrows

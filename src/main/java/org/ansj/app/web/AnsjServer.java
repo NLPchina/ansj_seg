@@ -4,7 +4,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.spi.HttpServerProvider;
-import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.io.*;
@@ -16,6 +15,7 @@ import java.util.Map;
 
 import static java.lang.Integer.valueOf;
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
+import static org.ansj.util.AnsjContext.LIBRARYLOG;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -32,7 +32,7 @@ public class AnsjServer {
     private static final String FILE_ENCODING = System.getProperty("file.encoding");
 
     public void startServer(int serverPort) throws Exception {
-        MyStaticValue.LIBRARYLOG.info("starting ansj http server");
+        LIBRARYLOG.info("starting ansj http server");
         HttpServerProvider provider = HttpServerProvider.provider();
         HttpServer httpserver = provider.createHttpServer(new InetSocketAddress(serverPort), 100);// 监听端口6666,能同时接
         // 受100个请求
@@ -168,7 +168,7 @@ public class AnsjServer {
             args = new String[]{"8888"};
         }
         /* warm up ansj engine */
-		/* FIXME: dirty hack here... */
+        /* FIXME: dirty hack here... */
         nlpParse(WARM_UP_WORD);
 		/* set up server */
         int serverPort = valueOf(args[0]);

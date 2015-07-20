@@ -2,7 +2,6 @@ package org.ansj.library;
 
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
-import org.ansj.util.MyStaticValue;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
@@ -10,7 +9,8 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static org.ansj.domain.AnsjItem.*;
-import static org.ansj.util.MyStaticValue.TAB;
+import static org.ansj.util.AnsjContext.LIBRARYLOG;
+import static org.ansj.util.AnsjContext.TAB;
 
 /**
  * 两个词之间的关联
@@ -41,7 +41,7 @@ public class NgramLibrary {
                 fromItem.bigramEntryMap.put(toItem.getIndex(), freq);
             }
         });
-        MyStaticValue.LIBRARYLOG.info("init ngram ok use time :" + (System.currentTimeMillis() - start));
+        LIBRARYLOG.info("init ngram ok use time :" + (System.currentTimeMillis() - start));
     }
 
     /**

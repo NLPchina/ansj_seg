@@ -3,8 +3,7 @@ package org.ansj.splitWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
-import org.ansj.util.MyStaticValue;
+import org.ansj.library.DATDictionary;
 import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -16,7 +15,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
+import static org.ansj.util.AnsjContext.CONTEXT;
 import static org.nlpcn.commons.lang.util.StringUtil.isBlank;
 
 /**
@@ -96,7 +95,7 @@ public abstract class Analysis {
         final Graph gp = new Graph(temp);
 
         int startOffe = 0;
-        final GetWord gw = UserDefineLibrary.getInstance().getWord(gp.chars);
+        final GetWord gw = CONTEXT().getUserDefineLibrary().getWord(gp.chars);
         if (gw != null) {
             String[] params;
             while ((gw.getFrontWords()) != null) {
@@ -119,19 +118,20 @@ public abstract class Analysis {
     }
 
     private void analysis(final Graph gp, final int startOffe, final int endOffe) {
+        final DATDictionary dat = CONTEXT().datDictionary;
         final char[] chars = gp.chars;
         int start;
         int end;
         String str;
         for (int i = startOffe; i < endOffe; i++) {
-            switch (DAT_DICTIONARY.status(chars[i])) {
+            switch (dat.status(chars[i])) {
                 case 0:
                     gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
                     break;
                 case 4:
                     start = i;
                     end = 1;
-                    while (++i < endOffe && DAT_DICTIONARY.status(chars[i]) == 4) {
+                    while (++i < endOffe && dat.status(chars[i]) == 4) {
                         end++;
                     }
                     str = WordAlert.alertEnglish(chars, start, end);
@@ -141,7 +141,7 @@ public abstract class Analysis {
                 case 5:
                     start = i;
                     end = 1;
-                    while (++i < endOffe && DAT_DICTIONARY.status(chars[i]) == 5) {
+                    while (++i < endOffe && dat.status(chars[i]) == 5) {
                         end++;
                     }
                     str = WordAlert.alertNumber(chars, start, end);
@@ -152,7 +152,7 @@ public abstract class Analysis {
                     start = i;
                     end = i;
                     char c = chars[start];
-                    while (DAT_DICTIONARY.inSystem(c)) {
+                    while (dat.inSystem(c)) {
                         end++;
                         if (++i >= endOffe)
                             break;
@@ -172,12 +172,11 @@ public abstract class Analysis {
                     /**
                      * 如果未分出词.以未知字符加入到gp中
                      */
-                    if (DAT_DICTIONARY.inSystem(c) || DAT_DICTIONARY.status(c) > 3) {
+                    if (dat.inSystem(c) || dat.status(c) > 3) {
                         i -= 1;
                     } else {
                         gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
                     }
-
                     break;
             }
         }
@@ -190,7 +189,7 @@ public abstract class Analysis {
      * @param result result
      */
     protected static void setRealName(final Graph graph, final List<Term> result) {
-        if (!MyStaticValue.isRealName) {
+        if (!CONTEXT().isRealName) {
             return;
         }
 

@@ -2,11 +2,13 @@ package org.ansj.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.ansj.util.AnsjContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.util.MyStaticValue.*;
+import static org.ansj.domain.AnsjItem.NULL_ITEM;
+import static org.ansj.util.AnsjContext.*;
 
 public class Term implements Comparable<Term> {
 
@@ -14,24 +16,23 @@ public class Term implements Comparable<Term> {
     @Getter
     private String name;// 当前词
     @Setter
-    @Getter
     private String realName;
     @Setter
     @Getter
     private int offe;// 当前词的起始位置
     @Getter//这个term的所有词性
-    private TermNatures termNatures = TermNatures.NULL;// 词性列表
+    private TermNatures termNatures;// 词性列表
     @Getter
-    private AnsjItem item = AnsjItem.NULL_ITEM;// 词性列表
+    private AnsjItem item = NULL_ITEM;// 词性列表
     @Setter
     @Getter
     private Term next;// 同一行内下一个数据
     @Setter
     @Getter
-    private double score = 0;// 分数
+    private double score;// 分数
     @Setter
     @Getter
-    private double selfScore = 1;// 本身分数
+    private double selfScore;// 本身分数
     @Setter
     @Getter
     private Term from;// 起始位置
@@ -40,7 +41,7 @@ public class Term implements Comparable<Term> {
     private Term to;// 到达位置
     @Setter
     @Getter//获得这个词的词性.词性计算后才可生效
-    private Nature nature = NATURE_NULL();// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
+    private Nature nature;// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
     @Setter
     @Getter
     private List<Term> subTerm;
@@ -48,13 +49,19 @@ public class Term implements Comparable<Term> {
     public Term(final String name, final int offe, final TermNatures termNatures) {
         this.name = name;
         this.offe = offe;
-        this.termNatures = termNatures;
-        this.nature = this.termNatures != null ? this.termNatures.nature : null;
+        this.termNatures = termNatures != null ? termNatures : TermNatures.NULL;
+        this.nature = this.termNatures != null ? this.termNatures.nature : AnsjContext.natureLibrary.NATURE_NULL();
+        this.score = 0;
+        this.selfScore = 1;
     }
 
     public Term(final String name, final int offe, final AnsjItem item) {
         this(name, offe, item.termNatures);
         this.item = item;
+    }
+
+    public String getRealName() {
+        return this.realName != null ? this.realName : this.name;
     }
 
     // 可以到达的位置
@@ -88,7 +95,7 @@ public class Term implements Comparable<Term> {
             return score;
         }
 
-        int nTwoWordsFreq = NGRAM_LIBRARY.getTwoWordFreq(from, to);
+        int nTwoWordsFreq = CONTEXT().ngramLibrary.getTwoWordFreq(from, to);
         double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
 
         if (value < 0) {
@@ -138,7 +145,7 @@ public class Term implements Comparable<Term> {
     public String toString() {
         return "null".equals(this.nature.natureStr) ?
                 this.name :
-                (this.realName != null ? this.realName : this.name) + "/" + this.nature.natureStr;
+                this.getRealName() + "/" + this.nature.natureStr;
     }
 
     /**
