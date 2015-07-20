@@ -1,131 +1,100 @@
 package org.ansj.app.keyword;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
-
+import com.google.common.collect.ImmutableMap;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.StringUtil;
+
+import java.util.*;
+
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
+import static org.ansj.util.MyStaticValue.TAB;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class KeyWordComputer {
 
-	private static final Map<String, Double> POS_SCORE = new HashMap<String, Double>();
+    private static final Map<String, Double> POS_SCORE;
 
-	static {
-		POS_SCORE.put("null", 0.0);
-		POS_SCORE.put("w", 0.0);
-		POS_SCORE.put("en", 0.0);
-		POS_SCORE.put("num", 0.0);
-		POS_SCORE.put("nr", 3.0);
-		POS_SCORE.put("nrf", 3.0);
-		POS_SCORE.put("nw", 3.0);
-		POS_SCORE.put("nt", 3.0);
-		POS_SCORE.put("l", 0.2);
-		POS_SCORE.put("a", 0.2);
-		POS_SCORE.put("nz", 3.0);
-		POS_SCORE.put("v", 0.2);
+    static {
+        final Map<String, Double> MAP = new HashMap<>();
+        MAP.put("null", 0.0);
+        MAP.put("w", 0.0);
+        MAP.put("en", 0.0);
+        MAP.put("num", 0.0);
+        MAP.put("nr", 3.0);
+        MAP.put("nrf", 3.0);
+        MAP.put("nw", 3.0);
+        MAP.put("nt", 3.0);
+        MAP.put("l", 0.2);
+        MAP.put("a", 0.2);
+        MAP.put("nz", 3.0);
+        MAP.put("v", 0.2);
+        POS_SCORE = ImmutableMap.copyOf(MAP);
+    }
 
-	}
+    private final int nKeyword;
 
-	private int nKeyword = 5;
+    public KeyWordComputer() {
+        this.nKeyword = 5;
+    }
 
-	public KeyWordComputer() {
-	}
+    /**
+     * @param nKeyword 返回关键词个数
+     */
+    public KeyWordComputer(final int nKeyword) {
+        this.nKeyword = nKeyword;
+    }
 
-	/**
-	 * 返回关键词个数
-	 * 
-	 * @param nKeyword
-	 */
-	public KeyWordComputer(int nKeyword) {
-		this.nKeyword = nKeyword;
+    /**
+     * @param content 正文
+     */
+    private List<Keyword> computeArticleTfidf(final String content, final int titleLength) {
+        final Map<String, Keyword> termMap = new HashMap<>();
 
-	}
+        for (final Term term : nlpParse(content)) {
+            final double weight = getWeight(term, content.length(), titleLength);
+            if (weight != 0) {
+                final Keyword keyword = termMap.get(term.getName());
+                if (keyword != null) {
+                    keyword.updateWeight(1);
+                } else {
+                    termMap.put(term.getName(), new Keyword(term.getName(), term.getNature().allFrequency, weight));
+                }
+            }
+        }
 
-	/**
-	 * 
-	 * @param content
-	 *            正文
-	 * @return
-	 */
-	private List<Keyword> computeArticleTfidf(String content, int titleLength) {
-		Map<String, Keyword> tm = new HashMap<String, Keyword>();
+        final ArrayList<Keyword> arrayList = new ArrayList<>(new TreeSet<>(termMap.values()));
+        return arrayList.size() <= this.nKeyword ? arrayList : arrayList.subList(0, this.nKeyword);
+    }
 
-		List<Term> parse = NlpAnalysis.parse(content);
-		for (Term term : parse) {
-			double weight = getWeight(term, content.length(), titleLength);
-			if (weight == 0)
-				continue;
-			Keyword keyword = tm.get(term.getName());
-			if (keyword == null) {
-				keyword = new Keyword(term.getName(), term.natrue().allFrequency, weight);
-				tm.put(term.getName(), keyword);
-			} else {
-				keyword.updateWeight(1);
-			}
-		}
+    /**
+     * @param title   标题
+     * @param content 正文
+     */
+    public List<Keyword> computeArticleTfidf(final String title, final String content) {
+        final String t = isNotBlank(title) ? title : "";
+        final String c = isNotBlank(content) ? content : "";
+        return computeArticleTfidf(t + TAB + c, t.length());
+    }
 
-		TreeSet<Keyword> treeSet = new TreeSet<Keyword>(tm.values());
+    /**
+     * 只有正文
+     */
+    public List<Keyword> computeArticleTfidf(final String content) {
+        return computeArticleTfidf(content, 0);
+    }
 
-		ArrayList<Keyword> arrayList = new ArrayList<Keyword>(treeSet);
-		if (treeSet.size() <= nKeyword) {
-			return arrayList;
-		} else {
-			return arrayList.subList(0, nKeyword);
-		}
+    private double getWeight(final Term term, final int length, final int titleLength) {
+        if (term.getName().trim().length() < 2) {
+            return 0;
+        }
 
-	}
-
-	/**
-	 * 
-	 * @param title
-	 *            标题
-	 * @param content
-	 *            正文
-	 * @return
-	 */
-	public List<Keyword> computeArticleTfidf(String title, String content) {
-		if (StringUtil.isBlank(title)) {
-			title = "";
-		}
-		if (StringUtil.isBlank(content)) {
-			content = "";
-		}
-		return computeArticleTfidf(title + "\t" + content, title.length());
-	}
-
-	/**
-	 * 只有正文
-	 * 
-	 * @param content
-	 * @return
-	 */
-	public List<Keyword> computeArticleTfidf(String content) {
-		return computeArticleTfidf(content, 0);
-	}
-
-	private double getWeight(Term term, int length, int titleLength) {
-		if (term.getName().trim().length() < 2) {
-			return 0;
-		}
-
-		String pos = term.natrue().natureStr;
-
-		Double posScore = POS_SCORE.get(pos);
-
-		if (posScore == null) {
-			posScore = 1.0;
-		} else if (posScore == 0) {
-			return 0;
-		}
-
-		if (titleLength > term.getOffe()) {
-			return 5 * posScore;
-		}
-		return (length - term.getOffe()) * posScore / (double) length;
-	}
-
+        final String pos = term.getNature().natureStr;
+        final Double posScore = POS_SCORE.get(pos) != null ? POS_SCORE.get(pos) : 1.0;
+        if (posScore == 0) {
+            return 0;
+        } else if (titleLength > term.getOffe()) {
+            return 5 * posScore;
+        } else {
+            return (length - term.getOffe()) * posScore / (double) length;
+        }
+    }
 }

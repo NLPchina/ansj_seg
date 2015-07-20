@@ -1,18 +1,10 @@
 package org.ansj.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
-import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.nlpcn.commons.lang.util.IOUtil;
+import org.ansj.splitWord.IndexAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 public class IndexAnalysisTest {
 	public static void main(String[] args) throws IOException {
@@ -27,7 +19,8 @@ public class IndexAnalysisTest {
 //		
 //		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
 //
-		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
+		final UserDefineLibrary userDefineLibrary = UserDefineLibrary.getInstance();
+		userDefineLibrary.insertWord("蛇药片", "n", 1000);
 		
 		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
 

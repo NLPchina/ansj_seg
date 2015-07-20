@@ -1,6 +1,6 @@
 package org.ansj.demo;
 
-import org.ansj.splitWord.analysis.IndexAnalysis;
+import org.ansj.splitWord.IndexAnalysis;
 
 public class IndexPaserDemo {
 	public static void main(String[] args) {

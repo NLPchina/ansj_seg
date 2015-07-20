@@ -4,156 +4,142 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.util.TermUtil;
+import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 
+import java.util.List;
+
+import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
+
 /**
- * 用户自定义词典.又称补充词典
- * 
+ * 用户自定义词典. 又称补充词典
+ *
  * @author ansj
- * 
  */
 public class UserDefineRecognition {
 
-	private Term[] terms = null;
+    private final Term[] terms;
+    private final List<WoodInterface<String[], Branch>> forests;
 
-	private WoodInterface[] forests = { UserDefineLibrary.FOREST };
+    private int offe = -1;
+    private int endOffe = -1;
+    private int tempFreq = 50;
+    private String tempNature;
 
-	private int offe = -1;
-	private int endOffe = -1;
-	private int tempFreq = 50;
-	private String tempNature;
+    private WoodInterface<String[], Branch> branch = null;
+    private WoodInterface<String[], Branch> forest = null;
 
-	private WoodInterface branch = null;
-	private WoodInterface forest = null;
+    public UserDefineRecognition(final Term[] terms, final List<Forest> forests) {
+        this.terms = terms;
+        this.forests = forests != null && forests.size() > 0 ?
+                unmodifiableList(forests) :
+                singletonList(UserDefineLibrary.getInstance().getForest());
+    }
 
-	public UserDefineRecognition(Term[] terms, Forest... forests) {
-		this.terms = terms;
-		if (forests != null && forests.length > 0) {
-			this.forests = forests;
-		}
+    public void recognition() {
+        for (final WoodInterface<String[], Branch> forest : forests) {
+            if (forest == null) {
+                continue;
+            }
+            reset();
+            this.forest = forest;
+            this.branch = forest;
 
-	}
+            int length = terms.length - 1;
 
-	public void recognition() {
+            for (int i = 0; i < length; i++) {
+                if (this.terms[i] == null)
+                    continue;
 
-		for (WoodInterface forest : forests) {
-			if (forest == null) {
-				continue;
-			}
-			reset();
-			this.forest = forest;
+                final boolean flag = this.branch != forest;
 
-			branch = forest;
+                this.branch = termStatus(this.branch, this.terms[i]);
+                if (this.branch == null) {
+                    i = this.offe != -1 ? this.offe : i;
+                    reset();
+                } else if (this.branch.getStatus() == 3) {
+                    this.endOffe = i;
+                    this.tempNature = this.branch.getParam()[0];
+                    this.tempFreq = getInt(this.branch.getParam()[1], 50);
+                    if (this.offe != -1 && this.offe < this.endOffe) {
+                        i = this.offe;
+                        makeNewTerm();
+                        reset();
+                    } else {
+                        reset();
+                    }
+                } else if (this.branch.getStatus() == 2) {
+                    this.endOffe = i;
+                    if (this.offe == -1) {
+                        this.offe = i;
+                    } else {
+                        this.tempNature = this.branch.getParam()[0];
+                        this.tempFreq = getInt(this.branch.getParam()[1], 50);
+                        if (flag) {
+                            makeNewTerm();
+                        }
+                    }
+                } else if (this.branch.getStatus() == 1) {
+                    this.offe = this.offe == -1 ? i : this.offe;
+                }
+            }
+            if (this.offe != -1 && this.offe < this.endOffe) {
+                makeNewTerm();
+            }
+        }
+    }
 
-			int length = terms.length - 1;
+    private int getInt(final String str, final int def) {
+        try {
+            return Integer.parseInt(str);
+        } catch (final NumberFormatException e) {
+            return def;
+        }
+    }
 
-			boolean flag = true;
-			for (int i = 0; i < length; i++) {
-				if (terms[i] == null)
-					continue;
-				if (branch == forest) {
-					flag = false;
-				} else {
-					flag = true;
-				}
+    private void makeNewTerm() {
+        StringBuilder sb = new StringBuilder();
+        for (int j = this.offe; j <= this.endOffe; j++) {
+            if (this.terms[j] != null) {
+                sb.append(this.terms[j].getName());
+            }
+            // terms[j] = null;
+        }
+        final TermNatures termNatures = new TermNatures(new TermNature(this.tempNature, this.tempFreq));
+        final Term term = new Term(sb.toString(), this.offe, termNatures);
+        term.setSelfScore(-1 * this.tempFreq);
+        Term.insertTerm(this.terms, term);
+        // reset();
+    }
 
-				branch = termStatus(branch, terms[i]);
-				if (branch == null) {
-					if (offe != -1) {
-						i = offe;
-					}
-					reset();
-				} else if (branch.getStatus() == 3) {
-					endOffe = i;
-					tempNature = branch.getParams()[0];
-					tempFreq = getInt(branch.getParams()[1], 50);
-					if (offe != -1 && offe < endOffe) {
-						i = offe;
-						makeNewTerm();
-						reset();
-					} else {
-						reset();
-					}
-				} else if (branch.getStatus() == 2) {
-					endOffe = i;
-					if (offe == -1) {
-						offe = i;
-					} else {
-						tempNature = branch.getParams()[0];
-						tempFreq = getInt(branch.getParams()[1], 50);
-						if (flag) {
-							makeNewTerm();
-						}
-					}
-				} else if (branch.getStatus() == 1) {
-					if (offe == -1) {
-						offe = i;
-					}
-				}
-			}
-			if (offe != -1 && offe < endOffe) {
-				makeNewTerm();
-			}
-		}
-	}
+    /**
+     * 重置
+     */
+    private void reset() {
+        this.offe = -1;
+        this.endOffe = -1;
+        this.tempFreq = 50;
+        this.tempNature = null;
+        this.branch = this.forest;
+    }
 
-	private int getInt(String str, int def) {
-		try {
-			return Integer.parseInt(str);
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return def;
-		}
-	}
-
-	private void makeNewTerm() {
-		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		for (int j = offe; j <= endOffe; j++) {
-			if (terms[j] == null) {
-				continue;
-			} else {
-				sb.append(terms[j].getName());
-			}
-			// terms[j] = null;
-		}
-		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
-		Term term = new Term(sb.toString(), offe, termNatures);
-		term.selfScore(-1 * tempFreq);
-		TermUtil.insertTerm(terms, term);
-		// reset();
-	}
-
-	/**
-	 * 重置
-	 */
-	private void reset() {
-		offe = -1;
-		endOffe = -1;
-		tempFreq = 50;
-		tempNature = null;
-		branch = forest;
-	}
-
-	/**
-	 * 传入一个term 返回这个term的状态
-	 * 
-	 * @param branch
-	 * @param term
-	 * @return
-	 */
-	private WoodInterface termStatus(WoodInterface branch, Term term) {
-		String name = term.getName();
-		for (int j = 0; j < name.length(); j++) {
-			branch = branch.get(name.charAt(j));
-			if (branch == null) {
-				return null;
-			}
-		}
-		return branch;
-	}
-
+    /**
+     * 传入一个term 返回这个term的状态
+     *
+     * @param branch branch
+     * @param term   term
+     * @return branch
+     */
+    private WoodInterface<String[], Branch> termStatus(WoodInterface<String[], Branch> branch, final Term term) {
+        final String name = term.getName();
+        for (int j = 0; j < name.length(); j++) {
+            branch = branch.getBranch(name.charAt(j));
+            if (branch == null) {
+                return null;
+            }
+        }
+        return branch;
+    }
 }

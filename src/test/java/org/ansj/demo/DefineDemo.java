@@ -8,7 +8,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.BaseAnalysis;
 
 /**
  * @author ansj
@@ -61,7 +61,7 @@ public class DefineDemo {
 		int j = i + 1;
 		for (; j < parse.size(); j++) {
 			term = parse.get(j);
-			natureStr = term.natrue().natureStr;
+			natureStr = term.getNature().natureStr;
 			if ("en".equals(natureStr) || "m".equals(natureStr) || "-".equals(term.getName()) || ":".equals(term.getName())) {
 				sb.append(term.getName());
 			} else if ("@".equals(term.getName())) {

@@ -5,9 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 public class Test {
 
@@ -178,7 +177,7 @@ public class Test {
 			System.out.println(string);
 			List<Term> parse = ToAnalysis.parse(string) ;
 			System.out.println(parse);
-			System.out.println(NlpAnalysis.parse(string));
+			System.out.println(NlpAnalysis.nlpParse(string));
 		}
 		System.out.println(System.currentTimeMillis() - start);
 

@@ -2,7 +2,7 @@ package org.ansj.demo;
 
 import org.ansj.app.summary.SummaryComputer;
 import org.ansj.app.summary.TagContent;
-import org.ansj.app.summary.pojo.Summary;
+import org.ansj.app.summary.Summary;
 
 public class SummaryDemo {
 

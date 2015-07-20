@@ -1,6 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.splitWord.impl.GetWordsImpl;
+import org.ansj.splitWord.GetWordsImpl;
 
 public class DATSplitTest {
 	public static void main(String[] args) {

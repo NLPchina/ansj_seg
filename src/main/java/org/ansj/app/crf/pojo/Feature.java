@@ -4,38 +4,31 @@ import java.util.Arrays;
 
 public class Feature {
 
-	public double value = 0;
+	public final double[][] w;
 
-	public double[][] w;
+	public final int tagNum;
 
-	public int tagNum;
+    public double value = 0;
 
-	public Feature(int featureNum, int tagNum) {
-		w = new double[featureNum][0];
+	public Feature(final int featureNum, final int tagNum) {
+		this.w = new double[featureNum][0];
 		this.tagNum = tagNum;
 	}
 
-	public Feature(double[][] w) {
-		this.w = w;
-	}
-
-	public void update(int fIndex, int sta, double step) {
-		value += step;
-		if (w[fIndex].length == 0) {
-			w[fIndex] = new double[tagNum];
+	public void update(final int fIndex, final int sta, final double step) {
+		this.value += step;
+		if (this.w[fIndex].length == 0) {
+			this.w[fIndex] = new double[this.tagNum];
 		}
-		w[fIndex][sta] += step;
-	};
+		this.w[fIndex][sta] += step;
+	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		for (double[] ints : w) {
-			sb.append(Arrays.toString(ints));
-			sb.append("\n");
+		final StringBuilder sb = new StringBuilder();
+		for (final double[] ints : this.w) {
+			sb.append(Arrays.toString(ints)).append("\n");
 		}
 		return sb.toString();
 	}
-
 }

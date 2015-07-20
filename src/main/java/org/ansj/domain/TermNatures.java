@@ -1,132 +1,148 @@
 package org.ansj.domain;
 
+import static org.ansj.domain.NumNatureAttr.NULL_NUM_NATURE_ATTR;
+import static org.ansj.domain.PersonNatureAttr.NULL_PERSON_NATURE_ATTR;
+
 /**
- * 每一个term都拥有一个词性集合
- * 
+ * 没一个term都拥有一个词性集合
+ *
  * @author ansj
- * 
  */
 public class TermNatures {
 
-	public static final TermNatures M = new TermNatures(TermNature.M);
+    public static final TermNatures M = new TermNatures(TermNature.M);
 
-	public static final TermNatures NR = new TermNatures(TermNature.NR);
+    public static final TermNatures NR = new TermNatures(TermNature.NR);
 
-	public static final TermNatures EN = new TermNatures(TermNature.EN);
+    public static final TermNatures EN = new TermNatures(TermNature.EN);
 
-	public static final TermNatures END = new TermNatures(TermNature.END, 50610, -1);
+    public static final TermNatures END = new TermNatures(-1, TermNature.END.withFrequency(50610));
 
-	public static final TermNatures BEGIN = new TermNatures(TermNature.BEGIN, 50610, 0);
+    public static final TermNatures BEGIN = new TermNatures(0, TermNature.BEGIN.withFrequency(50610));
 
-	public static final TermNatures NT = new TermNatures(TermNature.NT);
+//    public static final TermNatures NT = new TermNatures(TermNature.NT);
 
-	public static final TermNatures NW = new TermNatures(TermNature.NW);
+    public static final TermNatures NW = new TermNatures(TermNature.NW);
 
-	public static final TermNatures NULL = new TermNatures(TermNature.NULL);;
+    public static final TermNatures NULL = new TermNatures(TermNature.NULL);
 
-	/**
-	 * 关于这个term的所有词性
-	 */
-	public TermNature[] termNatures = null;
+    /**
+     * 词的id
+     */
+    public final int id;
+    /**
+     * 关于这个term的所有词性
+     */
+    public final TermNature[] termNatures;
+    /**
+     * 所有的词频
+     */
+    public final int allFreq;
+    /**
+     * 默认词性
+     */
+    public final Nature nature;
+    /**
+     * 数字属性
+     */
+    public final NumNatureAttr numAttr;
+    /**
+     * 人名词性
+     */
+    public final PersonNatureAttr personAttr;
 
-	/**
-	 * 数字属性
-	 */
-	public NumNatureAttr numAttr = NumNatureAttr.NULL;
+    /**
+     * 构造方法.一个词对应这种玩意
+     */
+    public TermNatures(final int id, final TermNature... termNatures) {
+        this(
+                id,
+                termNatures,
+                totalFreq(termNatures),
+                natureOfMaxFreq(termNatures),
+                numNatureAttr(termNatures),
+                NULL_PERSON_NATURE_ATTR
+        );
+    }
 
-	/**
-	 * 人名词性
-	 */
-	public PersonNatureAttr personAttr = PersonNatureAttr.NULL;
+    public TermNatures(final TermNature termNature) {
+        this(-2, termNature);
+//        this(
+//                -2,
+//                new TermNature[]{termNature},
+//                totalFreq(new TermNature[]{termNature}),
+//                termNature.nature,
+//                numNatureAttr(new TermNature[]{termNature}),
+//                NULL_PERSON_NATURE_ATTR
+//        );
+    }
 
-	/**
-	 * 默认词性
-	 */
-	public Nature nature = null;
+    private TermNatures(
+            final int id,
+            final TermNature[] termNatures,
+            final int allFreq,
+            final Nature nature,
+            final NumNatureAttr numAttr,
+            final PersonNatureAttr personAttr
+    ) {
+        this.id = id;
+        this.termNatures = termNatures;
+        this.allFreq = allFreq;
+        this.nature = nature;
+        this.numAttr = numAttr != null ? numAttr : NULL_NUM_NATURE_ATTR;
+        this.personAttr = personAttr != null ? personAttr : NULL_PERSON_NATURE_ATTR;
+    }
 
-	/**
-	 * 所有的词频
-	 */
-	public int allFreq = 0;
+    public TermNatures withNumAttr(final NumNatureAttr numAttr) {
+        return new TermNatures(this.id, this.termNatures, this.allFreq, this.nature, numAttr, this.personAttr);
+    }
 
-	/**
-	 * 词的id
-	 */
-	public int id = -2;
+    public TermNatures withPersonAttr(final PersonNatureAttr personAttr) {
+        return new TermNatures(this.id, this.termNatures, this.allFreq, this.nature, this.numAttr, personAttr);
+    }
 
-	/**
-	 * 构造方法.一个词对应这种玩意
-	 * 
-	 * @param termNatures
-	 */
-	public TermNatures(TermNature[] termNatures, int id) {
-		this.id = id;
-		this.termNatures = termNatures;
-		// find maxNature
-		int maxFreq = -1;
-		TermNature termNature = null;
-		for (int i = 0; i < termNatures.length; i++) {
-			if (maxFreq < termNatures[i].frequency) {
-				maxFreq = termNatures[i].frequency;
-				termNature = termNatures[i];
-			}
-		}
+    // find maxNature
+    private static Nature natureOfMaxFreq(final TermNature[] termNatures) {
+        TermNature termNatureOfMaxFreq = null;
+        int maxFreq = -1;
+        for (final TermNature nature : termNatures) {
+            if (maxFreq < nature.frequency) {
+                maxFreq = nature.frequency;
+                termNatureOfMaxFreq = nature;
+            }
+        }
+        return termNatureOfMaxFreq != null ? termNatureOfMaxFreq.nature : null;
+    }
 
-		if (termNature != null) {
-			this.nature = termNature.nature;
-		}
+    private static int totalFreq(final TermNature[] termNatures) {
+        int totalFreq = 0;
+        for (final TermNature termNature : termNatures) {
+            totalFreq += termNature.frequency;
+        }
+        return totalFreq;
+    }
 
-		serAttribute();
-	}
-
-	public TermNatures(TermNature termNature) {
-		termNatures = new TermNature[1];
-		this.termNatures[0] = termNature;
-		this.nature = termNature.nature;
-		serAttribute();
-	}
-
-	public TermNatures(TermNature termNature, int allFreq, int id) {
-		this.id = id;
-		termNatures = new TermNature[1];
-		termNature.frequency = allFreq;
-		this.termNatures[0] = termNature;
-		this.allFreq = allFreq;
-	}
-
-	private void serAttribute() {
-		TermNature termNature = null;
-		int max = 0;
-		NumNatureAttr numNatureAttr = null;
-		for (int i = 0; i < termNatures.length; i++) {
-			termNature = termNatures[i];
-			allFreq += termNature.frequency;
-			max = Math.max(max, termNature.frequency);
-			switch (termNature.nature.index) {
-			case 18:
-				if (numNatureAttr == null) {
-					numNatureAttr = new NumNatureAttr();
-				}
-				numNatureAttr.numFreq = termNature.frequency;
-				break;
-			case 29:
-				if (numNatureAttr == null) {
-					numNatureAttr = new NumNatureAttr();
-				}
-				numNatureAttr.numEndFreq = termNature.frequency;
-				break;
-			}
-		}
-		if (numNatureAttr != null) {
-			if (max == numNatureAttr.numFreq) {
-				numNatureAttr.flag = true;
-			}
-			this.numAttr = numNatureAttr;
-		}
-	}
-
-	public void setPersonNatureAttr(PersonNatureAttr personAttr) {
-		this.personAttr = personAttr;
-	}
-
+    private static NumNatureAttr numNatureAttr(final TermNature[] termNatures) {
+        int maxFreq = 0;
+        NumNatureAttr numAttr = null;
+        for (final TermNature termNature : termNatures) {
+            maxFreq = Math.max(maxFreq, termNature.frequency);
+            switch (termNature.nature.index) {
+                case 18:
+                    numAttr = numAttr == null ? NULL_NUM_NATURE_ATTR : numAttr.withNumFreq(termNature.frequency);
+                    break;
+                case 29:
+                    numAttr = numAttr == null ? NULL_NUM_NATURE_ATTR : numAttr.withNumEndFreq(termNature.frequency);
+                    break;
+            }
+        }
+        if (numAttr != null) {
+            if (maxFreq == numAttr.numFreq) {
+                numAttr = numAttr.withFlag(true);
+            }
+            return numAttr;
+        } else {
+            return null;
+        }
+    }
 }

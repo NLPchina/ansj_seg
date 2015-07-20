@@ -1,85 +1,87 @@
 package org.ansj.recognition;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.util.MathUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
+import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
  * 词性标注工具类
- * 
+ *
  * @author ansj
- * 
  */
 public class NatureRecognition {
 
-    private NatureTerm root = new NatureTerm(TermNature.BEGIN);
+    private final NatureTerm root;
 
-    private NatureTerm[] end = { new NatureTerm(TermNature.END) };
+    private final NatureTerm[] end;
 
-    private List<Term> terms = null;
+    private final List<Term> terms;
 
-    private NatureTerm[][] natureTermTable = null;
+    private final NatureTerm[][] natureTermTable;
 
     /**
      * 构造方法.传入分词的最终结果
-     * 
-     * @param terms
+     *
+     * @param terms terms
      */
-    public NatureRecognition(List<Term> terms) {
+    public NatureRecognition(final List<Term> terms) {
+        this.root = new NatureTerm(TermNature.BEGIN);
+        this.end = new NatureTerm[]{new NatureTerm(TermNature.END)};
+
         this.terms = terms;
-        natureTermTable = new NatureTerm[terms.size() + 1][];
-        natureTermTable[terms.size()] = end;
+        this.natureTermTable = new NatureTerm[terms.size() + 1][];
+        this.natureTermTable[terms.size()] = end;
     }
 
     /**
      * 进行最佳词性查找,引用赋值.所以不需要有返回值
      */
     public void recognition() {
-        int length = terms.size();
-        for (int i = 0; i < length; i++) {
-            natureTermTable[i] = getNatureTermArr(terms.get(i).termNatures().termNatures);
+        for (int i = 0; i < this.terms.size(); i++) {
+            this.natureTermTable[i] = getNatureTermArr(this.terms.get(i).getTermNatures().termNatures);
         }
         walk();
     }
 
     /**
-     * 传入一组。词对词语进行。词性标注
-     * 
-     * @param words
-     * @param offe
-     * @return
+     * 传入一组词, 对词语进行词性标注
+     *
+     * @param words words
+     * @return terms
      */
-    public static List<Term> recognition(List<String> words) {
+    public static List<Term> recognition(final List<String> words) {
         return recognition(words, 0);
     }
 
     /**
      * 传入一组。词对词语进行。词性标注
-     * 
-     * @param words
-     * @param offe
-     * @return
+     *
+     * @param words words
+     * @param offe  offe
+     * @return terms
      */
-    public static List<Term> recognition(List<String> words, int offe) {
-        List<Term> terms = new ArrayList<Term>(words.size());
+    public static List<Term> recognition(final List<String> words, final int offe) {
+        final List<Term> terms = new ArrayList<>(words.size());
+
+        String[] params;
         int tempOffe = 0;
-        String[] params = null;
-        for (String word : words) {
-            // 获得词性 ， 先从系统辞典。在从用户自定义辞典
-            AnsjItem ansjItem = DATDictionary.getItem(word);
-            TermNatures tn = null;
-            
-            if (ansjItem != AnsjItem.NULL) {
+        for (final String word : words) {
+            // 获得词性, 先从系统辞典, 再从用户自定义辞典
+            final AnsjItem ansjItem = DAT_DICTIONARY.getItem(word);
+
+            final TermNatures tn;
+            if (ansjItem != AnsjItem.NULL_ITEM) {
                 tn = ansjItem.termNatures;
-            } else if ((params = UserDefineLibrary.getParams(word)) != null) {
+            } else if ((params = UserDefineLibrary.getInstance().getParams(word)) != null) {
                 tn = new TermNatures(new TermNature(params[0], 1));
             } else if (WordAlert.isEnglish(word)) {
                 tn = TermNatures.EN;
@@ -97,25 +99,24 @@ public class NatureRecognition {
     }
 
     public void walk() {
-        int length = natureTermTable.length - 1;
-        setScore(root, natureTermTable[0]);
+        final int length = this.natureTermTable.length - 1;
+        setScore(this.root, this.natureTermTable[0]);
         for (int i = 0; i < length; i++) {
-            for (int j = 0; j < natureTermTable[i].length; j++) {
-                setScore(natureTermTable[i][j], natureTermTable[i + 1]);
+            for (int j = 0; j < this.natureTermTable[i].length; j++) {
+                setScore(this.natureTermTable[i][j], this.natureTermTable[i + 1]);
             }
         }
         optimalRoot();
     }
 
-    private void setScore(NatureTerm natureTerm, NatureTerm[] natureTerms) {
-        // TODO Auto-generated method stub
-        for (int i = 0; i < natureTerms.length; i++) {
-            natureTerms[i].setScore(natureTerm);
+    private void setScore(final NatureTerm natureTerm, final NatureTerm[] natureTerms) {
+        for (final NatureTerm nt : natureTerms) {
+            nt.setScore(natureTerm);
         }
     }
 
-    private NatureTerm[] getNatureTermArr(TermNature[] termNatures) {
-        NatureTerm[] natureTerms = new NatureTerm[termNatures.length];
+    private NatureTerm[] getNatureTermArr(final TermNature[] termNatures) {
+        final NatureTerm[] natureTerms = new NatureTerm[termNatures.length];
         for (int i = 0; i < natureTerms.length; i++) {
             natureTerms[i] = new NatureTerm(termNatures[i]);
         }
@@ -126,8 +127,8 @@ public class NatureRecognition {
      * 获得最优路径
      */
     private void optimalRoot() {
+        NatureTerm from;
         NatureTerm to = end[0];
-        NatureTerm from = null;
         int index = natureTermTable.length - 1;
         while ((from = to.from) != null && index > 0) {
             terms.get(--index).setNature(from.termNature.nature);
@@ -137,28 +138,27 @@ public class NatureRecognition {
 
     /**
      * 关于这个term的词性
-     * 
+     *
      * @author ansj
-     * 
      */
     public class NatureTerm {
 
-        public TermNature termNature;
+        public final TermNature termNature;
+
+        public final double selfScore;
 
         public double score = 0;
 
-        public double selfScore;
-
         public NatureTerm from;
 
-        protected NatureTerm(TermNature termNature) {
+        protected NatureTerm(final TermNature termNature) {
             this.termNature = termNature;
-            selfScore = termNature.frequency + 1;
+            this.selfScore = termNature.frequency + 1;
         }
 
-        public void setScore(NatureTerm natureTerm) {
-            double tempScore = MathUtil.compuNatureFreq(natureTerm, this);
-            if (from == null || score < tempScore) {
+        public void setScore(final NatureTerm natureTerm) {
+            double tempScore = compuNatureFreq(natureTerm, this);
+            if (this.from == null || this.score < tempScore) {
                 this.score = tempScore;
                 this.from = natureTerm;
             }
@@ -166,8 +166,22 @@ public class NatureRecognition {
 
         @Override
         public String toString() {
-            return termNature.nature.natureStr + "/" + selfScore;
+            return this.termNature.nature.natureStr + "/" + this.selfScore;
         }
+    }
 
+    /**
+     * 两个词性之间的分数计算
+     *
+     * @param from from
+     * @param to   to
+     * @return score
+     */
+    public static double compuNatureFreq(final NatureTerm from, final NatureTerm to) {
+        double twoWordFreq = NATURE_LIBRARY.getNatureFreq(from.termNature.nature, to.termNature.nature);
+        if (twoWordFreq == 0) {
+            twoWordFreq = Math.log(from.selfScore + to.selfScore);
+        }
+        return from.score + Math.log((from.selfScore + to.selfScore) * twoWordFreq) + to.selfScore;
     }
 }

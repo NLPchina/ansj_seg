@@ -1,7 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 import org.junit.Test;
 
 public class TestError {

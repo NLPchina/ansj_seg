@@ -1,52 +1,57 @@
 package org.ansj.domain;
 
-import org.ansj.library.NatureLibrary;
+import static java.lang.Integer.parseInt;
+import static org.ansj.util.MyStaticValue.NATURE_LIBRARY;
 
 /**
  * 一个词里面会有一些词性
- * 
+ *
  * @author ansj
  */
 public class TermNature {
-	/**
-	 * 系统内置的几个
-	 */
-	public static final TermNature M = new TermNature("m", 1);
-	public static final TermNature EN = new TermNature("en", 1);
-	public static final TermNature BEGIN = new TermNature("始##始", 1);
-	public static final TermNature END = new TermNature("末##末", 1);
-	public static final TermNature USER_DEFINE = new TermNature("userDefine", 1);
-	public static final TermNature NR = new TermNature("nr", 1);
-	public static final TermNature NT = new TermNature("nt", 1);
-	public static final TermNature NW = new TermNature("nw", 1);
-	public static final TermNature NULL = new TermNature("null", 1);
+    /**
+     * 系统内置的几个
+     */
+    public static final TermNature M = new TermNature("m", 1);
+    public static final TermNature EN = new TermNature("en", 1);
+    public static final TermNature BEGIN = new TermNature("始##始", 1);
+    public static final TermNature END = new TermNature("末##末", 1);
+    public static final TermNature USER_DEFINE = new TermNature("userDefine", 1);
+    public static final TermNature NR = new TermNature("nr", 1);
+    public static final TermNature NT = new TermNature("nt", 1);
+    public static final TermNature NW = new TermNature("nw", 1);
+    public static final TermNature NULL = new TermNature("null", 1);
 
-	public Nature nature;
+    public final Nature nature;
 
-	public int frequency;
+    public final int frequency;
 
-	public TermNature(String natureStr, int frequency) {
-		this.nature = NatureLibrary.getNature(natureStr);
-		this.frequency = frequency;
-	}
+    private TermNature(final Nature nature, final int frequency) {
+        this.nature = nature;
+        this.frequency = frequency;
+    }
 
-	public static TermNature[] setNatureStrToArray(String natureStr) {
-		// TODO Auto-generated method stub
-		natureStr = natureStr.substring(1, natureStr.length() - 1);
-		String[] split = natureStr.split(",");
-		String[] strs = null;
-		Integer frequency = null;
-		TermNature[] all = new TermNature[split.length];
-		for (int i = 0; i < split.length; i++) {
-			strs = split[i].split("=");
-			frequency = Integer.parseInt(strs[1]);
-			all[i] = new TermNature(strs[0].trim(), frequency);
-		}
-		return all;
-	}
+    public TermNature(final String natureStr, final int frequency) {
+        this(NATURE_LIBRARY.getNature(natureStr), frequency);
+    }
 
-	@Override
-	public String toString() {
-		return this.nature.natureStr + "/" + frequency;
-	}
+    public TermNature withFrequency(final int frequency) {
+        return new TermNature(this.nature, frequency);
+    }
+
+    public static TermNature[] setNatureStrToArray(final String natureStr) {
+        final String[] split = natureStr.substring(1, natureStr.length() - 1).split(",");
+        final TermNature[] all = new TermNature[split.length];
+        for (int i = 0; i < split.length; i++) {
+            final String[] strs = split[i].split("=");
+            final Integer frequency = parseInt(strs[1]);
+            all[i] = new TermNature(strs[0].trim(), frequency);
+        }
+        return all;
+    }
+
+    @Override
+    public String toString() {
+        return this.nature.natureStr + "/" + this.frequency;
+    }
 }

@@ -46,7 +46,7 @@ mvn clean install -Dmaven.test.skip=true
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>1.4.1</version>
+            <version>1.41</version>
         </dependency>
         ....
     </dependencies>

@@ -1,219 +1,205 @@
 package org.ansj.library;
 
-import static org.ansj.util.MyStaticValue.LIBRARYLOG;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
+import lombok.Getter;
+import lombok.SneakyThrows;
+import lombok.Synchronized;
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.tire.GetWord;
+import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
-import org.nlpcn.commons.lang.util.StringUtil;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static org.ansj.util.MyStaticValue.DAT_DICTIONARY;
+import static org.ansj.util.MyStaticValue.LIBRARYLOG;
+import static org.ansj.util.MyStaticValue.TAB;
+import static org.nlpcn.commons.lang.util.StringUtil.isBlank;
 
 
 /**
  * 用户自定义词典操作类
- * 
+ *
  * @author ansj
  */
-public class UserDefineLibrary {
+public final class UserDefineLibrary {
 
-	public static final String DEFAULT_NATURE = "userDefine";
+    private static final AtomicReference<UserDefineLibrary> _INSTANCE_REF = new AtomicReference<>();
 
-	public static final Integer DEFAULT_FREQ = 1000;
+    @Synchronized
+    private static UserDefineLibrary newInstance(final Forest forest, final Forest ambiguityForest) {
+        return new UserDefineLibrary(forest, ambiguityForest);
+    }
 
-	public static final String DEFAULT_FREQ_STR = "1000";
+    public static UserDefineLibrary getInstance(final Forest forest, final Forest ambiguityForest) {
+        final UserDefineLibrary current = _INSTANCE_REF.get();
+        if (current != null) {
+            return current;
+        } else {
+            final UserDefineLibrary newInstance = newInstance(forest, ambiguityForest);
+            _INSTANCE_REF.set(newInstance);
+            return newInstance;
+        }
+    }
 
-	public static Forest FOREST = null;
+    public static UserDefineLibrary getInstance() {
+        return getInstance(null, null);
+    }
 
-	public static Forest ambiguityForest = null;
+    private static final String DEFAULT_NATURE = "userDefine";
 
-	static {
-		initUserLibrary();
-		initAmbiguityLibrary();
-	}
+    private static final Integer DEFAULT_FREQ = 1000;
 
-	/**
-	 * 关键词增加
-	 * 
-	 * @param keyWord
-	 *            所要增加的关键词
-	 * @param nature
-	 *            关键词的词性
-	 * @param freq
-	 *            关键词的词频
-	 */
-	public static void insertWord(String keyword, String nature, int freq) {
-		String[] paramers = new String[2];
-		paramers[0] = nature;
-		paramers[1] = String.valueOf(freq);
-		Value value = new Value(keyword, paramers);
-		Library.insertWord(FOREST, value);
-	}
+    public static final String DEFAULT_FREQ_STR = DEFAULT_FREQ.toString();
 
-	/**
-	 * 加载纠正词典
-	 */
-	private static void initAmbiguityLibrary() {
-		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
-		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warning("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
-			return;
-		}
-		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
-		File file = new File(ambiguityLibrary);
-		if (file.isFile() && file.canRead()) {
-			try {
-				ambiguityForest = Library.makeForest(ambiguityLibrary);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				LIBRARYLOG.warning("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
-				e.printStackTrace();
-			}
-			LIBRARYLOG.info("init ambiguityLibrary ok!");
-		} else {
-			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
-		}
-	}
+    @Getter
+    private final Forest forest;
 
-	/**
-	 * 加载用户自定义词典和补充词典
-	 */
-	private static void initUserLibrary() {
-		try {
-			FOREST = new Forest();
-			// 加载用户自定义词典
-			String userLibrary = MyStaticValue.userLibrary;
-			loadLibrary(FOREST, userLibrary);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+    @Getter
+    private final Forest ambiguityForest;
 
-	}
+    private UserDefineLibrary(final Forest forest, final Forest ambiguityForest) {
+        // 加载用户自定义词典和补充词典
+        this.forest = forest != null ?
+                forest :
+                loadLibrary(new Forest(), MyStaticValue.userLibrary, MyStaticValue.isSkipUserDefine);
 
-	// 单个文件加载词典
-	public static void loadFile(Forest forest, File file) {
-		if (!file.canRead()) {
-			LIBRARYLOG.warning("file in path " + file.getAbsolutePath() + " can not to read!");
-			return;
-		}
-		String temp = null;
-		BufferedReader br = null;
-		String[] strs = null;
-		Value value = null;
-		try {
-			br = IOUtil.getReader(new FileInputStream(file), "UTF-8");
-			while ((temp = br.readLine()) != null) {
-				if (StringUtil.isBlank(temp)) {
-					continue;
-				} else {
-					strs = temp.split("\t");
+        this.ambiguityForest = ambiguityForest != null ?
+                ambiguityForest :
+                initAmbiguityLibrary(MyStaticValue.ambiguityLibrary);
+    }
 
-					strs[0] = strs[0].toLowerCase();
+    public GetWord getWord(final char[] chars) {
+        return this.ambiguityForest != null ? new GetWord(this.ambiguityForest, chars) : null;
+    }
 
-					// 如何核心辞典存在那么就放弃
-					if (MyStaticValue.isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {
-						continue;
-					}
+    /**
+     * 关键词增加
+     *
+     * @param keyword 所要增加的关键词
+     * @param nature  关键词的词性
+     * @param freq    关键词的词频
+     */
+    public void insertWord(final String keyword, final String nature, final int freq) {
+        Library.insertWord(this.forest, new Value(keyword, nature, String.valueOf(freq)));
+    }
 
-					if (strs.length != 3) {
-						value = new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR);
-					} else {
-						value = new Value(strs[0], strs[1], strs[2]);
-					}
-					Library.insertWord(forest, value);
-				}
-			}
-			LIBRARYLOG.info("init user userLibrary ok path is : " + file.getAbsolutePath());
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			IOUtil.close(br);
-			br = null;
-		}
-	}
+    /**
+     * 删除关键词
+     */
+    public void removeWord(final String word) {
+        Library.removeWord(this.forest, word);
+    }
 
-	/**
-	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
-	 */
-	public static void loadLibrary(Forest forest, String path) {
-		// 加载用户自定义词典
-		File file = null;
-		if (path != null) {
-			file = new File(path);
-			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
-				return;
-			}
-			if (file.isFile()) {
-				loadFile(forest, file);
-			} else if (file.isDirectory()) {
-				File[] files = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().trim().endsWith(".dic")) {
-						loadFile(forest, files[i]);
-					}
-				}
-			} else {
-				LIBRARYLOG.warning("init user library  error :" + new File(path).getAbsolutePath() + " because : not find that file !");
-			}
-		}
-	}
+    /**
+     * 将用户自定义词典清空
+     */
+    public void clear() {
+        this.forest.clear();
+    }
 
-	/**
-	 * 删除关键词
-	 */
-	public static void removeWord(String word) {
-		Library.removeWord(FOREST, word);
-	}
+    public boolean contains(final String word) {
+        return getParams(this.forest, word) != null;
+    }
 
-	public static String[] getParams(String word) {
-		WoodInterface temp = FOREST;
-		for (int i = 0; i < word.length(); i++) {
-			temp = temp.get(word.charAt(i));
-			if (temp == null) {
-				return null;
-			}
-		}
-		if (temp.getStatus() > 1) {
-			return temp.getParams();
-		} else {
-			return null;
-		}
-	}
+    public String[] getParams(final String word) {
+        return getParams(this.forest, word);
+    }
 
-	public static String[] getParams(Forest forest, String word) {
-		WoodInterface temp = forest;
-		for (int i = 0; i < word.length(); i++) {
-			temp = temp.get(word.charAt(i));
-			if (temp == null) {
-				return null;
-			}
-		}
-		if (temp.getStatus() > 1) {
-			return temp.getParams();
-		} else {
-			return null;
-		}
-	}
+    public static String[] getParams(final Forest forest, final String word) {
+        WoodInterface<String[], Branch> temp = forest;
+        for (final char ch : word.toCharArray()) {
+            temp = temp.getBranch(ch);
+            if (temp == null) {
+                return null;
+            }
+        }
+        return temp.getStatus() > 1 ? temp.getParam() : null;
+    }
 
-	public static boolean contains(String word) {
-		return getParams(word) != null;
-	}
+    /**
+     * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
+     */
+    public static Forest loadLibrary(final Forest forest, final String path, final boolean isSkipUserDefine) {
+        if (path == null) {
+            return forest;
+        }
+        // 加载用户自定义词典
+        final File file = new File(path);
+        if (!file.canRead() || file.isHidden()) {
+            LIBRARYLOG.warning("init userLibrary  warning :" + file.getAbsolutePath() + " because : file not found or failed to read !");
+            return forest;
+        }
 
-	/**
-	 * 将用户自定义词典清空
-	 */
-	public static void clear() {
-		FOREST.clear();
-	}
+        final File[] files = file.isFile() ? new File[]{file} : (file.isDirectory() ? file.listFiles() : null);
+        if (files == null || files.length == 0) {
+            LIBRARYLOG.warning("init user library  error :" + file.getAbsolutePath() + " because : not find that file !");
+            return forest;
+        }
+        for (final File f : files) {
+            if (f.getName().trim().endsWith(".dic")) {
+                loadFile(forest, f, isSkipUserDefine);
+            }
+        }
+        return forest;
+    }
 
+    /**
+     * 加载纠正词典
+     */
+    private static Forest initAmbiguityLibrary(final String path) {
+        if (isBlank(path)) {
+            LIBRARYLOG.warning("init ambiguity  warning :" + path + " because : file not found or failed to read !");
+            return null;
+        }
+        final File file = new File(path);
+        if (!file.isFile() || !file.canRead()) {
+            LIBRARYLOG.warning("init ambiguity  warning :" + file.getAbsolutePath() + " because : file not found or failed to read !");
+            return null;
+        }
+        try {
+            final Forest result = Library.makeForest(path);
+            LIBRARYLOG.info("init ambiguityLibrary ok!");
+            return result;
+        } catch (final Exception e) {
+            LIBRARYLOG.warning("init ambiguity  error :" + file.getAbsolutePath() + " because : not find that file or can not to read !");
+            return null;
+        }
+    }
+
+    // 单个文件加载词典
+    @SneakyThrows
+    public static void loadFile(final Forest forest, final File file, final boolean isSkipUserDefine) {
+        if (!file.canRead()) {
+            LIBRARYLOG.warning("file in path " + file.getAbsolutePath() + " can not to read!");
+            return;
+        }
+
+        String temp;
+        try (final BufferedReader br = IOUtil.getReader(new FileInputStream(file), "UTF-8")) {
+            while ((temp = br.readLine()) != null) {
+                if (!isBlank(temp)) {
+                    final String[] strs = temp.split(TAB);
+                    strs[0] = strs[0].toLowerCase();
+
+                    // 如何核心辞典存在那么就放弃
+                    if (isSkipUserDefine && DAT_DICTIONARY.getId(strs[0]) > 0) {
+                        continue;
+                    }
+
+                    final Value value = strs.length != 3 ?
+                            new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR) :
+                            new Value(strs[0], strs[1], strs[2]);
+                    Library.insertWord(forest, value);
+                }
+            }
+            LIBRARYLOG.info("init user userLibrary ok path is : " + file.getAbsolutePath());
+        }
+    }
 }

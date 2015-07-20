@@ -1,17 +1,10 @@
 package org.ansj.test;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.splitWord.impl.GetWordsImpl;
-import org.junit.Test;
+import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 public class SpeedTest {
