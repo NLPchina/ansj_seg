@@ -1,6 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.domain.AnsjItem;
+import org.ansj.AnsjItem;
 import org.nlpcn.commons.lang.dat.DATMaker;
 import org.nlpcn.commons.lang.dat.Item;
 import org.nlpcn.commons.lang.util.IOUtil;
@@ -9,7 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.TreeMap;
 
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 构建核心词典

@@ -1,7 +1,6 @@
 package org.ansj;
 
-import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.UserLibrary;
 import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -9,7 +8,7 @@ import org.nlpcn.commons.lang.tire.library.Library;
 
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class Test {
     public static void main(String[] args) throws Exception {
@@ -18,7 +17,7 @@ public class Test {
         Forest forest = Library.makeForest("library/default.dic");
         forest = new Forest();
 
-        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
+        final UserLibrary userDefineLibrary = CONTEXT().getUserLibrary();
 
         // 增加新词,中间按照'\t'隔开
         userDefineLibrary.insertWord("ansj中文分词", "userDefine", 1000);

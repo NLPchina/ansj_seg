@@ -1,7 +1,7 @@
 package org.ansj.lucene.util;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.AnsjReader;
 import org.apache.lucene.analysis.Tokenizer;

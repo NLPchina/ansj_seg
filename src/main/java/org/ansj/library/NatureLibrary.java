@@ -1,14 +1,14 @@
 package org.ansj.library;
 
-import org.ansj.domain.Nature;
-import org.ansj.domain.Term;
+import org.ansj.Nature;
+import org.ansj.Term;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static java.lang.Integer.parseInt;
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.TAB;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 /**

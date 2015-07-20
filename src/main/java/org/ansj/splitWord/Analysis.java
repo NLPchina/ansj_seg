@@ -1,10 +1,9 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.DATDictionary;
-import org.ansj.util.WordAlert;
+import org.ansj.Term;
+import org.ansj.TermNature;
+import org.ansj.TermNatures;
+import org.ansj.library.CoreDictionary;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
@@ -15,7 +14,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 import static org.nlpcn.commons.lang.util.StringUtil.isBlank;
 
 /**
@@ -95,7 +94,7 @@ public abstract class Analysis {
         final Graph gp = new Graph(temp);
 
         int startOffe = 0;
-        final GetWord gw = CONTEXT().getUserDefineLibrary().getWord(gp.chars);
+        final GetWord gw = CONTEXT().getUserLibrary().getWord(gp.chars);
         if (gw != null) {
             String[] params;
             while ((gw.getFrontWords()) != null) {
@@ -118,7 +117,7 @@ public abstract class Analysis {
     }
 
     private void analysis(final Graph gp, final int startOffe, final int endOffe) {
-        final DATDictionary dat = CONTEXT().datDictionary;
+        final CoreDictionary dat = CONTEXT().coreDictionary;
         final char[] chars = gp.chars;
         int start;
         int end;

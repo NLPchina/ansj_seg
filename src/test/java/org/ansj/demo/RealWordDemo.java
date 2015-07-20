@@ -1,12 +1,12 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.ToAnalysis;
 
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
-import static org.ansj.util.AnsjContext.replaceContext;
+import static org.ansj.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.replaceContext;
 
 /**
  * 保持单词的大小写

@@ -1,7 +1,7 @@
 package org.ansj.splitWord;
 
 import lombok.SneakyThrows;
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.io.BufferedReader;

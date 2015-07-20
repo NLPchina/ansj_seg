@@ -1,16 +1,12 @@
 package org.ansj.splitWord;
 
-import org.ansj.app.crf.SplitWord;
-import org.ansj.domain.NewWord;
-import org.ansj.domain.Term;
-import org.ansj.library.DATDictionary;
+import org.ansj.crf.SplitWord;
+import org.ansj.NewWord;
+import org.ansj.Term;
+import org.ansj.library.CoreDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.recognition.NatureRecognition;
-import org.ansj.recognition.NewWordRecognition;
-import org.ansj.recognition.NumRecognition;
-import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.AnsjContext;
-import org.ansj.util.WordAlert;
+import org.ansj.recognition.*;
+import org.ansj.AnsjContext;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.Reader;
@@ -18,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -61,7 +57,7 @@ public class NlpAnalysis extends Analysis {
     @Override
     protected List<Term> getResult(final Graph graph) {
         final NatureLibrary natureLibrary = AnsjContext.natureLibrary;
-        final DATDictionary dat = CONTEXT().datDictionary;
+        final CoreDictionary dat = CONTEXT().coreDictionary;
         final SplitWord crfSplitWord = CONTEXT().getCrfSplitWord();
 
         final LearnTool learn = this.learn != null ? this.learn : new LearnTool();
@@ -95,7 +91,7 @@ public class NlpAnalysis extends Analysis {
         graph.walkPathByScore();
 
         // 进行新词发现
-        new NewWordRecognition(graph.terms, learn).recognition();
+        new NewWordRecognition(graph.terms, learn.getForest()).recognition();
         graph.walkPathByScore();
 
         // 修复人名左右连接

@@ -1,11 +1,11 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.AnsjItem;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.AnsjItem;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 最短路径
@@ -291,7 +291,7 @@ public class Graph {
             }
         } else {
             char c = chars[to];
-            TermNatures tn = CONTEXT().datDictionary.getItem(c).termNatures;
+            TermNatures tn = CONTEXT().coreDictionary.getItem(c).termNatures;
             if (tn == null || tn == TermNatures.NULL) {
                 tn = TermNatures.NULL;
             }

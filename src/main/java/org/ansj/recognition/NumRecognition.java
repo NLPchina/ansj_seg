@@ -1,28 +1,25 @@
 package org.ansj.recognition;
 
-import org.ansj.domain.Term;
-import org.ansj.util.AnsjContext;
+import org.ansj.Term;
+import org.ansj.AnsjContext;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class NumRecognition {
 
     /**
      * 数字+数字合并,zheng
-     *
-     * @param terms
      */
     public static void recognition(final Term[] terms) {
         final AnsjContext context = CONTEXT();
 
-        final int length = terms.length - 1;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < terms.length - 1; i++) {
             if (terms[i] == null) {
                 continue;
             } else if (".".equals(terms[i].getName()) || "．".equals(terms[i].getName())) {
                 // 如果是.前后都为数字进行特殊处理
-                Term to = terms[i].getTo();
-                Term from = terms[i].getFrom();
+                final Term to = terms[i].getTo();
+                final Term from = terms[i].getFrom();
                 if (from.getTermNatures().numAttr.flag && to.getTermNatures().numAttr.flag) {
                     from.setName(from.getName() + "." + to.getName());
                     Term.termLink(from, to.getTo());

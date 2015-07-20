@@ -1,10 +1,10 @@
 package org.ansj.demo;
 
 import lombok.SneakyThrows;
-import org.ansj.domain.NewWord;
+import org.ansj.NewWord;
 import org.ansj.library.NatureLibrary;
 import org.ansj.splitWord.LearnTool;
-import org.ansj.util.AnsjContext;
+import org.ansj.AnsjContext;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.util.HashMap;
@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import static org.ansj.splitWord.NlpAnalysis.nlpParse;
-import static org.ansj.util.AnsjContext.NEW_LINE;
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.NEW_LINE;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 新词发现工具

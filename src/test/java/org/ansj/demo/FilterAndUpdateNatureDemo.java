@@ -1,19 +1,19 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.Term;
+import org.ansj.library.UserLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.ToAnalysis;
-import org.ansj.util.FilterModifWord;
+import org.ansj.splitWord.FilterModifWord;
 
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class FilterAndUpdateNatureDemo {
 
     public static void main(final String[] args) {
-        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
+        final UserLibrary userLibrary = CONTEXT().getUserLibrary();
 
         // 加入停用词, 过滤词性词性
         final FilterModifWord filterModifWord = new FilterModifWord()
@@ -25,7 +25,7 @@ public class FilterAndUpdateNatureDemo {
         new NatureRecognition(parse).recognition();
         System.out.println(parse);
 
-        userDefineLibrary.insertWord("停用词", "userDefine", 1000);
+        userLibrary.insertWord("停用词", "userDefine", 1000);
 
         // 修正词性并且过滤停用
         parse = filterModifWord.modifResult(parse);

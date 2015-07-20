@@ -1,20 +1,22 @@
 package org.ansj.app.crf.pojo;
 
 import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.ansj.util.AnsjContext.NEW_LINE;
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.NEW_LINE;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 解析crf++模板
  *
  * @author ansj
  */
+@Deprecated
 public class Template implements Serializable {
 
     private static final long serialVersionUID = 8265350854930361325L;
@@ -45,7 +47,7 @@ public class Template implements Serializable {
         );
     }
 
-    private Template(
+    public Template(
             final int[][] ft,
             final int left,
             final int right,

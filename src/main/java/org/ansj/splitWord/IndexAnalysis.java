@@ -1,7 +1,7 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 用于检索的分词方式

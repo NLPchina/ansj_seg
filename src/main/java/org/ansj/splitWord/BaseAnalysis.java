@@ -1,6 +1,6 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 
 import java.io.Reader;
 import java.util.ArrayList;

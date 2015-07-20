@@ -1,13 +1,13 @@
 package org.ansj.library;
 
-import org.ansj.domain.Nature;
+import org.ansj.Nature;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Map;
 
-import static org.ansj.util.AnsjUtils.classpathResource;
-import static org.ansj.util.AnsjUtils.rawLines;
+import static org.ansj.AnsjUtils.classpathResource;
+import static org.ansj.AnsjUtils.rawLines;
 
 public class NatureLibraryTest {
 

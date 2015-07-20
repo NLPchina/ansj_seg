@@ -1,6 +1,6 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 标准分词

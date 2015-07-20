@@ -3,7 +3,7 @@ package org.ansj.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 

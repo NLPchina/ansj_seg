@@ -1,9 +1,9 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.AnsjItem;
-import org.ansj.library.DATDictionary;
+import org.ansj.AnsjItem;
+import org.ansj.library.CoreDictionary;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class GetWordsImpl implements GetWords {
 
@@ -77,7 +77,7 @@ public class GetWordsImpl implements GetWords {
                     i++;
                     offe = start;
                     tempBaseValue = baseValue;
-                    return CONTEXT().datDictionary.getItem(tempBaseValue).getName();
+                    return CONTEXT().coreDictionary.getItem(tempBaseValue).getName();
                 case 3:
                     offe = start;
                     start++;
@@ -85,7 +85,7 @@ public class GetWordsImpl implements GetWords {
                     end = 0;
                     tempBaseValue = baseValue;
                     baseValue = 0;
-                    return CONTEXT().datDictionary.getItem(tempBaseValue).getName();
+                    return CONTEXT().coreDictionary.getItem(tempBaseValue).getName();
             }
 
         }
@@ -106,7 +106,7 @@ public class GetWordsImpl implements GetWords {
      * @return
      */
     private int getStatement() {
-        final DATDictionary dat = CONTEXT().datDictionary;
+        final CoreDictionary dat = CONTEXT().coreDictionary;
 
         checkValue = baseValue;
         baseValue = dat.getItem(checkValue).getBase() + charHashCode;
@@ -117,7 +117,7 @@ public class GetWordsImpl implements GetWords {
     }
 
     public AnsjItem getItem() {
-        return CONTEXT().datDictionary.getItem(tempBaseValue);
+        return CONTEXT().coreDictionary.getItem(tempBaseValue);
     }
 
     @Override

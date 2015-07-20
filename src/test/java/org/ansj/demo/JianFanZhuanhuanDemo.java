@@ -1,12 +1,12 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.NlpAnalysis;
-import org.ansj.util.AnsjContext;
+import org.ansj.AnsjContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.ansj.util.AnsjContext.*;
+import static org.ansj.AnsjContext.*;
 
 public class JianFanZhuanhuanDemo {
 

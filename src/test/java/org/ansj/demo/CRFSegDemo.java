@@ -1,6 +1,6 @@
 package org.ansj.demo;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class CRFSegDemo {
     public static void main(String[] args) {

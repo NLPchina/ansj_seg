@@ -1,18 +1,17 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.FilterModifWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 默认用户自定义词性优先

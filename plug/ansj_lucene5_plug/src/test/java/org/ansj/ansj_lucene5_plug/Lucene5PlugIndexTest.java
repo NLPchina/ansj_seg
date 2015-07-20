@@ -33,7 +33,7 @@ import java.io.StringReader;
 import java.util.Date;
 import java.util.HashSet;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class Lucene5PlugIndexTest {
 
@@ -68,7 +68,7 @@ public class Lucene5PlugIndexTest {
         Analyzer analyzer = new AnsjIndexAnalysis(hs, false);
         String text = "季德胜蛇药片 10片*6板 ";
 
-        CONTEXT().getUserDefineLibrary().insertWord("蛇药片", "n", 1000);
+        CONTEXT().getUserLibrary().insertWord("蛇药片", "n", 1000);
 
         IndexWriterConfig ic = new IndexWriterConfig(analyzer);
         final Directory directory = new RAMDirectory();// 建立内存索引对象
