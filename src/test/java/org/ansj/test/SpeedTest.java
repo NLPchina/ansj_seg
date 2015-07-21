@@ -32,7 +32,7 @@ public class SpeedTest {
 		
 		
 		
-		ToAnalysis toAnalysis = new ToAnalysis(IOUtil.getReader("/home/ansj/data/allSportsArticle", IOUtil.UTF8)); 
+		ToAnalysis toAnalysis = new ToAnalysis(IOUtil.getReader("/home/ansj/data/allSportsArticle", IOUtil.UTF8), null);
 		
 		Term term = null ;
 		while((term = toAnalysis.next())!=null){

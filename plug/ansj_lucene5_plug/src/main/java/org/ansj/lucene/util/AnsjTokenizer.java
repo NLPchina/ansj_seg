@@ -31,11 +31,7 @@ public class AnsjTokenizer extends Tokenizer {
     private final boolean pstemming;
     private final PorterStemmer stemmer;
 
-    public AnsjTokenizer(
-            final Analysis ta,
-            final Set<String> filter,
-            final boolean pstemming
-    ) {
+    public AnsjTokenizer(final Analysis ta, final Set<String> filter, final boolean pstemming) {
         this.termAtt = addAttribute(CharTermAttribute.class);
         this.offsetAtt = addAttribute(OffsetAttribute.class);
         this.positionAttr = addAttribute(PositionIncrementAttribute.class);

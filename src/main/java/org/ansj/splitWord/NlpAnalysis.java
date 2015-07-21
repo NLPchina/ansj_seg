@@ -1,12 +1,15 @@
 package org.ansj.splitWord;
 
-import org.ansj.crf.SplitWord;
+import org.ansj.AnsjContext;
 import org.ansj.NewWord;
 import org.ansj.Term;
+import org.ansj.crf.SplitWord;
 import org.ansj.library.CoreDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.recognition.*;
-import org.ansj.AnsjContext;
+import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.NewWordRecognition;
+import org.ansj.recognition.NumRecognition;
+import org.ansj.recognition.UserDefineRecognition;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.Reader;
@@ -30,14 +33,6 @@ public class NlpAnalysis extends Analysis {
      *
      * @param forests forests
      */
-    private NlpAnalysis(final List<Forest> forests) {
-        this(forests, null, null);
-    }
-
-    private NlpAnalysis(final List<Forest> forests, final LearnTool learn) {
-        this(forests, learn, null);
-    }
-
     public NlpAnalysis(final List<Forest> forests, final LearnTool learn, final Reader reader) {
         super(forests);
         this.learn = learn;
@@ -47,11 +42,11 @@ public class NlpAnalysis extends Analysis {
     }
 
     public static List<Term> nlpParse(final LearnTool learn, final String str, final Forest... forests) {
-        return new NlpAnalysis(asList(forests), learn).parseStr(str);
+        return new NlpAnalysis(asList(forests), learn, null).parseStr(str);
     }
 
     public static List<Term> nlpParse(final String str, final Forest... forests) {
-        return new NlpAnalysis(asList(forests)).parseStr(str);
+        return new NlpAnalysis(asList(forests), null, null).parseStr(str);
     }
 
     @Override

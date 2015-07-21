@@ -191,7 +191,6 @@ public abstract class Analysis {
         if (!CONTEXT().isRealName) {
             return;
         }
-
         final String str = graph.realStr;
         for (final Term term : result) {
             term.setRealName(str.substring(term.getOffe(), term.getOffe() + term.getName().length()));
@@ -205,19 +204,15 @@ public abstract class Analysis {
 
     protected abstract List<Term> getResult(final Graph graph);
 
+    public void resetContent(final Reader reader) {
+        this.resetContent(reader, AnsjReader.defaultCharBufferSize);
+    }
+
     /**
      * 重置分词器
      *
      * @param reader reader
      */
-    public void resetContent(final AnsjReader reader) {
-        this.resetContent(reader, AnsjReader.defaultCharBufferSize);
-    }
-
-    public void resetContent(final Reader reader) {
-        this.resetContent(reader, AnsjReader.defaultCharBufferSize);
-    }
-
     private void resetContent(final Reader reader, final int buffer) {
         this.offe = 0;
         this.reader = (reader instanceof AnsjReader) ? (AnsjReader) reader : new AnsjReader(reader, buffer);

@@ -12,7 +12,6 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
 import static org.ansj.AnsjContext.CONTEXT;
 
 /**
@@ -94,19 +93,7 @@ public class IndexAnalysis extends Analysis {
         }
     }
 
-    public IndexAnalysis(final Reader reader, final Forest... forests) {
-        this(reader, asList(forests));
-    }
-
-    public IndexAnalysis(final List<Forest> forests) {
-        this(null, forests);
-    }
-
     public static List<Term> parse(final String str) {
-        return parse(str, null);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return new IndexAnalysis(forests).parseStr(str);
+        return new IndexAnalysis(null, null).parseStr(str);
     }
 }

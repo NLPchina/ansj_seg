@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.ansj.AnsjContext.CONTEXT;
 
 /**
@@ -68,6 +69,11 @@ public class UserDefineAnalysis extends Analysis {
         return result;
     }
 
+    /**
+     * 用户自己定义的词典
+     *
+     * @param forests forests
+     */
     public UserDefineAnalysis(final BufferedReader reader, final List<Forest> forests) {
         super(forests);
         if (reader != null) {
@@ -75,20 +81,7 @@ public class UserDefineAnalysis extends Analysis {
         }
     }
 
-    /**
-     * 用户自己定义的词典
-     *
-     * @param forests forests
-     */
-    public UserDefineAnalysis(final List<Forest> forests) {
-        this(null, forests);
-    }
-
-    public static List<Term> parse(final String str) {
-        return parse(str, null);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return new UserDefineAnalysis(forests).parseStr(str);
+    public static List<Term> parse(final String str, final Forest... forests) {
+        return new UserDefineAnalysis(null, asList(forests)).parseStr(str);
     }
 }

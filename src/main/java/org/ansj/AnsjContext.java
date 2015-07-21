@@ -76,12 +76,15 @@ public class AnsjContext {
     public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
     // 是否开启人名识别
+    @Wither
     public final boolean isNameRecognition;
 
     // 是否开启数字识别
+    @Wither
     public final boolean isNumRecognition;
 
     // 是否数字和量词合并
+    @Wither
     public final boolean isQuantifierRecognition;
 
     @Wither
@@ -94,6 +97,7 @@ public class AnsjContext {
     /**
      * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
      */
+    @Wither
     public final String userLibraryLocation;
     @Wither
     public final String userAmbiguityLibraryLocation;
