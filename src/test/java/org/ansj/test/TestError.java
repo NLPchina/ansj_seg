@@ -63,7 +63,7 @@ public class TestError {
 //		System.out.println(NlpAnalysis.parse("据说川府办发的发文很厉害"));
 //		;
 //		System.out.println(NlpAnalysis.parse("京财企业务繁忙"));
-//		MyStaticValue.isNumRecognition = false ;
+//		MyStaticValue.numRecognition = false ;
 //		System.out.println(ToAnalysis.parse("0.46毫克"));
 //		;
 		

@@ -26,9 +26,9 @@ public class Temp {
             System.out.println(rb.getString("userLibrary"));
         if (rb.containsKey("ambiguityLibrary"))
             System.out.println(rb.getString("ambiguityLibrary"));
-        if (rb.containsKey("isSkipUserDefine"))
-            System.out.println(Boolean.valueOf(rb.getString("isSkipUserDefine")));
-        if (rb.containsKey("isRealName"))
-            System.out.println(Boolean.valueOf(rb.getString("isRealName")));
+        if (rb.containsKey("skipUserDefine"))
+            System.out.println(Boolean.valueOf(rb.getString("skipUserDefine")));
+        if (rb.containsKey("realName"))
+            System.out.println(Boolean.valueOf(rb.getString("realName")));
     }
 }

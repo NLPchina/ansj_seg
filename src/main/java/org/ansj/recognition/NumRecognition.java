@@ -38,7 +38,7 @@ public class NumRecognition {
                 terms[i].setName(terms[i].getName() + temp.getName());
             }
             // 如果是数字结尾
-            if (context.isQuantifierRecognition && temp.getTermNatures().numAttr.numEndFreq > 0) {
+            if (context.quantifierRecognition && temp.getTermNatures().numAttr.numEndFreq > 0) {
                 terms[i].setName(terms[i].getName() + temp.getName());
                 temp = temp.getTo();
             }

@@ -32,7 +32,7 @@ public class ReloadUserLibrary {
 
     private static void loadFormFile() {
         final Forest forest = new Forest(); // make new forest
-        //TODO UserLibrary.loadSingleForestFile(forest, new File("new_Library_Path"), CONTEXT().isSkipUserDefine);
+        //TODO UserLibrary.loadSingleForestFile(forest, new File("new_Library_Path"), CONTEXT().skipUserDefine);
 
         new UserLibrary(forest, CONTEXT.loadUserAmbiguityDic()); // 将新构建的辞典树替换掉舊的。
     }

@@ -26,12 +26,12 @@ public class ToAnalysis extends Analysis {
 
         graph.walkPath();
         // 数字发现
-        if (CONTEXT().isNumRecognition && graph.hasNum) {
+        if (CONTEXT().numRecognition && graph.hasNum) {
             NumRecognition.recognition(graph.terms);
         }
 
         // 姓名识别
-        if (graph.hasPerson && CONTEXT().isNameRecognition) {
+        if (graph.hasPerson && CONTEXT().nameRecognition) {
             // 亚洲人名识别
             new AsianPersonRecognition(graph.terms).recognition();
             graph.walkPathByScore();
@@ -75,7 +75,7 @@ public class ToAnalysis extends Analysis {
             super.resetContent(new AnsjReader(reader));
         }
     }
-    
+
     public static List<Term> parse(final String str, final Forest... forests) {
         return new ToAnalysis(null, asList(forests)).parseStr(str);
     }

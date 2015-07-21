@@ -188,7 +188,7 @@ public abstract class Analysis {
      * @param result result
      */
     protected static void setRealName(final Graph graph, final List<Term> result) {
-        if (!CONTEXT().isRealName) {
+        if (!CONTEXT().realName) {
             return;
         }
         final String str = graph.realStr;

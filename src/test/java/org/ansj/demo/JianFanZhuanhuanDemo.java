@@ -11,7 +11,7 @@ import static org.ansj.AnsjContext.*;
 public class JianFanZhuanhuanDemo {
 
     public static void main(final String[] args) {
-        replaceContext(AnsjContext.CONTEXT().withRealName(true));
+        refreshContext(AnsjContext.CONTEXT().withRealName(true));
 
         List<String> all = new ArrayList<>();
         all.add("關注十八大：台港澳密集解讀十八大報告”");

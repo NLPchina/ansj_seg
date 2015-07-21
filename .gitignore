@@ -40,3 +40,5 @@ jrat.xml
 ._.DS_Store
 ._*
 train_file/*
+*-pom.xml
+

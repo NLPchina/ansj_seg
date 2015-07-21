@@ -1,6 +1,5 @@
 package org.ansj;
 
-import com.google.common.collect.ImmutableList;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -17,20 +16,18 @@ import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.FileFinder;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static java.lang.Boolean.parseBoolean;
-import static java.util.Arrays.asList;
 import static lombok.AccessLevel.PRIVATE;
 import static org.ansj.AnsjUtils.*;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @AllArgsConstructor(access = PRIVATE)
@@ -39,6 +36,8 @@ public class AnsjContext {
 //    public static void main(String[] args) {
 //        System.out.println(Math.log(dTemp * 2));
 //    }
+
+    public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
     public static final String TAB = "\t";
     public static final String NEW_LINE = "\n";
@@ -54,11 +53,11 @@ public class AnsjContext {
     private static volatile AnsjContext _INSTANCE;
 
     public static AnsjContext CONTEXT() {
-        return _INSTANCE != null ? _INSTANCE : newContextIfNoOneExists();
+        return _INSTANCE != null ? _INSTANCE : createIfNotExists();
     }
 
     @Synchronized
-    private static AnsjContext newContextIfNoOneExists() {
+    private static AnsjContext createIfNotExists() {
         if (_INSTANCE != null) {
             return _INSTANCE;
         } else {
@@ -68,32 +67,30 @@ public class AnsjContext {
     }
 
     @Synchronized
-    public static void replaceContext(final AnsjContext context) {
+    public static void refreshContext(final AnsjContext context) {
+        userLibraryRef.set(null);
         _INSTANCE = context;
     }
-    //
-
-    public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
 
     // 是否开启人名识别
     @Wither
-    public final boolean isNameRecognition;
+    public final boolean nameRecognition;
 
     // 是否开启数字识别
     @Wither
-    public final boolean isNumRecognition;
+    public final boolean numRecognition;
 
     // 是否数字和量词合并
     @Wither
-    public final boolean isQuantifierRecognition;
+    public final boolean quantifierRecognition;
 
     @Wither
-    public final boolean isRealName;
+    public final boolean realName;
     /**
      * 是否用户辞典不加载相同的词
      */
     @Wither
-    public final boolean isSkipUserDefine;
+    public final boolean skipUserDefine;
     /**
      * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
      */
@@ -124,14 +121,14 @@ public class AnsjContext {
     private AnsjContext(final ResourceBundle properties) {
         LIBRARYLOG.info("new AnsjContext");
 
-        this.isNameRecognition = parseBoolean(property(properties, "isNameRecognition", "true"));
-        this.isNumRecognition = parseBoolean(property(properties, "isNumRecognition", "true"));
-        this.isQuantifierRecognition = parseBoolean(property(properties, "isQuantifierRecognition", "true"));
+        this.nameRecognition = parseBoolean(property(properties, "nameRecognition", "true"));
+        this.numRecognition = parseBoolean(property(properties, "numRecognition", "true"));
+        this.quantifierRecognition = parseBoolean(property(properties, "quantifierRecognition", "true"));
         //
-        this.isRealName = parseBoolean(property(properties, "isRealName", "false"));
-        this.isSkipUserDefine = parseBoolean(property(properties, "isSkipUserDefine", "false"));
-        this.userLibraryLocation = property(properties, "userLibrary", "library/default.dic");
-        this.userAmbiguityLibraryLocation = property(properties, "userAmbiguityLibrary", "library/ambiguity.dic");
+        this.realName = parseBoolean(property(properties, "realName", "false"));
+        this.skipUserDefine = parseBoolean(property(properties, "skipUserDefine", "false"));
+        this.userLibraryLocation = property(properties, "userLibraryLocation", "library/default.dic");
+        this.userAmbiguityLibraryLocation = property(properties, "userAmbiguityLibraryLocation", "library/ambiguity.dic");
         this.crfModelLocation = property(properties, "crfModel", "library/crf.bz2");
         //
         this.companyAttrLibrary = new CompanyAttrLibrary(
@@ -153,80 +150,59 @@ public class AnsjContext {
     private static final Integer DEFAULT_FREQ = 1000;
     public static final String DEFAULT_FREQ_STR = DEFAULT_FREQ.toString();
 
+    private static final AtomicReference<Object> userLibraryRef = new AtomicReference<>();
+
+    public UserLibrary getUserLibrary() {
+        Object value = AnsjContext.userLibraryRef.get();
+        if (value == null) {
+            synchronized (AnsjContext.userLibraryRef) {
+                value = AnsjContext.userLibraryRef.get();
+                if (value == null) {
+                    UserLibrary actualValue = this.initUserLibrary();
+                    value = actualValue == null ? AnsjContext.userLibraryRef : actualValue;
+                    AnsjContext.userLibraryRef.set(value);
+                }
+            }
+        }
+        return ((UserLibrary) (value == AnsjContext.userLibraryRef ? null : value));
+    }
+
+    UserLibrary initUserLibrary() {
+        return new UserLibrary(this.loadUserDic(), this.loadUserAmbiguityDic());
+    }
+
     /**
      * 加载用户词典,传入
      */
     public Forest loadUserDic() {
         final Forest forest = new Forest();
-        for (final String dic : this.userLibraryResources()) {
-            //LIBRARYLOG.warning("file in path " + dic + " can not to read!");
-            for (final String line : rawLines(filesystemResource(dic))) {//单个文件加载词典
-                if (isNotBlank(line)) {
-                    final String[] strs = line.split(TAB);
-                    strs[0] = strs[0].toLowerCase();
-
-                    // 如何核心辞典存在那么就放弃
-                    if (this.isSkipUserDefine && this.coreDictionary.getId(strs[0]) > 0) {
-                        continue;
-                    }
-
-                    final Value value = strs.length != 3 ?
-                            new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR) :
-                            new Value(strs[0], strs[1], strs[2]);
-                    Library.insertWord(forest, value);
+        for (final String line : rawLines(filesystemDics(this.userLibraryLocation))) {//单个文件加载词典
+            if (isNotBlank(line)) {
+                final String[] strs = line.split(TAB);
+                strs[0] = strs[0].toLowerCase();
+                // 如何核心辞典存在那么就放弃
+                if (this.skipUserDefine && this.coreDictionary.getId(strs[0]) > 0) {
+                    continue;
                 }
+                final Value value = strs.length != 3 ?
+                        new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR) :
+                        new Value(strs[0], strs[1], strs[2]);
+                Library.insertWord(forest, value);
             }
-            LIBRARYLOG.info("load userLibrary ok path is : " + dic);
         }
-        LIBRARYLOG.info("load userLibrary all ok!");
+        LIBRARYLOG.info("load userLibrary ok!");
         return forest;
-    }
-
-    public List<String> userLibraryResources() { // 处理词典的路径.或者目录.词典后缀必须为.dic
-        final String path = this.userLibraryLocation;
-        if (path == null || !new File(path).canRead() || new File(path).isHidden()) {
-            LIBRARYLOG.warning("init userLibrary  warning :" + path + " because : file not found or failed to read!");
-            return ImmutableList.of();
-        }
-        // 加载用户自定义词典
-        final File file = new File(path);
-        final File[] files = file.isFile() ? new File[]{file} : (file.isDirectory() ? file.listFiles() : new File[0]);
-        if (files == null || files.length == 0) {
-            LIBRARYLOG.warning("init user library  error :" + path + " because : not find that file !");
-            return ImmutableList.of();
-        }
-        return asList(files)
-                .stream()
-                .filter(f -> f.getName().trim().endsWith(".dic"))
-                .map(File::getAbsolutePath)
-                .collect(Collectors.toList());
     }
 
     /**
-     * 加载用户纠正词典
+     * 加载用户歧义修正词典
      */
     @SneakyThrows
     public Forest loadUserAmbiguityDic() {
-        final String path = this.ambiguityLibraryResource();
-        final Forest forest = isNotBlank(path) ? Library.makeForest(path) : new Forest();
+        final InputStream inputStream = filesystemDic(this.userAmbiguityLibraryLocation);
+        final Forest forest = inputStream != null ? Library.makeForest(inputStream) : new Forest();
         LIBRARYLOG.info("init ambiguityLibrary ok!");
         return forest;
-    }
-
-    public String ambiguityLibraryResource() {
-        final String path = this.userAmbiguityLibraryLocation;
-        if (isBlank(path) || !new File(path).isFile() || !new File(path).canRead()) {
-            LIBRARYLOG.warning("init ambiguity  warning :" + path + " because : file not found or failed to read!");
-            return null;
-        }
-        return new File(path).getAbsolutePath();
-    }
-
-    @Getter(lazy = true)
-    private final UserLibrary userLibrary = initUserDefineLibrary();
-
-    UserLibrary initUserDefineLibrary() {
-        return new UserLibrary(this.loadUserDic(), this.loadUserAmbiguityDic());
     }
 
     @Getter(lazy = true)

@@ -6,7 +6,7 @@ import org.ansj.splitWord.ToAnalysis;
 import java.util.List;
 
 import static org.ansj.AnsjContext.CONTEXT;
-import static org.ansj.AnsjContext.replaceContext;
+import static org.ansj.AnsjContext.refreshContext;
 
 /**
  * 保持单词的大小写
@@ -21,7 +21,7 @@ public class RealWordDemo {
         System.out.println(parse);
 
         // 保证方式
-        replaceContext(CONTEXT().withRealName(true));
+        refreshContext(CONTEXT().withRealName(true));
 
         parse = ToAnalysis.parse("Hello word是每个程序员必经之路");
         for (Term term : parse) {

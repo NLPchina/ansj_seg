@@ -20,7 +20,7 @@ import static org.ansj.AnsjContext.TAB;
 public class FileDemo {
     public static void main(String[] args) throws IOException {
         //
-        // MyStaticValue.isRealName = true;
+        // MyStaticValue.realName = true;
         BufferedReader reader = IOUtil.getReader("/home/ansj/temp/360baikeData/360tag_all.txt", "utf-8");
 
         ToAnalysis.parse("test 123 孙");
