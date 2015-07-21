@@ -13,7 +13,6 @@ import static com.google.common.base.Charsets.UTF_8;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static org.ansj.AnsjContext.LIBRARYLOG;
-import static org.apache.commons.lang3.StringUtils.isBlank;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AnsjUtils {
@@ -64,7 +63,7 @@ public class AnsjUtils {
     }
 
     public static InputStream filesystemDics(final String path) { // 处理词典的路径.或者目录.词典后缀必须为.dic
-        if (isFileAvailable(path)) {
+        if (!isFileAvailable(path)) {
             LIBRARYLOG.warning("init dic warning '" + path + "' file not found or failed to read!");
             return new ByteArrayInputStream(new byte[0]);
         }
@@ -83,7 +82,7 @@ public class AnsjUtils {
     }
 
     public static InputStream filesystemDic(final String file) {
-        if (isBlank(file) || !new File(file).isFile() || !new File(file).canRead()) {
+        if (!isFileAvailable(file)) {
             LIBRARYLOG.warning("init dic  warning '" + file + "' file not found or failed to read!");
             return new ByteArrayInputStream(new byte[0]);
         }
