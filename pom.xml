@@ -116,6 +116,50 @@
                 </configuration>
             </plugin>
             <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>junit:junit</exclude>
+                                    <exclude>jmock:*</exclude>
+                                    <exclude>org.apache.maven:lib:tests</exclude>
+                                    <exclude>org.projectlombok:*</exclude>
+                                    <exclude>log4j:log4j:jar:</exclude>
+                                </excludes>
+                            </artifactSet>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google.common</pattern>
+                                    <shadedPattern>comgoogle.common</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.commons</pattern>
+                                    <shadedPattern>orgapache.commons</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.esotericsoftware</pattern>
+                                    <shadedPattern>comesotericsoftware</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.objenesis</pattern>
+                                    <shadedPattern>orgobjenesis</shadedPattern>
+                                </relocation>
+                            </relocations>
+                            <minimizeJar>true</minimizeJar>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <shadedClassifierName>all-in-one</shadedClassifierName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.7.5.201505241946</version>
