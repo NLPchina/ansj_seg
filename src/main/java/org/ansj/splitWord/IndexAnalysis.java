@@ -1,7 +1,7 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -12,8 +12,7 @@ import java.io.Reader;
 import java.util.LinkedList;
 import java.util.List;
 
-import static java.util.Arrays.asList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 用于检索的分词方式
@@ -28,12 +27,12 @@ public class IndexAnalysis extends Analysis {
         graph.walkPath();
 
         // 数字发现
-        if (CONTEXT().isNumRecognition && graph.hasNum) {
+        if (CONTEXT().numRecognition && graph.hasNum) {
             NumRecognition.recognition(graph.terms);
         }
 
         // 姓名识别
-        if (graph.hasPerson && CONTEXT().isNameRecognition) {
+        if (graph.hasPerson && CONTEXT().nameRecognition) {
             // 亚洲人名识别
             new AsianPersonRecognition(graph.terms).recognition();
             graph.walkPathByScore();
@@ -94,19 +93,7 @@ public class IndexAnalysis extends Analysis {
         }
     }
 
-    public IndexAnalysis(final Reader reader, final Forest... forests) {
-        this(reader, asList(forests));
-    }
-
-    public IndexAnalysis(final List<Forest> forests) {
-        this(null, forests);
-    }
-
     public static List<Term> parse(final String str) {
-        return parse(str, null);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return new IndexAnalysis(forests).parseStr(str);
+        return new IndexAnalysis(null, null).parseStr(str);
     }
 }

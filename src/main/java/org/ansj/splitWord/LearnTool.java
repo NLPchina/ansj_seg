@@ -1,9 +1,9 @@
 package org.ansj.splitWord;
 
 import lombok.Getter;
-import org.ansj.app.crf.SplitWord;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
+import org.ansj.crf.SplitWord;
+import org.ansj.Nature;
+import org.ansj.NewWord;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;

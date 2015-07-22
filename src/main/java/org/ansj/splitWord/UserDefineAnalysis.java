@@ -1,18 +1,18 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
-import org.ansj.util.FilterModifWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static java.util.Arrays.asList;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 默认用户自定义词性优先
@@ -27,12 +27,12 @@ public class UserDefineAnalysis extends Analysis {
     protected List<Term> getResult(final Graph graph) {
         graph.walkPath();
         // 数字发现
-        if (CONTEXT().isNumRecognition && graph.hasNum) {
+        if (CONTEXT().numRecognition && graph.hasNum) {
             NumRecognition.recognition(graph.terms);
         }
 
         // 姓名识别
-        if (graph.hasPerson && CONTEXT().isNameRecognition) {
+        if (graph.hasPerson && CONTEXT().nameRecognition) {
             // 亚洲人名识别
             new AsianPersonRecognition(graph.terms).recognition();
             graph.walkPathByScore();
@@ -69,6 +69,11 @@ public class UserDefineAnalysis extends Analysis {
         return result;
     }
 
+    /**
+     * 用户自己定义的词典
+     *
+     * @param forests forests
+     */
     public UserDefineAnalysis(final BufferedReader reader, final List<Forest> forests) {
         super(forests);
         if (reader != null) {
@@ -76,20 +81,7 @@ public class UserDefineAnalysis extends Analysis {
         }
     }
 
-    /**
-     * 用户自己定义的词典
-     *
-     * @param forests forests
-     */
-    public UserDefineAnalysis(final List<Forest> forests) {
-        this(null, forests);
-    }
-
-    public static List<Term> parse(final String str) {
-        return parse(str, null);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return new UserDefineAnalysis(forests).parseStr(str);
+    public static List<Term> parse(final String str, final Forest... forests) {
+        return new UserDefineAnalysis(null, asList(forests)).parseStr(str);
     }
 }

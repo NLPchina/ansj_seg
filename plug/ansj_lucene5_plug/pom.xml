@@ -34,7 +34,12 @@
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
 			<version>3.0.1</version>
-			<classifier>min</classifier>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.4</version>
 			<scope>provided</scope>
 		</dependency>
 		
@@ -50,14 +55,12 @@
 			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queries</artifactId>
 			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>

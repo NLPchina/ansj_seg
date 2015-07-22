@@ -1,6 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.NlpAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
@@ -10,7 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.TAB;
 
 public class TestSigHan {
     public static void main(String[] args) throws IOException {

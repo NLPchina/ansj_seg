@@ -1,8 +1,8 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.NlpAnalysis;
-import org.ansj.util.FilterModifWord;
+import org.ansj.splitWord.FilterModifWord;
 
 import java.util.List;
 

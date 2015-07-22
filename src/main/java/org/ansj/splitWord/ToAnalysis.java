@@ -1,6 +1,6 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
  * 标准分词
@@ -26,12 +26,12 @@ public class ToAnalysis extends Analysis {
 
         graph.walkPath();
         // 数字发现
-        if (CONTEXT().isNumRecognition && graph.hasNum) {
+        if (CONTEXT().numRecognition && graph.hasNum) {
             NumRecognition.recognition(graph.terms);
         }
 
         // 姓名识别
-        if (graph.hasPerson && CONTEXT().isNameRecognition) {
+        if (graph.hasPerson && CONTEXT().nameRecognition) {
             // 亚洲人名识别
             new AsianPersonRecognition(graph.terms).recognition();
             graph.walkPathByScore();
@@ -64,6 +64,11 @@ public class ToAnalysis extends Analysis {
         return result;
     }
 
+    /**
+     * 用户自己定义的词典
+     *
+     * @param forests forests
+     */
     public ToAnalysis(final Reader reader, final List<Forest> forests) {
         super(forests);
         if (reader != null) {
@@ -71,28 +76,7 @@ public class ToAnalysis extends Analysis {
         }
     }
 
-    public ToAnalysis(final Reader reader, final Forest... forests) {
-        this(reader, asList(forests));
-    }
-
-    /**
-     * 用户自己定义的词典
-     *
-     * @param forests forests
-     */
-    public ToAnalysis(final List<Forest> forests) {
-        this(null, forests);
-    }
-
-    public static List<Term> parse(final String str, final List<Forest> forests) {
-        return new ToAnalysis(forests).parseStr(str);
-    }
-
-    public static List<Term> parse(final String str) {
-        return parse(str, new Forest[0]);
-    }
-
     public static List<Term> parse(final String str, final Forest... forests) {
-        return parse(str, asList(forests));
+        return new ToAnalysis(null, asList(forests)).parseStr(str);
     }
 }

@@ -1,8 +1,7 @@
 package org.ansj.splitWord;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
-import org.ansj.util.WordAlert;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 
 public class NameFix {
 

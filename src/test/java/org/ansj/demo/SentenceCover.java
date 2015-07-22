@@ -1,6 +1,6 @@
 package org.ansj.demo;
 
-import org.ansj.util.WordAlert;
+import org.ansj.splitWord.WordAlert;
 
 /**
  * 句子标准化demo

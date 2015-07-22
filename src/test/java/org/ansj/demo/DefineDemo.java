@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.domain.Nature;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.Nature;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.BaseAnalysis;
 

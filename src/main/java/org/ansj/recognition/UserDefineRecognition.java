@@ -1,20 +1,21 @@
 package org.ansj.recognition;
 
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
+import org.ansj.Term;
+import org.ansj.TermNature;
+import org.ansj.TermNatures;
 import org.nlpcn.commons.lang.tire.domain.Branch;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 /**
- * 用户自定义词典. 又称补充词典
+ * 用户自定义词典
  *
  * @author ansj
  */
@@ -23,29 +24,40 @@ public class UserDefineRecognition {
     private final Term[] terms;
     private final List<WoodInterface<String[], Branch>> forests;
 
+    private WoodInterface<String[], Branch> forest;
+    private WoodInterface<String[], Branch> branch;
+
     private int offe = -1;
     private int endOffe = -1;
     private int tempFreq = 50;
     private String tempNature;
 
-    private WoodInterface<String[], Branch> branch = null;
-    private WoodInterface<String[], Branch> forest = null;
-
     public UserDefineRecognition(final Term[] terms, final List<Forest> forests) {
         this.terms = terms;
         this.forests = forests != null && forests.size() > 0 ?
                 unmodifiableList(forests) :
-                singletonList(CONTEXT().getUserDefineLibrary().getForest());
+                singletonList(CONTEXT().getUserLibrary().getForest());
+    }
+
+    /**
+     * 重置
+     */
+    private void reset() {
+        this.branch = this.forest;
+        this.offe = -1;
+        this.endOffe = -1;
+        this.tempFreq = 50;
+        this.tempNature = null;
     }
 
     public void recognition() {
-        for (final WoodInterface<String[], Branch> forest : forests) {
+        for (final WoodInterface<String[], Branch> forest : this.forests) {
             if (forest == null) {
                 continue;
             }
             reset();
             this.forest = forest;
-            this.branch = forest;
+            this.branch = this.forest;
 
             int length = terms.length - 1;
 
@@ -93,36 +105,23 @@ public class UserDefineRecognition {
 
     private int getInt(final String str, final int def) {
         try {
-            return Integer.parseInt(str);
+            return parseInt(str);
         } catch (final NumberFormatException e) {
             return def;
         }
     }
 
     private void makeNewTerm() {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (int j = this.offe; j <= this.endOffe; j++) {
             if (this.terms[j] != null) {
                 sb.append(this.terms[j].getName());
             }
-            // terms[j] = null;
         }
         final TermNatures termNatures = new TermNatures(new TermNature(this.tempNature, this.tempFreq));
         final Term term = new Term(sb.toString(), this.offe, termNatures);
         term.setSelfScore(-1 * this.tempFreq);
         Term.insertTerm(this.terms, term);
-        // reset();
-    }
-
-    /**
-     * 重置
-     */
-    private void reset() {
-        this.offe = -1;
-        this.endOffe = -1;
-        this.tempFreq = 50;
-        this.tempNature = null;
-        this.branch = this.forest;
     }
 
     /**
@@ -132,14 +131,14 @@ public class UserDefineRecognition {
      * @param term   term
      * @return branch
      */
-    private WoodInterface<String[], Branch> termStatus(WoodInterface<String[], Branch> branch, final Term term) {
-        final String name = term.getName();
-        for (int j = 0; j < name.length(); j++) {
-            branch = branch.getBranch(name.charAt(j));
-            if (branch == null) {
+    private WoodInterface<String[], Branch> termStatus(final WoodInterface<String[], Branch> branch, final Term term) {
+        WoodInterface<String[], Branch> b = branch;
+        for (int j = 0; j < term.length(); j++) {
+            b = b.getBranch(term.charAt(j));
+            if (b == null) {
                 return null;
             }
         }
-        return branch;
+        return b;
     }
 }

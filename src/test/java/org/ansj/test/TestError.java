@@ -14,7 +14,7 @@ public class TestError {
 		// System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
 //		System.out.println(ToAnalysis.parse("美白面膜"));
 //
-//		UserDefineLibrary.insertWord("面膜", "n", 1000);
+//		UserLibrary.insertWord("面膜", "n", 1000);
 //		
 ////		System.out.println(ToAnalysis.parse("美白面膜"));
 //		System.out.println("aa");
@@ -53,17 +53,17 @@ public class TestError {
 //
 //		// 歧义纠正
 //		Value value = new Value("川府办", "川府办", "n");
-//		Library.insertWord(UserDefineLibrary.ambiguityForest, value);
+//		Library.insertWord(UserLibrary.ambiguityForest, value);
 //
 //		value = new Value("京财企业务", "京财企", "nt", "业务", "j");
-//		Library.insertWord(UserDefineLibrary.ambiguityForest, value);
+//		Library.insertWord(UserLibrary.ambiguityForest, value);
 //
 //		System.out.println(NlpAnalysis.parse("驻京办发文出来了"));
 //		;
 //		System.out.println(NlpAnalysis.parse("据说川府办发的发文很厉害"));
 //		;
 //		System.out.println(NlpAnalysis.parse("京财企业务繁忙"));
-//		MyStaticValue.isNumRecognition = false ;
+//		MyStaticValue.numRecognition = false ;
 //		System.out.println(ToAnalysis.parse("0.46毫克"));
 //		;
 		
@@ -74,7 +74,7 @@ public class TestError {
 //		System.out.println(ToAnalysis.parse("陆成恩和孙健是好朋友"));
 //		System.out.println(ToAnalysis.parse("热海景区+"));
 //		
-//		UserDefineLibrary.insertWord("地黄丸", "aa", 1000);
+//		UserLibrary.insertWord("地黄丸", "aa", 1000);
 //		
 //		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
 //		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));

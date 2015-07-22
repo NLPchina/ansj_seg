@@ -1,12 +1,12 @@
 package org.ansj.test;
 
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.UserLibrary;
 import org.ansj.splitWord.IndexAnalysis;
 import org.ansj.splitWord.ToAnalysis;
 
 import java.io.IOException;
 
-import static org.ansj.util.AnsjContext.CONTEXT;
+import static org.ansj.AnsjContext.CONTEXT;
 
 public class IndexAnalysisTest {
     public static void main(String[] args) throws IOException {
@@ -21,8 +21,8 @@ public class IndexAnalysisTest {
 //		
 //		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
 //
-        final UserDefineLibrary userDefineLibrary = CONTEXT().getUserDefineLibrary();
-        userDefineLibrary.insertWord("蛇药片", "n", 1000);
+        final UserLibrary userLibrary = CONTEXT().getUserLibrary();
+        userLibrary.insertWord("蛇药片", "n", 1000);
 
         System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
 

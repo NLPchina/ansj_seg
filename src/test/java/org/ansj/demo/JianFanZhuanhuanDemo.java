@@ -1,17 +1,17 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.NlpAnalysis;
-import org.ansj.util.AnsjContext;
+import org.ansj.AnsjContext;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.ansj.util.AnsjContext.*;
+import static org.ansj.AnsjContext.*;
 
 public class JianFanZhuanhuanDemo {
 
     public static void main(final String[] args) {
-        replaceContext(AnsjContext.CONTEXT().withRealName(true));
+        refreshContext(AnsjContext.CONTEXT().withRealName(true));
 
         List<String> all = new ArrayList<>();
         all.add("關注十八大：台港澳密集解讀十八大報告”");

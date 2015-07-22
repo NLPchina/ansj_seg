@@ -5,8 +5,8 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import org.ansj.domain.Nature;
-//import org.ansj.domain.NewWord;
+//import org.ansj.Nature;
+//import org.ansj.NewWord;
 //import org.ansj.splitWord.Graph;
 //
 ///**

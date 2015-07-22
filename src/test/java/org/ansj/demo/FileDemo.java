@@ -1,6 +1,6 @@
 package org.ansj.demo;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.BaseAnalysis;
 import org.ansj.splitWord.ToAnalysis;
@@ -9,7 +9,7 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import static org.ansj.util.AnsjContext.TAB;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 对文件进行分词的例子
@@ -20,7 +20,7 @@ import static org.ansj.util.AnsjContext.TAB;
 public class FileDemo {
     public static void main(String[] args) throws IOException {
         //
-        // MyStaticValue.isRealName = true;
+        // MyStaticValue.realName = true;
         BufferedReader reader = IOUtil.getReader("/home/ansj/temp/360baikeData/360tag_all.txt", "utf-8");
 
         ToAnalysis.parse("test 123 孙");

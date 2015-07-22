@@ -3,7 +3,7 @@ package org.ansj.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.splitWord.ToAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
@@ -32,7 +32,7 @@ public class SpeedTest {
 		
 		
 		
-		ToAnalysis toAnalysis = new ToAnalysis(IOUtil.getReader("/home/ansj/data/allSportsArticle", IOUtil.UTF8)); 
+		ToAnalysis toAnalysis = new ToAnalysis(IOUtil.getReader("/home/ansj/data/allSportsArticle", IOUtil.UTF8), null);
 		
 		Term term = null ;
 		while((term = toAnalysis.next())!=null){
