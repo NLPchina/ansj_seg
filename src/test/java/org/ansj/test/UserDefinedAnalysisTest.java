@@ -1,45 +1,39 @@
 package org.ansj.test;
 
-import java.util.HashMap;
-import java.util.List;
-
-import junit.framework.Assert;
-
-import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.Term;
+import org.ansj.library.UserLibrary;
+import org.ansj.splitWord.ToAnalysis;
 import org.junit.Test;
+
+import java.util.HashMap;
+
+import static org.ansj.AnsjContext.CONTEXT;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class UserDefinedAnalysisTest {
 
-	@Test
-	public void test() {
-		String newWord = "爸爸去哪儿";
-		String nature = "aaaaa";
-		String str = "上海电力2012年财务报表如下怎爸爸去哪儿么办";
-		
-		//增加新词
-		UserDefineLibrary.insertWord(newWord, nature, 1000);
-		
-		List<Term> parse = ToAnalysis.parse(str);
-		HashMap<String, Term> hs = new HashMap<String, Term>();
-		for (Term term : parse) {
-			hs.put(term.getName(), term);
-		}
+    @Test
+    public void test() {
+        final UserLibrary userLibrary = CONTEXT().getUserLibrary();
 
-		Assert.assertTrue(hs.containsKey(newWord));
+        final String newWord = "爸爸去哪儿";
+        final String nature = "aaaaa";
+        final String str = "上海电力2012年财务报表如下怎爸爸去哪儿么办";
 
-		Assert.assertEquals(hs.get(newWord).natrue().natureStr, nature);
+        //增加新词
+        userLibrary.insertWord(newWord, nature, 1000);
 
-		//删除词
-		UserDefineLibrary.removeWord(newWord);
-		parse = ToAnalysis.parse(str);
-		hs = new HashMap<String, Term>();
-		for (Term term : parse) {
-			hs.put(term.getName(), term);
-		}
+        final HashMap<String, Term> map0 = new HashMap<>();
+        ToAnalysis.parse(str).forEach(term -> map0.put(term.getName(), term));
 
-		Assert.assertTrue(!hs.containsKey(newWord));
+        assertTrue(map0.containsKey(newWord));
+        assertEquals(map0.get(newWord).getNature().natureStr, nature);
 
-	}
+        //删除词
+        final HashMap<String, Term> map1 = new HashMap<>();
+        userLibrary.removeWord(newWord);
+        ToAnalysis.parse(str).forEach(term -> map1.put(term.getName(), term));
+        assertTrue(!map1.containsKey(newWord));
+    }
 }

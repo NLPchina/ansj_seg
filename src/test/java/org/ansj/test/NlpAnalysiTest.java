@@ -3,7 +3,7 @@ package org.ansj.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.NlpAnalysis;
 import org.junit.Test;
 
 public class NlpAnalysiTest {
@@ -34,7 +34,7 @@ public class NlpAnalysiTest {
 		list.add("能不能试试这个 西伯利亚雅特大教堂位于俄罗斯东西伯利亚地区") ;
 		list.add("李克强");
 		for (String string : list) {
-			System.out.println(NlpAnalysis.parse(string));
+			System.out.println(NlpAnalysis.nlpParse(string));
 		}
 	}
 

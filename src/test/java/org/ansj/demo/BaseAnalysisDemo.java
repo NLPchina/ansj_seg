@@ -2,8 +2,8 @@ package org.ansj.demo;
 
 import java.util.List;
 
-import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.Term;
+import org.ansj.splitWord.BaseAnalysis;
 
 /**
  * 只包含原则性分词和数字识别.

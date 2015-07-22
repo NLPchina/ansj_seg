@@ -5,9 +5,9 @@
 //import java.util.List;
 //import java.util.Map;
 //
-//import org.ansj.domain.Nature;
-//import org.ansj.domain.NewWord;
-//import org.ansj.util.Graph;
+//import org.ansj.Nature;
+//import org.ansj.NewWord;
+//import org.ansj.splitWord.Graph;
 //
 ///**
 // * 基于规则的新词发现 jijiang feidiao 
@@ -40,7 +40,7 @@
 ////				}
 ////			} else {
 ////				if (end.equals(name)) {
-////					result.add(new NewWord(sb.toString(), Nature.NW, -1000));
+////					result.add(new NewWord(sb.toString(), Nature.NATURE_NW, -1000));
 ////					sb = null;
 ////					end = null;
 ////				} else {

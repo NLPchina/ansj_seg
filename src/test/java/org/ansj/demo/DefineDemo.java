@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.domain.Nature;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.Nature;
+import org.ansj.Term;
+import org.ansj.TermNatures;
 import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.BaseAnalysis;
 
 /**
  * @author ansj
@@ -55,13 +55,12 @@ public class DefineDemo {
 	}
 
 	private static int mergerId(List<Term> parse, StringBuilder sb, int i) {
-		// TODO Auto-generated method stub
 		Term term = null;
 		String natureStr = null;
 		int j = i + 1;
 		for (; j < parse.size(); j++) {
 			term = parse.get(j);
-			natureStr = term.natrue().natureStr;
+			natureStr = term.getNature().natureStr;
 			if ("en".equals(natureStr) || "m".equals(natureStr) || "-".equals(term.getName()) || ":".equals(term.getName())) {
 				sb.append(term.getName());
 			} else if ("@".equals(term.getName())) {

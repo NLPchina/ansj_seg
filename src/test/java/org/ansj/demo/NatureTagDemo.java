@@ -3,7 +3,7 @@ package org.ansj.demo;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.NatureRecognition;
 
 /**

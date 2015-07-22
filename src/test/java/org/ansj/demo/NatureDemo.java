@@ -3,9 +3,9 @@ package org.ansj.demo;
 import java.io.IOException;
 import java.util.List;
 
-import org.ansj.domain.Term;
+import org.ansj.Term;
 import org.ansj.recognition.NatureRecognition;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 /**
  * 词性标注

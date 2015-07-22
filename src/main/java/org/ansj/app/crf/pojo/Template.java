@@ -1,103 +1,98 @@
 package org.ansj.app.crf.pojo;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import com.google.common.collect.ImmutableMap;
+import lombok.Getter;
+
 import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import org.nlpcn.commons.lang.util.StringUtil;
+import static org.ansj.AnsjContext.NEW_LINE;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 解析crf++模板
- * 
+ *
  * @author ansj
- * 
  */
+@Deprecated
 public class Template implements Serializable {
 
-	private static final long serialVersionUID = 8265350854930361325L;
+    private static final long serialVersionUID = 8265350854930361325L;
 
-	public int left = 2;
+    public final int[][] ft;
 
-	public int right = 2;
+    public final int left;
 
-	public int[][] ft = { { -2 }, { -1 }, { 0 }, { 1 }, { 2 }, { -2, -1 }, { -1, 0 }, { 0, 1 }, { 1, 2 }, { -1, 1 } };
+    public final int right;
 
-	public int tagNum;
+//    public Template() {
+//        this(
+//                new int[][]{{-2}, {-1}, {0}, {1}, {2}, {-2, -1}, {-1, 0}, {0, 1}, {1, 2}, {-1, 1}},
+//                2,
+//                2,
+//                0,
+//                new HashMap<>()
+//        );
+//    }
 
-	public Map<String, Integer> statusMap;
+    public Template(final int[][] ft, final int left, final int right) {
+        this(
+                ft,
+                left,
+                right,
+                0,
+                new HashMap<>()
+        );
+    }
 
-	/**
-	 * 解析配置文件
-	 * 
-	 * @param templatePath
-	 * @return
-	 * @throws IOException
-	 */
-	public static Template parse(String templateStr) throws IOException {
-		// TODO Auto-generated method stub
-		return parse(new BufferedReader(new StringReader(templateStr)));
-	}
+    public Template(
+            final int[][] ft,
+            final int left,
+            final int right,
+            final int tagNum,
+            final Map<String, Integer> statusMap
+    ) {
+        this.ft = ft;
+        this.left = left;
+        this.right = right;
+        this.tagNum = tagNum;
+        this.statusMap = statusMap != null ? ImmutableMap.copyOf(statusMap) : null;
+    }
 
-	public static Template parse(BufferedReader br) throws IOException {
-		Template t = new Template();
+    public final int tagNum;
 
-		String temp = null;
+    public final Map<String, Integer> statusMap;
 
-		List<String> lists = new ArrayList<String>();
-		while ((temp = br.readLine()) != null) {
-			if (StringUtil.isBlank(temp) || temp.startsWith("#")) {
-				continue;
-			}
-			lists.add(temp);
-		}
-		br.close();
+    public Template withTagNum(final int tagNum) {
+        return new Template(
+                this.ft,
+                this.left,
+                this.right,
+                tagNum,
+                this.statusMap
+        );
+    }
 
-		t.ft = new int[lists.size() - 1][0];
-		for (int i = 0; i < lists.size() - 1; i++) {
-			temp = lists.get(i);
-			String[] split = temp.split(":");
+    public Template withStatusMap(final Map<String, Integer> statusMap) {
+        return new Template(
+                this.ft,
+                this.left,
+                this.right,
+                this.tagNum,
+                statusMap
+        );
+    }
 
-			int index = Integer.parseInt(split[0].substring(1));
-
-			split = split[1].split(" ");
-			int[] ints = new int[split.length];
-
-			for (int j = 0; j < ints.length; j++) {
-				ints[j] = Integer.parseInt(split[j].substring(split[j].indexOf("[") + 1, split[j].indexOf(",")));
-			}
-			t.ft[index] = ints;
-		}
-		t.left = 0;
-		t.right = 0;
-		// find max and min
-		for (int[] ints : t.ft) {
-			for (int j : ints) {
-				t.left = t.left > j ? j : t.left;
-				t.right = t.right < j ? j : t.right;
-			}
-		}
-		t.left = t.left;
-
-		return t;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("left:" + left);
-		sb.append("\t");
-		sb.append("rightr:" + right);
-		sb.append("\n");
-		for (int[] ints : ft) {
-			sb.append(Arrays.toString(ints));
-			sb.append("\n");
-		}
-		return sb.toString();
-	}
-
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder()
+                .append("left:").append(this.left).append(TAB)
+                .append("rightr:").append(this.right).append(NEW_LINE);
+        for (final int[] ints : this.ft) {
+            sb.append(Arrays.toString(ints)).append(NEW_LINE);
+        }
+        return sb.toString();
+    }
 }

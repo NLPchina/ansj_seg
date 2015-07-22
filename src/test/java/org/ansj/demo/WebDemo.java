@@ -1,6 +1,6 @@
 package org.ansj.demo;
 
-import org.ansj.app.web.AnsjServer;
+import org.ansj.web.AnsjServer;
 
 /**
  * web服务测试 启动后访问：http://localhost:8888/ http://localhost:8888/page/index.html

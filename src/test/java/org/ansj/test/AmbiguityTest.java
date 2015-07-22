@@ -1,6 +1,6 @@
 package org.ansj.test;
 
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.ToAnalysis;
 
 public class AmbiguityTest {
 	public static void main(String[] args) {

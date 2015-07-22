@@ -3,9 +3,9 @@ package org.ansj.test;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import org.ansj.app.summary.SummaryComputer;
-import org.ansj.app.summary.TagContent;
-import org.ansj.app.summary.pojo.Summary;
+import org.ansj.summary.SummaryComputer;
+import org.ansj.summary.TagContent;
+import org.ansj.summary.Summary;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 public class SummaryTest {

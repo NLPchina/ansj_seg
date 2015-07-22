@@ -1,60 +1,65 @@
 package org.ansj.demo;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import lombok.SneakyThrows;
+import org.ansj.NewWord;
+import org.ansj.library.NatureLibrary;
+import org.ansj.splitWord.LearnTool;
+import org.ansj.AnsjContext;
+import org.nlpcn.commons.lang.util.IOUtil;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.IOUtil;
+import static org.ansj.splitWord.NlpAnalysis.nlpParse;
+import static org.ansj.AnsjContext.NEW_LINE;
+import static org.ansj.AnsjContext.TAB;
 
 /**
  * 新词发现工具
- * 
+ *
  * @author ansj
- * 
  */
 public class LearnToolDemo {
-	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		// 构建一个新词学习的工具类。这个对象。保存了所有分词中出现的新词。出现次数越多。相对权重越大。
-		LearnTool learnTool = new LearnTool();
+    @SneakyThrows
+    public static void main(final String[] args) {
+        final NatureLibrary natureLibrary = AnsjContext.natureLibrary;
 
-		// 进行词语分词。也就是nlp方式分词，这里可以分多篇文章
-		NlpAnalysis.parse("说过，社交软件也是打着沟通的平台，让无数寂寞男女有了肉体与精神的寄托。", learnTool);
-		NlpAnalysis.parse("其实可以打着这个需求点去运作的互联网公司不应只是社交类软件与可穿戴设备，还有携程网，去哪儿网等等，订房订酒店多好的寓意", learnTool);
-		NlpAnalysis.parse("张艺谋的卡宴，马明哲的戏", learnTool);
+        // 构建一个新词学习的工具类。这个对象。保存了所有分词中出现的新词。出现次数越多。相对权重越大。
+        LearnTool learnTool = new LearnTool();
 
-		// 取得学习到的topn新词,返回前10个。这里如果设置为0则返回全部
-		System.out.println(learnTool.getTopTree(10));
+        // 进行词语分词。也就是nlp方式分词，这里可以分多篇文章
+        nlpParse(learnTool, "说过，社交软件也是打着沟通的平台，让无数寂寞男女有了肉体与精神的寄托。");
+        nlpParse(learnTool, "其实可以打着这个需求点去运作的互联网公司不应只是社交类软件与可穿戴设备，还有携程网，去哪儿网等等，订房订酒店多好的寓意");
+        nlpParse(learnTool, "张艺谋的卡宴，马明哲的戏");
 
-		// 只取得词性为Nature.NR的新词
-		System.out.println(learnTool.getTopTree(10, Nature.NR));
+        // 取得学习到的topn新词,返回前10个。这里如果设置为0则返回全部
+        System.out.println(learnTool.getTopTree(10));
 
-		/**
-		 * 将训练结果序列写入到硬盘中
-		 */
-		List<Entry<String, Double>> topTree = learnTool.getTopTree(0);
-		StringBuilder sb = new StringBuilder();
-		for (Entry<String, Double> entry : topTree) {
-			sb.append(entry.getKey() + "\t" + entry.getValue()+"\n");
-		}
-		IOUtil.Writer("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, sb.toString());
-		sb = null;
+        // 只取得词性为Nature.NR的新词
+        System.out.println(learnTool.getTopTree(10, natureLibrary.NATURE_NR()));
 
-		/**
-		 * reload训练结果
-		 */
-		learnTool = new LearnTool() ;
-		HashMap<String, Double> loadMap = IOUtil.loadMap("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, String.class, Double.class);
-		for (Entry<String, Double> entry : loadMap.entrySet()) {
-			learnTool.addTerm(new NewWord(entry.getKey(), Nature.NW, entry.getValue())) ;
-			learnTool.active(entry.getKey()) ;
-		}
-		System.out.println(learnTool.getTopTree(10));
-	}
+        /**
+         * 将训练结果序列写入到硬盘中
+         */
+        List<Entry<String, Double>> topTree = learnTool.getTopTree(0);
+        StringBuilder sb = new StringBuilder();
+        for (Entry<String, Double> entry : topTree) {
+            sb.append(entry.getKey()).append(TAB).append(entry.getValue()).append(NEW_LINE);
+        }
+        IOUtil.Writer("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, sb.toString());
+        sb = null;
+
+        /**
+         * reload训练结果
+         */
+        learnTool = new LearnTool();
+        HashMap<String, Double> loadMap = IOUtil.loadMap("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, String.class, Double.class);
+        for (Entry<String, Double> entry : loadMap.entrySet()) {
+            learnTool.addTerm(new NewWord(entry.getKey(), natureLibrary.NATURE_NW(), entry.getValue()), null);
+            learnTool.active(entry.getKey());
+        }
+        System.out.println(learnTool.getTopTree(10));
+    }
 }
