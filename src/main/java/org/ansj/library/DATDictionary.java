@@ -55,17 +55,17 @@ public class DATDictionary {
 			 */
 
 			for (Item item : dat.getDAT()) {
-				if (item == null || item.name == null) {
+				if (item == null || item.getName() == null) {
 					continue;
 				}
 
-				if (item.status < 4) {
-					for (int i = 0; i < item.name.length(); i++) {
-						IN_SYSTEM[item.name.charAt(i)] = item.name.charAt(i);
+				if (item.getStatus() < 4) {
+					for (int i = 0; i < item.getName().length(); i++) {
+						IN_SYSTEM[item.getName().charAt(i)] = item.getName().charAt(i);
 					}
 				}
-				if (item.status < 2) {
-					item.name = null;
+				if (item.getStatus() < 2) {
+					item.setName(null);
 					continue;
 				}
 			}
@@ -103,10 +103,10 @@ public class DATDictionary {
 
 			if (temp.length() == 1 && (ansjItem = (AnsjItem) dat.getDAT()[temp.charAt(0)]) == null) {
 				ansjItem = new AnsjItem();
-				ansjItem.base = c;
-				ansjItem.check = -1;
-				ansjItem.status = 3;
-				ansjItem.name = temp;
+				ansjItem.setBase(c);
+				ansjItem.setCheck(-1);
+				ansjItem.setStatus((byte) 3);
+				ansjItem.setName(temp);
 				dat.getDAT()[temp.charAt(0)] = ansjItem;
 			} else {
 				ansjItem = dat.getItem(temp);
@@ -128,7 +128,7 @@ public class DATDictionary {
 		if (item == null) {
 			return 0;
 		}
-		return item.status;
+		return item.getStatus();
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class DATDictionary {
 	 */
 	public static boolean isInSystemDic(String word) {
 		Item item = DAT.getItem(word);
-		return item != null && item.status > 1;
+		return item != null && item.getStatus() > 1;
 	}
 
 	public static AnsjItem getItem(int index) {

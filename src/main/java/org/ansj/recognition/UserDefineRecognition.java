@@ -6,7 +6,6 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -18,15 +17,15 @@ public class UserDefineRecognition {
 
 	private Term[] terms = null;
 
-	private WoodInterface[] forests = { UserDefineLibrary.FOREST };
+	private Forest[] forests = { UserDefineLibrary.FOREST };
 
 	private int offe = -1;
 	private int endOffe = -1;
 	private int tempFreq = 50;
 	private String tempNature;
 
-	private WoodInterface branch = null;
-	private WoodInterface forest = null;
+	private Forest branch = null;
+	private Forest forest = null;
 
 	public UserDefineRecognition(Term[] terms, Forest... forests) {
 		this.terms = terms;
@@ -38,7 +37,7 @@ public class UserDefineRecognition {
 
 	public void recognition() {
 
-		for (WoodInterface forest : forests) {
+		for (Forest forest : forests) {
 			if (forest == null) {
 				continue;
 			}
@@ -145,7 +144,7 @@ public class UserDefineRecognition {
 	 * @param term
 	 * @return
 	 */
-	private WoodInterface termStatus(WoodInterface branch, Term term) {
+	private Forest termStatus(Forest branch, Term term) {
 		String name = term.getName();
 		for (int j = 0; j < name.length(); j++) {
 			branch = branch.get(name.charAt(j));

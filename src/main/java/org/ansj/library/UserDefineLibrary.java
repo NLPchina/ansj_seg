@@ -11,7 +11,6 @@ import java.io.UnsupportedEncodingException;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.domain.WoodInterface;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
@@ -176,7 +175,7 @@ public class UserDefineLibrary {
 	}
 
 	public static String[] getParams(String word) {
-		WoodInterface temp = FOREST;
+		Forest temp = FOREST;
 		for (int i = 0; i < word.length(); i++) {
 			temp = temp.get(word.charAt(i));
 			if (temp == null) {
@@ -191,7 +190,7 @@ public class UserDefineLibrary {
 	}
 
 	public static String[] getParams(Forest forest, String word) {
-		WoodInterface temp = forest;
+		Forest temp = forest;
 		for (int i = 0; i < word.length(); i++) {
 			temp = temp.get(word.charAt(i));
 			if (temp == null) {

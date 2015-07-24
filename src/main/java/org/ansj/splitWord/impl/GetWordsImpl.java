@@ -76,7 +76,7 @@ public class GetWordsImpl implements GetWords {
 				i++;
 				offe = start;
 				tempBaseValue = baseValue;
-				return DATDictionary.getItem(tempBaseValue).name;
+				return DATDictionary.getItem(tempBaseValue).getName();
 			case 3:
 				offe = start;
 				start++;
@@ -84,7 +84,7 @@ public class GetWordsImpl implements GetWords {
 				end = 0;
 				tempBaseValue = baseValue;
 				baseValue = 0;
-				return DATDictionary.getItem(tempBaseValue).name;
+				return DATDictionary.getItem(tempBaseValue).getName();
 			}
 
 		}
@@ -107,9 +107,9 @@ public class GetWordsImpl implements GetWords {
 	 */
 	private int getStatement() {
 		checkValue = baseValue;
-		baseValue = DATDictionary.getItem(checkValue).base + charHashCode;
-		if (baseValue < DATDictionary.arrayLength && (DATDictionary.getItem(baseValue).check == checkValue || DATDictionary.getItem(baseValue).check == -1)) {
-			return DATDictionary.getItem(baseValue).status;
+		baseValue = DATDictionary.getItem(checkValue).getBase() + charHashCode;
+		if (baseValue < DATDictionary.arrayLength && (DATDictionary.getItem(baseValue).getCheck() == checkValue || DATDictionary.getItem(baseValue).getCheck() == -1)) {
+			return DATDictionary.getItem(baseValue).getStatus();
 		}
 		return 0;
 	}

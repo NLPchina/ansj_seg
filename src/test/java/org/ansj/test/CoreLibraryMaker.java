@@ -38,19 +38,18 @@ public class CoreLibraryMaker {
 		for (int i = 'a'; i <= 'z'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
-		
+
 		for (int i = 'ａ'; i <= 'ｚ'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
-		
+
 		for (int i = 'Ａ'; i <= 'Ｚ'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
-		
+
 		for (int i = 'A'; i <= 'Z'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
-		
 
 		datM.saveText("src/main/resources/core.dic");
 
@@ -58,10 +57,10 @@ public class CoreLibraryMaker {
 
 	private static void insertToArray(Item[] dat, char c, byte status, String param) {
 		AnsjItem ansjItem1 = new AnsjItem();
-		ansjItem1.name = String.valueOf(c);
-		ansjItem1.index = c;
-		ansjItem1.check = -1;
-		ansjItem1.status = status;
+		ansjItem1.setName(String.valueOf(c));
+		ansjItem1.setIndex(c);
+		ansjItem1.setCheck(-1);
+		ansjItem1.setStatus(status);
 		ansjItem1.param = param;
 		dat[c] = ansjItem1;
 	}
