@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 public class KeyWordComputer {
@@ -59,6 +60,12 @@ public class KeyWordComputer {
 			double weight = getWeight(term, content.length(), titleLength);
 			if (weight == 0)
 				continue;
+			// 判断是否是数字
+			char c = WordAlert.CharCover(term.getName().charAt(0));
+			if (c >= '0' && c <= '9') {
+				continue;
+			}
+
 			Keyword keyword = tm.get(term.getName());
 			if (keyword == null) {
 				keyword = new Keyword(term.getName(), term.natrue().allFrequency, weight);
