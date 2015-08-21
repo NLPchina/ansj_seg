@@ -50,7 +50,7 @@ public class TermUtil {
 		Term temp = terms[term.getOffe()];
 		//插入到最右面
 		Term last = temp ;
-		while((temp = temp.getNext())!=null){
+		while((temp = temp.next())!=null){
 			last = temp ; 
 		}
 		last.setNext(term) ;

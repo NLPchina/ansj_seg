@@ -1,5 +1,6 @@
 package org.ansj.app.crf;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.Set;
 import org.ansj.app.crf.pojo.Element;
 import org.ansj.app.crf.pojo.Template;
 import org.ansj.util.MatrixUtil;
-import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 分词
@@ -102,7 +103,7 @@ public class SplitWord {
 	}
 
 	private List<Element> vterbi(String line) {
-		List<Element> elements = WordAlert.str2Elements(line);
+		List<Element> elements = str2Elements(line);
 
 		int length = elements.size();
 		if (length == 0) { // 避免空list，下面get(0)操作越界
@@ -186,7 +187,7 @@ public class SplitWord {
 			return Integer.MIN_VALUE;
 		}
 
-		List<Element> elements = WordAlert.str2Elements(word);
+		List<Element> elements = str2Elements(word);
 
 		for (int i = 0; i < elements.size(); i++) {
 			computeTagScore(elements, i);
@@ -201,14 +202,62 @@ public class SplitWord {
 		}
 
 		value += elements.get(len).tagScore[revTagConver[3]];
-		
-		if(value<0){
-			return 1; 
-		}else{
-			value += 1 ;
+
+		if (value < 0) {
+			return 1;
+		} else {
+			value += 1;
 		}
 
 		return value;
+	}
+
+	public static List<Element> str2Elements(String str) {
+
+		if (str == null || str.trim().length() == 0) {
+			return Collections.emptyList();
+		}
+
+		char[] chars = WordAlert.alertStr(str);
+		int maxLen = chars.length - 1;
+		List<Element> list = new ArrayList<Element>();
+		Element element = null;
+		out: for (int i = 0; i < chars.length; i++) {
+			if (chars[i] >= '0' && chars[i] <= '9') {
+				element = new Element('M');
+				list.add(element);
+				if (i == maxLen) {
+					break out;
+				}
+				char c = chars[++i];
+				while (c == '.' || c == '%' || (c >= '0' && c <= '9')) {
+					if (i == maxLen) {
+						break out;
+					}
+					c = chars[++i];
+					element.len();
+				}
+				i--;
+			} else if (chars[i] >= 'a' && chars[i] <= 'z') {
+				element = new Element('W');
+				list.add(element);
+				if (i == maxLen) {
+					break out;
+				}
+				char c = chars[++i];
+				while (c >= 'a' && c <= 'z') {
+					if (i == maxLen) {
+						break out;
+					}
+					c = chars[++i];
+					element.len();
+				}
+				i--;
+			} else {
+				list.add(new Element(chars[i]));
+			}
+		}
+		return list;
 	}
 
 }

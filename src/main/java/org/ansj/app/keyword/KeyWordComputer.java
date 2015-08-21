@@ -8,8 +8,8 @@ import java.util.TreeSet;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 public class KeyWordComputer {
 

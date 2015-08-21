@@ -19,8 +19,8 @@ import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
-import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -62,7 +62,7 @@ public class NlpAnalysis extends Analysis {
 				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
 
 				for (String word : words) {
-					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
+					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || isRuleWord(word)) {
 						continue;
 					}
 					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
@@ -107,6 +107,23 @@ public class NlpAnalysis extends Analysis {
 			}
 		};
 		return merger.merger();
+	}
+
+	/**
+	 * 判断新词识别出来的词是否可信
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public static boolean isRuleWord(String word) {
+		char c = 0;
+		for (int i = 0; i < word.length(); i++) {
+			c = word.charAt(i);
+			if (c < 256 || (c = WordAlert.CharCover(word.charAt(i))) > 0 && c != '·') {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private NlpAnalysis() {

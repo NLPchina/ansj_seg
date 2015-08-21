@@ -72,11 +72,38 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.7</source>
+					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+
+							<relocations>
+								<relocation>
+									<pattern>org.nlpcn.commons.lang</pattern>
+									<shadedPattern>org.nlpcn.ansj. common</shadedPattern>
+								</relocation>
+							</relocations>
+							<minimizeJar>true</minimizeJar>
+							<shadedArtifactAttached>true</shadedArtifactAttached>
+							<shadedClassifierName>all-in-one</shadedClassifierName>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 
 
