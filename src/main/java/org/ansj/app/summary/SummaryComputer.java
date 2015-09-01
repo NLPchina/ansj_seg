@@ -157,8 +157,6 @@ public class SummaryComputer {
 					maxIndex = i;
 					break;
 				}
-			} else {
-				break;
 			}
 		}
 
@@ -242,30 +240,19 @@ public class SummaryComputer {
 			case ' ':
 			case '	':
 			case ' ':
+			case ',':
 			case '。':
-				insertIntoList(sb, sentences);
-				sb = new StringBuilder();
-				break;
 			case ';':
 			case '；':
-				insertIntoList(sb, sentences);
-				sb = new StringBuilder();
-				break;
 			case '!':
 			case '！':
-				insertIntoList(sb, sentences);
-				sb = new StringBuilder();
-				break;
+			case '，':
 			case '?':
 			case '？':
-				insertIntoList(sb, sentences);
-				sb = new StringBuilder();
-				break;
 			case '\n':
 			case '\r':
 				insertIntoList(sb, sentences);
 				sb = new StringBuilder();
-				break;
 			}
 		}
 
