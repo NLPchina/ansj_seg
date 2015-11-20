@@ -57,7 +57,7 @@ public class MyStaticValue {
 
 	public static String ambiguityLibrary = "library/ambiguity.dic";
 
-	private static String crfModel = "library/crf.model";
+	public static String crfModel = "library/crf.model";
 
 	/**
 	 * 是否用户辞典不加载相同的词
