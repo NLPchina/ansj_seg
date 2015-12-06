@@ -85,18 +85,19 @@ public class MyStaticValue {
 
 		if (rb == null) {
 			LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
-		}
+		} else {
 
-		if (rb.containsKey("userLibrary"))
-			userLibrary = rb.getString("userLibrary");
-		if (rb.containsKey("ambiguityLibrary"))
-			ambiguityLibrary = rb.getString("ambiguityLibrary");
-		if (rb.containsKey("isSkipUserDefine"))
-			isSkipUserDefine = Boolean.valueOf(rb.getString("isSkipUserDefine"));
-		if (rb.containsKey("isRealName"))
-			isRealName = Boolean.valueOf(rb.getString("isRealName"));
-		if (rb.containsKey("crfModel"))
-			crfModel = rb.getString("crfModel");
+			if (rb.containsKey("userLibrary"))
+				userLibrary = rb.getString("userLibrary");
+			if (rb.containsKey("ambiguityLibrary"))
+				ambiguityLibrary = rb.getString("ambiguityLibrary");
+			if (rb.containsKey("isSkipUserDefine"))
+				isSkipUserDefine = Boolean.valueOf(rb.getString("isSkipUserDefine"));
+			if (rb.containsKey("isRealName"))
+				isRealName = Boolean.valueOf(rb.getString("isRealName"));
+			if (rb.containsKey("crfModel"))
+				crfModel = rb.getString("crfModel");
+		}
 	}
 
 	/**
