@@ -286,7 +286,9 @@ public class MyStaticValue {
 			crfSplitWord = new SplitWord(Model.loadModel(crfModel));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
-			e.printStackTrace();
+			LIBRARYLOG.warning("not find crf model , so instance a empty one !");
+			crfSplitWord = new SplitWord();
+
 		} finally {
 			LOCK.unlock();
 		}
