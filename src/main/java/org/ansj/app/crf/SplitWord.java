@@ -26,6 +26,11 @@ public class SplitWord {
 	private int[] tagConver = null;
 
 	private int[] revTagConver = null;
+	
+	//空的分词组件
+	public SplitWord(){
+		
+	}
 
 	/**
 	 * 这个对象比较重。支持多线程，请尽量重复使用

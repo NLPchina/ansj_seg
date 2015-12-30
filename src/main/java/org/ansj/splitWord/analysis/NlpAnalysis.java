@@ -58,16 +58,18 @@ public class NlpAnalysis extends Analysis {
 				}
 				learn.learn(graph, DEFAULT_SLITWORD);
 
-				// 通过crf分词
-				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+				if (DEFAULT_SLITWORD != null) {
 
-				for (String word : words) {
-					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || isRuleWord(word)) {
-						continue;
+					// 通过crf分词
+					List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+
+					for (String word : words) {
+						if (word.length() < 2 || DATDictionary.isInSystemDic(word) || isRuleWord(word)) {
+							continue;
+						}
+						learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 					}
-					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 				}
-
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
 				graph.rmLittlePath();
