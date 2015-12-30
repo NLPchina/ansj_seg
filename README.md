@@ -40,13 +40,22 @@ mvn clean install -Dmaven.test.skip=true
 3.  在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
 
 ````
+	<!-- 增加新的maven源 -->	
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>http://maven.nlpcn.org/</url>
+		</repository>
+	</repositories>
+
+
     <dependencies>
         ....
         
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>1.4.1</version>
+            <version>3.0</version>
         </dependency>
         ....
     </dependencies>
@@ -68,8 +77,6 @@ mvn clean install -Dmaven.test.skip=true
 
 ----
 ##大事记要
-#2014年10月10日
-> 命运无常,上天和我开了个玩笑,可能我以后没有精力来维护ansj_seg了.所以我把它贡献到nlp_china这个组织中,也许会有有兴趣的同学能替代我维护这个项目.不要乱猜,我身体很好.工作也不忙.感谢你们的支持ansj_seg才能发展这么好.最后祝好.
 
 #2014年6月13日
 > 额，今天是黑色星期五。正在紧张而有序的在做ansj2.0版本的升级。如果你用的版本是2.0x都是预览版。不保证稳定性。所以非版本控。不要跟着更新，这次修改的内容主要有：
