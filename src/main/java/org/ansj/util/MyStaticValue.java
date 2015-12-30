@@ -12,6 +12,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.ansj.app.crf.Model;
@@ -287,8 +288,7 @@ public class MyStaticValue {
 			crfSplitWord = new SplitWord(Model.loadModel(crfModel));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
-			LIBRARYLOG.warning("not find crf model , so instance a empty one !");
-			crfSplitWord = new SplitWord();
+			LIBRARYLOG.warning("!!!!!!!!!!  not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 
 		} finally {
 			LOCK.unlock();

@@ -89,14 +89,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
-
-							<relocations>
-								<relocation>
-									<pattern>org.nlpcn.commons.lang</pattern>
-									<shadedPattern>org.nlpcn.ansj. common</shadedPattern>
-								</relocation>
-							</relocations>
-							<minimizeJar>true</minimizeJar>
+							<minimizeJar>false</minimizeJar>
 							<shadedArtifactAttached>true</shadedArtifactAttached>
 							<shadedClassifierName>all-in-one</shadedClassifierName>
 						</configuration>
