@@ -46,7 +46,7 @@ public class FilterModifWord {
     stopwordPattern = Pattern.compile(regex);
   }
 
-  public static void removeStopRegex(String regex) {
+  public static void removeStopRegex() {
     stopwordPattern = null;
   }
 
