@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.test.Temp;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /*
@@ -67,7 +65,6 @@ public class FilterModifWord {
         // 添加对正则停用词的支持
         if ((stopwordPattern != null)
             && stopwordPattern.matcher(term.getName()).matches()) {
-          System.out.println(term.getName());
           continue;
         }
         String[] params = UserDefineLibrary.getParams(term.getName());
@@ -99,7 +96,6 @@ public class FilterModifWord {
         // 添加对正则停用词的支持
         if ((stopwordPattern != null)
             && stopwordPattern.matcher(term.getName()).matches()) {
-          System.out.println(term.getName());
           continue;
         }
         for (Forest forest : forests) {
