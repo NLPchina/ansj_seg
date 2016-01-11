@@ -74,8 +74,9 @@ public class MyStaticValue {
 			rb = ResourceBundle.getBundle("library");
 		} catch (Exception e) {
 			try {
-				File find = FileFinder.find("library.properties");
-				if (find != null) {
+				// File find = FileFinder.find("library.properties");
+				File find = new File("library.properties");
+				if (find != null && find.isFile()) {
 					rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
 					LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
@@ -288,7 +289,8 @@ public class MyStaticValue {
 			crfSplitWord = new SplitWord(Model.loadModel(crfModel));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
-			LIBRARYLOG.warning("!!!!!!!!!!  not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
+			LIBRARYLOG
+					.warning("!!!!!!!!!!  not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 
 		} finally {
 			LOCK.unlock();

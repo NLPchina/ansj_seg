@@ -41,7 +41,7 @@ public class NlpAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-				// TODO Auto-generated method stub
+
 				graph.walkPath();
 
 				// 数字发现
