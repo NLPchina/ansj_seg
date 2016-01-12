@@ -1,5 +1,8 @@
 package org.ansj.splitWord;
 
+import static org.ansj.library.DATDictionary.IN_SYSTEM;
+import static org.ansj.library.DATDictionary.status;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.util.LinkedList;
@@ -8,16 +11,15 @@ import java.util.List;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import static org.ansj.library.DATDictionary.*;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
-import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 基本分词+人名识别

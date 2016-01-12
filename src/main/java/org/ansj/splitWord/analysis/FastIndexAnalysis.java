@@ -56,7 +56,7 @@ public class FastIndexAnalysis extends Analysis {
 		for (int i = 0; i < length; i++) {
 			if ((term=graph.terms[i]) != null) {
 				result.add(term);
-				while((term =term.getNext())!=null){
+				while((term =term.next())!=null){
 					result.add(term);
 				}
 			}

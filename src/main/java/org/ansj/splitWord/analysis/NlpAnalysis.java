@@ -19,8 +19,8 @@ import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
-import org.ansj.util.WordAlert;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -41,7 +41,7 @@ public class NlpAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-				// TODO Auto-generated method stub
+
 				graph.walkPath();
 
 				// 数字发现
@@ -58,16 +58,18 @@ public class NlpAnalysis extends Analysis {
 				}
 				learn.learn(graph, DEFAULT_SLITWORD);
 
-				// 通过crf分词
-				List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+				if (DEFAULT_SLITWORD != null) {
 
-				for (String word : words) {
-					if (word.length() < 2 || DATDictionary.isInSystemDic(word) || WordAlert.isRuleWord(word)) {
-						continue;
+					// 通过crf分词
+					List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+
+					for (String word : words) {
+						if (word.length() < 2 || DATDictionary.isInSystemDic(word) || isRuleWord(word)) {
+							continue;
+						}
+						learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 					}
-					learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));
 				}
-
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, forests).recognition();
 				graph.rmLittlePath();
@@ -107,6 +109,23 @@ public class NlpAnalysis extends Analysis {
 			}
 		};
 		return merger.merger();
+	}
+
+	/**
+	 * 判断新词识别出来的词是否可信
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public static boolean isRuleWord(String word) {
+		char c = 0;
+		for (int i = 0; i < word.length(); i++) {
+			c = word.charAt(i);
+			if (c < 256 || (c = WordAlert.CharCover(word.charAt(i))) > 0 && c != '·') {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private NlpAnalysis() {

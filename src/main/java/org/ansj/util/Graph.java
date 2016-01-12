@@ -151,7 +151,7 @@ public class Graph {
 				// temp = terms[i+maxTerm.getName().length()] ;
 				// do{
 				// temp.setFrom(maxTerm) ;
-				// }while((temp=temp.getNext())!=null) ;
+				// }while((temp=temp.next())!=null) ;
 
 			}
 		}
@@ -171,7 +171,7 @@ public class Graph {
 		}
 		int maxTo = maxTerm.toValue();
 		Term term = maxTerm;
-		while ((term = term.getNext()) != null) {
+		while ((term = term.next()) != null) {
 			if (maxTo < term.toValue()) {
 				maxTo = term.toValue();
 				maxTerm = term;
@@ -223,7 +223,7 @@ public class Graph {
 					maxTerm = term;
 				}
 
-			} while ((term = term.getNext()) != null);
+			} while ((term = term.next()) != null);
 			term = maxTerm;
 			do {
 				maxTo = term.toValue();
@@ -241,7 +241,7 @@ public class Graph {
 							flag = false;
 							break out;
 						}
-					} while ((temp = temp.getNext()) != null);
+					} while ((temp = temp.next()) != null);
 				}
 				// 验证通过可以删除了
 				if (flag) {
@@ -249,7 +249,7 @@ public class Graph {
 						terms[j] = null;
 					}
 				}
-			} while ((term = term.getNext()) != null);
+			} while ((term = term.next()) != null);
 		}
 	}
 
@@ -263,7 +263,7 @@ public class Graph {
 			while (term != null && term.from() != null && term != end) {
 				int to = term.toValue();
 				mergerByScore(term, to);
-				term = term.getNext();
+				term = term.next();
 			}
 		}
 		optimalRoot();
@@ -279,7 +279,7 @@ public class Graph {
 			while (term != null && term.from() != null && term != end) {
 				int to = term.toValue();
 				merger(term, to);
-				term = term.getNext();
+				term = term.next();
 			}
 		}
 		optimalRoot();
@@ -301,7 +301,7 @@ public class Graph {
 			while (term != null) {
 				// 关系式to.set(from)
 				term.setPathScore(fromTerm);
-				term = term.getNext();
+				term = term.next();
 			}
 		} else {
 			char c = chars[to];
@@ -330,7 +330,7 @@ public class Graph {
 			while (term != null) {
 				// 关系式to.set(from)
 				term.setPathSelfScore(fromTerm);
-				term = term.getNext();
+				term = term.next();
 			}
 		}
 
@@ -345,7 +345,7 @@ public class Graph {
 				continue;
 			}
 			System.out.print(term.getName() + "\t" + term.selfScore() + " ,");
-			if ((term = term.getNext()) != null) {
+			if ((term = term.next()) != null) {
 				System.out.print(term + "\t" + term.selfScore() + " ,");
 			}
 			System.out.println();

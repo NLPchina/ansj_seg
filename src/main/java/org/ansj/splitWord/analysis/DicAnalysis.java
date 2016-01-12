@@ -1,6 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,18 +12,18 @@ import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
-import org.ansj.util.FilterModifWord;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
- * 默认用户自定义词性优先
+ * 只分词典中的分词
+ * 
  * @author ansj
- *
+ * 
  */
-public class UserDefineAnalysis extends Analysis {
+public class DicAnalysis extends Analysis {
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -31,12 +31,7 @@ public class UserDefineAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-
-				// 用户自定义词典的识别
-				userDefineRecognition(graph, forests);
-				
 				graph.walkPath();
-				
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
@@ -53,6 +48,9 @@ public class UserDefineAnalysis extends Analysis {
 					graph.walkPathByScore();
 				}
 
+				// 用户自定义词典的识别
+				userDefineRecognition(graph, forests);
+
 				return getResult();
 			}
 
@@ -63,7 +61,6 @@ public class UserDefineAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
@@ -72,15 +69,13 @@ public class UserDefineAnalysis extends Analysis {
 					}
 				}
 				setRealName(graph, result);
-
-				FilterModifWord.modifResult(result);
 				return result;
 			}
 		};
 		return merger.merger();
 	}
 
-	private UserDefineAnalysis() {
+	private DicAnalysis() {
 	};
 
 	/**
@@ -88,23 +83,23 @@ public class UserDefineAnalysis extends Analysis {
 	 * 
 	 * @param forest
 	 */
-	public UserDefineAnalysis(Forest... forests) {
+	public DicAnalysis(Forest... forests) {
 		if (forests == null) {
 			forests = new Forest[] { UserDefineLibrary.FOREST };
 		}
 		this.forests = forests;
 	}
 
-	public UserDefineAnalysis(BufferedReader reader, Forest... forests) {
+	public DicAnalysis(Reader reader, Forest... forests) {
 		this.forests = forests;
 		super.resetContent(new AnsjReader(reader));
 	}
 
 	public static List<Term> parse(String str) {
-		return new UserDefineAnalysis().parseStr(str);
+		return new DicAnalysis().parseStr(str);
 	}
 
 	public static List<Term> parse(String str, Forest... forests) {
-		return new UserDefineAnalysis(forests).parseStr(str);
+		return new DicAnalysis(forests).parseStr(str);
 	}
 }
