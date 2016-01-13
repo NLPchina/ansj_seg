@@ -31,13 +31,13 @@ public class RuleRecognition {
 
 		LinkedList<Term> mergeList = null;
 
-		List<Term> result = new LinkedList<>();
+		List<Term> result = new LinkedList<Term>();
 
 		for (Term term : terms) {
 			name = term.getName();
 			if (end == null) {
 				if ((end = ruleMap.get(name)) != null) {
-					mergeList = new LinkedList<>();
+					mergeList = new LinkedList<Term>();
 					mergeList.add(term);
 				} else {
 					result.add(term);

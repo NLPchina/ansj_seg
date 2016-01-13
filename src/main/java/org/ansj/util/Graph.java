@@ -64,7 +64,9 @@ public class Graph {
 			terms[term.getOffe()] = term;
 		} else {
 			terms[term.getOffe()] = term.setNext(terms[term.getOffe()]);
+//			terms[term.getOffe()].setNext(term) ;
 		}
+		
 	}
 
 	/**

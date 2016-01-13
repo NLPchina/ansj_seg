@@ -57,13 +57,10 @@ public class TermUtil {
 	}
 
 	public static void insertTermNum(Term[] terms, Term term) {
-		// TODO Auto-generated method stub
 		terms[term.getOffe()] = term;
-
 	}
 
 	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures nr) {
-		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		int offe = tempList.get(0).getOffe();
 		for (Term term : tempList) {
