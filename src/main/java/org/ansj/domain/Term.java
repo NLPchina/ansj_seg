@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import java.util.List;
+import java.util.Map;
 
 import org.ansj.util.MathUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
@@ -89,9 +90,9 @@ public class Term implements Comparable<Term> {
 	 * 
 	 * @param term
 	 */
-	public void setPathScore(Term from) {
+	public void setPathScore(Term from, Map<String, Double> relationMap) {
 		// 维特比进行最优路径的构建
-		double score = MathUtil.compuScore(from, this);
+		double score = MathUtil.compuScore(from, this,relationMap);
 		if (this.from == null || this.score >= score) {
 			this.setFromAndScore(from, score);
 		}

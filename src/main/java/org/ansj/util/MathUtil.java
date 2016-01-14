@@ -1,5 +1,7 @@
 package org.ansj.util;
 
+import java.util.Map;
+
 import org.ansj.domain.Term;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.NgramLibrary;
@@ -9,6 +11,8 @@ public class MathUtil {
 
 	// 平滑参数
 	private static final double dSmoothingPara = 0.1;
+	// 分隔符我最喜欢的
+	private static final String TAB = "\t";
 	// 一个参数
 	private static final int MAX_FREQUENCE = 2079997;// 7528283+329805;
 	// ﻿Two linked Words frequency
@@ -23,7 +27,7 @@ public class MathUtil {
 	 *            后面的词
 	 * @return 分数
 	 */
-	public static double compuScore(Term from, Term to) {
+	public static double compuScore(Term from, Term to, Map<String, Double> relationMap) {
 		double frequency = from.termNatures().allFreq + 1;
 
 		if (frequency < 0) {
@@ -32,8 +36,17 @@ public class MathUtil {
 			return score;
 		}
 
-		int nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
-		double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000) + (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
+		double nTwoWordsFreq = NgramLibrary.getTwoWordFreq(from, to);
+
+		if (relationMap != null) {
+			Double d = relationMap.get(from.getName() + TAB + to.getName());
+			if (d != null) {
+				nTwoWordsFreq += d;
+			}
+		}
+
+		double value = -Math.log(dSmoothingPara * frequency / (MAX_FREQUENCE + 80000)
+				+ (1 - dSmoothingPara) * ((1 - dTemp) * nTwoWordsFreq / frequency + dTemp));
 
 		if (value < 0) {
 			value += frequency;
@@ -49,7 +62,6 @@ public class MathUtil {
 	 * @return
 	 */
 	public static double compuScoreFreq(Term from, Term term) {
-		// TODO Auto-generated method stub
 		return from.termNatures().allFreq + term.termNatures().allFreq;
 	}
 

@@ -56,7 +56,7 @@ mvn clean install -Dmaven.test.skip=true
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>3.0</version>
+            <version>3.2</version>
         </dependency>
         ....
     </dependencies>
@@ -78,6 +78,16 @@ mvn clean install -Dmaven.test.skip=true
 
 ----
 ##大事记要
+
+
+#2016年1月14日
+> 经过了很久很久.如大家所看.最后一次事件纪要是一年半以前.没什么好说的了.之前因为我的不负责任让这个项目停滞了好久.这次做了很多改进.断断续续,大致如下
+* 大幅提升了NlpAnalysis的准确性
+* 将crfmodel 从jar包中移除.提供``DownLibrary``进行下载
+* 增加了用户自定义词典优先的功能.(原谅我曾经的倔强)通过``UserDefineAnalysis``进行分词
+* 将jar包版本重新改为jdk6
+* 关键词提取增加keyword关键词.可以只是英文了算是
+* 其他种种.....祝愿所有人身体健康万事如意.也祝愿我自己
 
 #2014年6月13日
 > 额，今天是黑色星期五。正在紧张而有序的在做ansj2.0版本的升级。如果你用的版本是2.0x都是预览版。不保证稳定性。所以非版本控。不要跟着更新，这次修改的内容主要有：

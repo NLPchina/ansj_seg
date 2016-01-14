@@ -1,7 +1,14 @@
 package org.ansj.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.ansj.app.crf.SplitWord;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.analysis.UserDefineAnalysis;
+import org.ansj.util.MyStaticValue;
 import org.junit.Test;
 
 public class TestError {
@@ -80,10 +87,25 @@ public class TestError {
 //		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
 //		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));
 		
-		System.out.println(ToAnalysis.parse("联合国;"));
+//		System.out.println(ToAnalysis.parse("联合国;"));
+//		
+//		System.out.println(ToAnalysis.parse(";"));
 		
-		System.out.println(ToAnalysis.parse(";"));
+		List<String> all = new ArrayList<String>() ;
 		
+		all.add("某地区大地震后救灾工作程序示意图") ;
+		all.add("某品牌企业在京津冀地区建有饮用瓶装水厂") ;
+		all.add("黄山16点前日出东北方") ;
+		all.add("与其它洋流交汇的海域不易形成渔场") ;
+		all.add("同类景观多出现在") ;
+		all.add("据说ｗｉｎｄｏｗｓ９５推出前，考虑到低性能电脑安装它的时间很长，微软公司曾向心理学家请教，怎样在安装等待过程中设计出活动的画面才能让用户不致焦躁。") ;
+		all.add("任尧森为东宝规划了这样的蓝图，到２０００年，使东宝空调器及其他家电产品技术含量和档次上达到国际先进水平，产值达到５０亿元，利税５亿元，为社会主义现代化建设做出更大的贡献。");
+		
+		
+		for (String string : all) {
+			System.out.println(ToAnalysis.parse(string));
+			System.out.println(NlpAnalysis.parse(string));
+		}
 		
 	}
 }
