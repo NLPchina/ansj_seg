@@ -57,7 +57,7 @@ public class ToAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				new UserDefineRecognition(graph.terms,0, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}

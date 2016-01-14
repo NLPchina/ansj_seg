@@ -120,7 +120,7 @@ public class NewWordRecognition {
 		}
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
-		TermUtil.insertTerm(terms, term);
+		TermUtil.insertTerm(terms, term,2);
 		TermUtil.parseNature(term);
 	}
 

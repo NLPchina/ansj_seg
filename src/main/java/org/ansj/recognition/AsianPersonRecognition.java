@@ -40,7 +40,7 @@ public class AsianPersonRecognition {
 	public void recognition() {
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {
-			TermUtil.insertTerm(terms, term2);
+			TermUtil.insertTerm(terms, term2, 2);
 		}
 	}
 
@@ -174,8 +174,7 @@ public class AsianPersonRecognition {
 		}
 		return all;
 	}
-	
-	
+
 	public List<Term> getNewTerms() {
 		return recogntion_();
 	}

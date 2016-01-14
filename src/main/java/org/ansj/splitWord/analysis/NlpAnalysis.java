@@ -71,7 +71,7 @@ public class NlpAnalysis extends Analysis {
 					}
 				}
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				new UserDefineRecognition(graph.terms, 2, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 

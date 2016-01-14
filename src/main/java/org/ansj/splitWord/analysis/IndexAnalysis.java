@@ -57,11 +57,10 @@ public class IndexAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				new UserDefineRecognition(graph.terms,0, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}
-
 
 			/**
 			 * 检索的分词
@@ -69,7 +68,6 @@ public class IndexAnalysis extends Analysis {
 			 * @return
 			 */
 			private List<Term> result() {
-
 
 				String temp = null;
 
@@ -81,20 +79,20 @@ public class IndexAnalysis extends Analysis {
 					}
 				}
 
-				LinkedList<Term> last = new LinkedList<Term>() ;
+				LinkedList<Term> last = new LinkedList<Term>();
 				for (Term term : result) {
 					if (term.getName().length() >= 3) {
 						GetWordsImpl gwi = new GetWordsImpl(term.getName());
 						while ((temp = gwi.allWords()) != null) {
-							if (temp.length() < term.getName().length() && temp.length()>1) {
+							if (temp.length() < term.getName().length() && temp.length() > 1) {
 								last.add(new Term(temp, gwi.offe + term.getOffe(), TermNatures.NULL));
 							}
 						}
 					}
 				}
 
-				result.addAll(last) ;
-				
+				result.addAll(last);
+
 				setRealName(graph, result);
 				return result;
 			}

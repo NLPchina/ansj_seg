@@ -63,8 +63,8 @@ public class Graph {
 		if (terms[term.getOffe()] == null) {
 			terms[term.getOffe()] = term;
 		} else {
-			terms[term.getOffe()] = term.setNext(terms[term.getOffe()]);
-//			terms[term.getOffe()].setNext(term) ;
+//			terms[term.getOffe()] = term.setNext(terms[term.getOffe()]);
+			terms[term.getOffe()].setNext(term) ;
 		}
 		
 	}
@@ -106,7 +106,6 @@ public class Graph {
 		int length = terms.length - 1;
 		for (int i = 0; i < length; i++) {
 			maxTerm = getMaxTerm(i);
-
 			if (maxTerm == null)
 				continue;
 
@@ -160,24 +159,19 @@ public class Graph {
 	}
 
 	/**
-	 * 得道最到本行最大term
+	 * 得道最到本行最大term,也就是最右面的term
 	 * 
 	 * @param i
 	 * @return
 	 */
 	private Term getMaxTerm(int i) {
-		// TODO Auto-generated method stub
 		Term maxTerm = terms[i];
 		if (maxTerm == null) {
 			return null;
 		}
-		int maxTo = maxTerm.toValue();
 		Term term = maxTerm;
 		while ((term = term.next()) != null) {
-			if (maxTo < term.toValue()) {
-				maxTo = term.toValue();
-				maxTerm = term;
-			}
+			maxTerm = term ;
 		}
 		return maxTerm;
 	}
@@ -347,7 +341,7 @@ public class Graph {
 				continue;
 			}
 			System.out.print(term.getName() + "\t" + term.selfScore() + " ,");
-			if ((term = term.next()) != null) {
+			while ((term = term.next()) != null) {
 				System.out.print(term + "\t" + term.selfScore() + " ,");
 			}
 			System.out.println();
