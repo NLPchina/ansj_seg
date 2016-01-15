@@ -3,13 +3,17 @@ package org.ansj.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.app.crf.SplitWord;
+import org.ansj.dic.LearnTool;
+import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.NatureRecognition;
+import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.splitWord.analysis.UserDefineAnalysis;
 import org.ansj.util.MyStaticValue;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Value;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
@@ -17,9 +21,9 @@ public class TestError {
 	public void test() {
 
 //		LearnTool tool = new LearnTool();
-		// System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州",tool));
-		// System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道",tool));
-		// System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
+//		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州", tool));
+//		System.out.println(NlpAnalysis.parse("从古至今为何经济南强北弱?军事则北强南弱?_百度知道", tool));
+//		 System.out.println(NlpAnalysis.parse("确保今年８％的增长速度"));
 //		System.out.println(ToAnalysis.parse("美白面膜"));
 //
 //		UserDefineLibrary.insertWord("面膜", "n", 1000);
@@ -27,7 +31,7 @@ public class TestError {
 ////		System.out.println(ToAnalysis.parse("美白面膜"));
 //		System.out.println("aa");
 //		System.out.println(ToAnalysis.parse("999牌 感冒灵颗粒 10g*9包  解热镇痛，用于感冒引起的头痛、发热"));
-		
+//		
 //		List<Term> parse = ToAnalysis.parse("我得了感冒") ;
 //		System.out.println(parse);
 //		
@@ -37,7 +41,7 @@ public class TestError {
 //
 //		
 //		System.out.println(IndexAnalysis.parse("主副食品 软件设计"));
-		
+//		
 //		System.out.println(ToAnalysis.parse("工信处女干事每月经过下属科室都要亲口交代24口交换机等技术性器件的安装工作"));
 //		System.out.println(ToAnalysis.parse("365日历，日历-万年历"));
 //		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州", tool));
@@ -74,9 +78,9 @@ public class TestError {
 //		MyStaticValue.isNumRecognition = false ;
 //		System.out.println(ToAnalysis.parse("0.46毫克"));
 //		;
-		
-		
-
+//		
+//		
+//
 //		System.out.println(ToAnalysis.parse("上海马勒别墅"));
 //		System.out.println(ToAnalysis.parse("电话卡+周杰伦摩天轮"));
 //		System.out.println(ToAnalysis.parse("陆成恩和孙健是好朋友"));
@@ -86,20 +90,23 @@ public class TestError {
 //		
 //		System.out.println(ToAnalysis.parse("同仁堂 六味地黄丸 30"));
 //		System.out.println(ToAnalysis.parse("这样搜索曼秀雷敦肌研的东西也会出现"));
-		
+//		
 //		System.out.println(ToAnalysis.parse("联合国;"));
 //		
 //		System.out.println(ToAnalysis.parse(";"));
-		
+//		
 		List<String> all = new ArrayList<String>() ;
-		
-		all.add("某地区大地震后救灾工作程序示意图") ;
-		all.add("某品牌企业在京津冀地区建有饮用瓶装水厂") ;
-		all.add("黄山16点前日出东北方") ;
-		all.add("与其它洋流交汇的海域不易形成渔场") ;
-		all.add("同类景观多出现在") ;
-		all.add("据说ｗｉｎｄｏｗｓ９５推出前，考虑到低性能电脑安装它的时间很长，微软公司曾向心理学家请教，怎样在安装等待过程中设计出活动的画面才能让用户不致焦躁。") ;
-		all.add("任尧森为东宝规划了这样的蓝图，到２０００年，使东宝空调器及其他家电产品技术含量和档次上达到国际先进水平，产值达到５０亿元，利税５亿元，为社会主义现代化建设做出更大的贡献。");
+//		
+//		all.add("某地区大地震后救灾工作程序示意图") ;
+//		all.add("某品牌企业在京津冀地区建有饮用瓶装水厂") ;
+//		all.add("黄山16点前日出东北方") ;
+//		all.add("与其它洋流交汇的海域不易形成渔场") ;
+//		all.add("同类景观多出现在") ;
+//		all.add("据说ｗｉｎｄｏｗｓ９５推出前，考虑到低性能电脑安装它的时间很长，微软公司曾向心理学家请教，怎样在安装等待过程中设计出活动的画面才能让用户不致焦躁。") ;
+//		all.add("从古至今为何经济南强北弱?军事则北强南弱?_百度知道");
+		all.add("孙红雷暴打记者中国娱乐界如此蛮横"); 
+//	    System.out.println(ToAnalysis.parse("你吃过了吗？？没吃"));
+//	    System.out.println(NlpAnalysis.parse("你吃过了吗？？没吃"));
 		
 		
 		for (String string : all) {

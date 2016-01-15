@@ -9,6 +9,7 @@ import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.NatureLibrary;
 import org.ansj.recognition.NatureRecognition;
@@ -68,7 +69,9 @@ public class NlpAnalysis extends Analysis {
 						}
 						temp = word;
 
-						if (word.length() < 2 || DATDictionary.isInSystemDic(word) || isRuleWord(word)) {
+						TermNatures termNatures = NatureRecognition.getTermNatures(word);
+
+						if (word.length() < 2 || termNatures != null || isRuleWord(word)) {
 							continue;
 						}
 						learn.addTerm(new NewWord(word, NatureLibrary.getNature("nw")));

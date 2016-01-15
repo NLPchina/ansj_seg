@@ -37,7 +37,7 @@ public class ToAnalysis extends Analysis {
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
 				}
-
+				
 				// 姓名识别
 				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
 					// 亚洲人名识别
@@ -48,6 +48,7 @@ public class ToAnalysis extends Analysis {
 					new ForeignPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
 				}
+				
 				
 				// 用户自定义词典的识别
 				userDefineRecognition(graph, forests);
