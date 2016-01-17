@@ -112,7 +112,6 @@ public class Term implements Comparable<Term> {
 	}
 
 	private void setFromAndScore(Term from, double score) {
-		// TODO Auto-generated method stub
 		this.from = from;
 		this.score = score;
 	}

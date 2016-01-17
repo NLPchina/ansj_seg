@@ -288,7 +288,11 @@ public class Graph {
 				term = term.next();
 			}
 		}
+//	if(relationMap!=null)
+//	this.printGraph();
 		optimalRoot();
+//	if(relationMap!=null)
+//	this.printGraph();
 	}
 
 	/**
@@ -350,9 +354,9 @@ public class Graph {
 			if (term == null) {
 				continue;
 			}
-			System.out.print(term.getName() + "\t" + term.selfScore() + " ,");
+			System.out.print(term.getName() + "\t" + term.score() + " ,");
 			while ((term = term.next()) != null) {
-				System.out.print(term + "\t" + term.selfScore() + " ,");
+				System.out.print(term + "\t" + term.score() + " ,");
 			}
 			System.out.println();
 		}

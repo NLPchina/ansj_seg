@@ -67,6 +67,12 @@ public class TermUtil {
 			}
 			return;
 		}
+		
+		if(self.getName().length() > len){
+			term.setNext(self) ;
+			terms[term.getOffe()] = term;
+			return;
+		}
 
 		Term next = self;
 		Term before = self;
