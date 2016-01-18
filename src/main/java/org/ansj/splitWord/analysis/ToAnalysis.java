@@ -33,6 +33,7 @@ public class ToAnalysis extends Analysis {
 			public List<Term> merger() {
 				
 				graph.walkPath();
+				
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
@@ -48,8 +49,7 @@ public class ToAnalysis extends Analysis {
 					new ForeignPersonRecognition(graph.terms).recognition();
 					graph.walkPathByScore();
 				}
-				
-				
+
 				// 用户自定义词典的识别
 				userDefineRecognition(graph, forests);
 

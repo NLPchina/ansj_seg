@@ -60,13 +60,7 @@ public class Graph {
 		if (!hasPerson && term.termNatures().personAttr.flag) {
 			hasPerson = true;
 		}
-		// 将词放到图的位置
-		if (terms[term.getOffe()] == null) {
-			terms[term.getOffe()] = term;
-		} else {
-			// terms[term.getOffe()] = term.setNext(terms[term.getOffe()]);
-			terms[term.getOffe()].setNext(term);
-		}
+		TermUtil.insertTerm(terms, term, 1);
 
 	}
 
@@ -288,11 +282,7 @@ public class Graph {
 				term = term.next();
 			}
 		}
-//	if(relationMap!=null)
-//	this.printGraph();
 		optimalRoot();
-//	if(relationMap!=null)
-//	this.printGraph();
 	}
 
 	/**

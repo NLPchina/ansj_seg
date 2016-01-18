@@ -92,8 +92,8 @@ public class Term implements Comparable<Term> {
 	 */
 	public void setPathScore(Term from, Map<String, Double> relationMap) {
 		// 维特比进行最优路径的构建
-		double score = MathUtil.compuScore(from, this,relationMap);
-		if (this.from == null || this.score >= score) {
+		double score = MathUtil.compuScore(from, this, relationMap);
+		if (this.from == null || this.score == 0 || this.score >= score) {
 			this.setFromAndScore(from, score);
 		}
 	}
