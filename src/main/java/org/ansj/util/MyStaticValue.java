@@ -12,15 +12,14 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;
-import org.nlpcn.commons.lang.util.FileFinder;
+import org.ansj.util.logging.AnsjLogger;
+import org.ansj.util.logging.Loggers;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 
@@ -32,7 +31,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
  */
 public class MyStaticValue {
 
-	public static final Logger LIBRARYLOG = Logger.getLogger("DICLOG");
+	public static final AnsjLogger LIBRARYLOG = Loggers.getLogger("DICLOG");
 
 	// 是否开启人名识别
 	public static boolean isNameRecognition = true;
