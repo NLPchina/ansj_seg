@@ -15,12 +15,6 @@
 	<name>ansj_lucene4_plug</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.ansj</groupId>
-			<artifactId>ansj_seg</artifactId>
-			<version>3.3</version>
-			<scope>provided</scope>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
