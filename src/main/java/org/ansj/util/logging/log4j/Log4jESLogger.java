@@ -28,125 +28,129 @@ import org.apache.log4j.Logger;
  */
 public class Log4jESLogger extends AbstractESLogger {
 
-    private final org.apache.log4j.Logger logger;
-    private final String FQCN = AbstractESLogger.class.getName();
+	private final org.apache.log4j.Logger logger;
+	private final String FQCN = AbstractESLogger.class.getName();
 
-    public Log4jESLogger(String prefix, Logger logger) {
-        super(prefix);
-        this.logger = logger;
-    }
+	public Log4jESLogger(String prefix, Logger logger) {
+		super(prefix);
+		this.logger = logger;
+	}
 
-    public Logger logger() {
-        return logger;
-    }
+	public Logger logger() {
+		return logger;
+	}
 
-    @Override
-    public void setLevel(String level) {
-        if (level == null) {
-            logger.setLevel(null);
-        } else if ("error".equalsIgnoreCase(level)) {
-            logger.setLevel(Level.ERROR);
-        } else if ("warn".equalsIgnoreCase(level)) {
-            logger.setLevel(Level.WARN);
-        } else if ("info".equalsIgnoreCase(level)) {
-            logger.setLevel(Level.INFO);
-        } else if ("debug".equalsIgnoreCase(level)) {
-            logger.setLevel(Level.DEBUG);
-        } else if ("trace".equalsIgnoreCase(level)) {
-            logger.setLevel(Level.TRACE);
-        }
-    }
+	@Override
+	public void setLevel(String level) {
+		if (level == null) {
+			logger.setLevel(null);
+		} else if ("error".equalsIgnoreCase(level)) {
+			logger.setLevel(Level.ERROR);
+		} else if ("warn".equalsIgnoreCase(level)) {
+			logger.setLevel(Level.WARN);
+		} else if ("info".equalsIgnoreCase(level)) {
+			logger.setLevel(Level.INFO);
+		} else if ("debug".equalsIgnoreCase(level)) {
+			logger.setLevel(Level.DEBUG);
+		} else if ("trace".equalsIgnoreCase(level)) {
+			logger.setLevel(Level.TRACE);
+		}
+	}
 
-    @Override
-    public String getLevel() {
-        if (logger.getLevel() == null) {
-            return null;
-        }
-        return logger.getLevel().toString();
-    }
+	@Override
+	public String getLevel() {
+		if (logger.getLevel() == null) {
+			return null;
+		}
+		return logger.getLevel().toString();
+	}
 
-    @Override
-    public String getName() {
-        return logger.getName();
-    }
+	@Override
+	public String getName() {
+		return logger.getName();
+	}
 
-    @Override
-    public boolean isTraceEnabled() {
-        return logger.isTraceEnabled();
-    }
+	@Override
+	public boolean isTraceEnabled() {
+		return logger.isTraceEnabled();
+	}
 
-    @Override
-    public boolean isDebugEnabled() {
-        return logger.isDebugEnabled();
-    }
+	@Override
+	public boolean isDebugEnabled() {
+		return logger.isDebugEnabled();
+	}
 
-    @Override
-    public boolean isInfoEnabled() {
-        return logger.isInfoEnabled();
-    }
+	@Override
+	public boolean isInfoEnabled() {
+		return logger.isInfoEnabled();
+	}
 
-    @Override
-    public boolean isWarnEnabled() {
-        return logger.isEnabledFor(Level.WARN);
-    }
+	@Override
+	public boolean isWarnEnabled() {
+		return logger.isEnabledFor(Level.WARN);
+	}
 
-    @Override
-    public boolean isErrorEnabled() {
-        return logger.isEnabledFor(Level.ERROR);
-    }
+	@Override
+	public boolean isErrorEnabled() {
+		return logger.isEnabledFor(Level.ERROR);
+	}
 
-    @Override
-    protected void internalTrace(String msg) {
-        logger.log(FQCN, Level.TRACE, msg, null);
-    }
+	@Override
+	protected void internalTrace(String msg) {
+		logger.log(FQCN, Level.TRACE, msg, null);
+	}
 
-    @Override
-    protected void internalTrace(String msg, Throwable cause) {
-        logger.log(FQCN, Level.TRACE, msg, cause);
-    }
+	@Override
+	protected void internalTrace(String msg, Throwable cause) {
+		logger.log(FQCN, Level.TRACE, msg, cause);
+	}
 
-    @Override
-    protected void internalDebug(String msg) {
-        logger.log(FQCN, Level.DEBUG, msg, null);
-    }
+	@Override
+	protected void internalDebug(String msg) {
+		logger.log(FQCN, Level.DEBUG, msg, null);
+	}
 
-    @Override
-    protected void internalDebug(String msg, Throwable cause) {
-        logger.log(FQCN, Level.DEBUG, msg, cause);
-    }
+	@Override
+	protected void internalDebug(String msg, Throwable cause) {
+		logger.log(FQCN, Level.DEBUG, msg, cause);
+	}
 
-    @Override
-    protected void internalInfo(String msg) {
-        logger.log(FQCN, Level.INFO, msg, null);
-    }
+	@Override
+	protected void internalInfo(String msg) {
+		logger.log(FQCN, Level.INFO, msg, null);
+	}
 
-    @Override
-    protected void internalInfo(String msg, Throwable cause) {
-        logger.log(FQCN, Level.INFO, msg, cause);
-    }
+	@Override
+	protected void internalInfo(String msg, Throwable cause) {
+		logger.log(FQCN, Level.INFO, msg, cause);
+	}
 
-    @Override
-    protected void internalWarn(String msg) {
-        logger.log(FQCN, Level.WARN, msg, null);
-    }
+	@Override
+	protected void internalWarn(String msg) {
+		logger.log(FQCN, Level.WARN, msg, null);
+	}
 
-    @Override
-    protected void internalWarn(String msg, Throwable cause) {
-        logger.log(FQCN, Level.WARN, msg, cause);
-    }
+	@Override
+	protected void internalWarn(String msg, Throwable cause) {
+		logger.log(FQCN, Level.WARN, msg, cause);
+	}
 
-    @Override
-    protected void internalError(String msg) {
-        logger.log(FQCN, Level.ERROR, msg, null);
-    }
+	@Override
+	protected void internalError(String msg) {
+		logger.log(FQCN, Level.ERROR, msg, null);
+	}
 
-    @Override
-    protected void internalError(String msg, Throwable cause) {
-        logger.log(FQCN, Level.ERROR, msg, cause);
-    }
-    
-    @Override
+	@Override
+	protected void internalError(String msg, Throwable cause) {
+		logger.log(FQCN, Level.ERROR, msg, cause);
+	}
+
+	@Override
 	public void warning(String string) {
-		this.warning(string);
+		this.internalWarn(string);
+	}
+
+	public void warning(String string, Throwable cause) {
+		this.internalWarn(string, cause);
 	}
 }

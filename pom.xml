@@ -44,6 +44,11 @@
 
 	<repositories>
 		<repository>
+			<id>os-repo</id>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+		
+		<repository>
 			<id>mvn-repo</id>
 			<url>http://maven.nlpcn.org/</url>
 		</repository>
