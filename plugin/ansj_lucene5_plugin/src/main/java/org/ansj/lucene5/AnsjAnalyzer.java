@@ -41,8 +41,9 @@ public class AnsjAnalyzer extends Analyzer {
 	public AnsjAnalyzer(String type) {
 		this.type = type;
 	}
-	
-	public AnsjAnalyzer(){}
+
+	public AnsjAnalyzer() {
+	}
 
 	private Set<String> filter(String stopwordsDir) {
 		if (StringUtil.isBlank(stopwordsDir)) {
@@ -67,9 +68,7 @@ public class AnsjAnalyzer extends Analyzer {
 			tokenizer = new AnsjTokenizer(new UserDefineAnalysis(reader), filter);
 		} else if ("index".equalsIgnoreCase(type)) {
 			tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), filter);
-		} else if("all".equalsIgnoreCase(type)){
-			tokenizer = UserDicAllTokenizer(reader) ;
-		}else {
+		} else {
 			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
 		}
 		return new TokenStreamComponents(tokenizer);
