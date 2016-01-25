@@ -31,14 +31,13 @@ public class IndexAnalysisTest {
 		
 		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
 
-		System.out.println(ToAnalysis.parse("季德胜蛇药片"));
-//		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
-//		
-//		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
-//		
-//		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
-//		
-//		System.out.println(IndexAnalysis.parse("北京地铁"));
+		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
+		
+		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
+		
+		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
+		
+		System.out.println(IndexAnalysis.parse("北京地铁"));
 		
 //		long start = System.currentTimeMillis() ;
 //				

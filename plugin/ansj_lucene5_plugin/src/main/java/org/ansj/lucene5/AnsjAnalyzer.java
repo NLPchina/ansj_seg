@@ -67,7 +67,9 @@ public class AnsjAnalyzer extends Analyzer {
 			tokenizer = new AnsjTokenizer(new UserDefineAnalysis(reader), filter);
 		} else if ("index".equalsIgnoreCase(type)) {
 			tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), filter);
-		} else {
+		} else if("all".equalsIgnoreCase(type)){
+			tokenizer = UserDicAllTokenizer(reader) ;
+		}else {
 			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
 		}
 		return new TokenStreamComponents(tokenizer);
