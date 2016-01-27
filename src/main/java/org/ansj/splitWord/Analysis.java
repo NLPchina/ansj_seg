@@ -1,13 +1,5 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.DATDictionary.IN_SYSTEM;
-import static org.ansj.library.DATDictionary.status;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
@@ -20,6 +12,15 @@ import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.ansj.library.DATDictionary.IN_SYSTEM;
+import static org.ansj.library.DATDictionary.status;
 
 /**
  * 基本分词+人名识别
@@ -134,7 +135,14 @@ public abstract class Analysis {
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status(chars[i])) {
 			case 0:
-				gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
+				if (Character.isHighSurrogate(chars[i]) && (i + 1) < endOffe &&
+						Character.isLowSurrogate(chars[i + 1])) {
+					str = new String(Arrays.copyOfRange(chars, i, i + 2));
+					gp.addTerm(new Term(str, i, TermNatures.NULL));
+					i++;
+				} else {
+					gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
+				}
 				break;
 			case 4:
 				start = i;
@@ -180,7 +188,7 @@ public abstract class Analysis {
 				/**
 				 * 如果未分出词.以未知字符加入到gp中
 				 */
-				if (IN_SYSTEM[c] > 0 || status(c) > 3) {
+				if (IN_SYSTEM[c] > 0 || status(c) > 3 || Character.isHighSurrogate(chars[i]) ) {
 					i -= 1;
 				} else {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
