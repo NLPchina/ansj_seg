@@ -10,6 +10,7 @@ public class IndexAnalysisTest {
 	public static void main(String[] args) throws IOException {
 		MyStaticValue.isNumRecognition=true;
 		MyStaticValue.isQuantifierRecognition = false;
+		MyStaticValue.userLibrary=null ;
 		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
 		UserDefineLibrary.insertWord("蛇药", "n", 1000);
 		UserDefineLibrary.insertWord("鲁花", "n", 1000);
@@ -19,21 +20,19 @@ public class IndexAnalysisTest {
 		UserDefineLibrary.insertWord("海昌 ", "n", 1000);
 		UserDefineLibrary.insertWord("美瞳", "n", 1000);
 
-//		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
-//
-//		System.out.println(IndexAnalysis.parse("隐形眼镜 护理"));
-//
-//		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
-//
-//		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
-//
-//		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
-//
-//		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
-//
-//		System.out.println(IndexAnalysis.parse("北京地铁"));
-		
-		System.out.println(IndexAnalysis.parse("0000000"));
+		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
+
+		System.out.println(IndexAnalysis.parse("隐形眼镜 护理"));
+
+		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
+
+		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
+
+		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
+
+		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
+
+		System.out.println(IndexAnalysis.parse("北京地铁"));
 		
 //		long start = System.currentTimeMillis() ;
 //				
