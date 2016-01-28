@@ -27,8 +27,11 @@ public class UserDefineRecognition {
 	private Forest branch = null;
 	private Forest forest = null;
 
-	public UserDefineRecognition(Term[] terms, Forest... forests) {
+	private int type = 0;
+
+	public UserDefineRecognition(Term[] terms, int type, Forest... forests) {
 		this.terms = terms;
+		this.type = type;
 		if (forests != null && forests.length > 0) {
 			this.forests = forests;
 		}
@@ -109,7 +112,6 @@ public class UserDefineRecognition {
 	}
 
 	private void makeNewTerm() {
-		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		for (int j = offe; j <= endOffe; j++) {
 			if (terms[j] == null) {
@@ -117,13 +119,11 @@ public class UserDefineRecognition {
 			} else {
 				sb.append(terms[j].getName());
 			}
-			// terms[j] = null;
 		}
 		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
 		Term term = new Term(sb.toString(), offe, termNatures);
 		term.selfScore(-1 * tempFreq);
-		TermUtil.insertTerm(terms, term);
-		// reset();
+		TermUtil.insertTerm(terms, term, type);
 	}
 
 	/**

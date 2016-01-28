@@ -10,52 +10,38 @@
 	</parent>
 
 	<artifactId>ansj_lucene4_plug</artifactId>
-	<version>2.0.2</version>
+	<version>3.0</version>
 	<packaging>jar</packaging>
-
 	<name>ansj_lucene4_plug</name>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.ansj</groupId>
-			<artifactId>ansj_seg</artifactId>
-			<version>2.0.5</version>
-			<classifier>min</classifier>
-			<scope>provided</scope>
-		</dependency>
 		
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
-			<version>4.4.0</version>
+			<version>4.10.4</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-highlighter</artifactId>
-			<version>4.4.0</version>
+			<version>4.10.4</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queries</artifactId>
-			<version>4.4.0</version>
+			<version>4.10.4</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
-			<version>4.4.0</version>
+			<version>4.10.4</version>
 			<scope>provided</scope>
 		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.4</version>
-			<scope>test</scope>
-		</dependency>
+		
 	</dependencies>
 </project>

@@ -111,7 +111,6 @@ public class NewWordRecognition {
 	}
 
 	private void makeNewTerm() {
-		// TODO Auto-generated method stub
 		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
 		term.selfScore(score);
 		term.setNature(tempNature);
@@ -120,7 +119,7 @@ public class NewWordRecognition {
 		}
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
-		TermUtil.insertTerm(terms, term);
+		TermUtil.insertTerm(terms, term,2);
 		TermUtil.parseNature(term);
 	}
 

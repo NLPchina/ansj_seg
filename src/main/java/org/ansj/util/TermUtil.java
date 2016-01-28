@@ -41,29 +41,67 @@ public class TermUtil {
 	}
 
 	/**
-	 * 将一个term插入到链表中的对应位置中,应该是词长由大到小
+	 * 将一个term插入到链表中的对应位置中, 如果这个term已经存在参照type type 0.跳过 1. 替换 2.累积分值 保证顺序,由大到小
 	 * 
 	 * @param terms
 	 * @param term
 	 */
-	public static void insertTerm(Term[] terms, Term term) {
-		Term temp = terms[term.getOffe()];
-		//插入到最右面
-		Term last = temp ;
-		while((temp = temp.next())!=null){
-			last = temp ; 
+	public static void insertTerm(Term[] terms, Term term, int type) {
+		Term self = terms[term.getOffe()];
+
+		if (self == null) {
+			terms[term.getOffe()] = term;
+			return;
 		}
-		last.setNext(term) ;
+
+		int len = term.getName().length();
+
+		// 如果是第一位置
+		if (self.getName().length() == len) {
+			if (type == 1) {
+				term.setNext(self.next());
+				terms[term.getOffe()] = term;
+			} else if (type == 2) {
+				self.score(self.score() + term.score());
+				self.selfScore(self.selfScore() + term.selfScore());
+			}
+			return;
+		}
+		
+		if(self.getName().length() > len){
+			term.setNext(self) ;
+			terms[term.getOffe()] = term;
+			return;
+		}
+
+		Term next = self;
+		Term before = self;
+		while ((next = before.next()) != null) {
+			if (next.getName().length() == len) {
+				if (type == 1) {
+					term.setNext(next.next());
+					before.setNext(term);
+				} else if (type == 2) {
+					next.score(next.score() + term.score());
+					next.selfScore(next.selfScore() + term.selfScore());
+				}
+				return;
+			} else if (next.getName().length() > len) {
+				before.setNext(term);
+				term.setNext(next);
+				return;
+			}
+			before = next;
+		}
+
+		before.setNext(term); // 如果都没有命中
 	}
 
 	public static void insertTermNum(Term[] terms, Term term) {
-		// TODO Auto-generated method stub
 		terms[term.getOffe()] = term;
-
 	}
 
 	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures nr) {
-		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		int offe = tempList.get(0).getOffe();
 		for (Term term : tempList) {

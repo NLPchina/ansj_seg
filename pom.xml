@@ -5,7 +5,7 @@
 	<artifactId>ansj_seg</artifactId>
 	<packaging>jar</packaging>
 	<name>ansj_seg</name>
-	<version>3.0</version>
+	<version>3.3</version>
 	<description>best java chinese word seg ! </description>
 	<url>https://github.com/ansjsun/ansj_seg</url>
 	<licenses>
@@ -44,8 +44,13 @@
 
 	<repositories>
 		<repository>
+			<id>os-repo</id>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+		
+		<repository>
 			<id>mvn-repo</id>
-			<url>http://maven.ansj.org/</url>
+			<url>http://maven.nlpcn.org/</url>
 		</repository>
 	</repositories>
 
@@ -54,7 +59,7 @@
 		<dependency>
 			<groupId>org.nlpcn</groupId>
 			<artifactId>nlp-lang</artifactId>
-			<version>1.0.2</version>
+			<version>1.1</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -64,6 +69,19 @@
 			<version>4.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -72,8 +90,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.6</source>
+					<target>1.6</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

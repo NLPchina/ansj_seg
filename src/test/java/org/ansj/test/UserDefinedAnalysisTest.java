@@ -8,6 +8,7 @@ import junit.framework.Assert;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.analysis.UserDefineAnalysis;
 import org.junit.Test;
 
 public class UserDefinedAnalysisTest {
@@ -21,7 +22,7 @@ public class UserDefinedAnalysisTest {
 		//增加新词
 		UserDefineLibrary.insertWord(newWord, nature, 1000);
 		
-		List<Term> parse = ToAnalysis.parse(str);
+		List<Term> parse = UserDefineAnalysis.parse(str);
 		HashMap<String, Term> hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
@@ -33,7 +34,7 @@ public class UserDefinedAnalysisTest {
 
 		//删除词
 		UserDefineLibrary.removeWord(newWord);
-		parse = ToAnalysis.parse(str);
+		parse = UserDefineAnalysis.parse(str);
 		hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);

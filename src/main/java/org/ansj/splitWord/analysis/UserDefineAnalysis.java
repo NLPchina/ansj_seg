@@ -20,6 +20,7 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * 默认用户自定义词性优先
+ * 
  * @author ansj
  *
  */
@@ -27,16 +28,16 @@ public class UserDefineAnalysis extends Analysis {
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
-		// TODO Auto-generated method stub
+
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
 
 				// 用户自定义词典的识别
 				userDefineRecognition(graph, forests);
-				
+
 				graph.walkPath();
-				
+
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
@@ -57,7 +58,7 @@ public class UserDefineAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				new UserDefineRecognition(graph.terms, 1, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}

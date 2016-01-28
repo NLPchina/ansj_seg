@@ -2,6 +2,7 @@ package org.ansj.util;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.recognition.NatureRecognition;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 public class NameFix {
@@ -19,7 +20,9 @@ public class NameFix {
 				if (next.termNatures().personAttr.split > 0) {
 					term.setName(term.getName() + next.getName().charAt(0));
 					terms[i + 2] = null;
-					terms[i + 3] = new Term(next.getName().substring(1), next.getOffe(), TermNatures.NW);
+
+					String name = next.getName().substring(1);
+					terms[i + 3] = new Term(name, next.getOffe() + 1, NatureRecognition.getTermNatures(name));
 					TermUtil.termLink(term, terms[i + 3]);
 					TermUtil.termLink(terms[i + 3], next.to());
 				}
@@ -29,7 +32,8 @@ public class NameFix {
 		// 外国人名修正
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
-			if (term != null && term.getName().length() == 1 && i > 0 && WordAlert.CharCover(term.getName().charAt(0)) == '·') {
+			if (term != null && term.getName().length() == 1 && i > 0
+					&& WordAlert.CharCover(term.getName().charAt(0)) == '·') {
 				from = term.from();
 				next = term.to();
 

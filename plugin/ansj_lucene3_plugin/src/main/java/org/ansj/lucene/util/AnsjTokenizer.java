@@ -50,7 +50,7 @@ public class AnsjTokenizer extends Tokenizer {
 				break;
 			}
 			length = term.getName().length();
-			if (pstemming && term.getTermNatures().termNatures[0] == TermNature.EN) {
+			if (pstemming && term.termNatures().termNatures[0] == TermNature.EN) {
 				System.out.println(pstemming);
 				name = stemmer.stem(term.getName());
 				term.setName(name);

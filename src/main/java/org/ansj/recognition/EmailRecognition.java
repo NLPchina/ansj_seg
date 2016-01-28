@@ -19,9 +19,9 @@ import org.ansj.domain.Term;
 public class EmailRecognition {
 	private static final Nature EMAIL_NATURE = new Nature("email");
 
-	private static Set<String> FEATURE_SET = new HashSet<>();
+	private static Set<String> FEATURE_SET = new HashSet<String>();
 
-	private static Map<String, String> FEATURE = new HashMap<>();
+	private static Map<String, String> FEATURE = new HashMap<String,String>();
 
 	private static final String NOT_HEAD = "NOT";
 	private static final String NATURE_HEAD = "nature:";

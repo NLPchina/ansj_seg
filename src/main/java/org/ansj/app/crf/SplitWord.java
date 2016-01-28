@@ -1,6 +1,7 @@
 package org.ansj.app.crf;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class SplitWord {
 
 		List<Element> elements = vterbi(line);
 
-		LinkedList<String> result = new LinkedList<String>();
+		List<String> result = new ArrayList<String>();
 
 		Element e = null;
 		int begin = 0;

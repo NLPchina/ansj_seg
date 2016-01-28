@@ -43,6 +43,12 @@
 	</distributionManagement>
 
 	<repositories>
+		
+		<repository>
+			<id>os-repo</id>
+			<url>http://maven.oschina.net/content/groups/public/</url>
+		</repository>
+		
 		<repository>
 			<id>mvn-repo</id>
 			<url>http://maven.nlpcn.org/</url>
@@ -50,15 +56,14 @@
 	</repositories>
 
 	<dependencies>
-	<!-- 
+
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
-			<version>2.0.5</version>
-			<classifier>min</classifier>
+			<version>3.3</version>
 			<scope>provided</scope>
 		</dependency>
- -->		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -92,6 +97,7 @@
 	<modules>
 		<module>ansj_lucene3_plug</module>
 		<module>ansj_lucene4_plug</module>
+		<module>ansj_lucene5_plug</module>
 	</modules>
 </project>
 

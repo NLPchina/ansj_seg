@@ -31,16 +31,14 @@ public class ToAnalysis extends Analysis {
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {
-
-				// 用户自定义词典的识别
-				userDefineRecognition(graph, forests);
 				
 				graph.walkPath();
+				
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
 				}
-
+				
 				// 姓名识别
 				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
 					// 亚洲人名识别
@@ -52,12 +50,15 @@ public class ToAnalysis extends Analysis {
 					graph.walkPathByScore();
 				}
 
+				// 用户自定义词典的识别
+				userDefineRecognition(graph, forests);
+
 
 				return getResult();
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, forests).recognition();
+				new UserDefineRecognition(graph.terms,0, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}
