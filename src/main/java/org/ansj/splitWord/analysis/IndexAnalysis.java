@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.NatureLibrary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
@@ -21,6 +22,7 @@ import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.util.ObjConver;
 
 /**
  * 用于检索的分词方式
@@ -39,12 +41,12 @@ public class IndexAnalysis extends Analysis {
 			@Override
 			public List<Term> merger() {
 				graph.walkPath();
-				
+
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
 					NumRecognition.recognition(graph.terms);
 				}
-				
+
 				// 姓名识别
 				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
 					// 亚洲人名识别
@@ -63,11 +65,10 @@ public class IndexAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms,0, forests).recognition();
+				new UserDefineRecognition(graph.terms, 0, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}
-
 
 			/**
 			 * 检索的分词
@@ -103,7 +104,8 @@ public class IndexAnalysis extends Analysis {
 					GetWord word = forest.getWord(chars);
 					while ((temp = word.getAllWords()) != null) {
 						if (!set.contains(temp + word.offe)) {
-							last.add(new Term(temp, word.offe, TermNatures.NULL));
+							set.add(temp + word.offe);
+							last.add(new Term(temp, word.offe, word.getParam(0), ObjConver.getIntValue(word.getParam(1))));
 						}
 					}
 				}

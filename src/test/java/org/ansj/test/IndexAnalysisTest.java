@@ -12,6 +12,7 @@ import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.splitWord.analysis.UserDefineAnalysis;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 public class IndexAnalysisTest {
@@ -21,7 +22,21 @@ public class IndexAnalysisTest {
 //		System.out.println(IndexAnalysis.parse("工信处女干事"));
 //		System.out.println(IndexAnalysis.parse("Asdf as 12312 ")) ;
 //		System.out.println(IndexAnalysis.parse("Asdf as 12312 ")) ;
+		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
+		UserDefineLibrary.insertWord("蛇药", "n", 1000);
+		UserDefineLibrary.insertWord("鲁花", "n", 1000);
+		UserDefineLibrary.insertWord("隐形", "n", 1000);
+		UserDefineLibrary.insertWord("眼镜", "n", 1000);
+		UserDefineLibrary.insertWord("隐形眼镜", "n", 1000);
+		UserDefineLibrary.insertWord("海昌 ", "n", 1000);
+		UserDefineLibrary.insertWord("美瞳", "n", 1000);
 		
+		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
+
+		System.out.println(IndexAnalysis.parse("隐形眼镜 护理"));
+
+		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));
+
 		
 //		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
 //		
@@ -29,15 +44,15 @@ public class IndexAnalysisTest {
 //
 		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
 		
-		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
-
-		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
-		
-		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
-		
-		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
-		
-		System.out.println(IndexAnalysis.parse("北京地铁"));
+//		System.out.println(IndexAnalysis.parse("季德胜蛇药片10片*6板 清热"));
+//
+//		System.out.println(IndexAnalysis.parse("季德胜蛇药片"));
+//		
+//		System.out.println(IndexAnalysis.parse("鲁花一级花生油"));
+//		
+//		System.out.println(IndexAnalysis.parse("上海虹桥机场旅游和服务都是一流的"));
+//		
+//		System.out.println(IndexAnalysis.parse("北京地铁"));
 		
 //		long start = System.currentTimeMillis() ;
 //				
