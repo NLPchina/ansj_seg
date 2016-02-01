@@ -64,6 +64,19 @@ public class AnsjAnalyzer extends Analyzer {
 		BufferedReader reader = new BufferedReader(new StringReader(text));
 		Tokenizer tokenizer = null;
 
+		tokenizer = getTokenizer(reader,this.type,this.filter);
+		return new TokenStreamComponents(tokenizer);
+	}
+
+	/**
+	 * 获得一个tokenizer
+	 * @param reader
+	 * @param type
+	 * @param filter
+	 * @return
+	 */
+	public static Tokenizer getTokenizer(BufferedReader reader, String type, Set<String> filter) {
+		Tokenizer tokenizer;
 		if ("user".equalsIgnoreCase(type)) {
 			tokenizer = new AnsjTokenizer(new UserDefineAnalysis(reader), filter);
 		} else if ("index".equalsIgnoreCase(type)) {
@@ -71,6 +84,6 @@ public class AnsjAnalyzer extends Analyzer {
 		} else {
 			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
 		}
-		return new TokenStreamComponents(tokenizer);
+		return tokenizer;
 	}
 }
