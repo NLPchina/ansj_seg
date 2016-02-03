@@ -7,6 +7,8 @@ public class IndexPaserDemo {
 		System.out.println(IndexAnalysis.parse("上海虹桥机场南路"));
 		System.out.println(IndexAnalysis.parse("主副食品"));
 		System.out.println(IndexAnalysis.parse("花生油"));
-		
+		System.out.println(IndexAnalysis.parse("提拉面膜"));
+		System.out.println(IndexAnalysis.parse("6百"));
+		System.out.println(IndexAnalysis.parse("6千"));
 	}
 }
