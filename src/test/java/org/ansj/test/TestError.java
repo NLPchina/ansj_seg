@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.NatureRecognition;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -12,13 +13,15 @@ import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.GetWord;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
 	@Test
-	public void test() {
+	public void test() throws Exception {
 
 //		LearnTool tool = new LearnTool();
 //		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州", tool));
@@ -97,21 +100,22 @@ public class TestError {
 //		
 		List<String> all = new ArrayList<String>() ;
 		
-//		all.add("某地区大地震后救灾工作程序示意图") ;
-//		all.add("大地震后") ;
-//		all.add("10,上城区小营街道大学路,余林,330102196204011513 ,2,13456808992,大学路新村44-122-102,大学路新村44-122-102,Z2015120110302017,Z,2015    -12-25") ;
-//		all.add("某品牌企业在京津冀地区建有饮用瓶装水厂") ;
-//		all.add("黄山16点前日出东北方") ;
-//		all.add("与其它洋流交汇的海域不易形成渔场") ;
-//		all.add("同类景观多出现在") ;
-//		all.add("据说ｗｉｎｄｏｗｓ９５推出前，考虑到低性能电脑安装它的时间很长，微软公司曾向心理学家请教，怎样在安装等待过程中设计出活动的画面才能让用户不致焦躁。") ;
-//		all.add("从古至今为何经济南强北弱?军事则北强南弱?_百度知道");
-//		all.add("孙红雷暴打记者中国娱乐界如此蛮横"); 
-//		all.add("发展中国家庭养猪事业") ;
+		all.add("某地区大地震后救灾工作程序示意图") ;
+		all.add("大地震后") ;
+		all.add("10,上城区小营街道大学路,余林,330102196204011513 ,2,13456808992,大学路新村44-122-102,大学路新村44-122-102,Z2015120110302017,Z,2015    -12-25") ;
+		all.add("某品牌企业在京津冀地区建有饮用瓶装水厂") ;
+		all.add("黄山16点前日出东北方") ;
+		all.add("与其它洋流交汇的海域不易形成渔场") ;
+		all.add("同类景观多出现在") ;
+		all.add("据说ｗｉｎｄｏｗｓ９５推出前，考虑到低性能电脑安装它的时间很长，微软公司曾向心理学家请教，怎样在安装等待过程中设计出活动的画面才能让用户不致焦躁。") ;
+		all.add("从古至今为何经济南强北弱?军事则北强南弱?_百度知道");
+		all.add("孙红雷暴打记者中国娱乐界如此蛮横"); 
+		all.add("发展中国家庭养猪事业") ;
 		all.add("六味地黄丸软胶囊");
-//		all.add("8李建华、洪瑛,水澄花园北苑1幢2单元801室,浙AA09362220,南星街道,2006/11/28") ;
-//		all.add("浙杭上城结1997字第971662号,1997-10-06,,,上城区婚姻登记处,,1997-10-06,,,,李建华,,330102600702121,19600702,,,职员,,直大方伯八叉弄4号104室,,,,王桂花,,330106601004002,19601004,,,职工,,文三路4号217室,,,") ;
-//		all.add("10,上城区小营街道大学路,余林,330102196204011513 ,2,13456808992,大学路新村44-122-102,大学路新村44-122-102,Z2015120110302017,Z,2015-12-25");
+		all.add("8李建华、洪瑛,水澄花园北苑1幢2单元801室,浙AA09362220,南星街道,2006/11/28") ;
+		all.add("浙杭上城结1997字第971662号,1997-10-06,,,上城区婚姻登记处,,1997-10-06,,,,李建华,,330102600702121,19600702,,,职员,,直大方伯八叉弄4号104室,,,,王桂花,,330106601004002,19601004,,,职工,,文三路4号217室,,,") ;
+		all.add("10,上城区小营街道大学路,余林,330102196204011513 ,2,13456808992,大学路新村44-122-102,大学路新村44-122-102,Z2015120110302017,Z,2015-12-25");
+		all.add(" 	") ;
 //	    System.out.println(ToAnalysis.parse("你吃过了吗？？没吃"));
 //	    System.out.println(NlpAnalysis.parse("你吃过了吗？？没吃"));
 		
@@ -122,5 +126,10 @@ public class TestError {
 			System.out.println(IndexAnalysis.parse(string));
 		}
 		
+		System.out.println(DATDictionary.getItem(" "));
+		System.out.println(DATDictionary.getItem("	"));
+
+
 	}
 }
+

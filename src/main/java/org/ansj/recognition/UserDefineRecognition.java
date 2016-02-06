@@ -6,6 +6,7 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -146,9 +147,10 @@ public class UserDefineRecognition {
 	 */
 	private Forest termStatus(Forest branch, Term term) {
 		String name = term.getName();
+		SmartForest<String[]> sf = branch;
 		for (int j = 0; j < name.length(); j++) {
-			branch = branch.get(name.charAt(j));
-			if (branch == null) {
+			sf = sf.get(name.charAt(j));
+			if (sf == null) {
 				return null;
 			}
 		}

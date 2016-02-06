@@ -10,11 +10,11 @@ import java.io.UnsupportedEncodingException;
 
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
-
 
 /**
  * 用户自定义词典操作类
@@ -62,7 +62,8 @@ public class UserDefineLibrary {
 	private static void initAmbiguityLibrary() {
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warning("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
+			LIBRARYLOG.warning(
+					"init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
 			return;
 		}
 		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
@@ -72,12 +73,14 @@ public class UserDefineLibrary {
 				ambiguityForest = Library.makeForest(ambiguityLibrary);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				LIBRARYLOG.warning("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
+				LIBRARYLOG.warning("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath()
+						+ " because : not find that file or can not to read !");
 				e.printStackTrace();
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
 		} else {
-			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
+			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath()
+					+ " because : file not found or failed to read !");
 		}
 	}
 
@@ -149,7 +152,8 @@ public class UserDefineLibrary {
 		if (path != null) {
 			file = new File(path);
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
+				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath()
+						+ " because : file not found or failed to read !");
 				return;
 			}
 			if (file.isFile()) {
@@ -162,7 +166,8 @@ public class UserDefineLibrary {
 					}
 				}
 			} else {
-				LIBRARYLOG.warning("init user library  error :" + new File(path).getAbsolutePath() + " because : not find that file !");
+				LIBRARYLOG.warning("init user library  error :" + new File(path).getAbsolutePath()
+						+ " because : not find that file !");
 			}
 		}
 	}
@@ -175,22 +180,11 @@ public class UserDefineLibrary {
 	}
 
 	public static String[] getParams(String word) {
-		Forest temp = FOREST;
-		for (int i = 0; i < word.length(); i++) {
-			temp = temp.get(word.charAt(i));
-			if (temp == null) {
-				return null;
-			}
-		}
-		if (temp.getStatus() > 1) {
-			return temp.getParams();
-		} else {
-			return null;
-		}
+		return getParams(FOREST, word) ;
 	}
 
 	public static String[] getParams(Forest forest, String word) {
-		Forest temp = forest;
+		SmartForest<String[]> temp = forest;
 		for (int i = 0; i < word.length(); i++) {
 			temp = temp.get(word.charAt(i));
 			if (temp == null) {
@@ -198,7 +192,7 @@ public class UserDefineLibrary {
 			}
 		}
 		if (temp.getStatus() > 1) {
-			return temp.getParams();
+			return temp.getParam();
 		} else {
 			return null;
 		}
