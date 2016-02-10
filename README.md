@@ -4,7 +4,7 @@ Ansj中文分词
 
 #####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
 
-#####在线测试地址<a href="http://demo.ansj.org">http://demo.ansj.org</href>
+#####在线测试地址<a href="http://demo.nlpcn.org">http://demo.nlpcn.org</href>
 
 
 ##### 摘要
