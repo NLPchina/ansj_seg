@@ -176,9 +176,9 @@ public class Slf4jESLogger extends AbstractESLogger {
     protected Logger logger() {
         return logger;
     }
-    
-    @Override
+
+	@Override
 	public void warning(String string) {
-		this.warning(string);
+		this.internalWarn(string);
 	}
 }

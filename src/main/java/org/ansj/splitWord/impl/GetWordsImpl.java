@@ -115,7 +115,7 @@ public class GetWordsImpl implements GetWords {
 	}
 
 	public AnsjItem getItem() {
-		return DATDictionary.getItem(tempBaseValue);
+ 		return DATDictionary.getItem(tempBaseValue);
 	}
 
 	@Override

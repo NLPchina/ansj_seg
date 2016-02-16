@@ -34,6 +34,14 @@ public class IndexAnalysisTest {
 
 		System.out.println(IndexAnalysis.parse("北京地铁"));
 		
+
+		UserDefineLibrary.insertWord("隐形", "attr", 1000);
+		UserDefineLibrary.insertWord("眼镜", "attr", 1000);
+		UserDefineLibrary.insertWord("隐形", "attr", 1000);
+		UserDefineLibrary.insertWord("形眼", "attr", 1000);
+		UserDefineLibrary.insertWord("隐形眼", "attr", 1000);
+		System.out.println(IndexAnalysis.parse("隐形眼镜"));
+		
 //		long start = System.currentTimeMillis() ;
 //				
 //		IndexAnalysis indexAnalysis = new IndexAnalysis(new InputStreamReader(new FileInputStream("/home/ansj/temp/one_day_all.txt"))) ;
