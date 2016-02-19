@@ -39,8 +39,8 @@ public class NlpAnalysis extends Analysis {
 	private LearnTool learn = null;
 
 	private static final String TAB = "\t";
-	
-	private static final int CRF_WEIGHT = 6 ;
+
+	private static final int CRF_WEIGHT = 6;
 
 	private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
 
@@ -55,7 +55,7 @@ public class NlpAnalysis extends Analysis {
 				if (learn == null) {
 					learn = new LearnTool();
 				}
-				
+
 				graph.walkPath();
 
 				learn.learn(graph, DEFAULT_SLITWORD);
@@ -121,8 +121,11 @@ public class NlpAnalysis extends Analysis {
 					if (tempTermNatures != TermNatures.NW) {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
+				} else {
+					MyStaticValue.LIBRARYLOG.warning(
+							"not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
-				
+
 				graph.walkPath(mc.get());
 
 				// 数字发现
