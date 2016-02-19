@@ -163,6 +163,6 @@ public class JdkESLogger extends AbstractESLogger {
 
 	@Override
 	public void warning(String string) {
-		this.warning(string);
+		this.internalWarn(string);
 	}
 }
