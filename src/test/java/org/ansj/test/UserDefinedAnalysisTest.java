@@ -21,12 +21,14 @@ public class UserDefinedAnalysisTest {
 		
 		//增加新词
 		UserDefineLibrary.insertWord(newWord, nature, 1000);
+		UserDefineLibrary.insertWord("上海电力", nature, 1000);
 		
 		List<Term> parse = UserDefineAnalysis.parse(str);
 		HashMap<String, Term> hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
 		}
+System.out.println(parse);
 
 		Assert.assertTrue(hs.containsKey(newWord));
 
