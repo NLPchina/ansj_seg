@@ -74,7 +74,7 @@ public class UserDefineAnalysis extends Analysis {
 				}
 				setRealName(graph, result);
 
-				FilterModifWord.modifResult(result);
+				FilterModifWord.modifResult(result,forests);
 				return result;
 			}
 		};
