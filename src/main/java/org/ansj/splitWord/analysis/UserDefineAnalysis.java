@@ -37,6 +37,10 @@ public class UserDefineAnalysis extends Analysis {
 				userDefineRecognition(graph, forests);
 
 				graph.walkPath();
+				
+
+				// 用户自定义词典的识别
+				userDefineRecognition(graph, forests);
 
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
@@ -61,6 +65,7 @@ public class UserDefineAnalysis extends Analysis {
 				new UserDefineRecognition(graph.terms, 1, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
+				graph.rmLittlePath();
 			}
 
 			private List<Term> getResult() {
