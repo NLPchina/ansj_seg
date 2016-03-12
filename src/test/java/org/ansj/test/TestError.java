@@ -117,6 +117,7 @@ public class TestError {
 		all.add("10,上城区小营街道大学路,余林,330102196204011513 ,2,13456808992,大学路新村44-122-102,大学路新村44-122-102,Z2015120110302017,Z,2015-12-25");
 		
 		all.add("六味地黄丸") ;
+		all.add("2015年6月3日") ;
 //	    System.out.println(ToAnalysis.parse("你吃过了吗？？没吃"));
 //	    System.out.println(NlpAnalysis.parse("你吃过了吗？？没吃"));
 		

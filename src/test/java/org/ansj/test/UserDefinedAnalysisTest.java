@@ -17,6 +17,7 @@ public class UserDefinedAnalysisTest {
 
 	@Test
 	public void test() {
+		
 		String newWord = "爸爸去哪儿";
 		String nature = "aaaaa";
 		String str = "上海电力2012年财务报表如下怎爸爸去哪儿么办";
