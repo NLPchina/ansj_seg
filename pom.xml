@@ -5,7 +5,7 @@
 	<artifactId>ansj_seg</artifactId>
 	<packaging>jar</packaging>
 	<name>ansj_seg</name>
-	<version>3.7.1</version>
+	<version>3.7.2</version>
 	<description>best java chinese word seg ! </description>
 	<url>https://github.com/ansjsun/ansj_seg</url>
 	<licenses>
@@ -44,11 +44,6 @@
 
 	<repositories>
 		<repository>
-			<id>os-repo</id>
-			<url>http://maven.oschina.net/content/groups/public/</url>
-		</repository>
-		
-		<repository>
 			<id>mvn-repo</id>
 			<url>http://maven.nlpcn.org/</url>
 		</repository>
@@ -59,7 +54,7 @@
 		<dependency>
 			<groupId>org.nlpcn</groupId>
 			<artifactId>nlp-lang</artifactId>
-			<version>1.2</version>
+			<version>1.5</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -70,18 +65,6 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.7.7</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<build>

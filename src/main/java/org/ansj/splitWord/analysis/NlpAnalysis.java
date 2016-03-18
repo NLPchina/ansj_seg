@@ -122,7 +122,7 @@ public class NlpAnalysis extends Analysis {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
 				} else {
-					MyStaticValue.LIBRARYLOG.warning(
+					MyStaticValue.LIBRARYLOG.warn(
 							"not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
 
