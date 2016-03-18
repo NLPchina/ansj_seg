@@ -1,6 +1,8 @@
 Ansj中文分词
 ==================
 
+[![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg)
+
 
 #####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
 
