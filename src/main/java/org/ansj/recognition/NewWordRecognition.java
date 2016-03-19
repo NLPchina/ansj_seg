@@ -5,6 +5,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
@@ -119,7 +120,7 @@ public class NewWordRecognition {
 		}
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
-		TermUtil.insertTerm(terms, term,2);
+		TermUtil.insertTerm(terms, term,InsertTermType.SCORE_ADD_SORT);
 		TermUtil.parseNature(term);
 	}
 

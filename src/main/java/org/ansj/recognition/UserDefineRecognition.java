@@ -5,6 +5,7 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
@@ -28,9 +29,9 @@ public class UserDefineRecognition {
 	private SmartForest<String[]> branch = null;
 	private SmartForest<String[]> forest = null;
 
-	private int type = 0;
+	private InsertTermType type = InsertTermType.SKIP;
 
-	public UserDefineRecognition(Term[] terms, int type, Forest... forests) {
+	public UserDefineRecognition(Term[] terms, InsertTermType type, Forest... forests) {
 		this.terms = terms;
 		this.type = type;
 		if (forests != null && forests.length > 0) {

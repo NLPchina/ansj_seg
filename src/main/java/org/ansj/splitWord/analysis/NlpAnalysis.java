@@ -24,6 +24,7 @@ import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.WordAlert;
@@ -96,7 +97,7 @@ public class NlpAnalysis extends Analysis {
 							}
 						}
 
-						TermUtil.insertTerm(graph.terms, term, 2);
+						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
 						tempOff += word.length();
 
@@ -137,7 +138,7 @@ public class NlpAnalysis extends Analysis {
 				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms, 2, forests).recognition();
+				new UserDefineRecognition(graph.terms, InsertTermType.SCORE_ADD_SORT, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 

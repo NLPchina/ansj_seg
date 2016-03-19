@@ -10,6 +10,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NgramLibrary;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 
 /**
  * 人名识别工具类
@@ -40,7 +41,7 @@ public class AsianPersonRecognition {
 	public void recognition() {
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {
-			TermUtil.insertTerm(terms, term2, 2);
+			TermUtil.insertTerm(terms, term2, InsertTermType.SCORE_ADD_SORT);
 		}
 	}
 
