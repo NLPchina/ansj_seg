@@ -1,10 +1,11 @@
-package org.ansj.util;
+package org.ansj.test;
 
 import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.FilterModifWord;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

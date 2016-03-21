@@ -4,9 +4,8 @@ import java.io.IOException;
 
 import org.ansj.library.UserDefineLibrary;
 import org.junit.Test;
-import org.nlpcn.commons.lang.util.WordWeight;
 
-public class UserDefineAnalysisTest {
+public class DicAnalysisTest {
 
 	@Test
 	public void test() throws IOException {
