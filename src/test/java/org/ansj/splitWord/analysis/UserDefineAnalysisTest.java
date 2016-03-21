@@ -18,9 +18,9 @@ public class UserDefineAnalysisTest {
 		UserDefineLibrary.insertWord("自大学", "ab", 2000);
 		UserDefineLibrary.insertWord("网大学", "ab", 1000);
 
-		System.out.println(UserDefineAnalysis.parse("重庆重庆市渝北区金童路奥山别墅162"));
-		System.out.println(UserDefineAnalysis.parse("河南省郑州市金水区金水区农科路与文博西路交叉口向东２００米路南"));
-		System.out.println(UserDefineAnalysis.parse("来自大学生小说网大学"));
+		System.out.println(DicAnalysis.parse("重庆重庆市渝北区金童路奥山别墅162"));
+		System.out.println(DicAnalysis.parse("河南省郑州市金水区金水区农科路与文博西路交叉口向东２００米路南"));
+		System.out.println(DicAnalysis.parse("来自大学生小说网大学"));
 		
 		
 	}

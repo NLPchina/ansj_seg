@@ -8,12 +8,12 @@ import junit.framework.Assert;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.splitWord.analysis.UserDefineAnalysis;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
-public class UserDefinedAnalysisTest {
+public class DicAnalysisTest {
 
 	@Test
 	public void test() {
@@ -26,7 +26,7 @@ public class UserDefinedAnalysisTest {
 		UserDefineLibrary.insertWord(newWord, nature, 1000);
 		UserDefineLibrary.insertWord("上海电力", nature, 1000);
 		
-		List<Term> parse = UserDefineAnalysis.parse(str);
+		List<Term> parse = DicAnalysis.parse(str);
 		HashMap<String, Term> hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
@@ -38,11 +38,11 @@ public class UserDefinedAnalysisTest {
 		
 		Library.insertWord(UserDefineLibrary.FOREST, new Value("北京卡", "UserDefined", "1000"));
 	    
-		Assert.assertEquals(UserDefineAnalysis.parse("北京卡机场服务").get(0).getName(), "北京卡");
+		Assert.assertEquals(DicAnalysis.parse("北京卡机场服务").get(0).getName(), "北京卡");
 
 		//删除词
 		UserDefineLibrary.removeWord(newWord);
-		parse = UserDefineAnalysis.parse(str);
+		parse = DicAnalysis.parse(str);
 		hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
