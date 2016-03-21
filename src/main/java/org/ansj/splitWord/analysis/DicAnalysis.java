@@ -80,7 +80,7 @@ public class DicAnalysis extends Analysis {
 				}
 				setRealName(graph, result);
 
-				FilterModifWord.modifResult(result,forests);
+				FilterModifWord.updateNature(result,forests);
 				return result;
 			}
 		};
