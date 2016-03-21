@@ -62,7 +62,7 @@ public class UserDefineLibrary {
 	private static void initAmbiguityLibrary() {
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warning(
+			LIBRARYLOG.warn(
 					"init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
 			return;
 		}
@@ -73,13 +73,13 @@ public class UserDefineLibrary {
 				ambiguityForest = Library.makeForest(ambiguityLibrary);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				LIBRARYLOG.warning("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath()
+				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath()
 						+ " because : not find that file or can not to read !");
 				e.printStackTrace();
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
 		} else {
-			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath()
+			LIBRARYLOG.warn("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath()
 					+ " because : file not found or failed to read !");
 		}
 	}
@@ -102,7 +102,7 @@ public class UserDefineLibrary {
 	// 单个文件加载词典
 	public static void loadFile(Forest forest, File file) {
 		if (!file.canRead()) {
-			LIBRARYLOG.warning("file in path " + file.getAbsolutePath() + " can not to read!");
+			LIBRARYLOG.warn("file in path " + file.getAbsolutePath() + " can not to read!");
 			return;
 		}
 		String temp = null;
@@ -152,7 +152,7 @@ public class UserDefineLibrary {
 		if (path != null) {
 			file = new File(path);
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath()
+				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath()
 						+ " because : file not found or failed to read !");
 				return;
 			}
@@ -166,7 +166,7 @@ public class UserDefineLibrary {
 					}
 				}
 			} else {
-				LIBRARYLOG.warning("init user library  error :" + new File(path).getAbsolutePath()
+				LIBRARYLOG.warn("init user library  error :" + new File(path).getAbsolutePath()
 						+ " because : not find that file !");
 			}
 		}
@@ -180,7 +180,7 @@ public class UserDefineLibrary {
 	}
 
 	public static String[] getParams(String word) {
-		return getParams(FOREST, word) ;
+		return getParams(FOREST, word);
 	}
 
 	public static String[] getParams(Forest forest, String word) {

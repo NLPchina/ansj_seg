@@ -5,6 +5,7 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
@@ -25,12 +26,12 @@ public class UserDefineRecognition {
 	private int tempFreq = 50;
 	private String tempNature;
 
-	private Forest branch = null;
-	private Forest forest = null;
+	private SmartForest<String[]> branch = null;
+	private SmartForest<String[]> forest = null;
 
-	private int type = 0;
+	private InsertTermType type = InsertTermType.SKIP;
 
-	public UserDefineRecognition(Term[] terms, int type, Forest... forests) {
+	public UserDefineRecognition(Term[] terms, InsertTermType type, Forest... forests) {
 		this.terms = terms;
 		this.type = type;
 		if (forests != null && forests.length > 0) {
@@ -70,8 +71,8 @@ public class UserDefineRecognition {
 					reset();
 				} else if (branch.getStatus() == 3) {
 					endOffe = i;
-					tempNature = branch.getParams()[0];
-					tempFreq = getInt(branch.getParams()[1], 50);
+					tempNature = branch.getParam()[0];
+					tempFreq = getInt(branch.getParam()[1], 50);
 					if (offe != -1 && offe < endOffe) {
 						i = offe;
 						makeNewTerm();
@@ -84,8 +85,8 @@ public class UserDefineRecognition {
 					if (offe == -1) {
 						offe = i;
 					} else {
-						tempNature = branch.getParams()[0];
-						tempFreq = getInt(branch.getParams()[1], 50);
+						tempNature = branch.getParam()[0];
+						tempFreq = getInt(branch.getParam()[1], 50);
 						if (flag) {
 							makeNewTerm();
 						}
@@ -145,7 +146,7 @@ public class UserDefineRecognition {
 	 * @param term
 	 * @return
 	 */
-	private Forest termStatus(Forest branch, Term term) {
+	private SmartForest<String[]> termStatus(SmartForest<String[]> branch, Term term) {
 		String name = term.getName();
 		SmartForest<String[]> sf = branch;
 		for (int j = 0; j < name.length(); j++) {
@@ -154,7 +155,7 @@ public class UserDefineRecognition {
 				return null;
 			}
 		}
-		return branch;
+		return sf;
 	}
 
 }

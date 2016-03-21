@@ -24,6 +24,7 @@ import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.WordAlert;
@@ -39,8 +40,8 @@ public class NlpAnalysis extends Analysis {
 	private LearnTool learn = null;
 
 	private static final String TAB = "\t";
-	
-	private static final int CRF_WEIGHT = 6 ;
+
+	private static final int CRF_WEIGHT = 6;
 
 	private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
 
@@ -55,7 +56,7 @@ public class NlpAnalysis extends Analysis {
 				if (learn == null) {
 					learn = new LearnTool();
 				}
-				
+
 				graph.walkPath();
 
 				learn.learn(graph, DEFAULT_SLITWORD);
@@ -96,7 +97,7 @@ public class NlpAnalysis extends Analysis {
 							}
 						}
 
-						TermUtil.insertTerm(graph.terms, term, 2);
+						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
 						tempOff += word.length();
 
@@ -121,8 +122,11 @@ public class NlpAnalysis extends Analysis {
 					if (tempTermNatures != TermNatures.NW) {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
+				} else {
+					MyStaticValue.LIBRARYLOG.warn(
+							"not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
-				
+
 				graph.walkPath(mc.get());
 
 				// 数字发现
@@ -134,7 +138,7 @@ public class NlpAnalysis extends Analysis {
 				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms, 2, forests).recognition();
+				new UserDefineRecognition(graph.terms, InsertTermType.SCORE_ADD_SORT, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 

@@ -19,7 +19,6 @@ public class SplitWordTest {
 		while((temp=reader.readLine())!=null){
 			String word = temp.split("\t")[0] ;
 			double value = MyStaticValue.getCRFSplitWord().cohesion(word) ;
-			System.out.println(word+"\t"+value);
 		}
 		System.out.println(System.currentTimeMillis()-start);
 	}

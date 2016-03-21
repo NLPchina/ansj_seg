@@ -15,6 +15,7 @@ import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
@@ -58,7 +59,7 @@ public class ToAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms,0, forests).recognition();
+				new UserDefineRecognition(graph.terms,InsertTermType.SKIP, forests).recognition();
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}

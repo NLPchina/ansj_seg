@@ -1,6 +1,8 @@
 Ansj中文分词
 ==================
 
+[![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg)
+
 
 #####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
 
@@ -8,7 +10,7 @@ Ansj中文分词
 
 
 ##### 摘要
-> 这是一个基于google语义模型+条件随机场模型的中文分词的java实现.
+> 这是一个基于n-Gram+条件随机场模型的中文分词的java实现.
 
 > 分词速度达到每秒钟大约200万字左右（mac air下测试），准确率能达到96%以上
 
@@ -56,7 +58,7 @@ mvn clean install -Dmaven.test.skip=true
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>3.3</version>
+            <version>3.7.1</version>
         </dependency>
         ....
     </dependencies>

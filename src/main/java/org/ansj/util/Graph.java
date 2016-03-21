@@ -8,6 +8,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.Analysis.Merger;
+import org.ansj.util.TermUtil.InsertTermType;
 
 /**
  * 最短路径
@@ -60,7 +61,7 @@ public class Graph {
 		if (!hasPerson && term.termNatures().personAttr.flag) {
 			hasPerson = true;
 		}
-		TermUtil.insertTerm(terms, term, 1);
+		TermUtil.insertTerm(terms, term, InsertTermType.REPLACE);
 
 	}
 

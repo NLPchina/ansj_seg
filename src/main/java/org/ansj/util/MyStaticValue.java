@@ -18,10 +18,11 @@ import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;
-import org.ansj.util.logging.AnsjLogger;
-import org.ansj.util.logging.Loggers;
+import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 这个类储存一些公用变量.
@@ -31,7 +32,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
  */
 public class MyStaticValue {
 
-	public static final AnsjLogger LIBRARYLOG = Loggers.getLogger("DICLOG");
+	public static final Log LIBRARYLOG = LogFactory.getLog("DICLOG");
 
 	// 是否开启人名识别
 	public static boolean isNameRecognition = true;
@@ -73,19 +74,18 @@ public class MyStaticValue {
 			rb = ResourceBundle.getBundle("library");
 		} catch (Exception e) {
 			try {
-				// File find = FileFinder.find("library.properties");
-				File find = new File("library.properties");
+				File find = FileFinder.find("library.properties", 2);
 				if (find != null && find.isFile()) {
 					rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
 					LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
 			} catch (Exception e1) {
-				LIBRARYLOG.warning("not find library.properties. and err " + e.getMessage() + " i think it is a bug!");
+				LIBRARYLOG.warn("not find library.properties. and err " + e.getMessage() + " i think it is a bug!");
 			}
 		}
 
 		if (rb == null) {
-			LIBRARYLOG.warning("not find library.properties in classpath use it by default !");
+			LIBRARYLOG.warn("not find library.properties in classpath use it by default !");
 		} else {
 
 			if (rb.containsKey("userLibrary"))
@@ -288,8 +288,7 @@ public class MyStaticValue {
 			crfSplitWord = new SplitWord(Model.loadModel(crfModel));
 			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
 		} catch (Exception e) {
-			LIBRARYLOG
-					.warning("!!!!!!!!!!  not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
+			LIBRARYLOG.warn("!!!!!!!!!!  not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 
 		} finally {
 			LOCK.unlock();
