@@ -1,5 +1,7 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
+
 import org.ansj.library.NatureLibrary;
 
 /**
@@ -8,7 +10,11 @@ import org.ansj.library.NatureLibrary;
  * @author ansj
  * 
  */
-public class Nature {
+public class Nature implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1427092012930357598L;
 	// 词性的名称
 	public final String natureStr;
 	// 词性对照表的位置

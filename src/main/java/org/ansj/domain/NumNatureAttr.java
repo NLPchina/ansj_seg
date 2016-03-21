@@ -1,6 +1,13 @@
 package org.ansj.domain;
 
-public class NumNatureAttr {
+import java.io.Serializable;
+
+public class NumNatureAttr  implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public static final NumNatureAttr NULL = new NumNatureAttr();
 
