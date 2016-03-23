@@ -9,7 +9,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-public class Test {
+public class TestToken {
 	public static void main(String[] args) {
         Analyzer ca = new AnsjAnalyzer();
         Reader sentence = new StringReader(

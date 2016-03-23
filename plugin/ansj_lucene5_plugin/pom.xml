@@ -10,35 +10,40 @@
 	</parent>
 
 	<artifactId>ansj_lucene5_plug</artifactId>
-	<version>3.0</version>
+	<version>3.7.1</version>
 	<packaging>jar</packaging>
 	<name>ansj_lucene5_plug</name>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<lucene.version>5.5.0</lucene.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
-			<version>5.3.1</version>
+			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-highlighter</artifactId>
-			<version>5.3.1</version>
+			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queries</artifactId>
-			<version>5.3.1</version>
+			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queryparser</artifactId>
-			<version>5.3.1</version>
+			<version>${lucene.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		
