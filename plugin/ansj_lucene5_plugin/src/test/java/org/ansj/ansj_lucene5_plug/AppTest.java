@@ -18,7 +18,7 @@ public class AppTest {
     public static void main(String[] args) throws IOException {
         Set<String> filter = new HashSet<String>() ;
         
-        String stopDicStr = "6\n7" ;
+        String stopDicStr = "6\n7" ;  
         
         BufferedReader br = new BufferedReader(new StringReader(stopDicStr)) ;
         String temp = null ;

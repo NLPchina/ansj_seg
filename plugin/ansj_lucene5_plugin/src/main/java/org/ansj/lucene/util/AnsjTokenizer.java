@@ -11,7 +11,7 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 
-public class AnsjTokenizer extends Tokenizer {
+public final class AnsjTokenizer extends Tokenizer {
 	// 当前词
 	private final CharTermAttribute termAtt = addAttribute(CharTermAttribute.class);
 	// 偏移量
@@ -33,7 +33,7 @@ public class AnsjTokenizer extends Tokenizer {
 	}
 
 	@Override
-	public boolean incrementToken() throws IOException {
+	public final boolean incrementToken() throws IOException {
 		clearAttributes();
 		int position = 0;
 		Term term = null;
