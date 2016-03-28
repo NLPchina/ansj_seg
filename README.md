@@ -1,9 +1,7 @@
 Ansj中文分词
 ==================
 
-[![Gitter chat](https://badges.gitter.im/nlpcn/nlpcn.png)](https://gitter.im/nlpcn/nlpcn)
-
-[![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg)
+[![Gitter chat](https://badges.gitter.im/Nlpchina/ansj_seg.png)](https://gitter.im/Nlpchina/ansj_seg)  [![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg)
 
 
 #####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
