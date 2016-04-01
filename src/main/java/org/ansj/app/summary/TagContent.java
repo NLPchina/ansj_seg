@@ -45,7 +45,7 @@ public class TagContent {
 			beginOffe = sgw.offe + temp.length();
 		}
 
-		if (beginOffe < content.length() - 1) {
+		if (beginOffe <= content.length() - 1) {
 			sb.append(content.substring(beginOffe, content.length()));
 		}
 
