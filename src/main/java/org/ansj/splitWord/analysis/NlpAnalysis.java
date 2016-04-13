@@ -113,9 +113,10 @@ public class NlpAnalysis extends Analysis {
 						temp = word;
 						tempTermNatures = term.termNatures();
 
-						if (word.length() < 2 || isRuleWord(word)) {
+						if (term.termNatures() != TermNatures.NW || word.length() < 2 || isRuleWord(word)) {
 							continue;
 						}
+
 						learn.addTerm(new NewWord(word, Nature.NW));
 					}
 
@@ -123,8 +124,7 @@ public class NlpAnalysis extends Analysis {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
 				} else {
-					MyStaticValue.LIBRARYLOG.warn(
-							"not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
+					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
 
 				graph.walkPath(mc.get());
