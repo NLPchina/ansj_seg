@@ -2,7 +2,9 @@ package org.ansj.splitWord.analysis;
 
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
@@ -175,6 +177,44 @@ public class NlpAnalysis extends Analysis {
 		return merger.merger();
 	}
 
+	// 临时处理新词中的特殊字符
+	private static final Set<Character> filter = new HashSet<Character>();
+
+	static {
+		filter.add('　');
+		filter.add('，');
+		filter.add('”');
+		filter.add('“');
+		filter.add('？');
+		filter.add('。');
+		filter.add('！');
+		filter.add('。');
+		filter.add(',');
+		filter.add('.');
+		filter.add('、');
+		filter.add('\\');
+		filter.add('；');
+		filter.add(';');
+		filter.add('？');
+		filter.add('?');
+		filter.add('!');
+		filter.add('\"');
+		filter.add('（');
+		filter.add('）');
+		filter.add('(');
+		filter.add(')');
+		filter.add('…');
+		filter.add('…');
+		filter.add('—');
+		filter.add('-');
+		filter.add('－');
+		
+		filter.add('—');
+		filter.add('《');
+		filter.add('》');
+		
+	}
+
 	/**
 	 * 判断新词识别出来的词是否可信
 	 * 
@@ -185,8 +225,11 @@ public class NlpAnalysis extends Analysis {
 		char c = 0;
 		for (int i = 0; i < word.length(); i++) {
 			c = word.charAt(i);
-			if (c < 256 || (c = WordAlert.CharCover(word.charAt(i))) > 0 && c != '·') {
-				return true;
+
+			if (c != '·') {
+				if (c < 256 || filter.contains(c) || (c = WordAlert.CharCover(word.charAt(i))) > 0) {
+					return true;
+				}
 			}
 		}
 		return false;
