@@ -84,10 +84,19 @@ public class NlpAnalysis extends Analysis {
 					TermNatures tempTermNatures = null;
 					int tempOff = 0;
 
+					if (words.size() > 0) {
+						String word = words.get(0);
+						if (!isRuleWord(word)) {
+							mc.add("始##始" + TAB + word, CRF_WEIGHT);
+						}
+					}
+
 					for (String word : words) {
 
 						AnsjItem item = DATDictionary.getItem(word);
+
 						Term term = null;
+
 						if (item != AnsjItem.NULL) {
 							term = new Term(word, tempOff, DATDictionary.getItem(word));
 						} else {
@@ -99,6 +108,11 @@ public class NlpAnalysis extends Analysis {
 							}
 						}
 
+						if (isRuleWord(word)) { // 如果word不对那么不要了
+							temp = null;
+							continue;
+						}
+
 						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
 						tempOff += word.length();
@@ -108,14 +122,13 @@ public class NlpAnalysis extends Analysis {
 							if (tempTermNatures != TermNatures.NW && term.termNatures() != TermNatures.NW) {
 								mc.add(temp + TAB + word, CRF_WEIGHT);
 							}
-						} else if (term.termNatures() != TermNatures.NW) {
-							mc.add("始##始" + TAB + word, CRF_WEIGHT);
 						}
 
 						temp = word;
+
 						tempTermNatures = term.termNatures();
 
-						if (term.termNatures() != TermNatures.NW || word.length() < 2 || isRuleWord(word)) {
+						if (term.termNatures() != TermNatures.NW || word.length() < 2) {
 							continue;
 						}
 
@@ -208,11 +221,11 @@ public class NlpAnalysis extends Analysis {
 		filter.add('—');
 		filter.add('-');
 		filter.add('－');
-		
+
 		filter.add('—');
 		filter.add('《');
 		filter.add('》');
-		
+
 	}
 
 	/**

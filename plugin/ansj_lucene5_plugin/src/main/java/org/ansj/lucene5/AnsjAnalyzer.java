@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.ansj.lucene.util.AnsjTokenizer;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.splitWord.analysis.UserDefineAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.util.IOUtil;
@@ -78,7 +78,7 @@ public class AnsjAnalyzer extends Analyzer {
 	public static Tokenizer getTokenizer(BufferedReader reader, String type, Set<String> filter) {
 		Tokenizer tokenizer;
 		if ("user".equalsIgnoreCase(type)) {
-			tokenizer = new AnsjTokenizer(new UserDefineAnalysis(reader), filter);
+			tokenizer = new AnsjTokenizer(new DicAnalysis(reader), filter);
 		} else if ("index".equalsIgnoreCase(type)) {
 			tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), filter);
 		} else {
