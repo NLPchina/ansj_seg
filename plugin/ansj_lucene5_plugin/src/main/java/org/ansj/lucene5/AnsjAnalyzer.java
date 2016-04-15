@@ -17,10 +17,21 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 public class AnsjAnalyzer extends Analyzer {
+
+	/**
+	 * dic equals user , query equals to
+	 * 
+	 * @author ansj
+	 *
+	 */
+	public static enum TYPE {
+		index, query, to, dic, user
+	}
+
 	/** 自定义停用词 */
 	private Set<String> filter;
 	/** 是否查询分词 */
-	private String type;
+	private TYPE type;
 
 	/**
 	 * @param filter
@@ -28,17 +39,17 @@ public class AnsjAnalyzer extends Analyzer {
 	 * @param pstemming
 	 *            是否分析词干
 	 */
-	public AnsjAnalyzer(String type, Set<String> filter) {
+	public AnsjAnalyzer(TYPE type, Set<String> filter) {
 		this.type = type;
 		this.filter = filter;
 	}
 
-	public AnsjAnalyzer(String type, String stopwordsDir) {
+	public AnsjAnalyzer(TYPE type, String stopwordsDir) {
 		this.type = type;
 		this.filter = filter(stopwordsDir);
 	}
 
-	public AnsjAnalyzer(String type) {
+	public AnsjAnalyzer(TYPE type) {
 		this.type = type;
 	}
 
@@ -64,26 +75,38 @@ public class AnsjAnalyzer extends Analyzer {
 		BufferedReader reader = new BufferedReader(new StringReader(text));
 		Tokenizer tokenizer = null;
 
-		tokenizer = getTokenizer(reader,this.type,this.filter);
+		tokenizer = getTokenizer(reader, this.type, this.filter);
 		return new TokenStreamComponents(tokenizer);
 	}
 
 	/**
 	 * 获得一个tokenizer
+	 * 
 	 * @param reader
 	 * @param type
 	 * @param filter
 	 * @return
 	 */
-	public static Tokenizer getTokenizer(BufferedReader reader, String type, Set<String> filter) {
+	public static Tokenizer getTokenizer(BufferedReader reader, TYPE type, Set<String> filter) {
 		Tokenizer tokenizer;
-		if ("user".equalsIgnoreCase(type)) {
-			tokenizer = new AnsjTokenizer(new DicAnalysis(reader), filter);
-		} else if ("index".equalsIgnoreCase(type)) {
+
+		switch (type) {
+		case index:
 			tokenizer = new AnsjTokenizer(new IndexAnalysis(reader), filter);
-		} else {
+			break;
+		case dic:
+		case user:
+			tokenizer = new AnsjTokenizer(new DicAnalysis(reader), filter);
+			break;
+
+		case to:
+		case query:
+			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
+			break;
+		default:
 			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
 		}
+
 		return tokenizer;
 	}
 }

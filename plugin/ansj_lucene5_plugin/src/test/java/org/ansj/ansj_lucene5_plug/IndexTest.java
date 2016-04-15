@@ -82,7 +82,7 @@ public class IndexTest {
 
 		System.out.println("索引建立完毕");
 
-		Analyzer queryAnalyzer = new AnsjAnalyzer("user",hs);
+		Analyzer queryAnalyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.dic,hs);
 		;
 
 		System.out.println("index ok to search!");
