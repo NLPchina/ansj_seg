@@ -25,7 +25,7 @@ public class AnsjAnalyzer extends Analyzer {
 	 *
 	 */
 	public static enum TYPE {
-		index, query, to, dic, user
+		index, query, to, dic, user, search
 	}
 
 	/** 自定义停用词 */
@@ -101,6 +101,7 @@ public class AnsjAnalyzer extends Analyzer {
 
 		case to:
 		case query:
+		case search:
 			tokenizer = new AnsjTokenizer(new ToAnalysis(reader), filter);
 			break;
 		default:
