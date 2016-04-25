@@ -1,4 +1,4 @@
-package org.ansj.lucene5;
+package org.ansj.lucene6;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -54,6 +54,7 @@ public class AnsjAnalyzer extends Analyzer {
 	}
 
 	public AnsjAnalyzer() {
+		this.type = TYPE.query;
 	}
 
 	private Set<String> filter(String stopwordsDir) {
