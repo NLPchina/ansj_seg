@@ -53,9 +53,6 @@ public class AnsjAnalyzer extends Analyzer {
 		this.type = type;
 	}
 
-	public AnsjAnalyzer() {
-	}
-
 	private Set<String> filter(String stopwordsDir) {
 		if (StringUtil.isBlank(stopwordsDir)) {
 			return null;

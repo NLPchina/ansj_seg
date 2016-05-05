@@ -56,14 +56,12 @@
 	</repositories>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_seg</artifactId>
 			<version>3.7.3</version>
 			<scope>provided</scope>
 		</dependency>
-		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
