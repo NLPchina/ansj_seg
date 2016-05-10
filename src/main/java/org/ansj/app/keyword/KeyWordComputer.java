@@ -59,7 +59,7 @@ public class KeyWordComputer {
 
 		List<Term> parse = NlpAnalysis.parse(content);
 		
-		parse = FilterModifWord.modifResult(parse) ;
+		parse = FilterModifWord.updateNature(parse) ;
 		
 		for (Term term : parse) {
 			double weight = getWeight(term, content.length(), titleLength);

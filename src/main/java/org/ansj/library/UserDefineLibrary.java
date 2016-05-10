@@ -7,6 +7,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -41,7 +45,7 @@ public class UserDefineLibrary {
 	/**
 	 * 关键词增加
 	 * 
-	 * @param keyWord
+	 * @param keyword
 	 *            所要增加的关键词
 	 * @param nature
 	 *            关键词的词性
@@ -145,6 +149,7 @@ public class UserDefineLibrary {
 
 	/**
 	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
+	 * 按文件名称顺序加载
 	 */
 	public static void loadLibrary(Forest forest, String path) {
 		// 加载用户自定义词典
@@ -159,10 +164,16 @@ public class UserDefineLibrary {
 			if (file.isFile()) {
 				loadFile(forest, file);
 			} else if (file.isDirectory()) {
-				File[] files = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().trim().endsWith(".dic")) {
-						loadFile(forest, files[i]);
+				List<File> fileList =  Arrays.asList(file.listFiles());
+				Collections.sort(fileList, new Comparator<File>() {
+					@Override
+					public int compare(File target, File source) {
+						return target.getName().compareTo(source.getName());
+					}
+				});
+				for (File dicFile : fileList) {
+					if (dicFile.getName().trim().endsWith(".dic")) {
+						loadFile(forest, dicFile);
 					}
 				}
 			} else {

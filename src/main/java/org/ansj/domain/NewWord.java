@@ -1,12 +1,18 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
+
 /**
  * 新词发现,实体名
  * 
  * @author ansj
  * 
  */
-public class NewWord {
+public class NewWord implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7226797287286838356L;
 	// 名字
 	private String name;
 	// 分数
@@ -15,8 +21,8 @@ public class NewWord {
 	private Nature nature;
 	// 总词频
 	private int allFreq;
-	//此词是否被激活
-	private boolean isActive ;
+	// 此词是否被激活
+	private boolean isActive;
 
 	public NewWord(String name, Nature nature, double score) {
 		this.name = name;
@@ -24,7 +30,7 @@ public class NewWord {
 		this.score = score;
 		this.allFreq = 1;
 	}
-	
+
 	public NewWord(String name, Nature nature) {
 		this.name = name;
 		this.nature = nature;
@@ -86,6 +92,5 @@ public class NewWord {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
-	
 
 }

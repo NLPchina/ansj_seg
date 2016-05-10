@@ -2,7 +2,9 @@ package org.ansj.splitWord.analysis;
 
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
@@ -82,10 +84,19 @@ public class NlpAnalysis extends Analysis {
 					TermNatures tempTermNatures = null;
 					int tempOff = 0;
 
+					if (words.size() > 0) {
+						String word = words.get(0);
+						if (!isRuleWord(word)) {
+							mc.add("始##始" + TAB + word, CRF_WEIGHT);
+						}
+					}
+
 					for (String word : words) {
 
 						AnsjItem item = DATDictionary.getItem(word);
+
 						Term term = null;
+
 						if (item != AnsjItem.NULL) {
 							term = new Term(word, tempOff, DATDictionary.getItem(word));
 						} else {
@@ -97,6 +108,11 @@ public class NlpAnalysis extends Analysis {
 							}
 						}
 
+						if (isRuleWord(word)) { // 如果word不对那么不要了
+							temp = null;
+							continue;
+						}
+
 						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
 						tempOff += word.length();
@@ -106,16 +122,16 @@ public class NlpAnalysis extends Analysis {
 							if (tempTermNatures != TermNatures.NW && term.termNatures() != TermNatures.NW) {
 								mc.add(temp + TAB + word, CRF_WEIGHT);
 							}
-						} else if (term.termNatures() != TermNatures.NW) {
-							mc.add("始##始" + TAB + word, CRF_WEIGHT);
 						}
 
 						temp = word;
+
 						tempTermNatures = term.termNatures();
 
-						if (word.length() < 2 || isRuleWord(word)) {
+						if (term.termNatures() != TermNatures.NW || word.length() < 2) {
 							continue;
 						}
+
 						learn.addTerm(new NewWord(word, Nature.NW));
 					}
 
@@ -123,8 +139,7 @@ public class NlpAnalysis extends Analysis {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
 				} else {
-					MyStaticValue.LIBRARYLOG.warn(
-							"not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
+					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
 
 				graph.walkPath(mc.get());
@@ -175,6 +190,44 @@ public class NlpAnalysis extends Analysis {
 		return merger.merger();
 	}
 
+	// 临时处理新词中的特殊字符
+	private static final Set<Character> filter = new HashSet<Character>();
+
+	static {
+		filter.add('　');
+		filter.add('，');
+		filter.add('”');
+		filter.add('“');
+		filter.add('？');
+		filter.add('。');
+		filter.add('！');
+		filter.add('。');
+		filter.add(',');
+		filter.add('.');
+		filter.add('、');
+		filter.add('\\');
+		filter.add('；');
+		filter.add(';');
+		filter.add('？');
+		filter.add('?');
+		filter.add('!');
+		filter.add('\"');
+		filter.add('（');
+		filter.add('）');
+		filter.add('(');
+		filter.add(')');
+		filter.add('…');
+		filter.add('…');
+		filter.add('—');
+		filter.add('-');
+		filter.add('－');
+
+		filter.add('—');
+		filter.add('《');
+		filter.add('》');
+
+	}
+
 	/**
 	 * 判断新词识别出来的词是否可信
 	 * 
@@ -185,8 +238,11 @@ public class NlpAnalysis extends Analysis {
 		char c = 0;
 		for (int i = 0; i < word.length(); i++) {
 			c = word.charAt(i);
-			if (c < 256 || (c = WordAlert.CharCover(word.charAt(i))) > 0 && c != '·') {
-				return true;
+
+			if (c != '·') {
+				if (c < 256 || filter.contains(c) || (c = WordAlert.CharCover(word.charAt(i))) > 0) {
+					return true;
+				}
 			}
 		}
 		return false;

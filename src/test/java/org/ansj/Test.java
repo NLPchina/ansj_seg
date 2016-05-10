@@ -2,6 +2,7 @@ package org.ansj;
 
 import java.util.List;
 
+import org.ansj.app.summary.SummaryComputer;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
@@ -11,7 +12,7 @@ import org.nlpcn.commons.lang.tire.library.Library;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-
+		
 		// 构造一个用户词典
 		Forest forest = Library.makeForest("library/default.dic");
 		forest = new Forest();

@@ -9,14 +9,14 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>ansj_lucene5_plug</artifactId>
-	<version>3.7.3.1</version>
+	<artifactId>ansj_lucene6_plug</artifactId>
+	<version>3.7.3</version>
 	<packaging>jar</packaging>
-	<name>ansj_lucene5_plug</name>
+	<name>ansj_lucene6_plug</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<lucene.version>5.5.0</lucene.version>
+		<lucene.version>6.0.0</lucene.version>
 	</properties>
 
 	<dependencies>

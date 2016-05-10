@@ -5,13 +5,14 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.ansj.lucene5.AnsjAnalyzer;
+import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-public class Test {
+public class TestToken {
 	public static void main(String[] args) {
-        Analyzer ca = new AnsjAnalyzer();
+        Analyzer ca = new AnsjAnalyzer(TYPE.user);
         Reader sentence = new StringReader(
                 "\n\n\n\n\n\n\n我从小就不由自主地认为自己长大以后一定得成为一个象我父亲一样的画家, 可能是父母潜移默化的影响。其实我根本不知道作为画家意味着什么，我是否喜欢，最重要的是否适合我，我是否有这个才华。其实人到中年的我还是不确定我最喜欢什么，最想做的是什么？我相信很多人和我一样有同样的烦恼。毕竟不是每个人都能成为作文里的宇航员，科学家和大教授。知道自己适合做什么，喜欢做什么，能做好什么其实是个非常困难的问题。"
                         + "幸运的是，我想我的孩子不会为这个太过烦恼。通过老大，我慢慢发现美国高中的一个重要功能就是帮助学生分析他们的专长和兴趣，从而帮助他们选择大学的专业和未来的职业。我觉得帮助一个未成形的孩子找到她未来成长的方向是个非常重要的过程。"

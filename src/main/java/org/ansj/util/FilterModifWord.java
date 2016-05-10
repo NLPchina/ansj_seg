@@ -57,8 +57,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0 && (FILTER.contains(term.getName())
-						|| (isTag && FILTER.contains(TAG + term.natrue().natureStr)))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || (isTag && FILTER.contains(TAG + term.natrue().natureStr)))) {
 					continue;
 				}
 				// 添加对正则停用词的支持
@@ -72,8 +71,7 @@ public class FilterModifWord {
 				result.add(term);
 			}
 		} catch (Exception e) {
-			MyStaticValue.LIBRARYLOG.warn("FilterStopWord.updateDic can not be null , "
-					+ "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
+			MyStaticValue.LIBRARYLOG.warn("FilterStopWord.updateDic can not be null , " + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
 		}
 		return result;
 	}
@@ -85,8 +83,7 @@ public class FilterModifWord {
 		List<Term> result = new ArrayList<Term>();
 		try {
 			for (Term term : all) {
-				if (FILTER.size() > 0
-						&& (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.natrue().natureStr))) {
+				if (FILTER.size() > 0 && (FILTER.contains(term.getName()) || FILTER.contains(TAG + term.natrue().natureStr))) {
 					continue;
 				}
 				// 添加对正则停用词的支持
@@ -111,9 +108,41 @@ public class FilterModifWord {
 				result.add(term);
 			}
 		} catch (Exception e) {
-			MyStaticValue.LIBRARYLOG.warn("FilterStopWord.updateDic can not be null , "
-					+ "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
+			MyStaticValue.LIBRARYLOG.warn("FilterStopWord.updateDic can not be null , " + "you must use set FilterStopWord.setUpdateDic(map) or use method set map");
 		}
+		return result;
+	}
+
+	/*
+	 * 修正词性
+	 */
+	public static List<Term> updateNature(List<Term> all, Forest... forests) {
+
+		if (forests == null) {
+			if (UserDefineLibrary.FOREST != null) {
+				forests = new Forest[] { UserDefineLibrary.FOREST };
+			} else {
+				return all;
+			}
+		}
+
+		List<Term> result = new ArrayList<Term>();
+		
+		for (Term term : all) {
+
+			// 添加对正则停用词的支持
+			if ((stopwordPattern != null) && stopwordPattern.matcher(term.getName()).matches()) {
+				continue;
+			}
+			for (Forest forest : forests) {
+				String[] params = UserDefineLibrary.getParams(forest, term.getName());
+				if (params != null) {
+					term.setNature(new Nature(params[0]));
+				}
+			}
+			result.add(term);
+		}
+		
 		return result;
 	}
 }

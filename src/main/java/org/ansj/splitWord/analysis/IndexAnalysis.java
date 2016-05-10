@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.Set;
 
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.NatureLibrary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.AsianPersonRecognition;
 import org.ansj.recognition.ForeignPersonRecognition;
 import org.ansj.recognition.NumRecognition;
 import org.ansj.recognition.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;

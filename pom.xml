@@ -5,7 +5,7 @@
 	<artifactId>ansj_seg</artifactId>
 	<packaging>jar</packaging>
 	<name>ansj_seg</name>
-	<version>3.7.2</version>
+	<version>3.7.3</version>
 	<description>best java chinese word seg ! </description>
 	<url>https://github.com/ansjsun/ansj_seg</url>
 	<licenses>
