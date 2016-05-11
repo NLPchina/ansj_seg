@@ -74,8 +74,8 @@ public class NlpAnalysis extends Analysis {
 					graph.walkPathByScore();
 				}
 
-				MapCount<String> mc = new MapCount<String>();
 				if (DEFAULT_SLITWORD != null) {
+					MapCount<String> mc = new MapCount<String>();
 
 					// 通过crf分词
 					List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
@@ -138,11 +138,11 @@ public class NlpAnalysis extends Analysis {
 					if (tempTermNatures != TermNatures.NW) {
 						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
 					}
+					graph.walkPath(mc.get());
 				} else {
 					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
 
-				graph.walkPath(mc.get());
 
 				// 数字发现
 				if (graph.hasNum) {
