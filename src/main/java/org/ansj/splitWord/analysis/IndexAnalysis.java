@@ -1,10 +1,15 @@
 package org.ansj.splitWord.analysis;
 
 import java.io.Reader;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
+import javax.sound.midi.ControllerEventListener;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
@@ -109,6 +114,18 @@ public class IndexAnalysis extends Analysis {
 				}
 
 				result.addAll(last);
+				
+				Collections.sort(result,new Comparator<Term>() {
+
+					@Override
+					public int compare(Term o1, Term o2) {
+						if(o1.getOffe()==o2.getOffe()){
+							return o2.getName().length()-o1.getName().length() ;
+						}else{
+							return o1.getOffe()-o2.getOffe() ;
+						}
+					}
+				});
 
 				setRealName(graph, result);
 				return result;

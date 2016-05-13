@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
+import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
 
 public final class AnsjTokenizer extends Tokenizer {
 	// 当前词
@@ -18,16 +19,20 @@ public final class AnsjTokenizer extends Tokenizer {
 	private final OffsetAttribute offsetAtt = addAttribute(OffsetAttribute.class);
 	// 距离
 	private final PositionIncrementAttribute positionAttr = addAttribute(PositionIncrementAttribute.class);
+	// 分词词性
+	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
+
+	private int skippedPositions;
 
 	protected Analysis ta = null;
-	/**自定义停用词*/
+	/** 自定义停用词 */
 	private Set<String> filter;
 
 	public AnsjTokenizer(Analysis ta, Set<String> filter) {
 		this.ta = ta;
 		this.filter = filter;
 	}
-	
+
 	public AnsjTokenizer(Analysis ta) {
 		this.ta = ta;
 	}
@@ -35,6 +40,9 @@ public final class AnsjTokenizer extends Tokenizer {
 	@Override
 	public final boolean incrementToken() throws IOException {
 		clearAttributes();
+
+		skippedPositions = 0;
+
 		int position = 0;
 		Term term = null;
 		String name = null;
@@ -45,6 +53,7 @@ public final class AnsjTokenizer extends Tokenizer {
 			if (term == null) {
 				break;
 			}
+
 			name = term.getName();
 			length = name.length();
 
@@ -59,6 +68,7 @@ public final class AnsjTokenizer extends Tokenizer {
 			positionAttr.setPositionIncrement(position);
 			termAtt.setEmpty().append(term.getName());
 			offsetAtt.setOffset(term.getOffe(), term.getOffe() + length);
+			typeAtt.setType(term.getNatureStr());
 			return true;
 		} else {
 			return false;
@@ -72,6 +82,7 @@ public final class AnsjTokenizer extends Tokenizer {
 	public void reset() throws IOException {
 		super.reset();
 		ta.resetContent(new AnsjReader(this.input));
+		skippedPositions = 0;
 	}
-	
+
 }
