@@ -5,6 +5,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
@@ -111,7 +112,6 @@ public class NewWordRecognition {
 	}
 
 	private void makeNewTerm() {
-		// TODO Auto-generated method stub
 		Term term = new Term(sb.toString(), offe, tempNature.natureStr, 1);
 		term.selfScore(score);
 		term.setNature(tempNature);
@@ -120,7 +120,7 @@ public class NewWordRecognition {
 		}
 		TermUtil.termLink(from, term);
 		TermUtil.termLink(term, to);
-		TermUtil.insertTerm(terms, term);
+		TermUtil.insertTerm(terms, term,InsertTermType.SCORE_ADD_SORT);
 		TermUtil.parseNature(term);
 	}
 

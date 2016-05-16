@@ -93,7 +93,12 @@ public class LearnTool {
 			temp.update(newWord.getNature(), newWord.getAllFreq());
 		} else {
 			count++;
-			newWord.setScore(-splitWord.cohesion(newWord.getName()));
+			if(splitWord==null){
+				newWord.setScore(-1);
+			}else{
+				newWord.setScore(-splitWord.cohesion(newWord.getName()));	
+			}
+			
 			synchronized (sf) {
 				sf.add(newWord.getName(), newWord);
 			}

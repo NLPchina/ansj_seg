@@ -1,12 +1,19 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
+
 /**
  * 人名标注pojo类
  * 
  * @author ansj
  * 
  */
-public class PersonNatureAttr {
+public class PersonNatureAttr implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8443825231800208197L;
+
 	// public int B = -1;//0 姓氏
 	// public int C = -1;//1 双名的首字
 	// public int D = -1;//2 双名的末字

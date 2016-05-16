@@ -1,14 +1,16 @@
 Ansj中文分词
 ==================
 
+ [![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg) [![Gitter](https://badges.gitter.im/NLPchina/ansj_seg.svg)](https://gitter.im/NLPchina/ansj_seg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 
 #####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
 
-#####在线测试地址<a href="http://demo.ansj.org">http://demo.ansj.org</href>
+#####在线测试地址<a href="http://demo.nlpcn.org">http://demo.nlpcn.org</href>
 
 
 ##### 摘要
-> 这是一个基于google语义模型+条件随机场模型的中文分词的java实现.
+> 这是一个基于n-Gram+条件随机场模型的中文分词的java实现.
 
 > 分词速度达到每秒钟大约200万字左右（mac air下测试），准确率能达到96%以上
 
@@ -18,9 +20,10 @@ Ansj中文分词
 
 
 #####  下载jar
-* 访问 [http://maven.ansj.org/org/ansj/](http://maven.ansj.org/org/ansj/) 最好下载最新版 ansj_seg/
-  * 如果你用的是1.x版本需要下载[tree_split.jar](http://maven.ansj.org/org/ansj/tree_split/)。
-  * 如果你用的是2.x版本需要下载[nlp-lang.jar](http://maven.ansj.org/org/nlpcn/nlp-lang/)
+* 访问 [http://maven.nlpcn.org/org/ansj/](http://maven.nlpcn.org/org/ansj/) 最好下载最新版 ansj_seg/
+  * 如果你用的是1.x版本需要下载[tree_split.jar](http://maven.nlpcn.org/org/ansj/tree_split/)。
+  * 如果你用的是2.x版本需要下载[nlp-lang.jar](http://maven.nlpcn.org/org/nlpcn/nlp-lang/)。
+  * 如果你用的是3.x以上版本只需要下载 ansj_seg-[version]-all-in-one.jar 一个jar包就能浪了。  
 * 导入到eclipse ，开始你的程序吧
 
 
@@ -40,13 +43,22 @@ mvn clean install -Dmaven.test.skip=true
 3.  在dependencies标签中粘贴如下:(其实version 以最新的为标准.)
 
 ````
+	<!-- 增加新的maven源 -->	
+	<repositories>
+		<repository>
+			<id>mvn-repo</id>
+			<url>http://maven.nlpcn.org/</url>
+		</repository>
+	</repositories>
+
+
     <dependencies>
         ....
         
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>1.4.1</version>
+            <version>3.7.2</version>
         </dependency>
         ....
     </dependencies>
@@ -68,8 +80,16 @@ mvn clean install -Dmaven.test.skip=true
 
 ----
 ##大事记要
-#2014年10月10日
-> 命运无常,上天和我开了个玩笑,可能我以后没有精力来维护ansj_seg了.所以我把它贡献到nlp_china这个组织中,也许会有有兴趣的同学能替代我维护这个项目.不要乱猜,我身体很好.工作也不忙.感谢你们的支持ansj_seg才能发展这么好.最后祝好.
+
+
+#2016年1月14日
+> 经过了很久很久.如大家所看.最后一次事件纪要是一年半以前.没什么好说的了.之前因为我的不负责任让这个项目停滞了好久.这次做了很多改进.断断续续,大致如下
+* 大幅提升了NlpAnalysis的准确性
+* 将crfmodel 从jar包中移除.提供``DownLibrary``进行下载
+* 增加了用户自定义词典优先的功能.(原谅我曾经的倔强)通过``UserDefineAnalysis``进行分词
+* 将jar包版本重新改为jdk6
+* 关键词提取增加keyword关键词.可以只是英文了算是
+* 其他种种.....祝愿所有人身体健康万事如意.也祝愿我自己
 
 #2014年6月13日
 > 额，今天是黑色星期五。正在紧张而有序的在做ansj2.0版本的升级。如果你用的版本是2.0x都是预览版。不保证稳定性。所以非版本控。不要跟着更新，这次修改的内容主要有：

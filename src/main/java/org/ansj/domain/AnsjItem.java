@@ -1,10 +1,11 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
 import java.util.Map;
 
 import org.nlpcn.commons.lang.dat.Item;
 
-public class AnsjItem extends Item {
+public class AnsjItem extends Item implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 

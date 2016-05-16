@@ -1,12 +1,16 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
+
 /**
  * 每一个term都拥有一个词性集合
  * 
  * @author ansj
  * 
  */
-public class TermNatures {
+public class TermNatures implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	public static final TermNatures M = new TermNatures(TermNature.M);
 

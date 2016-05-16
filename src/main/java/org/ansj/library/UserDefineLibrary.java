@@ -7,14 +7,18 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
-
 
 /**
  * 用户自定义词典操作类
@@ -41,7 +45,7 @@ public class UserDefineLibrary {
 	/**
 	 * 关键词增加
 	 * 
-	 * @param keyWord
+	 * @param keyword
 	 *            所要增加的关键词
 	 * @param nature
 	 *            关键词的词性
@@ -62,7 +66,8 @@ public class UserDefineLibrary {
 	private static void initAmbiguityLibrary() {
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warning("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
+			LIBRARYLOG.warn(
+					"init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
 			return;
 		}
 		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
@@ -72,12 +77,14 @@ public class UserDefineLibrary {
 				ambiguityForest = Library.makeForest(ambiguityLibrary);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				LIBRARYLOG.warning("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
+				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath()
+						+ " because : not find that file or can not to read !");
 				e.printStackTrace();
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
 		} else {
-			LIBRARYLOG.warning("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
+			LIBRARYLOG.warn("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath()
+					+ " because : file not found or failed to read !");
 		}
 	}
 
@@ -99,7 +106,7 @@ public class UserDefineLibrary {
 	// 单个文件加载词典
 	public static void loadFile(Forest forest, File file) {
 		if (!file.canRead()) {
-			LIBRARYLOG.warning("file in path " + file.getAbsolutePath() + " can not to read!");
+			LIBRARYLOG.warn("file in path " + file.getAbsolutePath() + " can not to read!");
 			return;
 		}
 		String temp = null;
@@ -142,6 +149,7 @@ public class UserDefineLibrary {
 
 	/**
 	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
+	 * 按文件名称顺序加载
 	 */
 	public static void loadLibrary(Forest forest, String path) {
 		// 加载用户自定义词典
@@ -149,20 +157,28 @@ public class UserDefineLibrary {
 		if (path != null) {
 			file = new File(path);
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warning("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
+				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath()
+						+ " because : file not found or failed to read !");
 				return;
 			}
 			if (file.isFile()) {
 				loadFile(forest, file);
 			} else if (file.isDirectory()) {
-				File[] files = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					if (files[i].getName().trim().endsWith(".dic")) {
-						loadFile(forest, files[i]);
+				List<File> fileList =  Arrays.asList(file.listFiles());
+				Collections.sort(fileList, new Comparator<File>() {
+					@Override
+					public int compare(File target, File source) {
+						return target.getName().compareTo(source.getName());
+					}
+				});
+				for (File dicFile : fileList) {
+					if (dicFile.getName().trim().endsWith(".dic")) {
+						loadFile(forest, dicFile);
 					}
 				}
 			} else {
-				LIBRARYLOG.warning("init user library  error :" + new File(path).getAbsolutePath() + " because : not find that file !");
+				LIBRARYLOG.warn("init user library  error :" + new File(path).getAbsolutePath()
+						+ " because : not find that file !");
 			}
 		}
 	}
@@ -175,22 +191,11 @@ public class UserDefineLibrary {
 	}
 
 	public static String[] getParams(String word) {
-		Forest temp = FOREST;
-		for (int i = 0; i < word.length(); i++) {
-			temp = temp.get(word.charAt(i));
-			if (temp == null) {
-				return null;
-			}
-		}
-		if (temp.getStatus() > 1) {
-			return temp.getParams();
-		} else {
-			return null;
-		}
+		return getParams(FOREST, word);
 	}
 
 	public static String[] getParams(Forest forest, String word) {
-		Forest temp = forest;
+		SmartForest<String[]> temp = forest;
 		for (int i = 0; i < word.length(); i++) {
 			temp = temp.get(word.charAt(i));
 			if (temp == null) {
@@ -198,7 +203,7 @@ public class UserDefineLibrary {
 			}
 		}
 		if (temp.getStatus() > 1) {
-			return temp.getParams();
+			return temp.getParam();
 		} else {
 			return null;
 		}

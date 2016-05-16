@@ -1,5 +1,6 @@
 package org.ansj.demo;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,18 +44,20 @@ public class LearnToolDemo {
 		for (Entry<String, Double> entry : topTree) {
 			sb.append(entry.getKey() + "\t" + entry.getValue()+"\n");
 		}
-		IOUtil.Writer("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, sb.toString());
+		IOUtil.Writer("learnTool.snap", IOUtil.UTF8, sb.toString());
 		sb = null;
 
 		/**
 		 * reload训练结果
 		 */
 		learnTool = new LearnTool() ;
-		HashMap<String, Double> loadMap = IOUtil.loadMap("/home/ansj/temp/learnTool.snap", IOUtil.UTF8, String.class, Double.class);
+		HashMap<String, Double> loadMap = IOUtil.loadMap("learnTool.snap", IOUtil.UTF8, String.class, Double.class);
 		for (Entry<String, Double> entry : loadMap.entrySet()) {
 			learnTool.addTerm(new NewWord(entry.getKey(), Nature.NW, entry.getValue())) ;
 			learnTool.active(entry.getKey()) ;
 		}
 		System.out.println(learnTool.getTopTree(10));
+		
+		new File("learnTool.snap").delete() ;
 	}
 }

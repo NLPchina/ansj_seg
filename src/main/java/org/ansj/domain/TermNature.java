@@ -1,5 +1,7 @@
 package org.ansj.domain;
 
+import java.io.Serializable;
+
 import org.ansj.library.NatureLibrary;
 
 /**
@@ -7,7 +9,11 @@ import org.ansj.library.NatureLibrary;
  * 
  * @author ansj
  */
-public class TermNature {
+public class TermNature implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5538058744208591381L;
 	/**
 	 * 系统内置的几个
 	 */

@@ -5,7 +5,9 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.util.TermUtil;
+import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -24,11 +26,14 @@ public class UserDefineRecognition {
 	private int tempFreq = 50;
 	private String tempNature;
 
-	private Forest branch = null;
-	private Forest forest = null;
+	private SmartForest<String[]> branch = null;
+	private SmartForest<String[]> forest = null;
 
-	public UserDefineRecognition(Term[] terms, Forest... forests) {
+	private InsertTermType type = InsertTermType.SKIP;
+
+	public UserDefineRecognition(Term[] terms, InsertTermType type, Forest... forests) {
 		this.terms = terms;
+		this.type = type;
 		if (forests != null && forests.length > 0) {
 			this.forests = forests;
 		}
@@ -66,8 +71,8 @@ public class UserDefineRecognition {
 					reset();
 				} else if (branch.getStatus() == 3) {
 					endOffe = i;
-					tempNature = branch.getParams()[0];
-					tempFreq = getInt(branch.getParams()[1], 50);
+					tempNature = branch.getParam()[0];
+					tempFreq = getInt(branch.getParam()[1], 50);
 					if (offe != -1 && offe < endOffe) {
 						i = offe;
 						makeNewTerm();
@@ -80,8 +85,8 @@ public class UserDefineRecognition {
 					if (offe == -1) {
 						offe = i;
 					} else {
-						tempNature = branch.getParams()[0];
-						tempFreq = getInt(branch.getParams()[1], 50);
+						tempNature = branch.getParam()[0];
+						tempFreq = getInt(branch.getParam()[1], 50);
 						if (flag) {
 							makeNewTerm();
 						}
@@ -109,7 +114,6 @@ public class UserDefineRecognition {
 	}
 
 	private void makeNewTerm() {
-		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		for (int j = offe; j <= endOffe; j++) {
 			if (terms[j] == null) {
@@ -117,13 +121,11 @@ public class UserDefineRecognition {
 			} else {
 				sb.append(terms[j].getName());
 			}
-			// terms[j] = null;
 		}
 		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
 		Term term = new Term(sb.toString(), offe, termNatures);
 		term.selfScore(-1 * tempFreq);
-		TermUtil.insertTerm(terms, term);
-		// reset();
+		TermUtil.insertTerm(terms, term, type);
 	}
 
 	/**
@@ -144,15 +146,16 @@ public class UserDefineRecognition {
 	 * @param term
 	 * @return
 	 */
-	private Forest termStatus(Forest branch, Term term) {
+	private SmartForest<String[]> termStatus(SmartForest<String[]> branch, Term term) {
 		String name = term.getName();
+		SmartForest<String[]> sf = branch;
 		for (int j = 0; j < name.length(); j++) {
-			branch = branch.get(name.charAt(j));
-			if (branch == null) {
+			sf = sf.get(name.charAt(j));
+			if (sf == null) {
 				return null;
 			}
 		}
-		return branch;
+		return sf;
 	}
 
 }

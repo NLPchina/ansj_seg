@@ -117,7 +117,11 @@ public class DATDictionary {
 			}
 
 			if ((ansjItem.termNatures) == null) {
-				ansjItem.termNatures = new TermNatures(TermNature.NR);
+				if(temp.length()==1&&temp.charAt(0)<256){
+					ansjItem.termNatures = TermNatures.NULL;
+				}else{
+					ansjItem.termNatures = new TermNatures(TermNature.NR);
+				}
 			}
 			ansjItem.termNatures.setPersonNatureAttr(entry.getValue());
 		}
