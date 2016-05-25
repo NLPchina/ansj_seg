@@ -15,13 +15,18 @@ import org.ansj.util.MyStaticValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.StringField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -111,7 +116,7 @@ public class IndexTest {
 		MyStaticValue.userLibrary = "/home/ansj/workspace/ansj_seg/library/default.dic";
 		HashSet<String> hs = new HashSet<String>();
 		hs.add("的");
-		Analyzer analyzer = new AnsjAnalyzer(TYPE.dic);
+		PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new AnsjAnalyzer(TYPE.dic));
 		Directory directory = null;
 		IndexWriter iwriter = null;
 		String text = "季德胜蛇药片 10片*6板 ";
@@ -119,6 +124,7 @@ public class IndexTest {
 		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
 		
 		IndexWriterConfig ic = new IndexWriterConfig(analyzer);
+		
 		// 建立内存索引对象
 		directory = new RAMDirectory();
 		iwriter = new IndexWriter(directory, ic);
@@ -180,7 +186,8 @@ public class IndexTest {
 
 	private void addContent(IndexWriter iwriter, String text) throws CorruptIndexException, IOException {
 		Document doc = new Document();
-		doc.add(new Field("text", text, Field.Store.YES, Field.Index.ANALYZED));
+		IndexableField field = new TextField("text", text,Store.YES) ;
+		doc.add(field);
 		iwriter.addDocument(doc);
 	}
 

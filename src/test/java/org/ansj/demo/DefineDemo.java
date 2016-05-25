@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Nature;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 
 /**
@@ -18,7 +19,7 @@ public class DefineDemo {
 	public static void main(String[] args) throws IOException {
 		String str = "java@ID:6321-000301@你好";
 		// 普通分词
-		List<Term> parse = BaseAnalysis.parse(str);
+		Result parse = BaseAnalysis.parse(str);
 		// 词性标注
 		new NatureRecognition(parse).recognition();
 

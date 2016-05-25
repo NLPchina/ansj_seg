@@ -1,14 +1,16 @@
-package org.ansj.recognition;
+package org.ansj.recognition.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.AnsjItem;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.Recognition;
 import org.ansj.util.MathUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
 
@@ -18,7 +20,7 @@ import org.nlpcn.commons.lang.util.WordAlert;
  * @author ansj
  * 
  */
-public class NatureRecognition {
+public class NatureRecognition implements Recognition {
 
 	private NatureTerm root = new NatureTerm(TermNature.BEGIN);
 
@@ -29,20 +31,13 @@ public class NatureRecognition {
 	private NatureTerm[][] natureTermTable = null;
 
 	/**
-	 * 构造方法.传入分词的最终结果
-	 * 
-	 * @param terms
-	 */
-	public NatureRecognition(List<Term> terms) {
-		this.terms = terms;
-		natureTermTable = new NatureTerm[terms.size() + 1][];
-		natureTermTable[terms.size()] = end;
-	}
-
-	/**
 	 * 进行最佳词性查找,引用赋值.所以不需要有返回值
 	 */
-	public void recognition() {
+	public void recognition(Result result) {
+		this.terms = result.getTerms();
+		natureTermTable = new NatureTerm[terms.size() + 1][];
+		natureTermTable[terms.size()] = end;
+
 		int length = terms.size();
 		for (int i = 0; i < length; i++) {
 			natureTermTable[i] = getNatureTermArr(terms.get(i).termNatures().termNatures);
@@ -77,12 +72,13 @@ public class NatureRecognition {
 			terms.add(new Term(word, offe + tempOffe, tn));
 			tempOffe += word.length();
 		}
-		new NatureRecognition(terms).recognition();
+		new NatureRecognition().recognition(new Result(terms));
 		return terms;
 	}
 
 	/**
 	 * 传入一次词语获得相关的词性
+	 * 
 	 * @param word
 	 * @return
 	 */

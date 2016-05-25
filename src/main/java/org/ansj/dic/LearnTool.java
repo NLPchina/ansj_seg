@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
-import org.ansj.recognition.AsianPersonRecognition;
-import org.ansj.recognition.ForeignPersonRecognition;
+import org.ansj.recognition.arrimpl.AsianPersonRecognition;
+import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.util.Graph;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.CollectionUtil;
@@ -62,12 +62,12 @@ public class LearnTool {
 	}
 
 	private void findAsianPerson(Graph graph) {
-		List<NewWord> newWords = new AsianPersonRecognition(graph.terms).getNewWords();
+		List<NewWord> newWords = new AsianPersonRecognition().getNewWords(graph.terms);
 		addListToTerm(newWords);
 	}
 
 	private void findForeignPerson(Graph graph) {
-		List<NewWord> newWords = new ForeignPersonRecognition(graph.terms).getNewWords();
+		List<NewWord> newWords = new ForeignPersonRecognition().getNewWords(graph.terms);
 		addListToTerm(newWords);
 	}
 

@@ -3,7 +3,7 @@ package org.ansj.recognition;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.recognition.IDCardRecognition;
+import org.ansj.recognition.impl.IDCardRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 

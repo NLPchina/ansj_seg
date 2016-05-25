@@ -11,15 +11,17 @@ import org.ansj.dic.LearnTool;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
-import org.ansj.recognition.AsianPersonRecognition;
-import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.NatureRecognition;
-import org.ansj.recognition.NewWordRecognition;
-import org.ansj.recognition.NumRecognition;
-import org.ansj.recognition.UserDefineRecognition;
+import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.arrimpl.AsianPersonRecognition;
+import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
+import org.ansj.recognition.arrimpl.NewWordRecognition;
+import org.ansj.recognition.arrimpl.NumRecognition;
+import org.ansj.recognition.arrimpl.UserDefineRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
@@ -45,11 +47,10 @@ public class NlpAnalysis extends Analysis {
 
 	private static final int CRF_WEIGHT = 6;
 
-	private static final SplitWord DEFAULT_SLITWORD = MyStaticValue.getCRFSplitWord();
+	private SplitWord splitWord = MyStaticValue.getCRFSplitWord();
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
-		// TODO Auto-generated method stub
 
 		Merger merger = new Merger() {
 			@Override
@@ -61,24 +62,24 @@ public class NlpAnalysis extends Analysis {
 
 				graph.walkPath();
 
-				learn.learn(graph, DEFAULT_SLITWORD);
+				learn.learn(graph, splitWord);
 
 				// 姓名识别
 				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
 					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recognition();
+					new AsianPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
 					NameFix.nameAmbiguity(graph.terms);
 					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
+					new ForeignPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
 				}
 
-				if (DEFAULT_SLITWORD != null) {
+				if (splitWord != null) {
 					MapCount<String> mc = new MapCount<String>();
 
 					// 通过crf分词
-					List<String> words = DEFAULT_SLITWORD.cut(graph.chars);
+					List<String> words = splitWord.cut(graph.chars);
 
 					String temp = null;
 					TermNatures tempTermNatures = null;
@@ -143,22 +144,21 @@ public class NlpAnalysis extends Analysis {
 					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
 				}
 
-
 				// 数字发现
-				if (graph.hasNum) {
-					NumRecognition.recognition(graph.terms);
+				if (graph.hasNum && MyStaticValue.isNumRecognition) {
+					new NumRecognition().recognition(graph.terms);
 				}
 
 				// 词性标注
 				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(graph.terms, InsertTermType.SCORE_ADD_SORT, forests).recognition();
+				new UserDefineRecognition(InsertTermType.SCORE_ADD_SORT, forests).recognition(graph.terms);
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 
 				// 进行新词发现
-				new NewWordRecognition(graph.terms, learn).recognition();
+				new NewWordRecognition(learn).recognition(graph.terms);
 				graph.walkPathByScore();
 
 				// 优化后重新获得最优路径
@@ -248,22 +248,31 @@ public class NlpAnalysis extends Analysis {
 		return false;
 	}
 
-	private NlpAnalysis() {
-	};
+	public NlpAnalysis setCrfModel(SplitWord splitWord) {
+		this.splitWord = splitWord;
+		return this;
+	}
+
+	public NlpAnalysis setCrfModel(String key) {
+		this.splitWord = MyStaticValue.getCRFSplitWord(key);
+		return this;
+	}
+
+	public NlpAnalysis setLearnTool(LearnTool learn) {
+		this.learn = learn;
+		return this;
+	}
 
 	/**
 	 * 用户自己定义的词典
 	 * 
 	 * @param forest
 	 */
-
 	public NlpAnalysis(Forest... forests) {
+		if (forests == null) {
+			forests = new Forest[] { UserDefineLibrary.FOREST };
+		}
 		this.forests = forests;
-	}
-
-	public NlpAnalysis(LearnTool learn, Forest... forests) {
-		this.forests = forests;
-		this.learn = learn;
 	}
 
 	public NlpAnalysis(Reader reader, Forest... forests) {
@@ -271,21 +280,12 @@ public class NlpAnalysis extends Analysis {
 		super.resetContent(new AnsjReader(reader));
 	}
 
-	public NlpAnalysis(Reader reader, LearnTool learn, Forest... forests) {
-		this.forests = forests;
-		this.learn = learn;
-		super.resetContent(new AnsjReader(reader));
-	}
-
-	public static List<Term> parse(String str) {
+	public static Result parse(String str) {
 		return new NlpAnalysis().parseStr(str);
 	}
 
-	public static List<Term> parse(String str, Forest... forests) {
+	public static Result parse(String str, Forest... forests) {
 		return new NlpAnalysis(forests).parseStr(str);
 	}
 
-	public static List<Term> parse(String str, LearnTool learn, Forest... forests) {
-		return new NlpAnalysis(learn, forests).parseStr(str);
-	}
 }

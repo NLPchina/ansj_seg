@@ -1,5 +1,6 @@
 package org.ansj.splitWord;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
@@ -82,7 +83,7 @@ public abstract class Analysis {
 
 		// 歧异处理字符串
 
-		analysisStr(temp);
+		fullTerms(temp);
 
 		if (!terms.isEmpty()) {
 			term = terms.poll();
@@ -94,11 +95,20 @@ public abstract class Analysis {
 	}
 
 	/**
+	 * 填充terms
+	 */
+	private void fullTerms(String temp) {
+		List<Term> result = analysisStr(temp);
+		terms.addAll(result);
+	}
+
+	/**
 	 * 一整句话分词,用户设置的歧异优先
 	 * 
 	 * @param temp
+	 * @return
 	 */
-	private void analysisStr(String temp) {
+	private List<Term> analysisStr(String temp) {
 		Graph gp = new Graph(temp);
 		int startOffe = 0;
 
@@ -122,7 +132,7 @@ public abstract class Analysis {
 		}
 		List<Term> result = this.getResult(gp);
 
-		terms.addAll(result);
+		return result;
 	}
 
 	private void analysis(Graph gp, int startOffe, int endOffe) {
@@ -135,8 +145,7 @@ public abstract class Analysis {
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status(chars[i])) {
 			case 0:
-				if (Character.isHighSurrogate(chars[i]) && (i + 1) < endOffe &&
-						Character.isLowSurrogate(chars[i + 1])) {
+				if (Character.isHighSurrogate(chars[i]) && (i + 1) < endOffe && Character.isLowSurrogate(chars[i + 1])) {
 					str = new String(Arrays.copyOfRange(chars, i, i + 2));
 					gp.addTerm(new Term(str, i, TermNatures.NULL));
 					i++;
@@ -188,7 +197,7 @@ public abstract class Analysis {
 				/**
 				 * 如果未分出词.以未知字符加入到gp中
 				 */
-				if (IN_SYSTEM[c] > 0 || status(c) > 3 || Character.isHighSurrogate(chars[i]) ) {
+				if (IN_SYSTEM[c] > 0 || status(c) > 3 || Character.isHighSurrogate(chars[i])) {
 					i -= 1;
 				} else {
 					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
@@ -218,9 +227,13 @@ public abstract class Analysis {
 		}
 	}
 
-	protected List<Term> parseStr(String temp) {
-		analysisStr(temp);
-		return terms;
+	/**
+	 * 一句话进行分词并且封装
+	 * @param temp
+	 * @return
+	 */
+	public Result parseStr(String temp) {
+		return new Result(analysisStr(temp));
 	}
 
 	protected abstract List<Term> getResult(Graph graph);
@@ -253,7 +266,13 @@ public abstract class Analysis {
 		return ambiguityForest;
 	}
 
-	public void setAmbiguityForest(Forest ambiguityForest) {
+	public Analysis setAmbiguityForest(Forest ambiguityForest) {
 		this.ambiguityForest = ambiguityForest;
+		return this;
+	}
+
+	public Analysis setForests(Forest... forests) {
+		this.forests = forests;
+		return this;
 	}
 }

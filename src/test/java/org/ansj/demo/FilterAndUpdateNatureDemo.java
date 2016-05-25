@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.FilterModifWord;
 

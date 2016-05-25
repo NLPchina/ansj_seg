@@ -1,17 +1,18 @@
-package org.ansj.recognition;
+package org.ansj.recognition.arrimpl;
 
 import org.ansj.domain.Term;
+import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.TermUtil;
 
-public class NumRecognition {
+public class NumRecognition implements TermArrRecognition {
 
 	/**
 	 * 数字+数字合并,zheng
 	 * 
 	 * @param terms
 	 */
-	public static void recognition(Term[] terms) {
+	public void recognition(Term[] terms) {
 		int length = terms.length - 1;
 		Term from = null;
 		Term to = null;

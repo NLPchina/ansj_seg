@@ -1,4 +1,4 @@
-package org.ansj.recognition;
+package org.ansj.recognition.impl;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.ansj.domain.Nature;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.recognition.Recognition;
 
 /**
  * 基于规则的新词发现 jijiang feidiao
@@ -15,7 +16,7 @@ import org.ansj.splitWord.analysis.ToAnalysis;
  * @author ansj
  * 
  */
-public class RuleRecognition {
+public class BookRecognition implements Recognition {
 
 	private static final Nature nature = new Nature("book");
 
@@ -25,13 +26,14 @@ public class RuleRecognition {
 		ruleMap.put("《", "》");
 	}
 
-	public static List<Term> recognition(List<Term> terms) {
+	public void recognition(Result result) {
+		List<Term> terms = result.getTerms() ;
 		String end = null;
 		String name;
 
 		LinkedList<Term> mergeList = null;
 
-		List<Term> result = new LinkedList<Term>();
+		List<Term> list = new LinkedList<Term>();
 
 		for (Term term : terms) {
 			name = term.getName();
@@ -40,7 +42,7 @@ public class RuleRecognition {
 					mergeList = new LinkedList<Term>();
 					mergeList.add(term);
 				} else {
-					result.add(term);
+					list.add(term);
 				}
 			} else {
 				mergeList.add(term);
@@ -51,7 +53,7 @@ public class RuleRecognition {
 						ft.merage(sub);
 					}
 					ft.setNature(nature);
-					result.add(ft);
+					list.add(ft);
 					mergeList = null;
 					end = null;
 				}
@@ -59,20 +61,12 @@ public class RuleRecognition {
 		}
 
 		if (mergeList != null) {
-			for (Term term : result) {
-				result.add(term);
+			for (Term term : list) {
+				list.add(term);
 			}
 		}
 
-		return result;
-	}
-
-	public static void main(String[] args) {
-		List<Term> parse = ToAnalysis.parse("我喜欢看《毛泽东思想》全集！");
-
-		parse = RuleRecognition.recognition(parse);
-
-		System.out.println(parse);
+		result.setTerms(list) ;
 	}
 
 }

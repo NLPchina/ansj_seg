@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.ansj.domain.Term;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 
 /**
  * 对非ansj的分词结果进行词性标注

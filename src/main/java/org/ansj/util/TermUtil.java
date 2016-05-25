@@ -9,7 +9,7 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.company.CompanyAttrLibrary;
-import org.ansj.recognition.ForeignPersonRecognition;
+import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 
 /**
  * term的操作类

@@ -1,4 +1,4 @@
-package org.ansj.recognition;
+package org.ansj.recognition.arrimpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NgramLibrary;
+import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 
@@ -18,7 +19,7 @@ import org.ansj.util.TermUtil.InsertTermType;
  * @author ansj
  * 
  */
-public class AsianPersonRecognition {
+public class AsianPersonRecognition implements TermArrRecognition{
 	private static final double[] FACTORY = { 0.16271366224044456, 0.8060521860870434, 0.031234151672511947 };
 	private boolean skip = false;
 	private Term[] terms;
@@ -34,11 +35,8 @@ public class AsianPersonRecognition {
 	// public int m = -1;//44 可拆分的姓名
 	// double[] factory = {"BC", "BCD", "BCDE"}
 
-	public AsianPersonRecognition(Term[] terms) {
+	public void recognition(Term[] terms) {
 		this.terms = terms;
-	}
-
-	public void recognition() {
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {
 			TermUtil.insertTerm(terms, term2, InsertTermType.SCORE_ADD_SORT);
@@ -166,8 +164,8 @@ public class AsianPersonRecognition {
 
 	}
 
-	public List<NewWord> getNewWords() {
-		// TODO Auto-generated method stub
+	public List<NewWord> getNewWords(Term[] terms) {
+		this.terms = terms ;
 		List<NewWord> all = new ArrayList<NewWord>();
 		List<Term> termList = recogntion_();
 		for (Term term2 : termList) {

@@ -10,7 +10,6 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.util.FilterModifWord;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.nlpcn.commons.lang.util.WordAlert;
 
 public class KeyWordComputer {
 
@@ -57,7 +56,7 @@ public class KeyWordComputer {
 	private List<Keyword> computeArticleTfidf(String content, int titleLength) {
 		Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
-		List<Term> parse = NlpAnalysis.parse(content);
+		List<Term> parse = NlpAnalysis.parse(content).getTerms();
 		
 		parse = FilterModifWord.updateNature(parse) ;
 		

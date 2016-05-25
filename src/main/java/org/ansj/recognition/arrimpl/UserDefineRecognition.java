@@ -1,9 +1,10 @@
-package org.ansj.recognition;
+package org.ansj.recognition.arrimpl;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
+import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -15,7 +16,7 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
  * @author ansj
  * 
  */
-public class UserDefineRecognition {
+public class UserDefineRecognition implements TermArrRecognition {
 
 	private Term[] terms = null;
 
@@ -31,8 +32,7 @@ public class UserDefineRecognition {
 
 	private InsertTermType type = InsertTermType.SKIP;
 
-	public UserDefineRecognition(Term[] terms, InsertTermType type, Forest... forests) {
-		this.terms = terms;
+	public UserDefineRecognition(InsertTermType type, Forest... forests) {
 		this.type = type;
 		if (forests != null && forests.length > 0) {
 			this.forests = forests;
@@ -40,8 +40,8 @@ public class UserDefineRecognition {
 
 	}
 
-	public void recognition() {
-
+	public void recognition(Term[] terms) {
+		this.terms = terms;
 		for (Forest forest : forests) {
 			if (forest == null) {
 				continue;

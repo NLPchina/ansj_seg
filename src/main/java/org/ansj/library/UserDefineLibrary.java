@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.ansj.app.crf.SplitWord;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
@@ -53,6 +54,9 @@ public class UserDefineLibrary {
 	 *            关键词的词频
 	 */
 	public static void insertWord(String keyword, String nature, int freq) {
+		if (FOREST == null) {
+			FOREST = new Forest();
+		}
 		String[] paramers = new String[2];
 		paramers[0] = nature;
 		paramers[1] = String.valueOf(freq);
@@ -61,13 +65,21 @@ public class UserDefineLibrary {
 	}
 
 	/**
+	 * 增加关键词
+	 * 
+	 * @param keyword
+	 */
+	public static void insertWord(String keyword) {
+		insertWord(keyword, DEFAULT_NATURE, DEFAULT_FREQ);
+	}
+
+	/**
 	 * 加载纠正词典
 	 */
 	private static void initAmbiguityLibrary() {
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warn(
-					"init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
+			LIBRARYLOG.warn("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
 			return;
 		}
 		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
@@ -77,14 +89,12 @@ public class UserDefineLibrary {
 				ambiguityForest = Library.makeForest(ambiguityLibrary);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath()
-						+ " because : not find that file or can not to read !");
+				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
 				e.printStackTrace();
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
 		} else {
-			LIBRARYLOG.warn("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath()
-					+ " because : file not found or failed to read !");
+			LIBRARYLOG.warn("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
 		}
 	}
 
@@ -93,14 +103,11 @@ public class UserDefineLibrary {
 	 */
 	private static void initUserLibrary() {
 		try {
-			FOREST = new Forest();
+			FOREST = MyStaticValue.getDicForest();
 			// 加载用户自定义词典
-			String userLibrary = MyStaticValue.userLibrary;
-			loadLibrary(FOREST, userLibrary);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	// 单个文件加载词典
@@ -148,8 +155,7 @@ public class UserDefineLibrary {
 	}
 
 	/**
-	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic
-	 * 按文件名称顺序加载
+	 * 加载词典,传入一本词典的路径.或者目录.词典后缀必须为.dic 按文件名称顺序加载
 	 */
 	public static void loadLibrary(Forest forest, String path) {
 		// 加载用户自定义词典
@@ -157,14 +163,13 @@ public class UserDefineLibrary {
 		if (path != null) {
 			file = new File(path);
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath()
-						+ " because : file not found or failed to read !");
+				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
 				return;
 			}
 			if (file.isFile()) {
 				loadFile(forest, file);
 			} else if (file.isDirectory()) {
-				List<File> fileList =  Arrays.asList(file.listFiles());
+				List<File> fileList = Arrays.asList(file.listFiles());
 				Collections.sort(fileList, new Comparator<File>() {
 					@Override
 					public int compare(File target, File source) {
@@ -177,8 +182,7 @@ public class UserDefineLibrary {
 					}
 				}
 			} else {
-				LIBRARYLOG.warn("init user library  error :" + new File(path).getAbsolutePath()
-						+ " because : not find that file !");
+				LIBRARYLOG.warn("init user library  error :" + new File(path).getAbsolutePath() + " because : not find that file !");
 			}
 		}
 	}

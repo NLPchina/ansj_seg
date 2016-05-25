@@ -5,7 +5,7 @@ import java.util.Map;
 import org.ansj.domain.Term;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.NgramLibrary;
-import org.ansj.recognition.NatureRecognition.NatureTerm;
+import org.ansj.recognition.impl.NatureRecognition.NatureTerm;
 
 public class MathUtil {
 

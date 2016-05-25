@@ -1,7 +1,6 @@
 package org.ansj.splitWord.analysis;
 
 import java.io.Reader;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -9,14 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.sound.midi.ControllerEventListener;
-
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.AsianPersonRecognition;
-import org.ansj.recognition.ForeignPersonRecognition;
-import org.ansj.recognition.NumRecognition;
-import org.ansj.recognition.UserDefineRecognition;
+import org.ansj.recognition.arrimpl.AsianPersonRecognition;
+import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
+import org.ansj.recognition.arrimpl.NumRecognition;
+import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
@@ -47,17 +45,17 @@ public class IndexAnalysis extends Analysis {
 
 				// 数字发现
 				if (MyStaticValue.isNumRecognition && graph.hasNum) {
-					NumRecognition.recognition(graph.terms);
+					new NumRecognition().recognition(graph.terms);
 				}
 
 				// 姓名识别
 				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
 					// 亚洲人名识别
-					new AsianPersonRecognition(graph.terms).recognition();
+					new AsianPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
 					NameFix.nameAmbiguity(graph.terms);
 					// 外国人名识别
-					new ForeignPersonRecognition(graph.terms).recognition();
+					new ForeignPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
 				}
 
@@ -68,7 +66,7 @@ public class IndexAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(graph.terms, InsertTermType.SKIP, forests).recognition();
+				new UserDefineRecognition(InsertTermType.SKIP, forests).recognition(graph.terms);
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 			}
@@ -134,11 +132,11 @@ public class IndexAnalysis extends Analysis {
 
 		return merger.merger();
 	}
-
-	private IndexAnalysis() {
-	};
-
+	
 	public IndexAnalysis(Forest... forests) {
+		if (forests == null) {
+			forests = new Forest[] { UserDefineLibrary.FOREST };
+		}
 		this.forests = forests;
 	}
 
@@ -147,11 +145,11 @@ public class IndexAnalysis extends Analysis {
 		super.resetContent(new AnsjReader(reader));
 	}
 
-	public static List<Term> parse(String str) {
+	public static Result parse(String str) {
 		return new IndexAnalysis().parseStr(str);
 	}
 
-	public static List<Term> parse(String str, Forest... forests) {
+	public static Result parse(String str, Forest... forests) {
 		return new IndexAnalysis(forests).parseStr(str);
 
 	}

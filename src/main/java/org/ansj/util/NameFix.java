@@ -2,7 +2,7 @@ package org.ansj.util;
 
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 public class NameFix {

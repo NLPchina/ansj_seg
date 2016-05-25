@@ -1,10 +1,12 @@
-package org.ansj.recognition;
+package org.ansj.recognition.impl;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.ansj.domain.Nature;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.recognition.Recognition;
 
 /**
  * 基于规则的新词发现，身份证号码识别
@@ -12,11 +14,13 @@ import org.ansj.domain.Term;
  * @author ansj
  * 
  */
-public class IDCardRecognition {
+public class IDCardRecognition implements Recognition {
 	private static final Nature ID_CARD_NATURE = new Nature("idcard");
 
-	public static List<Term> recognition(List<Term> terms) {
+	public void recognition(Result result) {
 
+		List<Term> terms = result.getTerms() ;
+		
 		for (Term term : terms) {
 			if ("m".equals(term.getNatureStr())) {
 
@@ -41,7 +45,6 @@ public class IDCardRecognition {
 			}
 		}
 
-		return terms;
 	}
 
 }

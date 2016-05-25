@@ -1,4 +1,4 @@
-package org.ansj.recognition;
+package org.ansj.recognition.impl;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ansj.domain.Nature;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.recognition.Recognition;
 
 /**
  * 电子邮箱抽取
@@ -16,10 +18,7 @@ import org.ansj.domain.Term;
  * @author ansj
  *
  */
-public class EmailRecognition {
-	private static final Nature EMAIL_NATURE = new Nature("email");
-
-	private static Set<String> FEATURE_SET = new HashSet<String>();
+public class EmailRecognition implements Recognition{
 
 	private static Map<String, String> FEATURE = new HashMap<String,String>();
 
@@ -36,7 +35,9 @@ public class EmailRecognition {
 
 	}
 
-	public static List<Term> recognition(List<Term> terms) {
+	public void recognition(Result result) {
+		
+		List<Term> terms = result.getTerms() ;
 
 		for (Term term : terms) {
 			if (!"@".equals(term.getName())) {
@@ -52,6 +53,5 @@ public class EmailRecognition {
 			}
 		}
 
-		return terms;
 	}
 }

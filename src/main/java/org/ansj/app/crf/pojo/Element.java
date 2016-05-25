@@ -1,16 +1,16 @@
 package org.ansj.app.crf.pojo;
 
+import org.ansj.app.crf.Config;
 import org.ansj.app.crf.Model;
 
 public class Element {
-	private static final double MIN = Integer.MIN_VALUE;
 
 	public char name;
 	private int tag = -1;
 	public int len = 1;
 	public String nature;
 
-	public double[] tagScore;
+	public float[] tagScore;
 
 	public int[] from;
 
@@ -37,50 +37,50 @@ public class Element {
 		return this;
 	}
 
-	public void len() {
-		len++;
-	}
 
 	@Override
 	public String toString() {
 		return name + "/" + tag;
 	}
 
+	public char getName() {
+		return name;
+	}
+
+	/**
+	 * 获得可见的名称
+	 * 
+	 * @return
+	 */
+	public String nameStr() {
+		if (name >= 130 && name < 140) {
+			return ("num" + (name - 130));
+		} else if (name >= 140 && name < 150) {
+			return ("en" + (name - 140));
+		} else {
+			return String.valueOf(name);
+		}
+	}
+
 	public void maxFrom(Model model, Element element) {
 		if (from == null) {
-			from = new int[this.tagScore.length];
+			from = new int[Config.TAG_NUM];
 		}
-		double[] pTagScore = element.tagScore;
-		double rate = 0;
-		for (int i = 0; i < this.tagScore.length; i++) {
-			double maxValue = MIN;
-			for (int j = 0; j < pTagScore.length; j++) {
-				if ((rate = model.tagRate(j, i)) == Double.MIN_VALUE) {
-					continue;
-				}
-				double value = (pTagScore[j] + tagScore[i]) + rate;
+		float[] pTagScore = element.tagScore;
+		for (int i = 0; i < Config.TAG_NUM; i++) {
+			float maxValue = 0;
+			for (int j = 0; j < Config.TAG_NUM; j++) {
+
+				float value = (pTagScore[j] + tagScore[i]) + tagScore[Config.TAG_NUM + j * Config.TAG_NUM + i];
+
 				if (value > maxValue) {
 					maxValue = value;
 					from[i] = j;
 				}
-			}
-			tagScore[i] = maxValue;
-		}
-	}
 
-	public static char getTagName(int tag) {
-		// TODO Auto-generated method stub
-		switch (tag) {
-		case 0:
-			return 'S';
-		case 1:
-			return 'B';
-		case 2:
-			return 'M';
-		case 3:
-			return 'E';
-		default:
-			return '?';
+			}
+
+			tagScore[i] = maxValue;
 		}
 	}
 

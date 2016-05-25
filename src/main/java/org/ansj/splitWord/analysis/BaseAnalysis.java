@@ -4,6 +4,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
@@ -42,14 +43,14 @@ public class BaseAnalysis extends Analysis {
 		return merger.merger();
 	}
 
-	private BaseAnalysis() {
+	public BaseAnalysis() {
 	};
 
 	public BaseAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
 
-	public static List<Term> parse(String str) {
+	public static Result parse(String str) {
 		return new BaseAnalysis().parseStr(str);
 	}
 }

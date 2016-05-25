@@ -41,4 +41,13 @@ public class MatrixUtil {
 			feature[i] += feature1[i];
 		}
 	}
+	
+	public static void dot(float[] feature, float[] feature1) {
+		if (feature1 == null) {
+			return;
+		}
+		for (int i = 0; i < feature1.length; i++) {
+			feature[i] += feature1[i];
+		}
+	}
 }

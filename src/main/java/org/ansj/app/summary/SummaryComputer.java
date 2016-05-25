@@ -71,7 +71,7 @@ public class SummaryComputer {
 	 */
 	public Summary toSummary(String query) {
 
-		List<Term> parse = NlpAnalysis.parse(query);
+		List<Term> parse = NlpAnalysis.parse(query).getTerms();
 
 		List<Keyword> keywords = new ArrayList<Keyword>();
 		for (Term term : parse) {

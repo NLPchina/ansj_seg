@@ -7,7 +7,7 @@ import org.ansj.dic.LearnTool;
 import org.ansj.domain.Term;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.NatureRecognition;
+import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
@@ -131,6 +131,8 @@ public class TestError {
 		System.out.println(DATDictionary.getItem(" "));
 		System.out.println(DATDictionary.getItem("	"));
 
+		
+		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
 
 	}
 }

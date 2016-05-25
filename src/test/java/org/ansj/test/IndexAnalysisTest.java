@@ -10,7 +10,7 @@ public class IndexAnalysisTest {
 	public static void main(String[] args) throws IOException {
 		MyStaticValue.isNumRecognition=true;
 		MyStaticValue.isQuantifierRecognition = false;
-		MyStaticValue.userLibrary=null ;
+		MyStaticValue.DIC.put("dic", null);
 		UserDefineLibrary.insertWord("蛇药片", "n", 1000);
 		UserDefineLibrary.insertWord("蛇药", "n", 1000);
 		UserDefineLibrary.insertWord("鲁花", "n", 1000);

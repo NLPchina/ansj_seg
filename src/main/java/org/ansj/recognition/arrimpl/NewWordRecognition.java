@@ -1,4 +1,4 @@
-package org.ansj.recognition;
+package org.ansj.recognition.arrimpl;
 
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Nature;
@@ -37,13 +37,13 @@ public class NewWordRecognition {
 	// 偏移量
 	private int offe;
 
-	public NewWordRecognition(Term[] terms, LearnTool learn) {
-		this.terms = terms;
+	public NewWordRecognition(LearnTool learn) {
 		forest = learn.getForest();
 		branch = learn.getForest();
 	}
 
-	public void recognition() {
+	public void recognition(Term[] terms) {
+		this.terms = terms;
 		if (branch == null) {
 			return;
 		}
