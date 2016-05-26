@@ -13,7 +13,6 @@ import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
-import org.ansj.util.FilterModifWord;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
@@ -80,7 +79,6 @@ public class DicAnalysis extends Analysis {
 				}
 				setRealName(graph, result);
 
-				FilterModifWord.updateNature(result, forests);
 				return result;
 			}
 		};

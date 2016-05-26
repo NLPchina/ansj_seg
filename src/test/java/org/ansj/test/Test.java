@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.analysis.NlpAnalysis;
@@ -176,8 +177,7 @@ public class Test {
 
 		for (String string : all) {
 			System.out.println(string);
-			List<Term> parse = ToAnalysis.parse(string) ;
-			System.out.println(parse);
+			System.out.println(ToAnalysis.parse(string));
 			System.out.println(NlpAnalysis.parse(string));
 		}
 		System.out.println(System.currentTimeMillis() - start);

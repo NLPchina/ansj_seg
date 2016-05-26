@@ -16,8 +16,6 @@ public class Config {
 
 	public static final int TAG_NUM = 4; // 标记类型写死了4个
 
-	public static final int W_NUM = TAG_NUM + TAG_NUM * TAG_NUM; // 标记类型写死了4个
-
 	// 特殊字符的标注
 	public static final char BEGIN = 128;
 
@@ -201,6 +199,9 @@ public class Config {
 		int len = 0;
 		int i = 0;
 		for (; i < template.length; i++) {
+			if (template[i].length == 0) {
+				continue;
+			}
 			chars = new char[template[i].length + 1];
 			len = chars.length - 1;
 			for (int j = 0; j < len; j++) {

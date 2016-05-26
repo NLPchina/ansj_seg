@@ -3,6 +3,7 @@ package org.ansj.domain;
 import java.util.Iterator;
 import java.util.List;
 
+import org.ansj.recognition.Recognition;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 /**
@@ -22,7 +23,7 @@ public class Result implements Iterable<Term> {
 	public List<Term> getTerms() {
 		return terms;
 	}
-	
+
 	public void setTerms(List<Term> terms) {
 		this.terms = terms;
 	}
@@ -40,10 +41,19 @@ public class Result implements Iterable<Term> {
 		return terms.get(index);
 	}
 
+	/**
+	 * 调用一个发现引擎
+	 * 
+	 * @return
+	 */
+	public Result recognition(Recognition re) {
+		re.recognition(this);
+		return this;
+	}
+
 	@Override
 	public String toString() {
-		return StringUtil.joiner(this.terms, ",") ;
+		return StringUtil.joiner(this.terms, ",");
 	}
-	
-	
+
 }

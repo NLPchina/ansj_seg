@@ -3,6 +3,7 @@ package org.ansj.demo;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.util.MyStaticValue;
@@ -24,7 +25,7 @@ public class JianFanZhuanhuanDemo {
 		all.add("吳伯雄談建言被誤解讀:盡點言責 絕對善意");
 		all.add("輸入簡體字,點下面繁體字按鈕進行在線轉換.");
 		for (String string : all) {
-			List<Term> parse = NlpAnalysis.parse(string);
+			Result parse = NlpAnalysis.parse(string);
 			System.out.println(parse);
 		}
 

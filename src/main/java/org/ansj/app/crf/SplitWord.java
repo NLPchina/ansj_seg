@@ -1,6 +1,7 @@
 package org.ansj.app.crf;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class SplitWord {
 		Element e = null;
 		int begin = 0;
 		int end = 0;
-		
-		int size = elements.size()-1;
+
+		int size = elements.size() - 1;
 
 		for (int i = 0; i < elements.size(); i++) {
 			e = elements.get(i);
@@ -70,7 +71,7 @@ public class SplitWord {
 		List<Element> elements = Config.wordAlert(line);
 
 		int length = elements.size();
-		
+
 		if (length == 0) { // 避免空list，下面get(0)操作越界
 			return elements;
 		}
@@ -89,24 +90,24 @@ public class SplitWord {
 		// 如果是开始不可能从 m，e开始 ，所以将它设为一个很小的值
 		elements.get(0).tagScore[2] = -1000;
 		elements.get(0).tagScore[3] = -1000;
-		
+
 		for (int i = 1; i < length; i++) {
 			elements.get(i).maxFrom(model, elements.get(i - 1));
 		}
 
 		// 末位置只能从S,E开始
 		// 末位置只能从0,3开始
-		
+
 		Element next = elements.get(elements.size() - 1);
-		
+
 		Element self = null;
-		
+
 		int maxStatus = next.tagScore[0] > next.tagScore[3] ? 0 : 3;
-		
+
 		next.updateTag(maxStatus);
-		
+
 		maxStatus = next.from[maxStatus];
-		
+
 		// 逆序寻找
 		for (int i = elements.size() - 2; i > 0; i--) {
 			self = elements.get(i);
@@ -124,17 +125,26 @@ public class SplitWord {
 
 	private void computeTagScore(List<Element> elements, int index) {
 
-		float[] tagScore = new float[Config.W_NUM];
-
 		char[][] feautres = model.getConfig().makeFeatureArr(elements, index);
 
-		for (int i = 0; i < feautres.length; i++) {
+		int i = 0;
+		float[] tagScore = null ;
+		float[] feature = null;
+		
+		for (; i < feautres.length; i++) {
+			feature = model.getFeature(feautres[i]);
+			if (feature != null) {
+				tagScore = feature.clone();
+				i++ ;
+				break;
+			}
+		}
+		
+		for (; i < feautres.length; i++) {
 			MatrixUtil.dot(tagScore, model.getFeature(feautres[i]));
 		}
-
 		elements.get(index).tagScore = tagScore;
 	}
-	
 
 	/**
 	 * 随便给一个词。计算这个词的内聚分值，可以理解为计算这个词的可信度

@@ -37,7 +37,6 @@ public class Element {
 		return this;
 	}
 
-
 	@Override
 	public String toString() {
 		return name + "/" + tag;
@@ -71,7 +70,11 @@ public class Element {
 			float maxValue = 0;
 			for (int j = 0; j < Config.TAG_NUM; j++) {
 
-				float value = (pTagScore[j] + tagScore[i]) + tagScore[Config.TAG_NUM + j * Config.TAG_NUM + i];
+				float value = (pTagScore[j] + tagScore[i]) + model.tagRate(j, i);
+
+				if (tagScore.length > Config.TAG_NUM) {
+					value += tagScore[Config.TAG_NUM + j * Config.TAG_NUM + i];
+				}
 
 				if (value > maxValue) {
 					maxValue = value;
