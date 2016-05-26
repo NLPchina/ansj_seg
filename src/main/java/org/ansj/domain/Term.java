@@ -206,7 +206,7 @@ public class Term implements Serializable{
 	@Override
 	public String toString() {
 		if ("null".equals(nature.natureStr)) {
-			return name;
+			return this.getRealName();
 		}
 		return this.getRealName() + "/" + nature.natureStr;
 	}

@@ -111,6 +111,7 @@ public class NlpAnalysis extends Analysis {
 
 						if (isRuleWord(word)) { // 如果word不对那么不要了
 							temp = null;
+							tempOff += word.length();//这里offset原来没有设置导致后面的错位了
 							continue;
 						}
 
@@ -194,6 +195,8 @@ public class NlpAnalysis extends Analysis {
 	private static final Set<Character> filter = new HashSet<Character>();
 
 	static {
+		filter.add(':');
+		filter.add('：');
 		filter.add('　');
 		filter.add('，');
 		filter.add('”');
