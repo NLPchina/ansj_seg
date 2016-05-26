@@ -37,7 +37,7 @@ public class DicAnalysisTest {
 		UserDefineLibrary.insertWord(newWord, nature, 1000);
 		UserDefineLibrary.insertWord("上海电力", nature, 1000);
 		
-		List<Term> parse = DicAnalysis.parse(str);
+		List<Term> parse = DicAnalysis.parse(str).getTerms();
 		HashMap<String, Term> hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);
@@ -53,7 +53,7 @@ public class DicAnalysisTest {
 
 		//删除词
 		UserDefineLibrary.removeWord(newWord);
-		parse = DicAnalysis.parse(str);
+		parse = DicAnalysis.parse(str).getTerms();
 		hs = new HashMap<String, Term>();
 		for (Term term : parse) {
 			hs.put(term.getName(), term);

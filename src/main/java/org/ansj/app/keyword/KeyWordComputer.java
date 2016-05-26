@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.util.FilterModifWord;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 public class KeyWordComputer {
@@ -57,8 +56,8 @@ public class KeyWordComputer {
 		Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
 		List<Term> parse = NlpAnalysis.parse(content).getTerms();
-		
-		parse = FilterModifWord.updateNature(parse) ;
+		//FIXME: 这个依赖于用户自定义词典的词性,所以得需要另一个方法..
+//		parse = FilterModifWord.updateNature(parse) ;
 		
 		for (Term term : parse) {
 			double weight = getWeight(term, content.length(), titleLength);

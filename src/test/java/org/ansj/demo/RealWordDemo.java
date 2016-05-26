@@ -2,6 +2,7 @@ package org.ansj.demo;
 
 import java.util.List;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
@@ -15,7 +16,7 @@ import org.ansj.util.MyStaticValue;
 public class RealWordDemo {
 	public static void main(String[] args) {
 		// 默认方式
-		List<Term> parse = ToAnalysis.parse("Hello word是每个程序员必经之路");
+		Result parse = ToAnalysis.parse("Hello word是每个程序员必经之路");
 		System.out.println(parse);
 
 		// 保证方式

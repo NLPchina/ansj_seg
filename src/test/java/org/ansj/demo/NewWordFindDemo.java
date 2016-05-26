@@ -23,7 +23,7 @@ public class NewWordFindDemo {
 	public static void main(String[] args) throws IOException {
 		BufferedReader reader = IOUtil.getReader("/Users/ansj/Downloads/三国演义.txt", "GBK");
 		LearnTool learn = new LearnTool();
-		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader, learn);
+		NlpAnalysis nlpAnalysis = new NlpAnalysis(reader).setLearnTool(learn);
 
 		while (nlpAnalysis.next() != null) {
 		}
