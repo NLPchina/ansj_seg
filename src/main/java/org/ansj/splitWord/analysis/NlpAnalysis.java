@@ -150,8 +150,6 @@ public class NlpAnalysis extends Analysis {
 					NumRecognition.recognition(graph.terms);
 				}
 
-				// 词性标注
-				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
 				new UserDefineRecognition(graph.terms, InsertTermType.SCORE_ADD_SORT, forests).recognition();
@@ -163,7 +161,7 @@ public class NlpAnalysis extends Analysis {
 				graph.walkPathByScore();
 
 				// 优化后重新获得最优路径
-				result = getResult();
+				List<Term> result = getResult();
 
 				// 激活辞典
 				for (Term term : result) {
@@ -176,7 +174,6 @@ public class NlpAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
