@@ -39,7 +39,7 @@ public class Element {
 
 	@Override
 	public String toString() {
-		return name + "/" + tag;
+		return name + "/" + len + "/" + tag;
 	}
 
 	public char getName() {

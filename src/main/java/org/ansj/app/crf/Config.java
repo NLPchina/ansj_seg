@@ -82,7 +82,7 @@ public class Config {
 
 			if (chars[i] >= '0' && chars[i] <= '9') {
 				if (status == 2) {
-					element = new Element(Config.getEn(tempSb.toString()));
+					element = new Element(Config.getNum(tempSb.toString()));
 					element.len = tempSb.length();
 					list.add(element);
 					tempSb = new StringBuilder();
@@ -91,7 +91,7 @@ public class Config {
 				status = 1;
 			} else if (chars[i] >= 'A' && chars[i] <= 'z') {
 				if (status == 1) {
-					element = new Element(Config.getNum(tempSb.toString()));
+					element = new Element(Config.getEn(tempSb.toString()));
 					element.len = tempSb.length();
 					list.add(element);
 					tempSb = new StringBuilder();

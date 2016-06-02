@@ -41,9 +41,7 @@ public class SplitWord {
 		Element e = null;
 		int begin = 0;
 		int end = 0;
-
 		int size = elements.size() - 1;
-
 		for (int i = 0; i < elements.size(); i++) {
 			e = elements.get(i);
 			switch (e.getTag()) {
@@ -54,7 +52,7 @@ public class SplitWord {
 				break;
 			case 1:
 				end += e.len;
-				while (i < size - 1 && (e = elements.get(++i)).getTag() != 3) {
+				while (i < size && (e = elements.get(++i)).getTag() != 3) {
 					end += e.len;
 				}
 				end += e.len;
@@ -127,22 +125,13 @@ public class SplitWord {
 
 		char[][] feautres = model.getConfig().makeFeatureArr(elements, index);
 
-		int i = 0;
-		float[] tagScore = null ;
-		float[] feature = null;
-		
-		for (; i < feautres.length; i++) {
-			feature = model.getFeature(feautres[i]);
-			if (feature != null) {
-				tagScore = feature.clone();
-				i++ ;
-				break;
-			}
-		}
-		
-		for (; i < feautres.length; i++) {
+		//TODO: set 20 很大吧!
+		float[] tagScore = new float[20]; //Config.TAG_NUM*Config.TAG_NUM+Config.TAG_NUM
+
+		for (int i = 0; i < feautres.length; i++) {
 			MatrixUtil.dot(tagScore, model.getFeature(feautres[i]));
 		}
+
 		elements.get(index).tagScore = tagScore;
 	}
 

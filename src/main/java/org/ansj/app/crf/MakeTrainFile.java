@@ -20,9 +20,9 @@ import org.nlpcn.commons.lang.util.StringUtil;
 public class MakeTrainFile {
 	public static void main(String[] args) {
 
-		String inputPath = "/Users/sunjian/Documents/workspace/ansj_crf/swresult.txt";
+		String inputPath = "/Users/sunjian/Documents/workspace/ansj_crf/result_n.txt";
 
-		String outputPath = "/Users/sunjian/Documents/src/Wapiti/test/train.txt";
+		String outputPath = "/Users/sunjian/Documents/src/CRF++-0.58/test/train.txt";
 
 		if (args != null && args.length == 2) {
 			inputPath = args[0];

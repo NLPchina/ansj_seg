@@ -1,6 +1,7 @@
 package org.ansj.app.crf.model;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -143,29 +144,6 @@ public class WapitiCRFModel extends Model {
 				this.featureTree.add(name, tempW); // 将特征增加到特征🌲中
 
 				// printFeatureTree(name, tempW);
-			}
-
-		}
-
-	}
-
-	/**
-	 * 增加特征到特征数中
-	 * 
-	 * @param cs
-	 * @param tempW
-	 */
-
-	private static void printFeatureTree(String cs, float[] tempW) {
-		String name = "*";
-		if (tempW.length == 4) {
-			name = "U";
-		}
-
-		name += "*" + ((int) cs.charAt(cs.length() - 1) - Config.FEATURE_BEGIN + 1) + ":" + cs.substring(0, cs.length() - 1);
-		for (int i = 0; i < tempW.length; i++) {
-			if (tempW[i] != 0) {
-				System.out.println(name + "\t" + Config.getTagName(i / 4 - 1) + "\t" + Config.getTagName(i % 4) + "\t" + tempW[i]);
 			}
 
 		}
@@ -344,6 +322,16 @@ public class WapitiCRFModel extends Model {
 		config = new Config(template);
 
 		return featureIndex;
+	}
+
+	@Override
+	public boolean checkModel(byte[] bytes) throws IOException {
+		String string = new String(bytes);
+		if (string.startsWith("#mdl#")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }

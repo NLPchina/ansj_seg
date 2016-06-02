@@ -345,9 +345,9 @@ public class MyStaticValue {
 			}
 			long start = System.currentTimeMillis();
 			LIBRARYLOG.info("begin init crf model!");
-			SplitWord crfSplitWord = new SplitWord(Model.load(modelPath));
+			SplitWord crfSplitWord = new SplitWord(Model.load(key, modelPath));
 			CRF.put(key, crfSplitWord);
-			LIBRARYLOG.info("load crf crf use time:" + (System.currentTimeMillis() - start));
+			LIBRARYLOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + modelPath);
 			return crfSplitWord;
 		} catch (Exception e) {
 			LIBRARYLOG.warn("!!!!!!!!!! not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/ to down it ! ");
