@@ -24,6 +24,7 @@ import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
+import org.ansj.util.DownLibrary;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
@@ -142,7 +143,7 @@ public class NlpAnalysis extends Analysis {
 					}
 					graph.walkPath(mc.get());
 				} else {
-					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/library.zip to down it ! ");
+					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit "+DownLibrary.file+" to down it ! ");
 				}
 
 				// 数字发现

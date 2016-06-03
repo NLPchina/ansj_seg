@@ -17,15 +17,18 @@ import java.util.zip.ZipFile;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 public class DownLibrary {
+	
+	public static String file = "http://maven.nlpcn.org/down/library5.zip" ;
+	
 	public static void main(String[] args) throws Exception {
 		down();
-		unzip("library.zip", ".", false);
+		unzip("library5.zip", ".", false);
 	}
 
 	private static void down() throws MalformedURLException, IOException, FileNotFoundException {
 		MyStaticValue.LIBRARYLOG.info("to down library ! please wait a moment");
 
-		URL url = new URL("http://maven.nlpcn.org/down/library.zip");
+		URL url = new URL(file);
 
 		URLConnection conn = url.openConnection();
 

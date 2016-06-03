@@ -19,6 +19,6 @@ public class CorpusTest {
 
 	@Before
 	public void init() throws UnsupportedEncodingException, FileNotFoundException {
-		lines = IOUtil.readFile2List("/Users/sunjian/Documents/workspace/ansj_seg/src/test/resources/badcase.txt", IOUtil.UTF8);
+		lines = IOUtil.readFile2List("src/test/resources/badcase.txt", IOUtil.UTF8);
 	}
 }

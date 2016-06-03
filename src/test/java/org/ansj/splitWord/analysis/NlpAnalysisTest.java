@@ -1,18 +1,13 @@
 package org.ansj.splitWord.analysis;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import org.ansj.CorpusTest;
 import org.junit.Test;
 
-public class NlpAnalysisTest {
+public class NlpAnalysisTest extends CorpusTest {
 
 	@Test
 	public void test() {
-		List<String> list = new ArrayList<String>();
-		for (String string : list) {
+		for (String string : lines) {
 			System.out.println(NlpAnalysis.parse(string));
 		}
 	}

@@ -343,14 +343,15 @@ public class MyStaticValue {
 			if (obj != null && obj instanceof SplitWord) {
 				return (SplitWord) obj;
 			}
-			long start = System.currentTimeMillis();
-			LIBRARYLOG.info("begin init crf model!");
-			SplitWord crfSplitWord = new SplitWord(Model.load(key, modelPath));
-			CRF.put(key, crfSplitWord);
-			LIBRARYLOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + modelPath);
-			return crfSplitWord;
+			if (new File(modelPath).isFile() && new File(modelPath).exists()) {
+				long start = System.currentTimeMillis();
+				LIBRARYLOG.info("begin init crf model!");
+				SplitWord crfSplitWord = new SplitWord(Model.load(key, modelPath));
+				CRF.put(key, crfSplitWord);
+				LIBRARYLOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + modelPath);
+				return crfSplitWord;
+			}
 		} catch (Exception e) {
-			LIBRARYLOG.warn("!!!!!!!!!! not find crf model you can run DownLibrary.main(null) to down !\n or you can visit http://maven.nlpcn.org/down/ to down it ! ");
 		}
 		return null;
 	}
