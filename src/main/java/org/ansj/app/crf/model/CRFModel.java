@@ -1,24 +1,15 @@
 package org.ansj.app.crf.model;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 
 import org.ansj.app.crf.Config;
 import org.ansj.app.crf.Model;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
-import org.nlpcn.commons.lang.util.IOUtil;
-import org.nlpcn.commons.lang.util.MapCount;
 
 /**
  * 加载ansj格式的crfmodel,目前此model格式是通过crf++ 或者wapiti生成的
@@ -27,6 +18,8 @@ import org.nlpcn.commons.lang.util.MapCount;
  *
  */
 public class CRFModel extends Model {
+	
+	public static final String version = "ansj1" ;
 
 	public CRFModel(String name) {
 		super(name);
@@ -84,15 +77,11 @@ public class CRFModel extends Model {
 
 		try {
 			
-			InputStream inputStream = new ObjectInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)));
+			ObjectInputStream inputStream = new ObjectInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)));
 
-			byte[] b = new byte[bytes.length];
+			String version = inputStream.readUTF() ;
 
-			inputStream.read(b);
-
-			String string = new String(b);
-
-			if (string.startsWith("ansj1")) { // 加载ansj,model
+			if (version.equals("ansj1")) { // 加载ansj,model
 				return true;
 			} else {
 				return false;

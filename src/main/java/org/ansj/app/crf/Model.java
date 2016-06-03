@@ -175,11 +175,7 @@ public abstract class Model {
 
 			oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File(path))));
 
-			byte[] bytes = "ansj1".getBytes("utf-8");
-
-			byte[] copyOf = Arrays.copyOf(bytes, 20);
-
-			oos.write(copyOf);
+			oos.writeUTF(CRFModel.version);
 
 			oos.writeObject(status);
 
