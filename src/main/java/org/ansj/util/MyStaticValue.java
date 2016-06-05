@@ -14,6 +14,7 @@ import java.util.ResourceBundle;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
+import org.ansj.app.crf.model.CRFModel;
 import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;
@@ -93,7 +94,6 @@ public class MyStaticValue {
 			}
 		}
 
-		CRF.put(CRF_DEFAULT, "library/crf.model");
 		DIC.put(DIC_DEFAULT, "library/default.dic");
 
 		if (rb == null) {
@@ -322,13 +322,42 @@ public class MyStaticValue {
 		Object temp = CRF.get(key);
 
 		if (temp == null) {
-			LIBRARYLOG.warn("crf " + key + " not found in config ");
-			return null;
+			if (CRF_DEFAULT.equals(key)) { // 加载内置模型
+				return initDefaultModel();
+			} else {
+				LIBRARYLOG.warn("crf " + key + " not found in config ");
+				return null;
+			}
 		} else if (temp instanceof String) {
 			return initCRFModel(key, (String) temp);
 		} else {
 			return (SplitWord) temp;
 		}
+	}
+
+	/**
+	 * 加载默认的crf模型
+	 * 
+	 * @return
+	 */
+	private static synchronized SplitWord initDefaultModel() {
+		
+		Object obj = CRF.get(CRF_DEFAULT);
+		if (obj != null && obj instanceof SplitWord) {
+			return (SplitWord) obj;
+		}
+		try {
+			LIBRARYLOG.info("init deafult crf model begin !");
+			CRFModel model = new CRFModel(CRF_DEFAULT);
+			model.loadModel(DicReader.getInputStream("crf.model"));
+			SplitWord splitWord = new SplitWord(model);
+			CRF.put(CRF_DEFAULT, splitWord);
+			return splitWord;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LIBRARYLOG.error("init err!", e);
+		}
+		return null;
 	}
 
 	/**
@@ -388,6 +417,13 @@ public class MyStaticValue {
 		}
 	}
 
+	/**
+	 * 用户自定义词典加载
+	 * 
+	 * @param key
+	 * @param dicPath
+	 * @return
+	 */
 	private synchronized static Forest initForest(String key, String dicPath) {
 		Object obj = CRF.get(key);
 

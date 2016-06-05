@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipException;
@@ -11,6 +12,7 @@ import java.util.zip.ZipException;
 import org.ansj.app.crf.Config;
 import org.ansj.app.crf.Model;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
  * 加载ansj格式的crfmodel,目前此model格式是通过crf++ 或者wapiti生成的
@@ -28,14 +30,19 @@ public class CRFModel extends Model {
 
 	@Override
 	public void loadModel(String modelPath) throws Exception {
+		loadModel(IOUtil.getInputStream(modelPath));
+	}
+	
+	public void loadModel(InputStream is) throws Exception{
+		
 		ObjectInputStream ois = null;
 
 		long start = System.currentTimeMillis();
 		try {
 
-			ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File(modelPath))));
+			ois = new ObjectInputStream(new GZIPInputStream(is));
 
-			ois.read(new byte[20]);// 读取头20个byte
+			ois.readUTF();
 
 			this.status = (float[][]) ois.readObject();
 
@@ -67,6 +74,9 @@ public class CRFModel extends Model {
 			LOG.info("load crf model ok ! use time :" + (System.currentTimeMillis() - start));
 
 		} finally {
+			if(is!=null){
+				is.close();
+			}
 			if (ois != null) {
 				ois.close();
 			}

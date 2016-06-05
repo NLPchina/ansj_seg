@@ -71,7 +71,8 @@ Ansj中文分词
 * 2.将项目提交到maven中央仓库
 * 3.增加一些规则性Recognition，举例[身份证号码识别](https://github.com/NLPchina/ansj_seg/blob/master/src/main/java/org/ansj/recognition/impl/IDCardRecognition.java)，目前未完成的有 `时间识别`，`IP地址识别`，`邮箱识别`,`网址识别`等...
 * 4.提供更加优化的CRF模型。替换ansj的默认模型。
-* 5.拾遗补漏...
+* 5.补充测试用例，n多地方测试不完全。如果你有兴趣可以帮忙啦！
+* 6.拾遗补漏...
 
 
 
