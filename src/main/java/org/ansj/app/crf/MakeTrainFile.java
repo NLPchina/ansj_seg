@@ -22,7 +22,7 @@ public class MakeTrainFile {
 
 		String inputPath = "/Users/sunjian/Documents/workspace/ansj_crf/result_n.txt";
 
-		String outputPath = "/Users/sunjian/Documents/src/CRF++-0.58/test/train.txt";
+		String outputPath = "/Users/sunjian/Documents/src/Wapiti/test/train.txt";
 
 		if (args != null && args.length == 2) {
 			inputPath = args[0];

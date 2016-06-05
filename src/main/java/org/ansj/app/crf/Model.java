@@ -46,7 +46,7 @@ public abstract class Model {
 	 * @param is
 	 * @return
 	 */
-	public abstract boolean checkModel(byte[] bytes) throws IOException;
+	public abstract boolean checkModel(String modelPath) throws IOException;
 
 	/**
 	 * 模型读取
@@ -61,29 +61,24 @@ public abstract class Model {
 	public static Model load(String name, String modelPath) throws Exception {
 		InputStream is = null;
 		try {
-			is = IOUtil.getInputStream(modelPath);
-
-			byte[] bytes = new byte[100];
-
-			is.read(bytes);
 
 			Model model = new CRFModel(name);
 
-			if (model.checkModel(bytes)) {
+			if (model.checkModel(modelPath)) {
 				model.loadModel(modelPath);
 				return model;
 			}
 
 			model = new CRFppTxtModel(name);
 
-			if (model.checkModel(bytes)) {
+			if (model.checkModel(modelPath)) {
 				model.loadModel(modelPath);
 				return model;
 			}
 
 			model = new WapitiCRFModel(name);
 
-			if (model.checkModel(bytes)) {
+			if (model.checkModel(modelPath)) {
 				model.loadModel(modelPath);
 				return model;
 			}

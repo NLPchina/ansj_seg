@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipException;
 
 import org.ansj.app.crf.Config;
 import org.ansj.app.crf.Model;
@@ -73,22 +74,27 @@ public class CRFModel extends Model {
 	}
 
 	@Override
-	public boolean checkModel(byte[] bytes) throws IOException {
-
+	public boolean checkModel(String modelPath) throws IOException {
+		ObjectInputStream inputStream = null ;
 		try {
 			
-			ObjectInputStream inputStream = new ObjectInputStream(new GZIPInputStream(new ByteArrayInputStream(bytes)));
+			inputStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(modelPath)));
 
 			String version = inputStream.readUTF() ;
 
 			if (version.equals("ansj1")) { // 加载ansj,model
 				return true;
-			} else {
-				return false;
 			}
+			
+		}catch(ZipException ze){
 		} catch (Exception e) {
-			return false;
+			e.printStackTrace();
+		}finally {
+			if(inputStream!=null){
+				inputStream.close(); 
+			}
 		}
+		return false ;
 	}
 
 }

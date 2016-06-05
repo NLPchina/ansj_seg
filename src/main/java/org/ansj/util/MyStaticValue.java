@@ -350,8 +350,12 @@ public class MyStaticValue {
 				CRF.put(key, crfSplitWord);
 				LIBRARYLOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + modelPath);
 				return crfSplitWord;
+			} else {
+				LIBRARYLOG.info(key + " file  not found ,please make sure it is exists : " + modelPath);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+			LIBRARYLOG.info(key + " file : " + modelPath + " load err " + e.getMessage());
 		}
 		return null;
 	}

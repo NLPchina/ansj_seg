@@ -3,6 +3,7 @@ package org.ansj.app.crf.model;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -325,13 +326,27 @@ public class WapitiCRFModel extends Model {
 	}
 
 	@Override
-	public boolean checkModel(byte[] bytes) throws IOException {
-		String string = new String(bytes);
-		if (string.startsWith("#mdl#")) {
-			return true;
-		} else {
-			return false;
+	public boolean checkModel(String modelPath) throws IOException {
+		InputStream is = null;
+		try {
+			is = IOUtil.getInputStream(modelPath);
+
+			byte[] bytes = new byte[100];
+
+			is.read(bytes);
+
+			String string = new String(bytes);
+			if (string.startsWith("#mdl#")) { // 加载crf++ 的txt类型的modle
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (is != null) {
+				is.close();
+			}
 		}
+		return false;
 	}
 
 }
