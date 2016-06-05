@@ -17,7 +17,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
 
 public class CRFModelTest extends CorpusTest {
 	
-	private String modelPath = "library/crf.model";
+	private String modelPath = "src/main/resources/crf.model";
 
 	private String testPath = "src/test/resources/corpus.txt";
 	
