@@ -143,7 +143,7 @@ public class NlpAnalysis extends Analysis {
 					}
 					graph.walkPath(mc.get());
 				} else {
-					MyStaticValue.LIBRARYLOG.warn("not find crf model you can run DownLibrary.main(null) to down !\n or you can visit "+DownLibrary.file+" to down it ! ");
+					MyStaticValue.LIBRARYLOG.warn("not find crf model you can you can visit "+DownLibrary.file+" to down it ! ");
 				}
 
 				// 数字发现
