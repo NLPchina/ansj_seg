@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class myDefineDemo {
 	public static void main(String[] args) throws IOException {
-		Result q = ToAnalysis.parse("研究生会采纳相应意见在这个四世同堂的大家庭里有二十五口人。\n孔子、孟子是众所周知的儒学大家。大家看老万过来了不晓得要做啥子登上海南公司的航班\n");
+		Result q = ToAnalysis.parse("他在黎明起来了，黎明认识这个李明不輸你好。輸入簡體字,點下面繁體字按鈕進行在線轉換洁面仪配合洁面深层清洁毛研究生会采纳相应意见在这个四世同堂的大家庭里有二十五口人。\n孔子、孟子是众所周知的儒学大家。大家看老万过来了不晓得要做啥子登上海南公司的航班\n");
 		System.out.println("q is:" + q);
 
 		Result terms = ToAnalysis.parse("hualai s了，华盛顿总理到访联合国，你知道共产党党性党章吗？你到底是何居心？真正的ict的实现.并且加入了自己的一些数据结构和算法的分词.实现了高效率和高准确率的完美结合，坏蛤蟆，他说是这在的你蛤蟆，他们是大众经济没人是癞蛤蟆还.汕头市和亨玩具有限公司\n" +
