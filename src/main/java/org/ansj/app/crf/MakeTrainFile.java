@@ -26,7 +26,7 @@ public class MakeTrainFile {
 
 		if (args != null && args.length == 2) {
 			inputPath = args[0];
-			inputPath = args[1];
+			outputPath = args[1];
 		}
 
 		if (StringUtil.isBlank(inputPath) || StringUtil.isBlank(outputPath)) {
