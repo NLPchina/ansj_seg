@@ -35,10 +35,6 @@ import org.nlpcn.commons.lang.util.logging.LogFactory;
  */
 public class MyStaticValue {
 
-	public static void main(String[] args) {
-		System.out.println("ok");
-	}
-
 	public static final Forest EMPTY_FOREST = new Forest();
 
 	public static final Log LIBRARYLOG = LogFactory.getLog("DICLOG");
@@ -81,16 +77,32 @@ public class MyStaticValue {
 		 */
 		ResourceBundle rb = null;
 		try {
-			rb = ResourceBundle.getBundle("library");
+			rb = ResourceBundle.getBundle("ansj_library");
 		} catch (Exception e) {
 			try {
-				File find = FileFinder.find("library.properties", 2);
+				File find = FileFinder.find("ansj_library.properties", 2);
 				if (find != null && find.isFile()) {
 					rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
-					LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
+					LIBRARYLOG.info("load ansj_library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
 			} catch (Exception e1) {
-				LIBRARYLOG.warn("not find library.properties. and err " + e.getMessage() + " i think it is a bug!");
+				LIBRARYLOG.warn("not find ansj_library.properties. and err " + e.getMessage() + " i think it is a bug!");
+			}
+		}
+
+		if (rb == null) {
+			try {
+				rb = ResourceBundle.getBundle("library");
+			} catch (Exception e) {
+				try {
+					File find = FileFinder.find("library.properties", 2);
+					if (find != null && find.isFile()) {
+						rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
+						LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
+					}
+				} catch (Exception e1) {
+					LIBRARYLOG.warn("not find library.properties. and err " + e.getMessage() + " i think it is a bug!");
+				}
 			}
 		}
 
@@ -121,7 +133,7 @@ public class MyStaticValue {
 						Field field = MyStaticValue.class.getField(key);
 						field.set(null, ObjConver.conversion(rb.getString(key), field.getType()));
 					} catch (NoSuchFieldException e) {
-						e.printStackTrace();
+						LIBRARYLOG.error("not find field by " + key);
 					} catch (SecurityException e) {
 						e.printStackTrace();
 					} catch (IllegalArgumentException e) {
@@ -341,7 +353,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	private static synchronized SplitWord initDefaultModel() {
-		
+
 		Object obj = CRF.get(CRF_DEFAULT);
 		if (obj != null && obj instanceof SplitWord) {
 			return (SplitWord) obj;
