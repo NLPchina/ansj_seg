@@ -1,7 +1,6 @@
 package org.ansj.splitWord.analysis;
 
 import org.ansj.CorpusTest;
-import org.ansj.util.MyStaticValue;
 import org.junit.Test;
 
 public class NlpAnalysisTest extends CorpusTest {

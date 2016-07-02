@@ -4,9 +4,7 @@ Ansj中文分词
  [![1.X Build Status](https://travis-ci.org/NLPchina/ansj_seg.svg?branch=master)](https://travis-ci.org/NLPchina/ansj_seg) [![Gitter](https://badges.gitter.im/NLPchina/ansj_seg.svg)](https://gitter.im/NLPchina/ansj_seg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 
-#####使用帮助[http://nlpchina.github.io/ansj_seg/](http://nlpchina.github.io/ansj_seg/)
-
-#####在线测试地址<a href="http://demo.nlpcn.org">http://demo.nlpcn.org</href>
+#####使用帮助 : [3.x版本及之前](http://nlpchina.github.io/ansj_seg/) , [5.x版本及之后](https://github.com/NLPchina/ansj_seg/wiki)   在线测试地址 : <a href="http://demo.nlpcn.org">http://demo.nlpcn.org</href>
 
 
 ##### 摘要
@@ -74,6 +72,7 @@ Ansj中文分词
 * 5.补充测试用例，n多地方测试不完全。如果你有兴趣可以帮忙啦！
 * 6.重构人名识别模型。增加机构名识别等模型。
 * 7.增加句法文法分析
+* 8.建立一个http or netty api,提供分词服务,并提供sdk
 * n.拾遗补漏...
 
 
