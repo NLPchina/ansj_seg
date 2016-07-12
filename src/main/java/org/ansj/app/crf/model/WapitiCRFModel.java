@@ -1,7 +1,6 @@
 package org.ansj.app.crf.model;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;

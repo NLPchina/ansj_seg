@@ -21,4 +21,5 @@ public class CorpusTest {
 	public void init() throws UnsupportedEncodingException, FileNotFoundException {
 		lines = IOUtil.readFile2List("src/test/resources/badcase.txt", IOUtil.UTF8);
 	}
+	
 }
