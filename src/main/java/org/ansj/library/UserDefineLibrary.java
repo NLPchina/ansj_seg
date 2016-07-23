@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -159,9 +160,16 @@ public class UserDefineLibrary {
 	 */
 	public static void loadLibrary(Forest forest, String path) {
 		// 加载用户自定义词典
-		File file = null;
+		File file;
 		if (path != null) {
 			file = new File(path);
+			if (!file.exists()) {
+				// Try load from classpath
+				URL url = UserDefineLibrary.class.getClassLoader().getResource(path);
+				if (url != null) {
+					file = new File(url.getPath());
+				}
+			}
 			if (!file.canRead() || file.isHidden()) {
 				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
 				return;
@@ -169,7 +177,11 @@ public class UserDefineLibrary {
 			if (file.isFile()) {
 				loadFile(forest, file);
 			} else if (file.isDirectory()) {
-				List<File> fileList = Arrays.asList(file.listFiles());
+				File[] files = file.listFiles();
+				if (files == null) {
+					return;
+				}
+				List<File> fileList = Arrays.asList(files);
 				Collections.sort(fileList, new Comparator<File>() {
 					@Override
 					public int compare(File target, File source) {
