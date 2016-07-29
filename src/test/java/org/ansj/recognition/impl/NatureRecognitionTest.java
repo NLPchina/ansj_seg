@@ -15,5 +15,13 @@ public class NatureRecognitionTest {
 	public void test() {
 		System.out.println(ToAnalysis.parse("结婚的和尚未结婚的孙建是一个好人").recognition(new NatureRecognition()));
 	}
-
+	
+	@Test
+	public void natureGuess() {
+		System.out.println(NatureRecognition.guessNature("北京英富森股份有限公司").nature);
+		System.out.println(NatureRecognition.guessNature("尹科").nature);
+		System.out.println(NatureRecognition.guessNature("保福寺桥").nature);
+		System.out.println(NatureRecognition.guessNature("爱丽丝布衣诺夫").nature);
+	}
+	
 }

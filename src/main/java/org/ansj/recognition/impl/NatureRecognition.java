@@ -1,8 +1,11 @@
 package org.ansj.recognition.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
@@ -11,7 +14,11 @@ import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.Recognition;
+import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MathUtil;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
@@ -21,6 +28,35 @@ import org.nlpcn.commons.lang.util.WordAlert;
  * 
  */
 public class NatureRecognition implements Recognition {
+
+	private static final Forest SUFFIX_FOREST = new Forest();
+
+	static {
+		BufferedReader reader = null;
+		try {
+			reader = DicReader.getReader("nature_class_suffix.txt");
+			String temp = null;
+			while ((temp = reader.readLine()) != null) {
+				String[] split = temp.split("\t");
+				String word = split[0];
+				if (word.length() > 1) {
+					word = new StringBuffer(word).reverse().toString();
+				}
+				SUFFIX_FOREST.add(word, new String[] { split[1] });
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
 
 	private NatureTerm root = new NatureTerm(TermNature.BEGIN);
 
@@ -100,6 +136,47 @@ public class NatureRecognition implements Recognition {
 			tn = TermNatures.NULL;
 		}
 		return tn;
+	}
+
+	/**
+	 * 通过规则 猜测词性
+	 * @param word
+	 * @return
+	 */
+	public static TermNatures guessNature(String word) {
+		String nature = null;
+		SmartForest<String[]> smartForest = SUFFIX_FOREST;
+		int len = 0;
+		for (int i = word.length() - 1; i >= 0; i--) {
+			smartForest = smartForest.get(word.charAt(i));
+			if (smartForest == null) {
+				break;
+			}
+			len++;
+			if (smartForest.getStatus() == 2) {
+				nature = smartForest.getParam()[0];
+			} else if (smartForest.getStatus() == 3) {
+				nature = smartForest.getParam()[0];
+				break;
+			}
+		}
+
+		if ("nt".equals(nature) && (len > 1 || word.length() > 3)) {
+			return TermNatures.NT;
+		} else if ("ns".equals(nature)) {
+			return TermNatures.NS;
+		} else if (word.length() < 5) {
+			Result parse = ToAnalysis.parse(word);
+			for (Term term : parse.getTerms()) {
+				if ("nr".equals(term.getNatureStr())) {
+					return TermNatures.NR;
+				}
+			}
+		} else if (ForeignPersonRecognition.isFName(word)) {
+			return TermNatures.NRF;
+		}
+
+		return TermNatures.NW;
 	}
 
 	public void walk() {

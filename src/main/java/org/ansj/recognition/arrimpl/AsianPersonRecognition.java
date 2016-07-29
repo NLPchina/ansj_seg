@@ -90,7 +90,6 @@ public class AsianPersonRecognition implements TermArrRecognition{
 	 */
 
 	private Term nameFind(int offe, int beginFreq, int size) {
-		// TODO Auto-generated method stub
 		StringBuilder sb = new StringBuilder();
 		int undefinite = 0;
 		skip = false;
