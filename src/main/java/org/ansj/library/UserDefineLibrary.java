@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.ansj.app.crf.SplitWord;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
@@ -47,12 +46,9 @@ public class UserDefineLibrary {
 	/**
 	 * 关键词增加
 	 * 
-	 * @param keyword
-	 *            所要增加的关键词
-	 * @param nature
-	 *            关键词的词性
-	 * @param freq
-	 *            关键词的词频
+	 * @param keyword 所要增加的关键词
+	 * @param nature 关键词的词性
+	 * @param freq 关键词的词频
 	 */
 	public static void insertWord(String keyword, String nature, int freq) {
 		if (FOREST == null) {
@@ -87,9 +83,49 @@ public class UserDefineLibrary {
 		File file = new File(ambiguityLibrary);
 		if (file.isFile() && file.canRead()) {
 			try {
-				ambiguityForest = Library.makeForest(ambiguityLibrary);
+
+				ambiguityForest = new Forest();
+
+				BufferedReader br = null;
+				try {
+					br = IOUtil.getReader(ambiguityLibrary, "utf-8");
+
+					String temp = null;
+
+					boolean first = true;
+
+					while ((temp = br.readLine()) != null) {
+						if (StringUtil.isBlank(temp)) {
+							continue;
+						}
+
+						if (first) {
+							temp = StringUtil.trim(temp) ;
+						}
+
+						String[] split = temp.split("\t");
+
+						StringBuilder sb = new StringBuilder();
+
+						if (split.length % 2 != 0) {
+							LIBRARYLOG.error("init ambiguity  error in line :" + temp + " format err !");
+						}
+
+						for (int i = 0; i < split.length; i += 2) {
+							sb.append(split[i]);
+						}
+						ambiguityForest.addBranch(sb.toString(), split);
+
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					if (br != null) {
+						br.close();
+					}
+				}
+
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
 				e.printStackTrace();
 			}

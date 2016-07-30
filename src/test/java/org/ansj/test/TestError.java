@@ -23,9 +23,6 @@ public class TestError {
 	@Test
 	public void test() throws Exception {
 		
-		MyStaticValue.isNumRecognition = false ;
-		
-		MyStaticValue.isQuantifierRecognition = false ;
 		
 		UserDefineLibrary.insertWord("中性粒细胞百分数neut%","clear",2000);
 		UserDefineLibrary.insertWord("中性粒细胞百分数neut","clear",2000);

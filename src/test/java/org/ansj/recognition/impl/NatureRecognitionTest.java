@@ -1,5 +1,6 @@
 package org.ansj.recognition.impl;
 
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class NatureRecognitionTest {
 
 	@Test
 	public void test() {
-		System.out.println(ToAnalysis.parse("结婚的和尚未结婚的孙建是一个好人").recognition(new NatureRecognition()));
+		System.out.println(NlpAnalysis.parse("结婚的和尚未结婚的孙建是一个好人").recognition(new NatureRecognition()));
 	}
 	
 	@Test
