@@ -8,13 +8,11 @@ import java.util.Set;
 
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.DATDictionary;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
@@ -24,7 +22,6 @@ import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
-import org.ansj.util.DownLibrary;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
@@ -82,8 +79,8 @@ public class NlpAnalysis extends Analysis {
 					// 通过crf分词
 					List<String> words = splitWord.cut(graph.chars);
 
-					String temp = null;
-					TermNatures tempTermNatures = null;
+					Term tempTerm = null;
+
 					int tempOff = 0;
 
 					if (words.size() > 0) {
@@ -95,55 +92,50 @@ public class NlpAnalysis extends Analysis {
 
 					for (String word : words) {
 
-						AnsjItem item = DATDictionary.getItem(word);
+						TermNatures termNatures = NatureRecognition.getTermNatures(word); // 尝试从词典获取词性
 
 						Term term = null;
 
-						if (item != AnsjItem.NULL) {
-							term = new Term(word, tempOff, DATDictionary.getItem(word));
+						if (termNatures != TermNatures.NULL) {
+							term = new Term(word, tempOff, termNatures);
 						} else {
-							TermNatures termNatures = NatureRecognition.getTermNatures(word);
-							if (termNatures != TermNatures.NULL) {
-								term = new Term(word, tempOff, termNatures);
-							} else {
-								term = new Term(word, tempOff, TermNatures.NW);
-							}
+							term = new Term(word, tempOff, TermNatures.NW);
+							term.setNewWord(true);
 						}
 
-						if (isRuleWord(word)) { // 如果word不对那么不要了
-							temp = null;
-							tempOff += word.length();//这里offset原来没有设置导致后面的错位了
+						tempOff += word.length(); // 增加偏移量
+
+						if (term.isNewWord() && isRuleWord(word)) { // 如果word不对那么不要了
+							tempTerm = null;
 							continue;
+						}
+
+						if (term.isNewWord()) { // 尝试猜测词性
+							termNatures = NatureRecognition.guessNature(word);
+							term.updateTermNaturesAndNature(termNatures);
 						}
 
 						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
-						tempOff += word.length();
-
 						// 对于非词典中的词持有保守态度
-						if (temp != null) {
-							if (tempTermNatures != TermNatures.NW && term.termNatures() != TermNatures.NW) {
-								mc.add(temp + TAB + word, CRF_WEIGHT);
-							}
+						if (tempTerm != null && !tempTerm.isNewWord() && !term.isNewWord()) {
+							mc.add(tempTerm.getName() + TAB + word, CRF_WEIGHT);
 						}
 
-						temp = word;
+						tempTerm = term;
 
-						tempTermNatures = term.termNatures();
-
-						if (term.termNatures() != TermNatures.NW || word.length() < 2) {
-							continue;
+						if (term.isNewWord()) {
+							learn.addTerm(new NewWord(word, Nature.NW));
 						}
 
-						learn.addTerm(new NewWord(word, Nature.NW));
 					}
 
-					if (tempTermNatures != TermNatures.NW) {
-						mc.add(temp + TAB + "末##末", CRF_WEIGHT);
+					if (tempTerm != null && !tempTerm.isNewWord()) {
+						mc.add(tempTerm.getName() + TAB + "末##末", CRF_WEIGHT);
 					}
 					graph.walkPath(mc.get());
 				} else {
-					MyStaticValue.LIBRARYLOG.warn("not find crf model you can you can visit "+DownLibrary.file+" to down it ! ");
+					MyStaticValue.LIBRARYLOG.warn("not find any crf model, make sure your config right? ");
 				}
 
 				// 数字发现

@@ -1,6 +1,7 @@
 package org.ansj.test;
 
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.MyStaticValue;
 
 public class AmbiguityTest {
 	public static void main(String[] args) {
@@ -12,12 +13,17 @@ public class AmbiguityTest {
 		// 张三和 张三 nr 和 c
 		// 动漫游戏 动漫 n 游戏 n
 		// 邓颖超生前 邓颖超 nr 生前 t
-		System.out.println(ToAnalysis.parse("学习近平和李克强将称为一种时尚!"));
+//		System.out.println(ToAnalysis.parse("学习近平和李克强将称为一种时尚!"));
 //		System.out.println(ToAnalysis.parse("李民工作了一天!"));
 //		System.out.println(ToAnalysis.parse("三个和尚抬水喝!"));
-		System.out.println(ToAnalysis.parse("我想说,这事的确定不下来,我得想!"));
+//		System.out.println(ToAnalysis.parse("我想说,这事的确定不下来,我得想!"));
 //		System.out.println(ToAnalysis.parse("小和尚剃了一个和大和尚一样的和尚头"));
 //		System.out.println(ToAnalysis.parse("我喜欢玩动漫游戏"));
 //		System.out.println(ToAnalysis.parse("邓颖超生前最喜欢的一个"));
+		
+		MyStaticValue.isNumRecognition = true ;
+		MyStaticValue.isQuantifierRecognition = false ;
+		
+		System.out.println(ToAnalysis.parse("365亿个日日夜夜"));
 	}
 }

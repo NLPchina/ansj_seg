@@ -20,9 +20,9 @@ import org.nlpcn.commons.lang.util.StringUtil;
 public class MakeTrainFile {
 	public static void main(String[] args) {
 
-		String inputPath = "/Users/sunjian/Documents/workspace/ansj_crf/result_n.txt";
+		String inputPath = "corpus.txt";
 
-		String outputPath = "/Users/sunjian/Documents/src/Wapiti/test/train.txt";
+		String outputPath = "train.txt";
 
 		if (args != null && args.length == 2) {
 			inputPath = args[0];
@@ -46,8 +46,6 @@ public class MakeTrainFile {
 
 			String temp = null;
 
-			Config config = new Config(null);
-
 			int i = 0;
 
 			while ((temp = reader.readLine()) != null) {
@@ -62,7 +60,7 @@ public class MakeTrainFile {
 					temp = StringUtil.trim(temp);
 				}
 
-				List<Element> list = config.makeToElementList(temp, "\\s+");
+				List<Element> list = Config.makeToElementList(temp, "\\s+");
 
 				for (Element element : list) {
 					sb.append(element.nameStr() + " " + Config.getTagName(element.getTag()));

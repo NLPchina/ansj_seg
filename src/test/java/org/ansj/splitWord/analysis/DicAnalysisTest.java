@@ -60,7 +60,6 @@ public class DicAnalysisTest {
 		}
 
 		Assert.assertTrue(!hs.containsKey(newWord));
-
 	}
 
 }

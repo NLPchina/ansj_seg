@@ -7,8 +7,6 @@ public class NlpAnalysisTest extends CorpusTest {
 
 	@Test
 	public void test() {
-//		MyStaticValue.CRF.put(MyStaticValue.CRF_DEFAULT, "/Users/sunjian/Documents/src/CRF++-0.58/test/model.txt") ; 
-		
 		for (String string : lines) {
 			System.out.println(NlpAnalysis.parse(string));
 		}
