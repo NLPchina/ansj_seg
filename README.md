@@ -43,7 +43,7 @@ Ansj中文分词
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>3.7.6</version>
+            <version>5.0.1</version>
         </dependency>
         ....
     </dependencies>
