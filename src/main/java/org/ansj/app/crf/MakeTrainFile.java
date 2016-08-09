@@ -1,7 +1,9 @@
 package org.ansj.app.crf;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import org.ansj.app.crf.pojo.Element;
@@ -38,7 +40,7 @@ public class MakeTrainFile {
 			return;
 		}
 		try (BufferedReader reader = IOUtil.getReader(inputPath, "utf-8");
-				FileOutputStream fos = new FileOutputStream(outputPath);) {
+				FileOutputStream fos = new FileOutputStream(outputPath)) {
 			String temp = null;
 			int i = 0;
 			while ((temp = reader.readLine()) != null) {
@@ -57,8 +59,10 @@ public class MakeTrainFile {
 				fos.write(sb.toString().getBytes(IOUtil.UTF8));
 				System.out.println(++i);
 			}
-		} catch (Exception e) {
-			logger.info("发生异常", e);
+		} catch (FileNotFoundException e) {
+			logger.warn("文件没有找到", e);
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
 	}
 

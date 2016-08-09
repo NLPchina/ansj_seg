@@ -1,6 +1,5 @@
 package org.ansj.lucene4;
 
-import java.io.BufferedReader;
 import java.io.Reader;
 import java.util.Set;
 

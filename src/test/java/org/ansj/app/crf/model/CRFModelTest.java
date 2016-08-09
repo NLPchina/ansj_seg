@@ -20,7 +20,7 @@ import junit.framework.Assert;
 public class CRFModelTest extends CorpusTest {
 
 	private String modelPath = "src/main/resources/crf.model";
-	
+
 	private String testModelPath = "src/main/resources/test.model";
 
 	private String testPath = "src/test/resources/corpus.txt";
@@ -86,12 +86,8 @@ public class CRFModelTest extends CorpusTest {
 				// 填充result
 				String[] result = temp_str.split("\t");
 				for (int i = 0; i < result.length; i++) {
-					try {
-						had_words_array[offe] = result[i];
-						offe += result[i].length();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-					}
+					had_words_array[offe] = result[i];
+					offe += result[i].length();
 				}
 
 				offe = 0;

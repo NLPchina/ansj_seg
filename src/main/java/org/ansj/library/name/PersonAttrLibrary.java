@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.util.MyStaticValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 人名标注所用的词典就是简单的hashmap简单方便谁用谁知道,只在加载词典的时候用
@@ -17,12 +19,15 @@ import org.ansj.util.MyStaticValue;
  */
 
 public class PersonAttrLibrary {
+
+	public static final Logger logger = LoggerFactory.getLogger(PersonAttrLibrary.class);
+
 	private HashMap<String, PersonNatureAttr> pnMap = null;
 
 	public PersonAttrLibrary() {
 	}
 
-	public HashMap<String, PersonNatureAttr> getPersonMap() throws NumberFormatException, IOException {
+	public HashMap<String, PersonNatureAttr> getPersonMap() {
 		if (pnMap != null) {
 			return pnMap;
 		}
@@ -32,8 +37,7 @@ public class PersonAttrLibrary {
 	}
 
 	// name_freq
-	private void init2() throws NumberFormatException, IOException {
-		
+	private void init2() {
 		Map<String, int[][]> personFreqMap = MyStaticValue.getPersonFreqMap();
 		Set<Entry<String, int[][]>> entrySet = personFreqMap.entrySet();
 		PersonNatureAttr pna = null;
@@ -51,12 +55,9 @@ public class PersonAttrLibrary {
 	}
 
 	// person.dic
-	private void init1() throws NumberFormatException, IOException {
-		
-		BufferedReader br = null;
-		try {
+	private void init1() {
+		try (BufferedReader br = MyStaticValue.getPersonReader()) {
 			pnMap = new HashMap<String, PersonNatureAttr>();
-			br = MyStaticValue.getPersonReader();
 			String temp = null;
 			String[] strs = null;
 			PersonNatureAttr pna = null;
@@ -70,9 +71,10 @@ public class PersonAttrLibrary {
 				pna.addFreq(Integer.parseInt(strs[1]), Integer.parseInt(strs[2]));
 				pnMap.put(strs[0], pna);
 			}
-		} finally {
-			if (br != null)
-				br.close();
+		} catch (NumberFormatException e) {
+			logger.warn("数字格式不正确", e);
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
 	}
 }

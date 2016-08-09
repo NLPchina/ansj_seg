@@ -1,7 +1,5 @@
 package org.ansj.ansj_lucene4_plug;
 
-//package org.ansj.lucene3;
-//
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -65,7 +63,7 @@ public class IndexTest {
 
 	@Test
 	public void indexTest() throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {
-		MyStaticValue.userLibrary = "/home/ansj/workspace/ansj_seg/library/default.dic";
+		MyStaticValue.DIC.put(MyStaticValue.DIC_DEFAULT, "../../library/default.dic");
 		HashSet<String> hs = new HashSet<String>();
 		hs.add("的");
 		Analyzer analyzer = new AnsjIndexAnalysis(hs, false);

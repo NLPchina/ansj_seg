@@ -1,8 +1,9 @@
 package org.ansj.lucene5;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,8 +16,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AnsjAnalyzer extends Analyzer {
+	public final Logger logger = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * dic equals user , query equals to
@@ -60,9 +64,10 @@ public class AnsjAnalyzer extends Analyzer {
 		try {
 			List<String> readFile2List = IOUtil.readFile2List(stopwordsDir, IOUtil.UTF8);
 			return new HashSet<String>(readFile2List);
-		} catch (Exception e) {
-			System.err.println("not foun stop word path by " + new File(stopwordsDir).getAbsolutePath());
-			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			logger.warn("文件没有找到", e);
+		} catch (UnsupportedEncodingException e) {
+			logger.warn("编码不支持", e);
 		}
 		return null;
 	}
