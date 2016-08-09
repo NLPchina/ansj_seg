@@ -75,16 +75,32 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<groupId>net.orfjackal.retrolambda</groupId>
+				<artifactId>retrolambda-maven-plugin</artifactId>
+				<version>2.3.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process-main</goal>
+						</goals>
+					</execution>
+				</executions>
 				<configuration>
-					<source>1.6</source>
 					<target>1.6</target>
-					<encoding>UTF-8</encoding>
+					<defaultMethods>false</defaultMethods>
+					<fork>false</fork>
 				</configuration>
 			</plugin>
 
-
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
 			<plugin>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>2.4.1</version>
@@ -102,7 +118,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -118,9 +133,7 @@
 					<attach>true</attach>
 				</configuration>
 			</plugin>
-
 		</plugins>
-
 
 		<extensions>
 			<extension>

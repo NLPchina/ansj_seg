@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
 
+import junit.framework.Assert;
+
 public class CRFModelTest extends CorpusTest {
 
 	private String modelPath = "src/main/resources/crf.model";
@@ -33,7 +35,7 @@ public class CRFModelTest extends CorpusTest {
 	@Test
 	public void savePathTest() throws FileNotFoundException, IOException {
 		model.writeModel(testModelPath);
-		new File("test.model").delete();
+		Assert.assertEquals(true, new File(testModelPath).delete());
 	}
 
 	@Test
