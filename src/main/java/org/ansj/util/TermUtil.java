@@ -128,7 +128,7 @@ public class TermUtil {
 	}
 
 	protected static Term setToAndfrom(Term to, Term from) {
-		// TODO Auto-generated method stub
+		
 		from.setTo(to);
 		to.setFrom(from);
 		return from;
@@ -187,7 +187,7 @@ public class TermUtil {
 	 * @return
 	 */
 	public static List<Term> getSubTerm(Term from, Term to) {
-		// TODO Auto-generated method stub
+		
 		List<Term> subTerm = new ArrayList<Term>(3);
 
 		while ((from = from.to()) != to) {

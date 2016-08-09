@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.ansj.util.MyStaticValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 机构名识别词典加载类
@@ -13,6 +15,9 @@ import org.ansj.util.MyStaticValue;
  * 
  */
 public class CompanyAttrLibrary {
+
+	public static final Logger logger = LoggerFactory.getLogger(CompanyAttrLibrary.class);
+
 	private static HashMap<String, int[]> cnMap = null;
 
 	private CompanyAttrLibrary() {
@@ -22,23 +27,15 @@ public class CompanyAttrLibrary {
 		if (cnMap != null) {
 			return cnMap;
 		}
-		try {
-			init();
-		} catch (Exception e) {
-			e.printStackTrace();
-			cnMap = new HashMap<String, int[]>();
-		}
+		init();
 		return cnMap;
 	}
 
 	// company_freq
-
-	private static void init() throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = null;
-		try {
+	
+	private static void init() {
+		try (BufferedReader br = MyStaticValue.getCompanReader()) {
 			cnMap = new HashMap<String, int[]>();
-			br = MyStaticValue.getCompanReader();
 			String temp = null;
 			String[] strs = null;
 			int[] cna = null;
@@ -49,9 +46,8 @@ public class CompanyAttrLibrary {
 				cna[1] = Integer.parseInt(strs[2]);
 				cnMap.put(strs[0], cna);
 			}
-		} finally {
-			if (br != null)
-				br.close();
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
 	}
 

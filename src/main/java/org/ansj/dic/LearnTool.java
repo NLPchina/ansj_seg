@@ -138,7 +138,7 @@ public class LearnTool {
 	}
 
 	private void valueResult(SmartForest<NewWord> smartForest, HashMap<String, Double> hm, Nature nature) {
-		// TODO Auto-generated method stub
+		
 		if (smartForest == null || smartForest.branches == null) {
 			return;
 		}

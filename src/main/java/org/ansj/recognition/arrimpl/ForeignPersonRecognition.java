@@ -108,7 +108,7 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 
 	@SuppressWarnings("unchecked")
 	private void reset() {
-		// TODO Auto-generated method stub
+		
 		tempList.clear();
 		prList = (LinkedList<NameChar>) PRLIST.clone();
 	}

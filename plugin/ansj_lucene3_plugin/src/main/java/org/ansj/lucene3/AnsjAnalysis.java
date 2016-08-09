@@ -36,7 +36,7 @@ public class AnsjAnalysis extends Analyzer {
 
 	@Override
 	public TokenStream tokenStream(String fieldName, Reader reader) {
-		// TODO Auto-generated method stub
+		
 		return new AnsjTokenizer(new ToAnalysis(new BufferedReader(reader)), reader, filter, pstemming);
 	}
 

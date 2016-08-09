@@ -8,6 +8,8 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有语料无法训练
@@ -16,6 +18,8 @@ import org.nlpcn.commons.lang.util.StringUtil;
  * 
  */
 public class NatureLibrary {
+
+	public static final Logger logger = LoggerFactory.getLogger(NatureLibrary.class);
 
 	private static final int YI = 1;
 	private static final int FYI = -1;
@@ -33,52 +37,49 @@ public class NatureLibrary {
 	 * 初始化对照表
 	 */
 	static {
-		try {
-			init();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new RuntimeException("词性列表加载失败!");
-		}
+		init();
 	}
 
-	private static void init() throws IOException {
+	private static void init() {
 		String split = "\t";
-		// 加载词对照性表
-		BufferedReader reader = MyStaticValue.getNatureMapReader();
+		int maxLength = 0;
 		String temp = null;
 		String[] strs = null;
-		int maxLength = 0;
-		int p0 = 0;
-		int p1 = 0;
-		int p2 = 0;
-		while ((temp = reader.readLine()) != null) {
-			strs = temp.split(split);
-			if (strs.length != 4)
-				continue;
+		// 加载词对照性表
+		try (BufferedReader reader = MyStaticValue.getNatureMapReader()) {
+			int p0 = 0;
+			int p1 = 0;
+			int p2 = 0;
+			while ((temp = reader.readLine()) != null) {
+				strs = temp.split(split);
+				if (strs.length != 4)
+					continue;
 
-			p0 = Integer.parseInt(strs[0]);
-			p1 = Integer.parseInt(strs[1]);
-			p2 = Integer.parseInt(strs[3]);
-			NATUREMAP.put(strs[2], new Nature(strs[2], p0, p1, p2));
-			maxLength = Math.max(maxLength, p1);
-		}
-		reader.close();
-
-		// 加载词性关系
-		NATURETABLE = new int[maxLength + 1][maxLength + 1];
-		reader = MyStaticValue.getNatureTableReader();
-		int j = 0;
-		while ((temp = reader.readLine()) != null) {
-			if (StringUtil.isBlank(temp))
-				continue;
-			strs = temp.split(split);
-			for (int i = 0; i < strs.length; i++) {
-				NATURETABLE[j][i] = Integer.parseInt(strs[i]);
+				p0 = Integer.parseInt(strs[0]);
+				p1 = Integer.parseInt(strs[1]);
+				p2 = Integer.parseInt(strs[3]);
+				NATUREMAP.put(strs[2], new Nature(strs[2], p0, p1, p2));
+				maxLength = Math.max(maxLength, p1);
 			}
-			j++;
+		} catch (IOException e) {
+			logger.warn("词性列表加载失败!", e);
 		}
-		reader.close();
+		// 加载词性关系
+		try (BufferedReader reader = MyStaticValue.getNatureTableReader()) {
+			NATURETABLE = new int[maxLength + 1][maxLength + 1];
+			int j = 0;
+			while ((temp = reader.readLine()) != null) {
+				if (StringUtil.isBlank(temp))
+					continue;
+				strs = temp.split(split);
+				for (int i = 0; i < strs.length; i++) {
+					NATURETABLE[j][i] = Integer.parseInt(strs[i]);
+				}
+				j++;
+			}
+		} catch (IOException e) {
+			logger.warn("加载词性关系失败!", e);
+		}
 	}
 
 	/**
@@ -126,10 +127,4 @@ public class NatureLibrary {
 		}
 		return nature;
 	}
-
-	public static void main(String[] args) throws IOException {
-		// System.out.println(NATURETABLE[NATUREMAP.get("nr").natureIndex][NATUREMAP.get("mq").natureIndex]);
-
-	}
-
 }

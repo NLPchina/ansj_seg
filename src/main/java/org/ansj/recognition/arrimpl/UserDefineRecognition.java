@@ -9,6 +9,8 @@ import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -17,6 +19,8 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
  * 
  */
 public class UserDefineRecognition implements TermArrRecognition {
+
+	public final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private Term[] terms = null;
 
@@ -107,8 +111,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 		try {
 			return Integer.parseInt(str);
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.warn("{}不是一个数字", str, e);
 			return def;
 		}
 	}

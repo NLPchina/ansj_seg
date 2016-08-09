@@ -41,7 +41,7 @@ public class Keyword implements Comparable<Keyword> {
 
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
+		
 		if (obj instanceof Keyword) {
 			Keyword k = (Keyword) obj;
 			return k.name.equals(name);
@@ -52,7 +52,6 @@ public class Keyword implements Comparable<Keyword> {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return name + "/" + score;// "="+score+":"+freq+":"+idf;
 	}
 

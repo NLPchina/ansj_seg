@@ -61,7 +61,7 @@
 //	}
 //
 //	private static int mergerId(List<Term> parse, StringBuilder sb, int i) {
-//		// TODO Auto-generated method stub
+//		
 //		Term term = null;
 //		String natureStr = null;
 //		int j = i + 1;
