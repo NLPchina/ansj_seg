@@ -5,6 +5,7 @@ import static org.ansj.util.MyStaticValue.LIBRARYLOG;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
@@ -46,9 +47,12 @@ public class UserDefineLibrary {
 	/**
 	 * 关键词增加
 	 * 
-	 * @param keyword 所要增加的关键词
-	 * @param nature 关键词的词性
-	 * @param freq 关键词的词频
+	 * @param keyword
+	 *            所要增加的关键词
+	 * @param nature
+	 *            关键词的词性
+	 * @param freq
+	 *            关键词的词频
 	 */
 	public static void insertWord(String keyword, String nature, int freq) {
 		if (FOREST == null) {
@@ -76,62 +80,41 @@ public class UserDefineLibrary {
 	private static void initAmbiguityLibrary() {
 		String ambiguityLibrary = MyStaticValue.ambiguityLibrary;
 		if (StringUtil.isBlank(ambiguityLibrary)) {
-			LIBRARYLOG.warn("init ambiguity  warning :" + ambiguityLibrary + " because : file not found or failed to read !");
+			LIBRARYLOG.warn("init ambiguity  warning :{} because : file not found or failed to read !",
+					ambiguityLibrary);
 			return;
 		}
 		ambiguityLibrary = MyStaticValue.ambiguityLibrary;
-		File file = new File(ambiguityLibrary);
-		if (file.isFile() && file.canRead()) {
-			try {
-
-				ambiguityForest = new Forest();
-
-				BufferedReader br = null;
-				try {
-					br = IOUtil.getReader(ambiguityLibrary, "utf-8");
-
-					String temp = null;
-
-					boolean first = true;
-
-					while ((temp = br.readLine()) != null) {
-						if (StringUtil.isBlank(temp)) {
-							continue;
-						}
-
-						if (first) {
-							temp = StringUtil.trim(temp) ;
-						}
-
-						String[] split = temp.split("\t");
-
-						StringBuilder sb = new StringBuilder();
-
-						if (split.length % 2 != 0) {
-							LIBRARYLOG.error("init ambiguity  error in line :" + temp + " format err !");
-						}
-
-						for (int i = 0; i < split.length; i += 2) {
-							sb.append(split[i]);
-						}
-						ambiguityForest.addBranch(sb.toString(), split);
-
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					if (br != null) {
-						br.close();
-					}
+		ambiguityForest = new Forest();
+		try (BufferedReader br = IOUtil.getReader(ambiguityLibrary, "utf-8")) {
+			String temp = null;
+			boolean first = true;
+			while ((temp = br.readLine()) != null) {
+				if (StringUtil.isBlank(temp)) {
+					continue;
 				}
-
-			} catch (Exception e) {
-				LIBRARYLOG.warn("init ambiguity  error :" + new File(ambiguityLibrary).getAbsolutePath() + " because : not find that file or can not to read !");
-				e.printStackTrace();
+				if (first) {
+					temp = StringUtil.trim(temp);
+				}
+				String[] split = temp.split("\t");
+				StringBuilder sb = new StringBuilder();
+				if (split.length % 2 != 0) {
+					LIBRARYLOG.error("init ambiguity  error in line :" + temp + " format err !");
+				}
+				for (int i = 0; i < split.length; i += 2) {
+					sb.append(split[i]);
+				}
+				ambiguityForest.addBranch(sb.toString(), split);
 			}
 			LIBRARYLOG.info("init ambiguityLibrary ok!");
-		} else {
-			LIBRARYLOG.warn("init ambiguity  warning :" + new File(ambiguityLibrary).getAbsolutePath() + " because : file not found or failed to read !");
+		} catch (FileNotFoundException e) {
+			LIBRARYLOG.warn("init ambiguity  error :{} because : not find that file or can not found!",
+					new File(ambiguityLibrary).getAbsolutePath());
+		} catch (UnsupportedEncodingException e) {
+			LIBRARYLOG.warn("不支持的编码", e);
+		} catch (IOException e) {
+			LIBRARYLOG.warn("init ambiguity  error :{} because : not find that file or can not to read!",
+					new File(ambiguityLibrary).getAbsolutePath());
 		}
 	}
 
@@ -139,12 +122,8 @@ public class UserDefineLibrary {
 	 * 加载用户自定义词典和补充词典
 	 */
 	private static void initUserLibrary() {
-		try {
-			FOREST = MyStaticValue.getDicForest();
-			// 加载用户自定义词典
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		FOREST = MyStaticValue.getDicForest();
+		// 加载用户自定义词典
 	}
 
 	// 单个文件加载词典
@@ -154,24 +133,19 @@ public class UserDefineLibrary {
 			return;
 		}
 		String temp = null;
-		BufferedReader br = null;
 		String[] strs = null;
 		Value value = null;
-		try {
-			br = IOUtil.getReader(new FileInputStream(file), "UTF-8");
+		try (BufferedReader br = IOUtil.getReader(new FileInputStream(file), "UTF-8")) {
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isBlank(temp)) {
 					continue;
 				} else {
 					strs = temp.split("\t");
-
 					strs[0] = strs[0].toLowerCase();
-
 					// 如何核心辞典存在那么就放弃
 					if (MyStaticValue.isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {
 						continue;
 					}
-
 					if (strs.length != 3) {
 						value = new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR);
 					} else {
@@ -180,14 +154,11 @@ public class UserDefineLibrary {
 					Library.insertWord(forest, value);
 				}
 			}
-			LIBRARYLOG.info("init user userLibrary ok path is : " + file.getAbsolutePath());
+			LIBRARYLOG.info("init user userLibrary ok path is : {}", file.getAbsolutePath());
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LIBRARYLOG.warn("不支持的编码", e);
 		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			IOUtil.close(br);
-			br = null;
+			LIBRARYLOG.warn("IO异常", e);
 		}
 	}
 
@@ -207,7 +178,8 @@ public class UserDefineLibrary {
 				}
 			}
 			if (!file.canRead() || file.isHidden()) {
-				LIBRARYLOG.warn("init userLibrary  warning :" + new File(path).getAbsolutePath() + " because : file not found or failed to read !");
+				LIBRARYLOG.warn("init userLibrary  warning :{} because : file not found or failed to read !",
+						file.getAbsolutePath());
 				return;
 			}
 			if (file.isFile()) {
@@ -230,7 +202,7 @@ public class UserDefineLibrary {
 					}
 				}
 			} else {
-				LIBRARYLOG.warn("init user library  error :" + new File(path).getAbsolutePath() + " because : not find that file !");
+				LIBRARYLOG.warn("init user library  error :{} because : not find that file !", file.getAbsolutePath());
 			}
 		}
 	}

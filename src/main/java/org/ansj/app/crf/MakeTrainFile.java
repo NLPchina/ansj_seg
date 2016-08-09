@@ -2,12 +2,13 @@ package org.ansj.app.crf;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import org.ansj.app.crf.pojo.Element;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 生成crf 或者是 wapiti的训练语聊工具.
@@ -18,6 +19,9 @@ import org.nlpcn.commons.lang.util.StringUtil;
  *
  */
 public class MakeTrainFile {
+
+	public static final Logger logger = LoggerFactory.getLogger(MakeTrainFile.class);
+
 	public static void main(String[] args) {
 
 		String inputPath = "corpus.txt";
@@ -30,70 +34,32 @@ public class MakeTrainFile {
 		}
 
 		if (StringUtil.isBlank(inputPath) || StringUtil.isBlank(outputPath)) {
-			System.out.println("org.ansj.app.crf.MakeTrainFile [inputPath] [outputPath]");
+			logger.info("org.ansj.app.crf.MakeTrainFile [inputPath] [outputPath]");
 			return;
 		}
-
-		BufferedReader reader = null;
-
-		FileOutputStream fos = null;
-
-		try {
-
-			reader = IOUtil.getReader(inputPath, "utf-8");
-
-			fos = new FileOutputStream(outputPath);
-
+		try (BufferedReader reader = IOUtil.getReader(inputPath, "utf-8");
+				FileOutputStream fos = new FileOutputStream(outputPath);) {
 			String temp = null;
-
 			int i = 0;
-
 			while ((temp = reader.readLine()) != null) {
-
 				StringBuilder sb = new StringBuilder("\n");
-
 				if (StringUtil.isBlank(temp)) {
 					continue;
 				}
-
 				if (i == 0) {
 					temp = StringUtil.trim(temp);
 				}
-
 				List<Element> list = Config.makeToElementList(temp, "\\s+");
-
 				for (Element element : list) {
 					sb.append(element.nameStr() + " " + Config.getTagName(element.getTag()));
 					sb.append("\n");
 				}
-
 				fos.write(sb.toString().getBytes(IOUtil.UTF8));
-
 				System.out.println(++i);
 			}
-
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-
-			if (fos != null) {
-				try {
-					fos.flush();
-					fos.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			logger.info("发生异常", e);
 		}
-
 	}
 
 }

@@ -6,7 +6,6 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
-import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
 /**

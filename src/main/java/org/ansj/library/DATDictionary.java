@@ -38,22 +38,12 @@ public class DATDictionary {
 	 * @return
 	 */
 	private static DoubleArrayTire loadDAT() {
-
 		long start = System.currentTimeMillis();
-
 		try {
-
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
-
-			/**
-			 * 人名识别必备的
-			 */
+			// 人名识别必备的
 			personNameFull(dat);
-
-			/**
-			 * 记录词典中的词语，并且清除部分数据
-			 */
-
+			// 记录词典中的词语，并且清除部分数据
 			for (Item item : dat.getDAT()) {
 				if (item == null || item.getName() == null) {
 					continue;
@@ -71,20 +61,16 @@ public class DATDictionary {
 			}
 			// 特殊字符标准化
 			IN_SYSTEM['％'] = '%';
-
-			MyStaticValue.LIBRARYLOG.info("init core library ok use time :" + (System.currentTimeMillis() - start));
-
+			MyStaticValue.LIBRARYLOG.info("init core library ok use time :{}", System.currentTimeMillis() - start);
 			return dat;
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyStaticValue.LIBRARYLOG.warn("无法实例化", e);
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyStaticValue.LIBRARYLOG.warn("非法访问", e);
 		} catch (NumberFormatException e) {
-			e.printStackTrace();
+			MyStaticValue.LIBRARYLOG.warn("数字格式异常", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyStaticValue.LIBRARYLOG.warn("IO异常", e);
 		}
 
 		return null;
@@ -117,9 +103,9 @@ public class DATDictionary {
 			}
 
 			if ((ansjItem.termNatures) == null) {
-				if(temp.length()==1&&temp.charAt(0)<256){
+				if (temp.length() == 1 && temp.charAt(0) < 256) {
 					ansjItem.termNatures = TermNatures.NULL;
-				}else{
+				} else {
 					ansjItem.termNatures = new TermNatures(TermNature.NR);
 				}
 			}

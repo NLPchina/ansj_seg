@@ -33,7 +33,7 @@ public class PersonAttrLibrary {
 
 	// name_freq
 	private void init2() throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
+		
 		Map<String, int[][]> personFreqMap = MyStaticValue.getPersonFreqMap();
 		Set<Entry<String, int[][]>> entrySet = personFreqMap.entrySet();
 		PersonNatureAttr pna = null;
@@ -52,7 +52,7 @@ public class PersonAttrLibrary {
 
 	// person.dic
 	private void init1() throws NumberFormatException, IOException {
-		// TODO Auto-generated method stub
+		
 		BufferedReader br = null;
 		try {
 			pnMap = new HashMap<String, PersonNatureAttr>();

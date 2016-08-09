@@ -29,7 +29,7 @@ public class ToAnalysis extends Analysis {
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
-		// TODO Auto-generated method stub
+		
 		Merger merger = new Merger() {
 			@Override
 			public List<Term> merger() {

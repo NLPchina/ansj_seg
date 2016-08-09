@@ -1,5 +1,14 @@
 package org.ansj.splitWord;
 
+import static org.ansj.library.DATDictionary.IN_SYSTEM;
+import static org.ansj.library.DATDictionary.status;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
@@ -13,15 +22,6 @@ import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.ansj.library.DATDictionary.IN_SYSTEM;
-import static org.ansj.library.DATDictionary.status;
 
 /**
  * 基本分词+人名识别

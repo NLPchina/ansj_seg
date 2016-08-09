@@ -38,7 +38,7 @@ public class AnsjTokenizer extends Tokenizer {
 
 	@Override
 	public boolean incrementToken() throws IOException {
-		// TODO Auto-generated method stub
+		
 		clearAttributes();
 		int position = 0;
 		Term term = null;

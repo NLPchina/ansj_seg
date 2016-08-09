@@ -44,30 +44,21 @@ public class CRFppTxtModel extends Model {
 		reader.readLine();// version
 		reader.readLine();// cost-factor
 
-		int maxId = Integer.parseInt(reader.readLine().split(":")[1].trim());// read
-
+		// int maxId =
+		// Integer.parseInt(reader.readLine().split(":")[1].trim());// read
 		reader.readLine();// xsize
 		reader.readLine(); // line
-
 		int[] statusCoven = loadTagCoven(reader);
-
 		Map<String, Integer> featureIndex = loadConfig(reader);
-
 		StringBuilder sb = new StringBuilder();
 		for (int[] t1 : config.getTemplate()) {
 			sb.append(Arrays.toString(t1) + " ");
 		}
-
-		LOG.info("load template ok template : " + sb);
-
+		logger.info("load template ok template : {}", sb);
 		TreeMap<Integer, Pair<String, String>> featureNames = loadFeatureName(featureIndex, reader);
-
-		LOG.info("load feature ok feature size : " + featureNames.size());
-
+		logger.info("load feature ok feature size : {}", featureNames.size());
 		loadFeatureWeight(reader, statusCoven, featureNames);
-
-		LOG.info("load crfpp model ok ! use time :" + (System.currentTimeMillis() - start));
-
+		logger.info("load crfpp model ok ! use time :{}", (System.currentTimeMillis() - start));
 	}
 
 	/**
@@ -82,7 +73,8 @@ public class CRFppTxtModel extends Model {
 	 * @throws Exception
 	 */
 
-	private TreeMap<Integer, Pair<String, String>> loadFeatureName(Map<String, Integer> featureIndex, BufferedReader br) throws Exception {
+	private TreeMap<Integer, Pair<String, String>> loadFeatureName(Map<String, Integer> featureIndex, BufferedReader br)
+			throws Exception {
 
 		TreeMap<Integer, Pair<String, String>> featureNames = new TreeMap<Integer, Pair<String, String>>();
 
@@ -167,7 +159,8 @@ public class CRFppTxtModel extends Model {
 	 * @param statusCoven
 	 * @throws Exception
 	 */
-	private void loadFeatureWeight(BufferedReader br, int[] statusCoven, TreeMap<Integer, Pair<String, String>> featureNames) throws Exception {
+	private void loadFeatureWeight(BufferedReader br, int[] statusCoven,
+			TreeMap<Integer, Pair<String, String>> featureNames) throws Exception {
 
 		featureTree = new SmartForest<float[]>();
 
@@ -185,7 +178,8 @@ public class CRFppTxtModel extends Model {
 
 			char fc = Character.toUpperCase(pair.getValue0().charAt(0));
 
-			len = fc == 'B' ? Config.TAG_NUM * Config.TAG_NUM : fc == 'U' ? Config.TAG_NUM : fc == '*' ? (Config.TAG_NUM + Config.TAG_NUM * Config.TAG_NUM) : 0;
+			len = fc == 'B' ? Config.TAG_NUM * Config.TAG_NUM
+					: fc == 'U' ? Config.TAG_NUM : fc == '*' ? (Config.TAG_NUM + Config.TAG_NUM * Config.TAG_NUM) : 0;
 
 			if (len == 0) {
 				throw new Exception("unknow feature type " + pair.getValue0());
@@ -298,26 +292,17 @@ public class CRFppTxtModel extends Model {
 	}
 
 	@Override
-	public boolean checkModel(String modelPath) throws IOException {
+	public boolean checkModel(String modelPath) {
 
-		InputStream is = null;
-		try {
-			is = IOUtil.getInputStream(modelPath);
-
+		try (InputStream is = IOUtil.getInputStream(modelPath)) {
 			byte[] bytes = new byte[100];
-
 			is.read(bytes);
-
 			String string = new String(bytes);
 			if (string.startsWith("version")) { // 加载crf++ 的txt类型的modle
 				return true;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (is != null) {
-				is.close();
-			}
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
 		return false;
 	}

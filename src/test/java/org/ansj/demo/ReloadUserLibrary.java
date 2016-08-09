@@ -21,7 +21,7 @@ public class ReloadUserLibrary {
 	}
 
 	private static void loadFormStr() {
-		// TODO Auto-generated method stub
+		
 		Forest forest = new Forest();
 
 		Library.insertWord(forest, "中国  nature  1000");
@@ -30,7 +30,7 @@ public class ReloadUserLibrary {
 	}
 
 	private static void loadFormFile() {
-		// TODO Auto-generated method stub
+		
 		// make new forest
 		Forest forest = new Forest();
 

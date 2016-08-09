@@ -14,7 +14,7 @@ public class NwNatureRecognition implements Recognition{
 
 	@Override
 	public void recognition(Result result) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

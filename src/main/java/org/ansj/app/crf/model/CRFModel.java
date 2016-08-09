@@ -1,6 +1,7 @@
 package org.ansj.app.crf.model;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -19,8 +20,8 @@ import org.nlpcn.commons.lang.util.IOUtil;
  *
  */
 public class CRFModel extends Model {
-	
-	public static final String version = "ansj1" ;
+
+	public static final String version = "ansj1";
 
 	public CRFModel(String name) {
 		super(name);
@@ -30,34 +31,22 @@ public class CRFModel extends Model {
 	public void loadModel(String modelPath) throws Exception {
 		loadModel(IOUtil.getInputStream(modelPath));
 	}
-	
-	public void loadModel(InputStream is) throws Exception{
-		
-		ObjectInputStream ois = null;
 
+	public void loadModel(InputStream is) throws Exception {
 		long start = System.currentTimeMillis();
-		try {
-
-			ois = new ObjectInputStream(new GZIPInputStream(is));
-
+		try (ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(is))) {
 			ois.readUTF();
-
 			this.status = (float[][]) ois.readObject();
-
 			int[][] template = (int[][]) ois.readObject();
-
 			this.config = new Config(template);
-
 			int win = 0;
 			int size = 0;
 			String name = null;
-
 			featureTree = new SmartForest<float[]>();
 			float[] value = null;
 			do {
 				win = ois.readInt();
 				size = ois.readInt();
-
 				for (int i = 0; i < size; i++) {
 					name = ois.readUTF();
 					value = new float[win];
@@ -66,43 +55,27 @@ public class CRFModel extends Model {
 					}
 					featureTree.add(name, value);
 				}
-
 			} while (win == 0 || size == 0);
-
-			LOG.info("load crf model ok ! use time :" + (System.currentTimeMillis() - start));
-
-		} finally {
-			if(is!=null){
-				is.close();
-			}
-			if (ois != null) {
-				ois.close();
-			}
+			logger.info("load crf model ok ! use time :{}", System.currentTimeMillis() - start);
 		}
 	}
 
 	@Override
-	public boolean checkModel(String modelPath) throws IOException {
-		ObjectInputStream inputStream = null ;
-		try {
-			
-			inputStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(modelPath)));
-
-			String version = inputStream.readUTF() ;
-
+	public boolean checkModel(String modelPath) {
+		try (FileInputStream fis = new FileInputStream(modelPath)) {
+			ObjectInputStream inputStream = new ObjectInputStream(new GZIPInputStream(fis));
+			String version = inputStream.readUTF();
 			if (version.equals("ansj1")) { // 加载ansj,model
 				return true;
 			}
-			
-		}catch(ZipException ze){
-		} catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			if(inputStream!=null){
-				inputStream.close(); 
-			}
+		} catch (ZipException ze) {
+			logger.warn("解压异常", ze);
+		} catch (FileNotFoundException e) {
+			logger.warn("文件没有找到", e);
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
-		return false ;
+		return false;
 	}
 
 }

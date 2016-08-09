@@ -1,7 +1,5 @@
 package org.ansj.util;
 
-import java.util.Arrays;
-
 public class MatrixUtil {
 
 	/**
@@ -27,7 +25,7 @@ public class MatrixUtil {
 	}
 
 	public static double sum(double[][] w) {
-		// TODO Auto-generated method stub
+		
 		double value = 0;
 		for (double[] dbs : w) {
 			value += sum(dbs);

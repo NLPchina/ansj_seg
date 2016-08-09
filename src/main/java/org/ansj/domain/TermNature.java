@@ -39,7 +39,7 @@ public class TermNature implements Serializable{
 	}
 
 	public static TermNature[] setNatureStrToArray(String natureStr) {
-		// TODO Auto-generated method stub
+		
 		natureStr = natureStr.substring(1, natureStr.length() - 1);
 		String[] split = natureStr.split(",");
 		String[] strs = null;
@@ -55,6 +55,6 @@ public class TermNature implements Serializable{
 
 	@Override
 	public String toString() {
-		return this.nature.natureStr + "/" + frequency;
+		return nature.natureStr + "/" + frequency;
 	}
 }

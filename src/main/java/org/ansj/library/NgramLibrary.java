@@ -11,14 +11,9 @@ import org.ansj.util.MyStaticValue;
  */
 public class NgramLibrary {
 	static {
-		try {
-			long start = System.currentTimeMillis();
-			MyStaticValue.initBigramTables();
-			MyStaticValue.LIBRARYLOG.info("init ngram ok use time :" + (System.currentTimeMillis() - start));
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		long start = System.currentTimeMillis();
+		MyStaticValue.initBigramTables();
+		MyStaticValue.LIBRARYLOG.info("init ngram ok use time :{}", System.currentTimeMillis() - start);
 	}
 
 	/**
@@ -33,7 +28,6 @@ public class NgramLibrary {
 			return 0;
 		}
 		Integer freq = from.item().bigramEntryMap.get(to.item().getIndex());
-
 		if (freq == null) {
 			return 0;
 		} else {

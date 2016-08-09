@@ -29,7 +29,7 @@ public class ReloadAmbiguityLibrary {
 	}
 
 	private static void loadFormStr() {
-		// TODO Auto-generated method stub
+		
 		Forest forest = new Forest();
 
 		Value value = new Value("三个和尚", "三个", "m", "和尚", "n");
@@ -39,7 +39,7 @@ public class ReloadAmbiguityLibrary {
 	}
 
 	private static void loadFormFile() throws Exception {
-		// TODO Auto-generated method stub
+		
 		// make new forest
 		Forest forest = Library.makeForest("new_Library_Path");
 

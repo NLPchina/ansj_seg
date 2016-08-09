@@ -20,6 +20,8 @@ import org.ansj.util.MathUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.WordAlert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 词性标注工具类
@@ -28,13 +30,11 @@ import org.nlpcn.commons.lang.util.WordAlert;
  * 
  */
 public class NatureRecognition implements Recognition {
-
+	public static final Logger logger = LoggerFactory.getLogger(NatureRecognition.class);
 	private static final Forest SUFFIX_FOREST = new Forest();
 
 	static {
-		BufferedReader reader = null;
-		try {
-			reader = DicReader.getReader("nature_class_suffix.txt");
+		try (BufferedReader reader = DicReader.getReader("nature_class_suffix.txt")) {
 			String temp = null;
 			while ((temp = reader.readLine()) != null) {
 				String[] split = temp.split("\t");
@@ -44,18 +44,9 @@ public class NatureRecognition implements Recognition {
 				}
 				SUFFIX_FOREST.add(word, new String[] { split[1] });
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+		} catch (IOException e) {
+			logger.warn("IO异常", e);
 		}
-
 	}
 
 	private NatureTerm root = new NatureTerm(TermNature.BEGIN);
@@ -140,6 +131,7 @@ public class NatureRecognition implements Recognition {
 
 	/**
 	 * 通过规则 猜测词性
+	 * 
 	 * @param word
 	 * @return
 	 */
@@ -191,7 +183,7 @@ public class NatureRecognition implements Recognition {
 	}
 
 	private void setScore(NatureTerm natureTerm, NatureTerm[] natureTerms) {
-		// TODO Auto-generated method stub
+
 		for (int i = 0; i < natureTerms.length; i++) {
 			natureTerms[i].setScore(natureTerm);
 		}

@@ -169,7 +169,7 @@ public class NlpAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				// TODO Auto-generated method stub
+				
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
