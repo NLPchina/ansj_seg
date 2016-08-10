@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -13,8 +12,8 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
@@ -37,9 +36,7 @@ public class IndexAndTest {
 	
 	@Test
 	public void test() throws Exception{
-		
-		MyStaticValue.userLibrary = "../../library/default.dic" ;
-		
+		MyStaticValue.DIC.put(MyStaticValue.DIC_DEFAULT, "../../library/default.dic");	
 		PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new AnsjAnalyzer(TYPE.index));
 		Directory directory = null;
 		IndexWriter iwriter = null;

@@ -1,14 +1,9 @@
 package org.ansj.ansj_lucene5_plug;
 
-//package org.ansj.lucene3;
-//
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StringReader;
 import java.util.Date;
-import java.util.HashSet;
 
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.ansj.util.MyStaticValue;
@@ -18,9 +13,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
@@ -67,7 +60,7 @@ public class IndexTest {
 
 	@Test
 	public void testDic() throws IOException {
-		MyStaticValue.userLibrary = "D:\\git\\ansj_seg\\library\\default.dic";
+		MyStaticValue.DIC.put(MyStaticValue.DIC_DEFAULT, "../../library/default.dic");	
 		Token nt = new Token();
 		Analyzer ca = new AnsjAnalyzer(TYPE.dic);
 		String content = ("\n\n\n\n\n\n\n我从小就不由自主地认为自己长大以后一定得成为一个象我父亲一样的画家, 可能是父母潜移默化的影响。其实我根本不知道作为画家意味着什么，我是否喜欢，最重要的是否适合我，我是否有这个才华。其实人到中年的我还是不确定我最喜欢什么，最想做的是什么？我相信很多人和我一样有同样的烦恼。毕竟不是每个人都能成为作文里的宇航员，科学家和大教授。知道自己适合做什么，喜欢做什么，能做好什么其实是个非常困难的问题。"

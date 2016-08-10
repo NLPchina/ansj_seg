@@ -211,7 +211,6 @@ public class AnsjReader extends Reader {
 		}
 	}
 
-
 	public int getStart() {
 		return this.start;
 	}

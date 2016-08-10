@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>org.ansj</groupId>
-		<artifactId>MavenAccount-aggregator</artifactId>
+		<artifactId>ansj_plugin</artifactId>
 		<version>0.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>

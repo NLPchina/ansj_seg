@@ -7,17 +7,19 @@
 		<version>0.0.1</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
-	<artifactId>ansj_lucene3_plug</artifactId>
-	<version>3.0</version>
+	<artifactId>ansj_solr4_plugin</artifactId>
 	<packaging>jar</packaging>
-	<name>ansj_lucene3_plug</name>
-
+	<name>ansj_solr4_plugin</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-core</artifactId>
-			<version>3.4.0</version>
-			<scope>provided</scope>
+			<artifactId>lucene-analyzers-common</artifactId>
+			<version>4.10.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ansj</groupId>
+			<artifactId>ansj_lucene4_plug</artifactId>
+			<version>3.0</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -1,7 +1,5 @@
 package org.ansj.ansj_lucene5_plug;
 
-//package org.ansj.lucene3;
-//
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -63,7 +61,7 @@ public class IndexTest {
 
 	@Test
 	public void indexTest() throws CorruptIndexException, LockObtainFailedException, IOException, ParseException {
-		MyStaticValue.userLibrary = "/home/ansj/workspace/ansj_seg/library/default.dic";
+		MyStaticValue.DIC.put(MyStaticValue.DIC_DEFAULT, "../../library/default.dic");
 		HashSet<String> hs = new HashSet<String>();
 		hs.add("的");
 		Analyzer analyzer = new AnsjAnalyzer();
@@ -84,14 +82,14 @@ public class IndexTest {
 		System.out.println("索引建立完毕");
 
 		Analyzer queryAnalyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.dic, hs);
-		;
 
 		System.out.println("index ok to search!");
 		search(queryAnalyzer, directory, "\"季德胜蛇药片\"");
 
 	}
 
-	private void search(Analyzer queryAnalyzer, Directory directory, String queryStr) throws CorruptIndexException, IOException, ParseException {
+	private void search(Analyzer queryAnalyzer, Directory directory, String queryStr)
+			throws CorruptIndexException, IOException, ParseException {
 		IndexSearcher isearcher;
 		DirectoryReader directoryReader = DirectoryReader.open(directory);
 		// 查询索引

@@ -18,46 +18,44 @@ public class WapitiCRFModelTest {
 	private String modelPath = "/Users/sunjian/Documents/src/Wapiti/test/model.dat";
 
 	private String testPath = "src/test/resources/corpus.txt";
-	
-	private WapitiCRFModel model = null ;
-	
+
+	private WapitiCRFModel model = null;
+
 	@Before
-	public void init() throws Exception{
-		if (!Check.checkFileExit(modelPath)){
-			return ;
+	public void init() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
 		}
-		model = new WapitiCRFModel("test"); 
+		model = new WapitiCRFModel("test");
 		model.loadModel(modelPath);
 	}
 
-	
-
 	@Test
-	public void savePathTest() throws FileNotFoundException, IOException{
-		if (!Check.checkFileExit(modelPath)){
-			return ;
+	public void savePathTest() throws FileNotFoundException, IOException {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
 		}
 		model.writeModel("crf.model");
 	}
 
 	@Test
 	public void cute() throws Exception {
-		if (!Check.checkFileExit(modelPath)){
-			return ;
+		if (!Check.checkFileExit(modelPath)) {
+			return;
 		}
 
 		SplitWord sw = new SplitWord(model);
 
 		System.out.println(sw.cut("瓦西里斯的船只中有４０％驶向远东，每个月几乎都有两三条船停靠中国港口。"));
-		
+
 	}
 
 	@Test
 	public void test() throws Exception {
-		if (!Check.checkFileExit(modelPath)){
-			return ;
+		if (!Check.checkFileExit(modelPath)) {
+			return;
 		}
-		
+
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(testPath)));
 
 		WapitiCRFModel model = new WapitiCRFModel("test");
@@ -99,12 +97,8 @@ public class WapitiCRFModelTest {
 			// 填充result
 			String[] result = temp_str.split("\t");
 			for (int i = 0; i < result.length; i++) {
-				try {
-					had_words_array[offe] = result[i];
-					offe += result[i].length();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-				}
+				had_words_array[offe] = result[i];
+				offe += result[i].length();
 			}
 
 			offe = 0;
