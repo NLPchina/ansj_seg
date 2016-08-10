@@ -150,11 +150,6 @@
 		</extensions>
 	</build>
 
-	<modules>
-		<module>ansj_lucene3_plug</module>
-		<module>ansj_lucene4_plug</module>
-		<module>ansj_lucene5_plug</module>
-	</modules>
 </project>
 
 
