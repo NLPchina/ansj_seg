@@ -62,5 +62,36 @@ public class TagContentTest {
 		
 		System.out.println(tagContent);
 	}
+	
+	
+	@Test
+	public void test1() {
+
+		String query = "信息公开 工作要点";
+
+		String content = "信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开?"
+				+"sdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsd?"
+				+ "信息公开 工作要点 ";
+
+		
+		SummaryComputer sc = new SummaryComputer(15, true, null, content) ;
+		
+		TagContent tc = new TagContent("<begin>", "<end>");
+		
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+		
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+		
+		System.out.println(tagContent);
+	}
 
 }

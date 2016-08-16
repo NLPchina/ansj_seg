@@ -12,6 +12,7 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.tire.SmartGetWord;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
+import org.nlpcn.commons.lang.util.MapCount;
 
 /**
  * 自动摘要,同时返回关键词
@@ -128,35 +129,46 @@ public class SummaryComputer {
 		double maxScore = 0;
 		int maxIndex = 0;
 
+		MapCount<String> mc = new MapCount<>();
+
 		for (int i = 0; i < sentences.size(); i++) {
 			double tempScore = sentences.get(i).score;
 			int tempLength = sentences.get(i).value.length();
+			mc.addAll(sentences.get(i).mc.get());
 
 			if (tempLength >= len) {
+				tempScore = tempScore * mc.get().size();
 				if (maxScore < tempScore) {
 					maxScore = tempScore;
 					maxIndex = i;
 					continue;
 				}
+				mc.get().clear();
 			}
 			for (int j = i + 1; j < sentences.size(); j++) {
 				tempScore += sentences.get(j).score;
 				tempLength += sentences.get(j).value.length();
+				mc.addAll(sentences.get(j).mc.get());
+
 				if (tempLength >= len) {
+					tempScore = tempScore * mc.get().size();
 					if (maxScore < tempScore) {
 						maxScore = tempScore;
 						maxIndex = i;
-						break;
 					}
+					mc.get().clear();
+					break;
 				}
 			}
 
 			if (tempLength < len) {
+				tempScore = tempScore * mc.get().size();
 				if (maxScore < tempScore) {
 					maxScore = tempScore;
 					maxIndex = i;
 					break;
 				}
+				mc.get().clear();
 			}
 		}
 
@@ -208,8 +220,9 @@ public class SummaryComputer {
 	 */
 	private void computeScore(Sentence sentence, SmartForest<Double> forest) {
 		SmartGetWord<Double> sgw = new SmartGetWord<Double>(forest, sentence.value);
-		while (sgw.getFrontWords() != null) {
-			sentence.score += sgw.getParam();
+		String name = null;
+		while ((name = sgw.getFrontWords()) != null) {
+			sentence.updateScore(name, sgw.getParam());
 		}
 		if (sentence.score == 0) {
 			sentence.score = sentence.value.length() * -0.005;
@@ -275,10 +288,18 @@ public class SummaryComputer {
 	 */
 	class Sentence {
 		String value;
-		double score;
+		private double score;
+
+		private MapCount<String> mc = new MapCount<>();
 
 		public Sentence(String value) {
 			this.value = value.trim();
+		}
+
+		public void updateScore(String name, double score) {
+			mc.add(name);
+			Double size = mc.get().get(name);
+			this.score += score / size;
 		}
 
 		public String toString() {
