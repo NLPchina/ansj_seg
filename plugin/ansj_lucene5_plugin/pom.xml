@@ -10,7 +10,7 @@
 	</parent>
 
 	<artifactId>ansj_lucene5_plug</artifactId>
-	<version>3.7.5.0</version>
+	<version>5.0.1</version>
 	<packaging>jar</packaging>
 	<name>ansj_lucene5_plug</name>
 	

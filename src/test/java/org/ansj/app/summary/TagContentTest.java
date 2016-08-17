@@ -71,7 +71,7 @@ public class TagContentTest {
 
 		String content = "信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开?"
 				+"sdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsd?"
-				+ "信息公开 工作要点 ";
+				+ "信息公开 工作要点 信息公开 工作要点 信息公开 工作要点 ";
 
 		
 		SummaryComputer sc = new SummaryComputer(15, true, null, content) ;
