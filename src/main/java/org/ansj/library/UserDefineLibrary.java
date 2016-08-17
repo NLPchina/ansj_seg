@@ -1,7 +1,6 @@
 package org.ansj.library;
 
 import org.ansj.util.MyStaticValue;
-import org.apache.commons.lang3.StringUtils;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -77,7 +76,7 @@ public class UserDefineLibrary {
                 try (BufferedReader br = IOUtil.getReader(file, "utf-8")) {
                     String temp;
                     while ((temp = br.readLine()) != null) {
-                        if (StringUtils.isNotBlank(temp)) {
+                        if (StringUtil.isNotBlank(temp)) {
                             temp = StringUtil.trim(temp);
                             String[] split = temp.split("\t");
                             StringBuilder sb = new StringBuilder();
@@ -128,7 +127,7 @@ public class UserDefineLibrary {
                 Value value;
                 try (BufferedReader br = IOUtil.getReader(new FileInputStream(file), "UTF-8")) {
                     while ((temp = br.readLine()) != null) {
-                        if (StringUtils.isNotBlank(temp)) {
+                        if (StringUtil.isNotBlank(temp)) {
                             temp = StringUtil.trim(temp);
                             strs = temp.split("\t");
                             strs[0] = strs[0].toLowerCase();
