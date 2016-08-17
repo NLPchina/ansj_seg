@@ -34,7 +34,7 @@ public class ReloadUserLibrary {
 		// make new forest
 		Forest forest = new Forest();
 
-		UserDefineLibrary.loadFile(forest, new File("new_Library_Path"));
+		UserDefineLibrary.loadLibrary(forest,new File("new_Library_Path").getPath());
 
 		// 将新构建的辞典树替换掉舊的。
 		UserDefineLibrary.FOREST = forest;
