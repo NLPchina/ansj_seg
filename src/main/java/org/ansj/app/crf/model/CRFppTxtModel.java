@@ -73,8 +73,7 @@ public class CRFppTxtModel extends Model {
 	 * @throws Exception
 	 */
 
-	private TreeMap<Integer, Pair<String, String>> loadFeatureName(Map<String, Integer> featureIndex, BufferedReader br)
-			throws Exception {
+	private TreeMap<Integer, Pair<String, String>> loadFeatureName(Map<String, Integer> featureIndex, BufferedReader br) throws Exception {
 
 		TreeMap<Integer, Pair<String, String>> featureNames = new TreeMap<Integer, Pair<String, String>>();
 
@@ -159,8 +158,7 @@ public class CRFppTxtModel extends Model {
 	 * @param statusCoven
 	 * @throws Exception
 	 */
-	private void loadFeatureWeight(BufferedReader br, int[] statusCoven,
-			TreeMap<Integer, Pair<String, String>> featureNames) throws Exception {
+	private void loadFeatureWeight(BufferedReader br, int[] statusCoven, TreeMap<Integer, Pair<String, String>> featureNames) throws Exception {
 
 		featureTree = new SmartForest<float[]>();
 
@@ -178,8 +176,7 @@ public class CRFppTxtModel extends Model {
 
 			char fc = Character.toUpperCase(pair.getValue0().charAt(0));
 
-			len = fc == 'B' ? Config.TAG_NUM * Config.TAG_NUM
-					: fc == 'U' ? Config.TAG_NUM : fc == '*' ? (Config.TAG_NUM + Config.TAG_NUM * Config.TAG_NUM) : 0;
+			len = fc == 'B' ? Config.TAG_NUM * Config.TAG_NUM : fc == 'U' ? Config.TAG_NUM : fc == '*' ? (Config.TAG_NUM + Config.TAG_NUM * Config.TAG_NUM) : 0;
 
 			if (len == 0) {
 				throw new Exception("unknow feature type " + pair.getValue0());
@@ -228,7 +225,13 @@ public class CRFppTxtModel extends Model {
 
 		// TODO: 这个是个写死的过程,如果标签发生改变需要重新来写这里
 		for (int i = 0; i < Config.TAG_NUM; i++) {
-			char c = br.readLine().charAt(0);
+			String line = br.readLine();
+			if (StringUtil.isBlank(line)) {
+				i--;
+				continue;
+			}
+
+			char c = line.charAt(0);
 			switch (c) {
 			case 'S':
 				conver[i] = Config.S;
