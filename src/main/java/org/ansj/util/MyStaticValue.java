@@ -80,7 +80,7 @@ public class MyStaticValue {
 			rb = ResourceBundle.getBundle("ansj_library");
 		} catch (Exception e) {
 			try {
-				File find = FileFinder.find("ansj_library.properties", 2);
+				File find = FileFinder.find("ansj_library.properties", 1);
 				if (find != null && find.isFile()) {
 					rb = new PropertyResourceBundle(
 							IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
