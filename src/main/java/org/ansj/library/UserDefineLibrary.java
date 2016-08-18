@@ -204,7 +204,7 @@ public class UserDefineLibrary {
      * @return File Array
      */
     private static File[] findLibrary(String path) {
-        File[] libs = new File[1];
+        File[] libs = new File[0];
         File file = new File(path);
         if (!file.exists()) {
             // Try load from classpath
@@ -217,6 +217,7 @@ public class UserDefineLibrary {
         if (file.canRead()) {
 
             if (file.isFile()) {
+                libs = new File[1];
                 libs[0] = file;
             } else if (file.isDirectory()) {
                 File[] files = file.listFiles(new FilenameFilter() {
