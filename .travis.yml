@@ -5,6 +5,6 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-install: mvn install -DskipTests=true -Dmaven.javadoc.skip=true
+mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
 
 script: mvn test
