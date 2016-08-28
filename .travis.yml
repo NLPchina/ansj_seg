@@ -7,4 +7,4 @@ jdk:
 
 mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
 
-script: mvn test
+script: mvn -f pom_CI.xml test
