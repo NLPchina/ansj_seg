@@ -6,4 +6,4 @@ jdk:
   - openjdk7
 
 script: 
-	- mvn -f pom_CI.xml -Dmaven.javadoc.skip=true -Dgpg.skip=true test  
+  - mvn -f pom_CI.xml -Dmaven.javadoc.skip=true -Dgpg.skip=true test  
