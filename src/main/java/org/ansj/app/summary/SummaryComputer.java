@@ -252,6 +252,7 @@ public class SummaryComputer {
 				break;
 			case ' ':
 			case '	':
+			case '　':
 			case ' ':
 			case ',':
 			case '。':
