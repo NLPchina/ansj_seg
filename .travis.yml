@@ -5,8 +5,5 @@ jdk:
   - oraclejdk7
   - openjdk7
 
-before_install:
-	- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-
 script: 
-	- mvn -f pom_CI.xml test
+	- mvn -f pom_CI.xml -Dmaven.javadoc.skip=true -Dgpg.skip=true test  
