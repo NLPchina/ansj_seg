@@ -66,8 +66,13 @@ public class GetWordsImpl implements GetWords {
 					tempBaseValue = baseValue;
 					return str;
 				} else {
-					i = start;
-					start++;
+					// i = start;
+					// start++;
+					// end = 0;
+					// baseValue = 0;
+					// break;
+					start=i;
+					i--;
 					end = 0;
 					baseValue = 0;
 					break;
