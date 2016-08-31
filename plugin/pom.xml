@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	<name>plug-template</name>
 	<description>the plugin of ansj_seg for the third party</description>
-
+	<url>https://github.com/NLPchina/ansj_seg</url>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>

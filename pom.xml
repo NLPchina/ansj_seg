@@ -7,7 +7,7 @@
 	<name>ansj_seg</name>
 	<version>5.0.2</version>
 	<description>best java chinese word seg ! </description>
-	<url>https://github.com/ansjsun/ansj_seg</url>
+	<url>https://github.com/NLPchina/ansj_seg</url>
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
