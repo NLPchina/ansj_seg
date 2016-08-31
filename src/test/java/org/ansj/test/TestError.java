@@ -1,21 +1,12 @@
 package org.ansj.test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Term;
-import org.ansj.library.DATDictionary;
+import org.ansj.domain.Result;
 import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.impl.NatureRecognition;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
@@ -23,13 +14,26 @@ public class TestError {
 	@Test
 	public void test() throws Exception {
 		
+		Forest forest = new Forest();
 		
-		UserDefineLibrary.insertWord("中性粒细胞百分数neut%","clear",2000);
-		UserDefineLibrary.insertWord("中性粒细胞百分数neut","clear",2000);
-		UserDefineLibrary.insertWord("neut%","clear",2000);
 		
-		String str = "2中性粒细胞百分数NEUT%70.2040.00--75.00%" ;
-		 System.out.println(ToAnalysis.parse(str));
+		Library.insertWord(forest, "苹果果醋\t10\t10");
+		Library.insertWord(forest, "苹果\t10	10");
+		Library.insertWord(forest, "苹果醋	10	10");
+		Library.insertWord(forest, "果醋	10	10");
+		
+		UserDefineLibrary.FOREST=forest;
+		 
+		Result re = DicAnalysis.parse("发扬光大对方地方看苹果醋");
+		System.out.println(re);
+		
+		
+//		UserDefineLibrary.insertWord("中性粒细胞百分数neut%","clear",2000);
+//		UserDefineLibrary.insertWord("中性粒细胞百分数neut","clear",2000);
+//		UserDefineLibrary.insertWord("neut%","clear",2000);
+//		
+//		String str = "2中性粒细胞百分数NEUT%70.2040.00--75.00%" ;
+//		 System.out.println(ToAnalysis.parse(str));
 
 //		LearnTool tool = new LearnTool();
 //		System.out.println(NlpAnalysis.parse("这次回家，我经济南下广州", tool));
