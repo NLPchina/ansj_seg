@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.ansj.lucene.util.AnsjTokenizer;
+import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
@@ -29,7 +30,7 @@ public class AnsjAnalyzer extends Analyzer {
 	 *
 	 */
 	public static enum TYPE {
-		index, query, to, dic, user, search
+		base, index, query, to, dic, user, search
 	}
 
 	/** 自定义停用词 */
@@ -38,10 +39,7 @@ public class AnsjAnalyzer extends Analyzer {
 	private TYPE type;
 
 	/**
-	 * @param filter
-	 *            停用词
-	 * @param pstemming
-	 *            是否分析词干
+	 * @param filter 停用词
 	 */
 	public AnsjAnalyzer(TYPE type, Set<String> filter) {
 		this.type = type;
@@ -55,6 +53,10 @@ public class AnsjAnalyzer extends Analyzer {
 
 	public AnsjAnalyzer(TYPE type) {
 		this.type = type;
+	}
+
+	public AnsjAnalyzer(String typeStr) {
+		this.type = TYPE.valueOf(typeStr);
 	}
 
 	private Set<String> filter(String stopwordsDir) {
@@ -93,6 +95,13 @@ public class AnsjAnalyzer extends Analyzer {
 		Tokenizer tokenizer;
 
 		switch (type) {
+		case base:
+			if (reader == null) {
+				tokenizer = new AnsjTokenizer(new BaseAnalysis(), filter);
+			} else {
+				tokenizer = new AnsjTokenizer(new BaseAnalysis(reader), filter);
+			}
+			break;
 		case index:
 			if (reader == null) {
 				tokenizer = new AnsjTokenizer(new IndexAnalysis(), filter);
