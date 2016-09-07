@@ -78,7 +78,7 @@ public class CRFppTxtModel extends Model {
 		TreeMap<Integer, Pair<String, String>> featureNames = new TreeMap<Integer, Pair<String, String>>();
 
 		String temp = null;
-		while (StringUtil.isNotBlank(temp = br.readLine().trim())) {
+		while (StringUtil.isNotBlank(temp = br.readLine())) {
 
 			int indexOf = temp.indexOf(" ");
 

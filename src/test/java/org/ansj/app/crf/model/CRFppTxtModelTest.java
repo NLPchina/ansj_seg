@@ -17,7 +17,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
 
 public class CRFppTxtModelTest {
 
-	private String modelPath = "/Users/sunjian/Documents/src/CRF++-0.58/test/model.txt";
+	private String modelPath = "src/test/resources/crf_txt.model";
 
 	private String testPath = "src/test/resources/corpus.txt";
 

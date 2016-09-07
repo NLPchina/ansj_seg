@@ -54,7 +54,7 @@ public class AnsjAnalyzer extends Analyzer {
 	public AnsjAnalyzer(TYPE type) {
 		this.type = type;
 	}
-
+	
 	public AnsjAnalyzer(String typeStr) {
 		this.type = TYPE.valueOf(typeStr);
 	}
