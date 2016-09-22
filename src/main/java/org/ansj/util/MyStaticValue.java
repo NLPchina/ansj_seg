@@ -65,6 +65,11 @@ public class MyStaticValue {
 	 * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
 	 */
 	public static String ambiguityLibrary = "library/ambiguity.dic";
+	
+	/**
+	 * 增加同义词词典路径变量
+	 */
+	public static String synonymsLibrary = "library/synonyms.dic";
 
 	/**
 	 * 是否用户辞典不加载相同的词
