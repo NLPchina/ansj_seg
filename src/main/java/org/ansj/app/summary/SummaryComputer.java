@@ -121,7 +121,7 @@ public class SummaryComputer {
 
 		// 先断句
 		List<Sentence> sentences = toSentenceList(content.toCharArray());
-
+		
 		for (Sentence sentence : sentences) {
 			computeScore(sentence, sf);
 		}
@@ -250,7 +250,7 @@ public class SummaryComputer {
 					sb = new StringBuilder();
 				}
 				break;
-			case ' ':
+			//case ' ':
 			case '	':
 			case '　':
 			case ' ':

@@ -116,4 +116,28 @@ public class TagContentTest {
 		System.out.println(tagContent);
 	}
 
+	@Test
+	public void englishWordTest(){
+		String query = "plasma";
+
+		String content = "Aerodynamic Control of High Performance Aircraft Using Pulsed Plasma Actuators"  ;
+
+		SummaryComputer sc = new SummaryComputer(200, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+		
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
 }
