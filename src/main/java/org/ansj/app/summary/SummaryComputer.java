@@ -287,7 +287,7 @@ public class SummaryComputer {
 	/*
 	 * 句子对象
 	 */
-	class Sentence {
+	public class Sentence {
 		String value;
 		private double score;
 
