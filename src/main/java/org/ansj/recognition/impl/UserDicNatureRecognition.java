@@ -16,6 +16,10 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
  */
 public class UserDicNatureRecognition implements Recognition {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Forest[] forests = new Forest[] { UserDefineLibrary.FOREST };
 
 	public UserDicNatureRecognition() {
