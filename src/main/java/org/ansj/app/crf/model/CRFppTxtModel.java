@@ -54,11 +54,11 @@ public class CRFppTxtModel extends Model {
 		for (int[] t1 : config.getTemplate()) {
 			sb.append(Arrays.toString(t1) + " ");
 		}
-		logger.info("load template ok template : {}", sb);
+		logger.info("load template ok template : "+ sb);
 		TreeMap<Integer, Pair<String, String>> featureNames = loadFeatureName(featureIndex, reader);
-		logger.info("load feature ok feature size : {}", featureNames.size());
+		logger.info("load feature ok feature size : "+ featureNames.size());
 		loadFeatureWeight(reader, statusCoven, featureNames);
-		logger.info("load crfpp model ok ! use time :{}", (System.currentTimeMillis() - start));
+		logger.info("load crfpp model ok ! use time : "+ (System.currentTimeMillis() - start));
 	}
 
 	/**

@@ -93,14 +93,14 @@ public class UserDefineLibrary {
                 } catch (UnsupportedEncodingException e) {
                     LIBRARYLOG.warn("不支持的编码", e);
                 } catch (IOException e) {
-                    LIBRARYLOG.warn("Init ambiguity library error :{}, path: {}", e.getMessage(), file.getPath());
+                    LIBRARYLOG.warn("Init ambiguity library error :"+ e.getMessage()+", path: "+ file.getPath());
                 }
             }
 
             LIBRARYLOG.info("Init ambiguity library ok!");
 
         } else {
-            LIBRARYLOG.warn("Init ambiguity library warning :{} because : file not found or failed to read !", MyStaticValue.ambiguityLibrary);
+            LIBRARYLOG.warn("Init ambiguity library warning :"+MyStaticValue.ambiguityLibrary+" because : file not found or failed to read !");
         }
 
     }
@@ -146,7 +146,7 @@ public class UserDefineLibrary {
                 } catch (UnsupportedEncodingException e) {
                     LIBRARYLOG.warn("不支持的编码", e);
                 } catch (IOException e) {
-                    LIBRARYLOG.warn("Init user library error :{}, path: {}", e.getMessage(), file.getPath());
+                    LIBRARYLOG.warn("Init user library error :"+e.getMessage()+", path: "+file.getPath());
                 }
             }
 
@@ -154,7 +154,7 @@ public class UserDefineLibrary {
 
 
         } else {
-            LIBRARYLOG.warn("Init user library  error :{} because : not find that file !", path);
+            LIBRARYLOG.warn("Init user library  error :"+path+" because : not find that file !");
         }
 
     }

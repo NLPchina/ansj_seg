@@ -5,12 +5,12 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.TermArrRecognition;
+import org.ansj.util.MyStaticValue;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 用户自定义词典.又称补充词典
@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
  */
 public class UserDefineRecognition implements TermArrRecognition {
 
-	public final Logger logger = LoggerFactory.getLogger(getClass());
+	public static final Log logger = MyStaticValue.getLog();
 
 	private Term[] terms = null;
 
@@ -111,7 +111,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 		try {
 			return Integer.parseInt(str);
 		} catch (NumberFormatException e) {
-			logger.warn("{}不是一个数字", str, e);
+			logger.warn(str + "不是一个数字", e);
 			return def;
 		}
 	}

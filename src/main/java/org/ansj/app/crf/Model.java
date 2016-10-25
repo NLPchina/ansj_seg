@@ -11,14 +11,14 @@ import java.util.zip.GZIPOutputStream;
 import org.ansj.app.crf.model.CRFModel;
 import org.ansj.app.crf.model.CRFppTxtModel;
 import org.ansj.app.crf.model.WapitiCRFModel;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.MapCount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 public abstract class Model {
 
-	public final Logger logger = LoggerFactory.getLogger("CRF");
+	public static final Log logger = MyStaticValue.getLog() ;
 
 	protected String name;
 

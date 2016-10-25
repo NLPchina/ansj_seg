@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.util.List;
 
 import org.ansj.app.crf.pojo.Element;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 生成crf 或者是 wapiti的训练语聊工具.
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MakeTrainFile {
 
-	public static final Logger logger = LoggerFactory.getLogger(MakeTrainFile.class);
+	private static final Log logger = MyStaticValue.getLog();
 
 	public static void main(String[] args) {
 

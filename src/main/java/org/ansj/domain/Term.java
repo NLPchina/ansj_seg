@@ -36,6 +36,9 @@ public class Term implements Serializable{
 	private Nature nature = Nature.NULL;
 	//是否是一个新词
 	private boolean newWord ;
+	//同义词
+	private List<String> synonyms ;
+	
 
 	private List<Term> subTerm = null;
 
@@ -271,6 +274,14 @@ public class Term implements Serializable{
 	public void updateTermNaturesAndNature(TermNatures termNatures) {
 		this.termNatures = termNatures;
 		this.nature = termNatures.nature ;
+	}
+
+	public List<String> getSynonyms() {
+		return synonyms;
+	}
+
+	public void setSynonyms(List<String> synonyms) {
+		this.synonyms = synonyms;
 	}
 	
 }

@@ -56,7 +56,7 @@ public class CRFModel extends Model {
 					featureTree.add(name, value);
 				}
 			} while (win == 0 || size == 0);
-			logger.info("load crf model ok ! use time :{}", System.currentTimeMillis() - start);
+			logger.info("load crf model ok ! use time :" + (System.currentTimeMillis() - start));
 		}
 	}
 

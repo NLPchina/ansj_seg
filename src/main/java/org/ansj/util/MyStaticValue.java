@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
@@ -24,8 +25,8 @@ import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.ObjConver;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 这个类储存一些公用变量.
@@ -37,7 +38,7 @@ public class MyStaticValue {
 
 	public static final Forest EMPTY_FOREST = new Forest();
 
-	public static final Logger LIBRARYLOG = LoggerFactory.getLogger("DICLOG");
+	public static final Log LIBRARYLOG = getLog();
 
 	public static final String DIC_DEFAULT = "dic";
 
@@ -65,7 +66,7 @@ public class MyStaticValue {
 	 * 用户自定义词典的加载,如果是路径就扫描路径下的dic文件
 	 */
 	public static String ambiguityLibrary = "library/ambiguity.dic";
-	
+
 	/**
 	 * 增加同义词词典路径变量
 	 */
@@ -87,14 +88,11 @@ public class MyStaticValue {
 			try {
 				File find = FileFinder.find("ansj_library.properties", 1);
 				if (find != null && find.isFile()) {
-					rb = new PropertyResourceBundle(
-							IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
-					LIBRARYLOG.info(
-							"load ansj_library not find in classPath ! i find it in {} make sure it is your config!",
-							find.getAbsolutePath());
+					rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
+					LIBRARYLOG.info("load ansj_library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
 			} catch (Exception e1) {
-				LIBRARYLOG.warn("not find ansj_library.properties. and err {} i think it is a bug!", e1.getMessage());
+				LIBRARYLOG.warn("not find ansj_library.properties. and err {} i think it is a bug!", e1);
 			}
 		}
 
@@ -105,14 +103,11 @@ public class MyStaticValue {
 				try {
 					File find = FileFinder.find("library.properties", 2);
 					if (find != null && find.isFile()) {
-						rb = new PropertyResourceBundle(
-								IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
-						LIBRARYLOG.info(
-								"load library not find in classPath ! i find it in {} make sure it is your config!",
-								find.getAbsolutePath());
+						rb = new PropertyResourceBundle(IOUtil.getReader(find.getAbsolutePath(), System.getProperty("file.encoding")));
+						LIBRARYLOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 					}
 				} catch (Exception e1) {
-					LIBRARYLOG.warn("not find library.properties. and err {} i think it is a bug!", e1.getMessage());
+					LIBRARYLOG.warn("not find library.properties. and err {} i think it is a bug!", e1);
 				}
 			}
 		}
@@ -131,12 +126,12 @@ public class MyStaticValue {
 					CRF.put(key, rb.getString(key));
 				} else if (key.startsWith("dic_")) {
 					if (DIC.containsKey(key)) {
-						LIBRARYLOG.warn("{} dic config repeat definition now overwrite it !", key);
+						LIBRARYLOG.warn(key + "{} dic config repeat definition now overwrite it !");
 					}
 					DIC.put(key, rb.getString(key));
 				} else if (key.startsWith("crf_")) {
 					if (CRF.containsKey(key)) {
-						LIBRARYLOG.warn("{} crf config repeat definition now overwrite it !", key);
+						LIBRARYLOG.warn(key + " crf config repeat definition now overwrite it !");
 					}
 					CRF.put(key, rb.getString(key));
 				} else {
@@ -144,7 +139,7 @@ public class MyStaticValue {
 						Field field = MyStaticValue.class.getField(key);
 						field.set(null, ObjConver.conversion(rb.getString(key), field.getType()));
 					} catch (NoSuchFieldException e) {
-						LIBRARYLOG.error("not find field by {}", key);
+						LIBRARYLOG.error("not find field by " + key);
 					} catch (SecurityException e) {
 						LIBRARYLOG.error("安全异常", e);
 					} catch (IllegalArgumentException e) {
@@ -265,7 +260,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static void initBigramTables() {
-		try (BufferedReader reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8")){
+		try (BufferedReader reader = IOUtil.getReader(DicReader.getInputStream("bigramdict.dic"), "UTF-8")) {
 			String temp = null;
 			String[] strs = null;
 			int freq = 0;
@@ -330,7 +325,7 @@ public class MyStaticValue {
 			if (CRF_DEFAULT.equals(key)) { // 加载内置模型
 				return initDefaultModel();
 			} else {
-				LIBRARYLOG.warn("crf {} not found in config ", key);
+				LIBRARYLOG.warn("crf " + key + " not found in config ");
 				return null;
 			}
 		} else if (temp instanceof String) {
@@ -381,13 +376,13 @@ public class MyStaticValue {
 				LIBRARYLOG.info("begin init crf model!");
 				SplitWord crfSplitWord = new SplitWord(Model.load(key, modelPath));
 				CRF.put(key, crfSplitWord);
-				LIBRARYLOG.info("load crf use time:{} path is : {}", System.currentTimeMillis() - start, modelPath);
+				LIBRARYLOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + modelPath);
 				return crfSplitWord;
 			} else {
-				LIBRARYLOG.info("{} file  not found ,please make sure it is exists : {}", key, modelPath);
+				LIBRARYLOG.info(key + " file  not found ,please make sure it is exists : " + modelPath);
 			}
 		} catch (Exception e) {
-			LIBRARYLOG.info("{} file : {} load err {}", key, modelPath, e.getMessage());
+			LIBRARYLOG.info(key + " file : " + modelPath + " load err " + e.getMessage());
 		}
 		return null;
 	}
@@ -411,7 +406,7 @@ public class MyStaticValue {
 		Object temp = DIC.get(key);
 
 		if (temp == null) {
-			LIBRARYLOG.warn("dic {} not found in config ",key);
+			LIBRARYLOG.warn("dic " + key + " not found in config ");
 			return null;
 		} else if (temp instanceof String) {
 			return initForest(key, (String) temp);
@@ -439,4 +434,13 @@ public class MyStaticValue {
 		return forest;
 	}
 
+	/**
+	 * 获取log默认当前类,不支持android
+	 * 
+	 * @return
+	 */
+	public static Log getLog() {
+		StackTraceElement[] sts = Thread.currentThread().getStackTrace();
+		return LogFactory.getLog(sts[2].getClassName());
+	}
 }

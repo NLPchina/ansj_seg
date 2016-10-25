@@ -18,6 +18,11 @@ import org.ansj.recognition.Recognition;
  */
 public class FilterRecognition implements Recognition {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7041503137429986566L;
+
 	private Set<String> filter = new HashSet<String>();
 
 	private Set<String> natureFilter = new HashSet<String>();

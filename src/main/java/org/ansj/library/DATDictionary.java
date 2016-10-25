@@ -14,8 +14,11 @@ import org.ansj.library.name.PersonAttrLibrary;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 public class DATDictionary {
+
+	private static final Log logger = MyStaticValue.getLog();
 
 	/**
 	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
@@ -61,7 +64,7 @@ public class DATDictionary {
 			}
 			// 特殊字符标准化
 			IN_SYSTEM['％'] = '%';
-			MyStaticValue.LIBRARYLOG.info("init core library ok use time :{}", System.currentTimeMillis() - start);
+			logger.info("init core library ok use time : " + (System.currentTimeMillis() - start));
 			return dat;
 		} catch (InstantiationException e) {
 			MyStaticValue.LIBRARYLOG.warn("无法实例化", e);

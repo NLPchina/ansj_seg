@@ -13,7 +13,7 @@ public class NgramLibrary {
 	static {
 		long start = System.currentTimeMillis();
 		MyStaticValue.initBigramTables();
-		MyStaticValue.LIBRARYLOG.info("init ngram ok use time :{}", System.currentTimeMillis() - start);
+		MyStaticValue.LIBRARYLOG.info("init ngram ok use time :" + (System.currentTimeMillis() - start));
 	}
 
 	/**

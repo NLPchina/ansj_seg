@@ -9,8 +9,7 @@ import java.util.Set;
 
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.util.MyStaticValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 人名标注所用的词典就是简单的hashmap简单方便谁用谁知道,只在加载词典的时候用
@@ -20,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 public class PersonAttrLibrary {
 
-	public static final Logger logger = LoggerFactory.getLogger(PersonAttrLibrary.class);
+	private static final Log logger = MyStaticValue.getLog();
 
 	private HashMap<String, PersonNatureAttr> pnMap = null;
 

@@ -50,20 +50,20 @@ public class WapitiCRFModel extends Model {
 			sb.append(Arrays.toString(t1) + " ");
 		}
 
-		logger.info("featureIndex is {}", featureIndex);
-		logger.info("load template ok template : {}", sb);
+		logger.info("featureIndex is "+ featureIndex);
+		logger.info("load template ok template : "+ sb);
 
 		int[] statusCoven = loadTagCoven(br);
 
 		List<Pair<String, String>> loadFeatureName = loadFeatureName(featureIndex, br);
 
-		logger.info("load feature ok feature size : {}", loadFeatureName.size());
+		logger.info("load feature ok feature size : "+ loadFeatureName.size());
 
 		featureTree = new SmartForest<float[]>();
 
 		loadFeatureWeight(br, statusCoven, loadFeatureName);
 
-		logger.info("load wapiti model ok ! use time :{}", (System.currentTimeMillis() - start));
+		logger.info("load wapiti model ok ! use time :"+ (System.currentTimeMillis() - start));
 
 	}
 
@@ -97,7 +97,7 @@ public class WapitiCRFModel extends Model {
 		for (Pair<String, String> pair : featureNames) {
 
 			if (temp == null) {
-				logger.warn("{}\t{} not have any weight ,so skip it !", pair.getValue0(), pair.getValue1());
+				logger.warn(pair.getValue0()+"\t"+pair.getValue1()+" not have any weight ,so skip it !");
 				continue;
 			}
 

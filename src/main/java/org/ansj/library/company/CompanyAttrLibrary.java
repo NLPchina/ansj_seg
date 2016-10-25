@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import org.ansj.util.MyStaticValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 机构名识别词典加载类
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CompanyAttrLibrary {
 
-	public static final Logger logger = LoggerFactory.getLogger(CompanyAttrLibrary.class);
+	private static final Log logger = MyStaticValue.getLog();
 
 	private static HashMap<String, int[]> cnMap = null;
 

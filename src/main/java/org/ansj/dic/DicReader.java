@@ -5,8 +5,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 加载词典用的类
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  */
 public class DicReader {
 
-	public static final Logger logger = LoggerFactory.getLogger(DicReader.class);
+	private static final Log logger = MyStaticValue.getLog() ;
 
 	public static BufferedReader getReader(String name) {
 		// maven工程修改词典加载方式

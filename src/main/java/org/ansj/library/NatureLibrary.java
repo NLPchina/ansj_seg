@@ -8,8 +8,7 @@ import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有语料无法训练
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class NatureLibrary {
 
-	public static final Logger logger = LoggerFactory.getLogger(NatureLibrary.class);
+	private static final Log logger = MyStaticValue.getLog();
 
 	private static final int YI = 1;
 	private static final int FYI = -1;

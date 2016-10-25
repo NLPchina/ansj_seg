@@ -17,11 +17,11 @@ import org.ansj.recognition.Recognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MathUtil;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.WordAlert;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
 
 /**
  * 词性标注工具类
@@ -30,7 +30,10 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class NatureRecognition implements Recognition {
-	public static final Logger logger = LoggerFactory.getLogger(NatureRecognition.class);
+	private static final long serialVersionUID = 1L;
+
+	private static final Log logger = MyStaticValue.getLog() ;
+	
 	private static final Forest SUFFIX_FOREST = new Forest();
 
 	static {

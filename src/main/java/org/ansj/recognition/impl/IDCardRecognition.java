@@ -15,6 +15,10 @@ import org.ansj.recognition.Recognition;
  * 
  */
 public class IDCardRecognition implements Recognition {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -32133440735240290L;
 	private static final Nature ID_CARD_NATURE = new Nature("idcard");
 
 	public void recognition(Result result) {
