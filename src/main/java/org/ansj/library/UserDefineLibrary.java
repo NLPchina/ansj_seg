@@ -29,12 +29,10 @@ public class UserDefineLibrary {
     public static Forest FOREST = null;
 
     public static Forest ambiguityForest = null;
-    public static Forest synonymsForest = null;
 
     static {
         initUserLibrary();
         initAmbiguityLibrary();
-        initSynonymsLibrary();
     }
 
     /**
@@ -107,42 +105,6 @@ public class UserDefineLibrary {
 
     }
     
-    /**
-     * 初始化同义词词典
-     */
-    private static void initSynonymsLibrary() {
-
-        File[] lib = findLibrary(MyStaticValue.synonymsLibrary);
-
-        if (lib.length > 0) {
-        	synonymsForest = new Forest();
-            for (File file : lib) {
-                try (BufferedReader br = IOUtil.getReader(file, "utf-8")) {
-                    String temp;
-                    while ((temp = br.readLine()) != null) {
-                        if (StringUtil.isNotBlank(temp)) {
-                            temp = StringUtil.trim(temp);
-                            String[] split = temp.split("\t");
-                            LIBRARYLOG.info("init synonyms in line :" + temp);
-                            synonymsForest.addBranch(split[0], split);
-                        }
-                    }
-
-                } catch (UnsupportedEncodingException e) {
-                    LIBRARYLOG.warn("不支持的编码", e);
-                } catch (IOException e) {
-                    LIBRARYLOG.warn("Init synonyms library error :{}, path: {}", e.getMessage(), file.getPath());
-                }
-            }
-
-            LIBRARYLOG.info("Init synonyms library ok!");
-
-        } else {
-            LIBRARYLOG.warn("Init synonyms library warning :{} because : file not found or failed to read !", MyStaticValue.synonymsLibrary);
-        }
-
-    }
-
     /**
      * 加载用户自定义词典和补充词典
      */
