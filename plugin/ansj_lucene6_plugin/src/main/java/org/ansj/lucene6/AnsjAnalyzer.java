@@ -16,12 +16,12 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class AnsjAnalyzer extends Analyzer {
 	
-	public final Logger logger = LoggerFactory.getLogger(getClass());
+	public final Log logger = LogFactory.getLog(AnsjAnalyzer.class) ;
 	/**
 	 * dic equals user , query equals to
 	 * 
