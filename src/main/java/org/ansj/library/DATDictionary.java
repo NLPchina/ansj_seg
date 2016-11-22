@@ -146,7 +146,7 @@ public class DATDictionary {
 
 	public static AnsjItem getItem(String str) {
 		AnsjItem item = DAT.getItem(str);
-		if (item == null) {
+		if (item == null || item.getStatus()<2) {
 			return AnsjItem.NULL;
 		}
 
