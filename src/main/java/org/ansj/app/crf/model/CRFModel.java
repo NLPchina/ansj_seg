@@ -23,16 +23,16 @@ public class CRFModel extends Model {
 
 	public static final String version = "ansj1";
 
-	public CRFModel(String name) {
-		super(name);
+	@Override
+	public CRFModel loadModel(String modelPath) throws Exception {
+		try (InputStream is = IOUtil.getInputStream(modelPath)) {
+			loadModel(is);
+			return this;
+		}
 	}
 
 	@Override
-	public void loadModel(String modelPath) throws Exception {
-		loadModel(IOUtil.getInputStream(modelPath));
-	}
-
-	public void loadModel(InputStream is) throws Exception {
+	public CRFModel loadModel(InputStream is) throws Exception {
 		long start = System.currentTimeMillis();
 		try (ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(is))) {
 			ois.readUTF();
@@ -58,6 +58,7 @@ public class CRFModel extends Model {
 			} while (win == 0 || size == 0);
 			logger.info("load crf model ok ! use time :" + (System.currentTimeMillis() - start));
 		}
+		return this;
 	}
 
 	@Override

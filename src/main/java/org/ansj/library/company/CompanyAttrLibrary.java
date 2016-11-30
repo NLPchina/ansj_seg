@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 机构名识别词典加载类
@@ -15,7 +16,7 @@ import org.nlpcn.commons.lang.util.logging.Log;
  */
 public class CompanyAttrLibrary {
 
-	private static final Log logger = MyStaticValue.getLog();
+	private static final Log logger = LogFactory.getLog();
 
 	private static HashMap<String, int[]> cnMap = null;
 
@@ -31,7 +32,7 @@ public class CompanyAttrLibrary {
 	}
 
 	// company_freq
-	
+
 	private static void init() {
 		try (BufferedReader br = MyStaticValue.getCompanReader()) {
 			cnMap = new HashMap<String, int[]>();

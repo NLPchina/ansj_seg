@@ -3,8 +3,8 @@ package org.ansj.recognition.impl;
 import org.ansj.domain.Nature;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.Recognition;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 
@@ -20,7 +20,7 @@ public class UserDicNatureRecognition implements Recognition {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Forest[] forests = new Forest[] { UserDefineLibrary.FOREST };
+	private Forest[] forests = new Forest[] { MyStaticValue.dic() };
 
 	public UserDicNatureRecognition() {
 	}

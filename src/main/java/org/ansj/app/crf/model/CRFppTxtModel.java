@@ -1,6 +1,7 @@
 package org.ansj.app.crf.model;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -28,18 +29,23 @@ import org.nlpcn.commons.lang.util.tuples.Pair;
  */
 public class CRFppTxtModel extends Model {
 
-	public CRFppTxtModel(String name) {
-		super(name);
-	}
-
 	/**
 	 * 解析crf++生成的可可视txt文件
+	 * 
+	 * @return
 	 */
-	public void loadModel(String modelPath) throws Exception {
+	public CRFppTxtModel loadModel(String modelPath) throws Exception {
+		try (InputStream is = new FileInputStream(modelPath)) {
+			loadModel(new FileInputStream(modelPath));
+			return this;
+		}
+	}
 
+	@Override
+	public Model loadModel(InputStream is) throws Exception {
 		long start = System.currentTimeMillis();
 
-		BufferedReader reader = IOUtil.getReader(modelPath, IOUtil.UTF8);
+		BufferedReader reader = IOUtil.getReader(is, IOUtil.UTF8);
 
 		reader.readLine();// version
 		reader.readLine();// cost-factor
@@ -54,11 +60,12 @@ public class CRFppTxtModel extends Model {
 		for (int[] t1 : config.getTemplate()) {
 			sb.append(Arrays.toString(t1) + " ");
 		}
-		logger.info("load template ok template : "+ sb);
+		logger.info("load template ok template : " + sb);
 		TreeMap<Integer, Pair<String, String>> featureNames = loadFeatureName(featureIndex, reader);
-		logger.info("load feature ok feature size : "+ featureNames.size());
+		logger.info("load feature ok feature size : " + featureNames.size());
 		loadFeatureWeight(reader, statusCoven, featureNames);
-		logger.info("load crfpp model ok ! use time : "+ (System.currentTimeMillis() - start));
+		logger.info("load crfpp model ok ! use time : " + (System.currentTimeMillis() - start));
+		return this;
 	}
 
 	/**
@@ -309,4 +316,5 @@ public class CRFppTxtModel extends Model {
 		}
 		return false;
 	}
+
 }

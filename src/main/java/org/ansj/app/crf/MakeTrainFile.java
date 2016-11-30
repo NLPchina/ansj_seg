@@ -11,6 +11,7 @@ import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 生成crf 或者是 wapiti的训练语聊工具.
@@ -22,7 +23,7 @@ import org.nlpcn.commons.lang.util.logging.Log;
  */
 public class MakeTrainFile {
 
-	private static final Log logger = MyStaticValue.getLog();
+	private static final Log logger = LogFactory.getLog();
 
 	public static void main(String[] args) {
 
@@ -39,8 +40,7 @@ public class MakeTrainFile {
 			logger.info("org.ansj.app.crf.MakeTrainFile [inputPath] [outputPath]");
 			return;
 		}
-		try (BufferedReader reader = IOUtil.getReader(inputPath, "utf-8");
-				FileOutputStream fos = new FileOutputStream(outputPath)) {
+		try (BufferedReader reader = IOUtil.getReader(inputPath, "utf-8"); FileOutputStream fos = new FileOutputStream(outputPath)) {
 			String temp = null;
 			int i = 0;
 			while ((temp = reader.readLine()) != null) {

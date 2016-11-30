@@ -10,6 +10,7 @@ import java.util.Set;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 人名标注所用的词典就是简单的hashmap简单方便谁用谁知道,只在加载词典的时候用
@@ -19,7 +20,7 @@ import org.nlpcn.commons.lang.util.logging.Log;
 
 public class PersonAttrLibrary {
 
-	private static final Log logger = MyStaticValue.getLog();
+	private static final Log logger = LogFactory.getLog();
 
 	private HashMap<String, PersonNatureAttr> pnMap = null;
 

@@ -11,14 +11,14 @@ import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.name.PersonAttrLibrary;
-import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
 import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class DATDictionary {
 
-	private static final Log logger = MyStaticValue.getLog();
+	private static final Log LOG = LogFactory.getLog(DATDictionary.class);
 
 	/**
 	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
@@ -64,16 +64,16 @@ public class DATDictionary {
 			}
 			// 特殊字符标准化
 			IN_SYSTEM['％'] = '%';
-			logger.info("init core library ok use time : " + (System.currentTimeMillis() - start));
+			LOG.info("init core library ok use time : " + (System.currentTimeMillis() - start));
 			return dat;
 		} catch (InstantiationException e) {
-			MyStaticValue.LIBRARYLOG.warn("无法实例化", e);
+			LOG.warn("无法实例化", e);
 		} catch (IllegalAccessException e) {
-			MyStaticValue.LIBRARYLOG.warn("非法访问", e);
+			LOG.warn("非法访问", e);
 		} catch (NumberFormatException e) {
-			MyStaticValue.LIBRARYLOG.warn("数字格式异常", e);
+			LOG.warn("数字格式异常", e);
 		} catch (IOException e) {
-			MyStaticValue.LIBRARYLOG.warn("IO异常", e);
+			LOG.warn("IO异常", e);
 		}
 
 		return null;
@@ -146,7 +146,7 @@ public class DATDictionary {
 
 	public static AnsjItem getItem(String str) {
 		AnsjItem item = DAT.getItem(str);
-		if (item == null || item.getStatus()<2) {
+		if (item == null || item.getStatus() < 2) {
 			return AnsjItem.NULL;
 		}
 

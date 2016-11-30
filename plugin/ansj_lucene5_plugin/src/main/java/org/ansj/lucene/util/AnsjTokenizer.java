@@ -1,7 +1,6 @@
 package org.ansj.lucene.util;
 
 import java.io.IOException;
-import java.util.Set;
 
 import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
@@ -22,16 +21,7 @@ public final class AnsjTokenizer extends Tokenizer {
 	// 分词词性
 	private final TypeAttribute typeAtt = addAttribute(TypeAttribute.class);
 
-	private int skippedPositions;
-
 	protected Analysis ta = null;
-	/** 自定义停用词 */
-	private Set<String> filter;
-
-	public AnsjTokenizer(Analysis ta, Set<String> filter) {
-		this.ta = ta;
-		this.filter = filter;
-	}
 
 	public AnsjTokenizer(Analysis ta) {
 		this.ta = ta;
@@ -40,8 +30,6 @@ public final class AnsjTokenizer extends Tokenizer {
 	@Override
 	public final boolean incrementToken() throws IOException {
 		clearAttributes();
-
-		skippedPositions = 0;
 
 		int position = 0;
 		Term term = null;
@@ -53,16 +41,10 @@ public final class AnsjTokenizer extends Tokenizer {
 			if (term == null) {
 				break;
 			}
-
 			name = term.getName();
 			length = name.length();
-
-			if (filter != null && filter.contains(name)) {
-				continue;
-			} else {
-				position++;
-				flag = false;
-			}
+			position++;
+			flag = false;
 		} while (flag);
 		if (term != null) {
 			positionAttr.setPositionIncrement(position);
@@ -82,7 +64,6 @@ public final class AnsjTokenizer extends Tokenizer {
 	public void reset() throws IOException {
 		super.reset();
 		ta.resetContent(new AnsjReader(this.input));
-		skippedPositions = 0;
 	}
 
 }
