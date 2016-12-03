@@ -16,7 +16,7 @@ public class NatureTagDemo {
 		String[] strs = {"对", "非", "ansj", "的", "分词", "结果", "进行", "词性", "标注"} ;
 		
 		List<String> lists = Arrays.asList(strs) ;
-		List<Term> recognition = NatureRecognition.recognition(lists, 0) ;
+		List<Term> recognition = new NatureRecognition().recognition(lists, 0) ;
 		System.out.println(recognition);
 	}
 }

@@ -26,7 +26,7 @@ public class WapitiCRFModelTest {
 		if (!Check.checkFileExit(modelPath)) {
 			return;
 		}
-		model = new WapitiCRFModel("test");
+		model = new WapitiCRFModel();
 		model.loadModel(modelPath);
 	}
 
@@ -58,7 +58,7 @@ public class WapitiCRFModelTest {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(testPath)));
 
-		WapitiCRFModel model = new WapitiCRFModel("test");
+		WapitiCRFModel model = new WapitiCRFModel();
 
 		model.loadModel(modelPath);
 

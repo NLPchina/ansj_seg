@@ -2,33 +2,24 @@ package org.ansj.util;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
-import org.ansj.app.crf.Model;
-import org.ansj.app.crf.SplitWord;
-import org.ansj.app.crf.model.CRFModel;
 import org.ansj.dic.DicReader;
-import org.ansj.dic.PathToStream;
 import org.ansj.domain.AnsjItem;
-import org.ansj.exception.LibraryException;
+import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.CrfLibrary;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.DicLibrary;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.SynonymsLibrary;
 import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.SmartForest;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.ObjConver;
@@ -48,11 +39,6 @@ public class MyStaticValue {
 
 	private static final Log LOG = LogFactory.getLog(MyStaticValue.class);
 
-
-	public static final String AMBIGUITY_DEFAULT = "ambiguity_";
-
-	public static final String SYNONYMS_DEFAULT = "synonyms_";
-
 	// 是否开启人名识别
 	public static Boolean isNameRecognition = true;
 
@@ -64,22 +50,6 @@ public class MyStaticValue {
 
 	// 是否显示真实词语
 	public static Boolean isRealName = false;
-
-
-	// 歧义词典
-	public static final Map<String, String> AMBIGUITY = new HashMap<>();
-
-	// 同义词典
-	public static final Map<String, String> SYNONYMS = new HashMap<>();
-
-	//存放所有的词典
-	private static final Map<String, Object> ALL = new HashMap<>();
-
-	//默认的词性
-	public static final String DEFAULT_NATURE = "userDefine";
-
-	//默认的词频
-	public static final String DEFAULT_FREQ_STR = "1000";
 
 	/**
 	 * 是否用户辞典不加载相同的词
@@ -130,31 +100,19 @@ public class MyStaticValue {
 				if (key.equals("dic")) {
 					DicLibrary.put(DicLibrary.DEFAULT, rb.getString(key));
 				} else if (key.equals("crf")) {
-					CRF.put(CRF_DEFAULT, rb.getString(key));
+					CrfLibrary.put(CrfLibrary.DEFAULT, rb.getString(key));
 				} else if (key.equals("ambiguity")) {
-					AMBIGUITY.put(AMBIGUITY_DEFAULT, rb.getString(key));
+					AmbiguityLibrary.put(AmbiguityLibrary.DEFAULT, rb.getString(key));
 				} else if (key.equals("synonyms")) {
-					SYNONYMS.put(AMBIGUITY_DEFAULT, rb.getString(key));
+					SynonymsLibrary.put(AmbiguityLibrary.DEFAULT, rb.getString(key));
 				} else if (key.startsWith("dic_")) {
-					if (DicLibrary.DIC.containsKey(key)) {
-						LOG.warn(key + " dic config repeat definition now overwrite it !");
-					}
 					DicLibrary.put(key, rb.getString(key));
 				} else if (key.startsWith("crf_")) {
-					if (CRF.containsKey(key)) {
-						LOG.warn(key + " crf config repeat definition now overwrite it !");
-					}
-					CRF.put(key, rb.getString(key));
+					CrfLibrary.put(key, rb.getString(key));
 				} else if (key.startsWith("synonyms_")) {
-					if (CRF.containsKey(key)) {
-						LOG.warn(key + " crf config repeat definition now overwrite it !");
-					}
-					SYNONYMS.put(key, rb.getString(key));
+					SynonymsLibrary.put(key, rb.getString(key));
 				} else if (key.startsWith("ambiguity_")) {
-					if (CRF.containsKey(key)) {
-						LOG.warn(key + " crf config repeat definition now overwrite it !");
-					}
-					AMBIGUITY.put(key, rb.getString(key));
+					AmbiguityLibrary.put(key, rb.getString(key));
 				} else {
 					try {
 						Field field = MyStaticValue.class.getField(key);
@@ -177,11 +135,11 @@ public class MyStaticValue {
 		//如果没有设置则设置默认路径
 		DicLibrary.putIfAbsent(DicLibrary.DEFAULT, "library/default.dic");
 
-		CRF.putIfAbsent(CRF_DEFAULT, "jar://crf.model");
+		CrfLibrary.putIfAbsent(CrfLibrary.DEFAULT, "jar://crf.model");
 
-		AMBIGUITY.putIfAbsent(DIC_DEFAULT, "library/ambiguity.dic");
+		AmbiguityLibrary.putIfAbsent(AmbiguityLibrary.DEFAULT, "library/ambiguity.dic");
 
-		SYNONYMS.putIfAbsent(DIC_DEFAULT, "library/synonyms.dic");
+		SynonymsLibrary.putIfAbsent(SynonymsLibrary.DEFAULT, "library/synonyms.dic");
 	}
 
 	/**
@@ -261,6 +219,15 @@ public class MyStaticValue {
 	 * 
 	 * @return
 	 */
+	public static BufferedReader getNatureClassSuffix() {
+		return DicReader.getReader("nature_class_suffix.txt");
+	}
+
+	/**
+	 * 根据词语后缀判断词性
+	 * 
+	 * @return
+	 */
 	public static BufferedReader getPersonFreqReader() {
 		return DicReader.getReader("person/name_freq.dic");
 	}
@@ -332,142 +299,4 @@ public class MyStaticValue {
 			LOG.warn("IO异常", e);
 		}
 	}
-
-	
-
-	/**
-	 * 加载歧义词典
-	 * 
-	 * @param modelName
-	 * @return
-	 */
-	public static Forest ambiguity(String key) {
-		String path = AMBIGUITY.get(fix("ambiguity_", key));
-
-		if (path == null) {
-			LOG.warn("ambiguity " + key + " not found in config ");
-			return null;
-		}
-		Forest forest = (Forest) ALL.get(path);
-		if (forest == null) {
-			forest = initAmbiguity(key, path);
-		}
-		return forest;
-
-	}
-
-	/**
-	 * 加载歧义词典
-	 * 
-	 * @param key
-	 * @param path
-	 * @return
-	 */
-	private synchronized static Forest initAmbiguity(String key, String path) {
-		Forest forest = (Forest) ALL.get(path);
-		if (forest != null) {
-			return forest;
-		}
-		forest = new Forest();
-		try (BufferedReader br = IOUtil.getReader(PathToStream.stream(path), "utf-8")) {
-			String temp;
-			LOG.info("begin init dic !");
-			long start = System.currentTimeMillis();
-			while ((temp = br.readLine()) != null) {
-				if (StringUtil.isNotBlank(temp)) {
-					temp = StringUtil.trim(temp);
-					String[] split = temp.split("\t");
-					StringBuilder sb = new StringBuilder();
-					if (split.length % 2 != 0) {
-						LOG.error("init ambiguity  error in line :" + temp + " format err !");
-						continue;
-					}
-					for (int i = 0; i < split.length; i += 2) {
-						sb.append(split[i]);
-					}
-					forest.addBranch(sb.toString(), split);
-				}
-			}
-			LOG.info("load dic use time:" + (System.currentTimeMillis() - start) + " path is : " + path);
-			ALL.put(path, forest);
-			return forest;
-		} catch (Exception e) {
-			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + path);
-			return null;
-		}
-	}
-
-	/**
-	 * 加载同义词典
-	 * 
-	 * @param modelName
-	 * @return
-	 */
-	public static SmartForest<List<String>> synonyms(String key) {
-		String path = SYNONYMS.get(fix("synonyms_", key));
-		if (path == null) {
-			LOG.warn("synonyms " + key + " not found in config ");
-			return null;
-		}
-		@SuppressWarnings("unchecked")
-		SmartForest<List<String>> forest = (SmartForest<List<String>>) ALL.get(path);
-		if (forest == null) {
-			forest = initSynonyms(key, path);
-		}
-		return forest;
-
-	}
-
-	/**
-	 * 加载同义词典
-	 * 
-	 * @param key
-	 * @param path
-	 * @return
-	 */
-	private synchronized static SmartForest<List<String>> initSynonyms(String key, String path) {
-		@SuppressWarnings("unchecked")
-		SmartForest<List<String>> forest = (SmartForest<List<String>>) ALL.get(path);
-		if (forest != null) {
-			return forest;
-		}
-		forest = new SmartForest<>();
-
-		LOG.info("begin init synonyms " + key);
-		long start = System.currentTimeMillis();
-
-		try (BufferedReader reader = IOUtil.getReader(PathToStream.stream(path), IOUtil.UTF8)) {
-			String temp = null;
-			while ((temp = reader.readLine()) != null) {
-				if (StringUtil.isBlank(temp)) {
-					continue;
-				}
-				String[] split = temp.split("\t");
-
-				List<String> list = new ArrayList<>();
-				for (String word : split) {
-					if (StringUtil.isBlank(word)) {
-						continue;
-					}
-					list.add(word);
-				}
-
-				if (split.length <= 1) {
-					LOG.warn(temp + " in synonymsLibrary not in to library !");
-					continue;
-				}
-
-				for (int i = 0; i < split.length; i++) {
-					forest.add(split[i], list);
-				}
-			}
-			LOG.info("load synonyms use time:" + (System.currentTimeMillis() - start) + " path is : " + path);
-			return forest;
-		} catch (Exception e) {
-			LOG.error("Init synonyms library error :" + e.getMessage() + ", path: " + path);
-			return null;
-		}
-
-	}
-
 }

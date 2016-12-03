@@ -1,12 +1,11 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.BufferedReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
@@ -14,7 +13,6 @@ import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
-import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -43,12 +41,12 @@ public class DicAnalysis extends Analysis {
 				userDefineRecognition(graph, forests);
 
 				// 数字发现
-				if (MyStaticValue.isNumRecognition && graph.hasNum) {
+				if (isNumRecognition && graph.hasNum) {
 					new NumRecognition().recognition(graph.terms);
 				}
 
 				// 姓名识别
-				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+				if (graph.hasPerson && isNameRecognition) {
 					// 亚洲人名识别
 					new AsianPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
@@ -69,7 +67,7 @@ public class DicAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				
+
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
@@ -85,20 +83,11 @@ public class DicAnalysis extends Analysis {
 		return merger.merger();
 	}
 
-	/**
-	 * 用户自己定义的词典
-	 * 
-	 * @param forest
-	 */
-	public DicAnalysis(Forest... forests) {
-		if (forests == null) {
-			forests = new Forest[] { UserDefineLibrary.FOREST };
-		}
-		this.forests = forests;
+	public DicAnalysis() {
+		super();
 	}
 
-	public DicAnalysis(BufferedReader reader, Forest... forests) {
-		this.forests = forests;
+	public DicAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
 
@@ -107,6 +96,6 @@ public class DicAnalysis extends Analysis {
 	}
 
 	public static Result parse(String str, Forest... forests) {
-		return new DicAnalysis(forests).parseStr(str);
+		return new DicAnalysis().setForests(forests).parseStr(str);
 	}
 }

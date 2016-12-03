@@ -3,6 +3,7 @@ package org.ansj.recognition.arrimpl;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.DicLibrary;
 import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.MyStaticValue;
 import org.ansj.util.TermUtil;
@@ -24,7 +25,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 	private Term[] terms = null;
 
-	private Forest[] forests = { MyStaticValue.dic() };
+	private Forest[] forests = { DicLibrary.get() };
 
 	private int offe = -1;
 	private int endOffe = -1;

@@ -1,6 +1,5 @@
 package org.ansj.recognition.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,7 @@ public class FilterRecognition implements Recognition {
 
 	private Set<String> natureFilter = new HashSet<String>();
 
-	private List<Pattern> regexList = new ArrayList<Pattern>();
+	private Set<Pattern> regexList = new HashSet<Pattern>();
 
 	/**
 	 * 批量增加停用词

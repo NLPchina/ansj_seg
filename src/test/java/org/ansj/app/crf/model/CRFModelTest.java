@@ -25,7 +25,7 @@ public class CRFModelTest extends CorpusTest {
 
 	private String testPath = "src/test/resources/corpus.txt";
 
-	private Model model = new CRFModel("test");
+	private Model model = new CRFModel();
 
 	@Before
 	public void before() throws Exception {

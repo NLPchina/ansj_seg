@@ -21,7 +21,7 @@ public class CRFppTxtModelTest {
 
 	private String testPath = "src/test/resources/corpus.txt";
 
-	private Model model = new CRFppTxtModel("CRFppModelTest");
+	private Model model = new CRFppTxtModel();
 
 	@Before
 	public void before() throws Exception {

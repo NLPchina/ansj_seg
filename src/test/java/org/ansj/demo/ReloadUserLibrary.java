@@ -2,7 +2,7 @@ package org.ansj.demo;
 
 import java.io.File;
 
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.DicLibrary;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.library.Library;
 
@@ -13,7 +13,7 @@ import org.nlpcn.commons.lang.tire.library.Library;
  * 
  */
 public class ReloadUserLibrary {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		// 从文件中reload
 		loadFormFile();
 		// 通过内存中reload
@@ -21,22 +21,20 @@ public class ReloadUserLibrary {
 	}
 
 	private static void loadFormStr() {
-		
+
 		Forest forest = new Forest();
 
 		Library.insertWord(forest, "中国  nature  1000");
 		// 将新构建的辞典树替换掉旧的。
-		UserDefineLibrary.FOREST = forest;
+		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
 	}
 
-	private static void loadFormFile() {
-		
-		// make new forest
-		Forest forest = new Forest();
+	private static void loadFormFile() throws Exception {
 
-		UserDefineLibrary.loadLibrary(forest,new File("new_Library_Path").getPath());
+		// make new forest
+		Forest forest = Library.makeForest(new File("new_Library_Path").getPath());
 
 		// 将新构建的辞典树替换掉舊的。
-		UserDefineLibrary.FOREST = forest;
+		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
 	}
 }

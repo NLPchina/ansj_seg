@@ -5,6 +5,7 @@ import static org.ansj.library.DATDictionary.status;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,8 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
@@ -43,7 +45,19 @@ public abstract class Analysis {
 
 	protected Forest[] forests = null;
 
-	private Forest ambiguityForest = UserDefineLibrary.ambiguityForest;
+	private Forest ambiguityForest = AmbiguityLibrary.get();
+
+	// 是否开启人名识别
+	protected Boolean isNameRecognition = true;
+
+	// 是否开启数字识别
+	protected Boolean isNumRecognition = true;
+
+	// 是否数字和量词合并
+	protected Boolean isQuantifierRecognition = true;
+
+	// 是否显示真实词语
+	protected Boolean isRealName = false;
 
 	/**
 	 * 文档读取流
@@ -51,6 +65,11 @@ public abstract class Analysis {
 	private AnsjReader br;
 
 	protected Analysis() {
+		this.forests = new Forest[] { DicLibrary.get() };
+		this.isNameRecognition = MyStaticValue.isNameRecognition;
+		this.isNumRecognition = MyStaticValue.isNumRecognition;
+		this.isQuantifierRecognition = MyStaticValue.isQuantifierRecognition;
+		this.isRealName = MyStaticValue.isRealName;
 	};
 
 	private LinkedList<Term> terms = new LinkedList<Term>();
@@ -229,11 +248,27 @@ public abstract class Analysis {
 
 	/**
 	 * 一句话进行分词并且封装
+	 * 
 	 * @param temp
 	 * @return
 	 */
 	public Result parseStr(String temp) {
 		return new Result(analysisStr(temp));
+	}
+
+	/**
+	 * 通过构造方法传入的reader直接获取到分词结果
+	 * @return
+	 * @throws IOException
+	 */
+	public Result parse() throws IOException {
+		List<Term> list = new ArrayList<Term>();
+		Term temp = null;
+		while ((temp = next()) != null) {
+			list.add(temp);
+		}
+		Result result = new Result(list);
+		return result;
 	}
 
 	protected abstract List<Term> getResult(Graph graph);
@@ -275,4 +310,25 @@ public abstract class Analysis {
 		this.forests = forests;
 		return this;
 	}
+
+	public Analysis setIsNameRecognition(Boolean isNameRecognition) {
+		this.isNameRecognition = isNameRecognition;
+		return this;
+	}
+
+	public Analysis setIsNumRecognition(Boolean isNumRecognition) {
+		this.isNumRecognition = isNumRecognition;
+		return this;
+	}
+
+	public Analysis setIsQuantifierRecognition(Boolean isQuantifierRecognition) {
+		this.isQuantifierRecognition = isQuantifierRecognition;
+		return this;
+	}
+
+	public Analysis setIsRealName(Boolean isRealName) {
+		this.isRealName = isRealName;
+		return this;
+	}
+
 }

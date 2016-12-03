@@ -13,7 +13,7 @@ import org.ansj.domain.NewWord;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.CrfLibrary;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NewWordRecognition;
@@ -23,13 +23,14 @@ import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
-import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.WordAlert;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -39,13 +40,15 @@ import org.nlpcn.commons.lang.util.WordAlert;
  */
 public class NlpAnalysis extends Analysis {
 
+	private static final Log LOG = LogFactory.getLog(NlpAnalysis.class);
+
 	private LearnTool learn = null;
 
 	private static final String TAB = "\t";
 
 	private static final int CRF_WEIGHT = 6;
 
-	private SplitWord splitWord = MyStaticValue.getCRFSplitWord();
+	private SplitWord splitWord = CrfLibrary.get();
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -63,7 +66,7 @@ public class NlpAnalysis extends Analysis {
 				learn.learn(graph, splitWord);
 
 				// 姓名识别
-				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+				if (graph.hasPerson && isNameRecognition) {
 					// 亚洲人名识别
 					new AsianPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
@@ -92,7 +95,7 @@ public class NlpAnalysis extends Analysis {
 
 					for (String word : words) {
 
-						TermNatures termNatures = NatureRecognition.getTermNatures(word); // 尝试从词典获取词性
+						TermNatures termNatures = new NatureRecognition(forests).getTermNatures(word); // 尝试从词典获取词性
 
 						Term term = null;
 
@@ -135,11 +138,11 @@ public class NlpAnalysis extends Analysis {
 					}
 					graph.walkPath(mc.get());
 				} else {
-					MyStaticValue.LIBRARYLOG.warn("not find any crf model, make sure your config right? ");
+					LOG.warn("not find any crf model, make sure your config right? ");
 				}
 
 				// 数字发现
-				if (graph.hasNum && MyStaticValue.isNumRecognition) {
+				if (graph.hasNum && isNumRecognition) {
 					new NumRecognition().recognition(graph.terms);
 				}
 
@@ -169,7 +172,7 @@ public class NlpAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				
+
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
@@ -249,30 +252,16 @@ public class NlpAnalysis extends Analysis {
 		return this;
 	}
 
-	public NlpAnalysis setCrfModel(String key) {
-		this.splitWord = MyStaticValue.getCRFSplitWord(key);
-		return this;
-	}
-
 	public NlpAnalysis setLearnTool(LearnTool learn) {
 		this.learn = learn;
 		return this;
 	}
 
-	/**
-	 * 用户自己定义的词典
-	 * 
-	 * @param forest
-	 */
-	public NlpAnalysis(Forest... forests) {
-		if (forests == null) {
-			forests = new Forest[] { UserDefineLibrary.FOREST };
-		}
-		this.forests = forests;
+	public NlpAnalysis() {
+		super();
 	}
 
-	public NlpAnalysis(Reader reader, Forest... forests) {
-		this.forests = forests;
+	public NlpAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
 
@@ -281,7 +270,7 @@ public class NlpAnalysis extends Analysis {
 	}
 
 	public static Result parse(String str, Forest... forests) {
-		return new NlpAnalysis(forests).parseStr(str);
+		return new NlpAnalysis().setForests(forests).parseStr(str);
 	}
 
 }

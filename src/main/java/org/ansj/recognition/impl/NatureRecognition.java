@@ -5,18 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.DicLibrary;
 import org.ansj.recognition.Recognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MathUtil;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.WordAlert;
@@ -30,14 +30,17 @@ import org.nlpcn.commons.lang.util.logging.LogFactory;
  * 
  */
 public class NatureRecognition implements Recognition {
+
 	private static final long serialVersionUID = 1L;
 
-	private static final Log logger = LogFactory.getLog() ;
-	
+	private static final Log logger = LogFactory.getLog();
+
 	private static final Forest SUFFIX_FOREST = new Forest();
 
+	private Forest[] forests = null;
+
 	static {
-		try (BufferedReader reader = DicReader.getReader("nature_class_suffix.txt")) {
+		try (BufferedReader reader = MyStaticValue.getNatureClassSuffix()) {
 			String temp = null;
 			while ((temp = reader.readLine()) != null) {
 				String[] split = temp.split("\t");
@@ -50,6 +53,14 @@ public class NatureRecognition implements Recognition {
 		} catch (IOException e) {
 			logger.warn("IO异常", e);
 		}
+	}
+
+	public NatureRecognition() {
+		forests = new Forest[] { DicLibrary.get() };
+	}
+
+	public NatureRecognition(Forest... forests) {
+		this.forests = forests;
 	}
 
 	private NatureTerm root = new NatureTerm(TermNature.BEGIN);
@@ -82,7 +93,7 @@ public class NatureRecognition implements Recognition {
 	 * @param offe
 	 * @return
 	 */
-	public static List<Term> recognition(List<String> words) {
+	public List<Term> recognition(List<String> words) {
 		return recognition(words, 0);
 	}
 
@@ -93,7 +104,7 @@ public class NatureRecognition implements Recognition {
 	 * @param offe
 	 * @return
 	 */
-	public static List<Term> recognition(List<String> words, int offe) {
+	public List<Term> recognition(List<String> words, int offe) {
 		List<Term> terms = new ArrayList<Term>(words.size());
 		int tempOffe = 0;
 		for (String word : words) {
@@ -112,7 +123,7 @@ public class NatureRecognition implements Recognition {
 	 * @param word
 	 * @return
 	 */
-	public static TermNatures getTermNatures(String word) {
+	public  TermNatures getTermNatures(String word) {
 		String[] params = null;
 		// 获得词性 ， 先从系统辞典。在从用户自定义辞典
 		AnsjItem ansjItem = DATDictionary.getItem(word);
@@ -120,7 +131,7 @@ public class NatureRecognition implements Recognition {
 
 		if (ansjItem != AnsjItem.NULL) {
 			tn = ansjItem.termNatures;
-		} else if ((params = UserDefineLibrary.getParams(word)) != null) {
+		} else if ((params = getParams(word)) != null) {
 			tn = new TermNatures(new TermNature(params[0], 1));
 		} else if (WordAlert.isEnglish(word)) {
 			tn = TermNatures.EN;
@@ -130,6 +141,30 @@ public class NatureRecognition implements Recognition {
 			tn = TermNatures.NULL;
 		}
 		return tn;
+	}
+
+	/**
+	 * 获取一个词语的参数
+	 * 
+	 * @param word
+	 * @return
+	 */
+	public String[] getParams(String word) {
+		for (Forest forest : forests) {
+			SmartForest<String[]> sf = forest;
+			for (int i = 0; i < word.length(); i++) {
+				sf = sf.get(word.charAt(i));
+				if (sf == null) {
+					return null;
+				}
+			}
+			if (sf.getStatus() > 1) {
+				return sf.getParam();
+			} else {
+				return null;
+			}
+		}
+		return null;
 	}
 
 	/**

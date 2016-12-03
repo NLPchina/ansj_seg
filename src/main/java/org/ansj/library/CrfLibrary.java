@@ -9,19 +9,22 @@ import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.app.crf.model.CRFModel;
 import org.ansj.dic.PathToStream;
-import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.ansj.domain.KV;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
-import org.nlpcn.commons.lang.util.tuples.KeyValue;
 
-public class CrfLibrary {
+public class CrfLibrary  {
 
 	private static final Log LOG = LogFactory.getLog();
 
 	// CRF模型
-	private static final Map<String, KeyValue<String, SplitWord>> CRF = new HashMap<>();
+	private static final Map<String, KV<String, SplitWord>> CRF = new HashMap<>();
 
 	public static final String DEFAULT = "crf_";
+
+	public static SplitWord get() {
+		return get(DEFAULT);
+	}
 
 	/**
 	 * 根据key获取crf分词器
@@ -29,15 +32,16 @@ public class CrfLibrary {
 	 * @param key
 	 * @return crf分词器
 	 */
-	public static SplitWord crf(String key) {
-		KeyValue<String, SplitWord> kv = CRF.get(fix(key));
+	public static SplitWord get(String key) {
+		key = fix(key);
+		KV<String, SplitWord> kv = CRF.get(key);
 
 		if (kv == null) {
 			LOG.warn("crf " + key + " not found in config ");
 			return null;
 		}
 
-		SplitWord sw = (SplitWord) kv.getValue();
+		SplitWord sw = (SplitWord) kv.getV();
 		if (sw == null) {
 			sw = initCRFModel(kv);
 		}
@@ -50,18 +54,18 @@ public class CrfLibrary {
 	 * @param modelPath
 	 * @return
 	 */
-	private static synchronized SplitWord initCRFModel(KeyValue<String, SplitWord> kv) {
+	private static synchronized SplitWord initCRFModel(KV<String, SplitWord> kv) {
 		try {
-			if (kv.getValue() != null) {
-				return kv.getValue();
+			if (kv.getV() != null) {
+				return kv.getV();
 			}
 
 			long start = System.currentTimeMillis();
 			LOG.info("begin init crf model!");
-			try (InputStream is = PathToStream.stream(kv.getKey())) {
+			try (InputStream is = PathToStream.stream(kv.getK())) {
 				SplitWord crfSplitWord = new SplitWord(Model.load(CRFModel.class, is));
-				kv.setValue(crfSplitWord);
-				LOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getKey());
+				kv.setV(crfSplitWord);
+				LOG.info("load crf use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
 				return crfSplitWord;
 			}
 		} catch (Exception e) {
@@ -78,11 +82,13 @@ public class CrfLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
+		key = fix(key);
 		put(key, path, null);
 	}
 
 	public static void put(String key, String path, SplitWord sw) {
-		CRF.put(key, KeyValue.with(path, sw));
+		key = fix(key);
+		CRF.put(key, KV.with(path, sw));
 	}
 
 	/**
@@ -91,17 +97,21 @@ public class CrfLibrary {
 	 * @param key
 	 * @return
 	 */
-	public static KeyValue<String, SplitWord> remove(String key) {
+	public KV<String, SplitWord> remove(String key) {
+		key = fix(key);
 		return CRF.remove(key);
 	}
 
 	/**
 	 * 刷新一个,将值设置为null
+	 * 
 	 * @param key
 	 * @return
 	 */
-	public static KeyValue<String, SplitWord> flush(String key) {
-		CRF.get(key).setValue(null);
+	public static void reload(String key) {
+		key = fix(key);
+		CRF.get(key).setV(null);
+		get(key);
 	}
 
 	public static Set<String> keys() {
@@ -113,6 +123,12 @@ public class CrfLibrary {
 			return key;
 		} else {
 			return DEFAULT + key;
+		}
+	}
+
+	public static void putIfAbsent(String key, String path) {
+		if (!CRF.containsKey(key)) {
+			CRF.put(key, KV.with(path, (SplitWord) null));
 		}
 	}
 }

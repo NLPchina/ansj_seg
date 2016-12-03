@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.library.UserDefineLibrary;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
@@ -18,7 +17,6 @@ import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
-import org.ansj.util.MyStaticValue;
 import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.GetWord;
@@ -33,8 +31,6 @@ import org.nlpcn.commons.lang.util.ObjConver;
  */
 public class IndexAnalysis extends Analysis {
 
-	protected static final Forest[] DEFAULT_FORESTS = new Forest[] { UserDefineLibrary.FOREST };;
-
 	@Override
 	protected List<Term> getResult(final Graph graph) {
 		Merger merger = new Merger() {
@@ -44,12 +40,12 @@ public class IndexAnalysis extends Analysis {
 				graph.walkPath();
 
 				// 数字发现
-				if (MyStaticValue.isNumRecognition && graph.hasNum) {
+				if (isNumRecognition && graph.hasNum) {
 					new NumRecognition().recognition(graph.terms);
 				}
 
 				// 姓名识别
-				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
+				if (graph.hasPerson && isNameRecognition) {
 					// 亚洲人名识别
 					new AsianPersonRecognition().recognition(graph.terms);
 					graph.walkPathByScore();
@@ -93,15 +89,9 @@ public class IndexAnalysis extends Analysis {
 
 				LinkedList<Term> last = new LinkedList<Term>();
 
-				Forest[] tempForests = DEFAULT_FORESTS;
-
-				if (forests != null && forests.length > 0) {
-					tempForests = forests;
-				}
-
 				char[] chars = graph.chars;
 
-				for (Forest forest : tempForests) {
+				for (Forest forest : forests) {
 					GetWord word = forest.getWord(chars);
 					while ((temp = word.getAllWords()) != null) {
 						if (!set.contains(temp + word.offe)) {
@@ -112,15 +102,15 @@ public class IndexAnalysis extends Analysis {
 				}
 
 				result.addAll(last);
-				
-				Collections.sort(result,new Comparator<Term>() {
+
+				Collections.sort(result, new Comparator<Term>() {
 
 					@Override
 					public int compare(Term o1, Term o2) {
-						if(o1.getOffe()==o2.getOffe()){
-							return o2.getName().length()-o1.getName().length() ;
-						}else{
-							return o1.getOffe()-o2.getOffe() ;
+						if (o1.getOffe() == o2.getOffe()) {
+							return o2.getName().length() - o1.getName().length();
+						} else {
+							return o1.getOffe() - o2.getOffe();
 						}
 					}
 				});
@@ -132,16 +122,12 @@ public class IndexAnalysis extends Analysis {
 
 		return merger.merger();
 	}
-	
-	public IndexAnalysis(Forest... forests) {
-		if (forests == null) {
-			forests = new Forest[] { UserDefineLibrary.FOREST };
-		}
-		this.forests = forests;
+
+	public IndexAnalysis() {
+		super();
 	}
 
-	public IndexAnalysis(Reader reader, Forest... forests) {
-		this.forests = forests;
+	public IndexAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
 
@@ -150,7 +136,7 @@ public class IndexAnalysis extends Analysis {
 	}
 
 	public static Result parse(String str, Forest... forests) {
-		return new IndexAnalysis(forests).parseStr(str);
-
+		return new IndexAnalysis().setForests(forests).parseStr(str);
 	}
+
 }

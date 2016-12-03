@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.ansj.dic.PathToStream;
+import org.ansj.domain.KV;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -14,22 +15,22 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
-import org.nlpcn.commons.lang.util.tuples.KeyValue;
 
 public class DicLibrary {
 
 	private static final Log LOG = LogFactory.getLog();
 
-	public static final String DEFAULT = "dic_";
+	public static final String DEFAULT = "stop_";
 
 	public static final String DEFAULT_NATURE = "userDefine";
 
 	public static final Integer DEFAULT_FREQ = 1000;
 
 	public static final String DEFAULT_FREQ_STR = "1000";
+	
 
 	// 用户自定义词典
-	private static final Map<String, KeyValue<String, Forest>> DIC = new HashMap<>();
+	private static final Map<String, KV<String, Forest>> DIC = new HashMap<>();
 
 	/**
 	 * 关键词增加
@@ -40,11 +41,6 @@ public class DicLibrary {
 	 */
 	public static void insert(String key, String keyword, String nature, int freq) {
 		Forest dic = get(key);
-
-		if (dic == null) {
-			dic = putIfAbsent(DEFAULT, DEFAULT, new Forest());
-		}
-
 		String[] paramers = new String[2];
 		paramers[0] = nature;
 		paramers[1] = String.valueOf(freq);
@@ -64,7 +60,7 @@ public class DicLibrary {
 	/**
 	 * 删除关键词
 	 */
-	public static void remove(String key, String word) {
+	public static void delete(String key, String word) {
 		Forest dic = get(key);
 		if (dic != null) {
 			Library.removeWord(dic, word);
@@ -89,13 +85,13 @@ public class DicLibrary {
 	 * @return
 	 */
 	public static Forest get(String key) {
-		KeyValue<String, Forest> kv = DIC.get(fix(key));
+		KV<String, Forest> kv = DIC.get(fix(key));
 
 		if (kv == null) {
 			LOG.warn("dic " + key + " not found in config ");
 			return null;
 		}
-		Forest forest = kv.getValue();
+		Forest forest = kv.getV();
 		if (forest == null) {
 			forest = init(kv);
 		}
@@ -111,8 +107,8 @@ public class DicLibrary {
 	 * @return
 	 */
 
-	private synchronized static Forest init(KeyValue<String, Forest> kv) {
-		Forest forest = kv.getValue();
+	private synchronized static Forest init(KV<String, Forest> kv) {
+		Forest forest = kv.getV();
 		if (forest != null) {
 			return forest;
 		}
@@ -123,7 +119,7 @@ public class DicLibrary {
 			String temp = null;
 			String[] strs = null;
 			Value value = null;
-			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getKey()), "UTF-8")) {
+			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "UTF-8")) {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
 						temp = StringUtil.trim(temp);
@@ -142,11 +138,11 @@ public class DicLibrary {
 					}
 				}
 			}
-			LOG.info("load dic use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getKey());
-			kv.setValue(forest);
+			LOG.info("load dic use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
+			kv.setV(forest);
 			return forest;
 		} catch (Exception e) {
-			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getKey());
+			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
 			return null;
 		}
 	}
@@ -159,7 +155,7 @@ public class DicLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path, Forest forest) {
-		DIC.put(key, KeyValue.with(path, forest));
+		DIC.put(key, KV.with(path, forest));
 	}
 
 	/**
@@ -171,7 +167,7 @@ public class DicLibrary {
 	 */
 	public static void putIfAbsent(String key, String path) {
 		if (!DIC.containsKey(key)) {
-			DIC.put(key, KeyValue.with(path, (Forest) null));
+			DIC.put(key, KV.with(path, (Forest) null));
 		}
 	}
 
@@ -197,20 +193,25 @@ public class DicLibrary {
 	 * @param dic2
 	 */
 	public static synchronized Forest putIfAbsent(String key, String path, Forest forest) {
-		KeyValue<String, Forest> kv = DIC.get(key);
-		if (kv != null && kv.getValue() != null) {
-			return kv.getValue();
+		KV<String, Forest> kv = DIC.get(key);
+		if (kv != null && kv.getV() != null) {
+			return kv.getV();
 		}
 		put(key, path, forest);
 		return forest;
 	}
 
-	public static KeyValue<String, Forest> remove(String key) {
+	public static KV<String, Forest> remove(String key) {
 		return DIC.remove(key);
 	}
 
 	public static Set<String> keys() {
 		return DIC.keySet();
+	}
+
+	public static void reload(String key) {
+		DIC.get(key).setV(null);
+		get(key);
 	}
 
 	private static String fix(String key) {
