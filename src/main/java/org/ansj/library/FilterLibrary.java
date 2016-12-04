@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.recognition.impl.FilterRecognition;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -16,21 +17,15 @@ import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-public class StopLibrary {
+public class FilterLibrary {
 
 	private static final Log LOG = LogFactory.getLog();
 
-	public static final String DEFAULT = "dic_";
+	public static final String DEFAULT = "filter_";
 
-	public static final String DEFAULT_NATURE = "userDefine";
-
-	public static final Integer DEFAULT_FREQ = 1000;
-
-	public static final String DEFAULT_FREQ_STR = "1000";
-	
 
 	// 用户自定义词典
-	private static final Map<String, KV<String, Forest>> DIC = new HashMap<>();
+	private static final Map<String, FilterRecognition> FILTER = new HashMap<>();
 
 	/**
 	 * 关键词增加

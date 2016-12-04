@@ -62,14 +62,15 @@ public class Jdbc2Stream extends PathToStream {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream(100 * 1024);
 					while (rs.next()) {
 						try {
-							baos.write(rs.getString(0).getBytes());
-							baos.write(TAB);
-							baos.write(rs.getString(1).getBytes());
-							baos.write(TAB);
-							baos.write(rs.getString(2).getBytes());
+							int count = rs.getMetaData().getColumnCount();
+							for (int i = 1; i < count; i++) {
+								baos.write(String.valueOf(rs.getObject(i)).getBytes());
+								baos.write(TAB);
+							}
+							baos.write(String.valueOf(rs.getObject(count)).getBytes());
 							baos.write(LINE);
+
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}

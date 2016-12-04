@@ -21,7 +21,7 @@ public class CrfLibrary  {
 	private static final Map<String, KV<String, SplitWord>> CRF = new HashMap<>();
 
 	public static final String DEFAULT = "crf_";
-
+	
 	public static SplitWord get() {
 		return get(DEFAULT);
 	}
