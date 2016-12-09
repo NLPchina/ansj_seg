@@ -72,7 +72,7 @@ public class SynonymsLibrary {
 
 		forest = new SmartForest<>();
 
-		LOG.info("begin init synonyms " + kv.getK());
+		LOG.debug("begin init synonyms " + kv.getK());
 		long start = System.currentTimeMillis();
 
 		try (BufferedReader reader = IOUtil.getReader(PathToStream.stream(kv.getK()), IOUtil.UTF8)) {

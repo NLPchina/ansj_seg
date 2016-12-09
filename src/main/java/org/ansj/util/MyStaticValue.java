@@ -13,6 +13,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.ansj.dic.DicReader;
+import org.ansj.dic.impl.Jdbc2Stream;
 import org.ansj.domain.AnsjItem;
 import org.ansj.library.DATDictionary;
 import org.nlpcn.commons.lang.util.FileFinder;
@@ -93,7 +94,11 @@ public class MyStaticValue {
 			for (String key : rb.keySet()) {
 				ENV.put(key, rb.getString(key));
 				try {
-					LOG.info("init " + key + " to env ");
+					String value = rb.getString(key);
+					if (value.startsWith("jdbc:")) { //给jdbc窜中密码做一个加密,不让密码明文在日志中
+						value = Jdbc2Stream.encryption(value);
+					}
+					LOG.info("init " + key + " to env value is : " + value);
 					Field field = MyStaticValue.class.getField(key);
 					field.set(null, ObjConver.conversion(rb.getString(key), field.getType()));
 				} catch (Exception e) {

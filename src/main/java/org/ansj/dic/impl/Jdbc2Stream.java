@@ -91,4 +91,19 @@ public class Jdbc2Stream extends PathToStream {
 
 	}
 
+	public static String encryption(String path){
+
+		String[] split = path.split("\\|");
+
+		String jdbc = split[0];
+
+		String username = split[1];
+
+		String password = split[2];
+
+		String sqlStr = split[3];
+
+		return jdbc + "|" + username + "|********|" + sqlStr;
+	}
+
 }

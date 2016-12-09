@@ -107,7 +107,7 @@ public class FilterLibrary {
 		}
 		try {
 			filterRecognition = new FilterRecognition();
-			LOG.info("begin init FILTER !");
+			LOG.debug("begin init FILTER !");
 			long start = System.currentTimeMillis();
 			String temp = null;
 			String[] strs = null;

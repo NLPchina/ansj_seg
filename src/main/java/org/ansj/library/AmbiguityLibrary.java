@@ -83,7 +83,7 @@ public class AmbiguityLibrary {
 		forest = new Forest();
 		try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "utf-8")) {
 			String temp;
-			LOG.info("begin init dic !");
+			LOG.debug("begin init ambiguity");
 			long start = System.currentTimeMillis();
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isNotBlank(temp)) {

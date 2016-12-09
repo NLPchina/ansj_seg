@@ -71,7 +71,7 @@ public class CrfLibrary {
 			}
 
 			long start = System.currentTimeMillis();
-			LOG.info("begin init crf model!");
+			LOG.debug("begin init crf model!");
 			try (InputStream is = PathToStream.stream(kv.getK())) {
 				SplitWord crfSplitWord = new SplitWord(Model.load(CRFModel.class, is));
 				kv.setV(crfSplitWord);

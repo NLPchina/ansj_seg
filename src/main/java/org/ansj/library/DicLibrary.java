@@ -137,7 +137,7 @@ public class DicLibrary {
 		}
 		try {
 			forest = new Forest();
-			LOG.info("begin init dic !");
+			LOG.debug("begin init dic !");
 			long start = System.currentTimeMillis();
 			String temp = null;
 			String[] strs = null;
