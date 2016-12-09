@@ -14,12 +14,7 @@ import java.util.ResourceBundle;
 
 import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
-import org.ansj.library.AmbiguityLibrary;
-import org.ansj.library.CrfLibrary;
 import org.ansj.library.DATDictionary;
-import org.ansj.library.DicLibrary;
-import org.ansj.library.SynonymsLibrary;
-import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.ObjConver;
@@ -35,9 +30,7 @@ import org.nlpcn.commons.lang.util.logging.LogFactory;
  */
 public class MyStaticValue {
 
-	public static final Forest EMPTY_FOREST = new Forest();
-
-	private static final Log LOG = LogFactory.getLog(MyStaticValue.class);
+	public static final Log LOG = LogFactory.getLog(MyStaticValue.class);
 
 	// 是否开启人名识别
 	public static Boolean isNameRecognition = true;
@@ -55,6 +48,8 @@ public class MyStaticValue {
 	 * 是否用户辞典不加载相同的词
 	 */
 	public static boolean isSkipUserDefine = false;
+
+	public static final Map<String, String> ENV = new HashMap<>();
 
 	static {
 		/**
@@ -96,50 +91,16 @@ public class MyStaticValue {
 		} else {
 
 			for (String key : rb.keySet()) {
-
-				if (key.equals("dic")) {
-					DicLibrary.put(DicLibrary.DEFAULT, rb.getString(key));
-				} else if (key.equals("crf")) {
-					CrfLibrary.put(CrfLibrary.DEFAULT, rb.getString(key));
-				} else if (key.equals("ambiguity")) {
-					AmbiguityLibrary.put(AmbiguityLibrary.DEFAULT, rb.getString(key));
-				} else if (key.equals("synonyms")) {
-					SynonymsLibrary.put(AmbiguityLibrary.DEFAULT, rb.getString(key));
-				} else if (key.startsWith("dic_")) {
-					DicLibrary.put(key, rb.getString(key));
-				} else if (key.startsWith("crf_")) {
-					CrfLibrary.put(key, rb.getString(key));
-				} else if (key.startsWith("synonyms_")) {
-					SynonymsLibrary.put(key, rb.getString(key));
-				} else if (key.startsWith("ambiguity_")) {
-					AmbiguityLibrary.put(key, rb.getString(key));
-				} else {
-					try {
-						Field field = MyStaticValue.class.getField(key);
-						field.set(null, ObjConver.conversion(rb.getString(key), field.getType()));
-					} catch (NoSuchFieldException e) {
-						LOG.error("not find field by " + key);
-					} catch (SecurityException e) {
-						LOG.error("安全异常", e);
-					} catch (IllegalArgumentException e) {
-						LOG.error("非法参数", e);
-					} catch (IllegalAccessException e) {
-						LOG.error("非法访问", e);
-					}
+				ENV.put(key, rb.getString(key));
+				try {
+					LOG.info("init " + key + " to env ");
+					Field field = MyStaticValue.class.getField(key);
+					field.set(null, ObjConver.conversion(rb.getString(key), field.getType()));
+				} catch (Exception e) {
 				}
-
 			}
 
 		}
-
-		//如果没有设置则设置默认路径
-		DicLibrary.putIfAbsent(DicLibrary.DEFAULT, "library/default.dic");
-
-		CrfLibrary.putIfAbsent(CrfLibrary.DEFAULT, "jar://crf.model");
-
-		AmbiguityLibrary.putIfAbsent(AmbiguityLibrary.DEFAULT, "library/ambiguity.dic");
-
-		SynonymsLibrary.putIfAbsent(SynonymsLibrary.DEFAULT, "library/synonyms.dic");
 	}
 
 	/**
@@ -298,5 +259,12 @@ public class MyStaticValue {
 		} catch (IOException e) {
 			LOG.warn("IO异常", e);
 		}
+	}
+
+	/*
+	 * 外部引用为了实例化加载变量
+	 */
+	public static Log getLog(Class<?> clazz) {
+		return LogFactory.getLog(clazz);
 	}
 }

@@ -43,6 +43,8 @@ public class Jdbc2Stream extends PathToStream {
 
 		String sqlStr = split[3];
 
+		String logStr = jdbc + "|" + username + "|********|" + sqlStr;
+
 		SimpleDataSource ds = null;
 
 		try {
@@ -80,7 +82,7 @@ public class Jdbc2Stream extends PathToStream {
 
 			return new ByteArrayInputStream((byte[]) execute.getResult());
 		} catch (Exception e) {
-			throw new LibraryException(e);
+			throw new LibraryException("err to load by jdbc " + logStr);
 		} finally {
 			if (ds != null) {
 				ds.close();

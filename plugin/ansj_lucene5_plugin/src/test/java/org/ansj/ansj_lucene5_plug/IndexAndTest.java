@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.ansj.domain.Term;
+import org.ansj.library.DicLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -33,25 +34,24 @@ import org.apache.lucene.store.RAMDirectory;
 import org.junit.Test;
 
 public class IndexAndTest {
-	
+
 	@Test
-	public void test() throws Exception{
-		MyStaticValue.DIC.put(MyStaticValue.DIC_DEFAULT, "../../library/default.dic");	
+	public void test() throws Exception {
+		DicLibrary.put(DicLibrary.DEFAULT, "../../library/default.dic");
 		PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new AnsjAnalyzer(TYPE.index));
 		Directory directory = null;
 		IndexWriter iwriter = null;
-		
+
 		IndexWriterConfig ic = new IndexWriterConfig(analyzer);
-		
-		
-		String text = "旅游和服务是最好的" ;
-		
+
+		String text = "旅游和服务是最好的";
+
 		System.out.println(IndexAnalysis.parse(text));
-		
+
 		// 建立内存索引对象
 		directory = new RAMDirectory();
 		iwriter = new IndexWriter(directory, ic);
-		addContent(iwriter,text);
+		addContent(iwriter, text);
 		iwriter.commit();
 		iwriter.close();
 
@@ -60,15 +60,14 @@ public class IndexAndTest {
 		Analyzer queryAnalyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.index);
 
 		System.out.println("index ok to search!");
-		
 
 		for (Term t : IndexAnalysis.parse(text)) {
-System.out.println(t.getName());			
-			search(queryAnalyzer, directory, "\""+t.getName()+"\"");	
+			System.out.println(t.getName());
+			search(queryAnalyzer, directory, "\"" + t.getName() + "\"");
 		}
-		
+
 	}
-	
+
 	private void search(Analyzer queryAnalyzer, Directory directory, String queryStr) throws CorruptIndexException, IOException, ParseException {
 		IndexSearcher isearcher;
 		DirectoryReader directoryReader = DirectoryReader.open(directory);
@@ -85,15 +84,14 @@ System.out.println(t.getName());
 			System.out.println(toHighlighter(queryAnalyzer, query, document));
 		}
 	}
-	
-	
+
 	private void addContent(IndexWriter iwriter, String text) throws CorruptIndexException, IOException {
 		Document doc = new Document();
-		IndexableField field = new TextField("text", text,Store.YES) ;
+		IndexableField field = new TextField("text", text, Store.YES);
 		doc.add(field);
 		iwriter.addDocument(doc);
 	}
-	
+
 	/**
 	 * 高亮设置
 	 * 
@@ -119,5 +117,5 @@ System.out.println(t.getName());
 		}
 		return null;
 	}
-	
+
 }

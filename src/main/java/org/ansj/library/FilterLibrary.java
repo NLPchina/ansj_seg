@@ -2,16 +2,13 @@ package org.ansj.library;
 
 import java.io.BufferedReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
 import org.ansj.recognition.impl.FilterRecognition;
-import org.ansj.util.MyStaticValue;
-import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
@@ -21,55 +18,56 @@ public class FilterLibrary {
 
 	private static final Log LOG = LogFactory.getLog();
 
-	public static final String DEFAULT = "filter_";
-
+	public static final String DEFAULT = "filter";
 
 	// 用户自定义词典
-	private static final Map<String, FilterRecognition> FILTER = new HashMap<>();
+	private static final Map<String, KV<String, FilterRecognition>> FILTER = new HashMap<>();
 
 	/**
-	 * 关键词增加
-	 *
-	 * @param keyword 所要增加的关键词
-	 * @param nature 关键词的词性
-	 * @param freq 关键词的词频
+	 * 词性过滤
+	 * 
+	 * @param key
+	 * @param filterNatures
 	 */
-	public static void insert(String key, String keyword, String nature, int freq) {
-		Forest dic = get(key);
-		String[] paramers = new String[2];
-		paramers[0] = nature;
-		paramers[1] = String.valueOf(freq);
-		Value value = new Value(keyword, paramers);
-		Library.insertWord(dic, value);
+	public static void insertStopNatures(String key, String... filterNatures) {
+		FilterRecognition fr = get(key);
+		fr.insertStopNatures(filterNatures);
 	}
 
 	/**
-	 * 增加关键词
-	 *
-	 * @param keyword
+	 * 正则过滤
+	 * 
+	 * @param key
+	 * @param regexes
 	 */
-	public static void insert(String key, String keyword) {
-		insert(key, keyword, DEFAULT_NATURE, DEFAULT_FREQ);
+	public static void insertStopRegexes(String key, String... regexes) {
+		FilterRecognition fr = get(key);
+		fr.insertStopRegexes(regexes);
 	}
 
 	/**
-	 * 删除关键词
+	 * 增加停用词
+	 * 
+	 * @param key
+	 * @param regexes
 	 */
-	public static void delete(String key, String word) {
-		Forest dic = get(key);
-		if (dic != null) {
-			Library.removeWord(dic, word);
-		}
+	public static void insertStopWords(String key, String... stopWords) {
+		FilterRecognition fr = get(key);
+		fr.insertStopWords(stopWords);
 	}
 
 	/**
-	 * 将用户自定义词典清空
+	 * 增加停用词
+	 * 
+	 * @param key
+	 * @param regexes
 	 */
-	public static void clear(String key) {
-		get(key).clear();
+	public static void insertStopWords(String key, List<String> stopWords) {
+		FilterRecognition fr = get(key);
+		fr.insertStopWords(stopWords);
 	}
 
-	public static Forest get() {
+	public static FilterRecognition get() {
 		return get(DEFAULT);
 	}
 
@@ -79,18 +77,18 @@ public class FilterLibrary {
 	 * @param modelName
 	 * @return
 	 */
-	public static Forest get(String key) {
-		KV<String, Forest> kv = DIC.get(fix(key));
+	public static FilterRecognition get(String key) {
+		KV<String, FilterRecognition> kv = FILTER.get(key);
 
 		if (kv == null) {
-			LOG.warn("dic " + key + " not found in config ");
+			LOG.warn("FILTER " + key + " not found in config ");
 			return null;
 		}
-		Forest forest = kv.getV();
-		if (forest == null) {
-			forest = init(kv);
+		FilterRecognition FilterRecognition = kv.getV();
+		if (FilterRecognition == null) {
+			FilterRecognition = init(key, kv);
 		}
-		return forest;
+		return FilterRecognition;
 
 	}
 
@@ -102,42 +100,48 @@ public class FilterLibrary {
 	 * @return
 	 */
 
-	private synchronized static Forest init(KV<String, Forest> kv) {
-		Forest forest = kv.getV();
-		if (forest != null) {
-			return forest;
+	private synchronized static FilterRecognition init(String key, KV<String, FilterRecognition> kv) {
+		FilterRecognition filterRecognition = kv.getV();
+		if (filterRecognition != null) {
+			return filterRecognition;
 		}
 		try {
-			forest = new Forest();
-			LOG.info("begin init dic !");
+			filterRecognition = new FilterRecognition();
+			LOG.info("begin init FILTER !");
 			long start = System.currentTimeMillis();
 			String temp = null;
 			String[] strs = null;
-			Value value = null;
 			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "UTF-8")) {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
 						temp = StringUtil.trim(temp);
 						strs = temp.split("\t");
-						strs[0] = strs[0].toLowerCase();
-						// 如何核心辞典存在那么就放弃
-						if (MyStaticValue.isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {
-							continue;
-						}
-						if (strs.length != 3) {
-							value = new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR);
+
+						if (strs.length == 1) {
+							filterRecognition.insertStopWords(strs[0]);
 						} else {
-							value = new Value(strs[0], strs[1], strs[2]);
+							switch (strs[1]) {
+							case "nature":
+								filterRecognition.insertStopNatures(strs[0]);
+								break;
+							case "regex":
+								filterRecognition.insertStopRegexes(strs[0]);
+								break;
+							default:
+								filterRecognition.insertStopWords(strs[0]);
+								break;
+							}
 						}
-						Library.insertWord(forest, value);
+
 					}
 				}
 			}
-			LOG.info("load dic use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
-			kv.setV(forest);
-			return forest;
+			LOG.info("load FILTER use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
+			kv.setV(filterRecognition);
+			return filterRecognition;
 		} catch (Exception e) {
 			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
+			FILTER.remove(key);
 			return null;
 		}
 	}
@@ -145,33 +149,40 @@ public class FilterLibrary {
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
-	public static void put(String key, String path, Forest forest) {
-		DIC.put(key, KV.with(path, forest));
+	public static void put(String key, String path, FilterRecognition filterRecognition) {
+		KV<String, FilterRecognition> kv = FILTER.get(key);
+		if (kv == null) {
+			kv = KV.with(path, filterRecognition);
+		} else {
+			kv.setK(path);
+			kv.setV(filterRecognition);
+		}
+		FILTER.put(key, kv);
 	}
 
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
 	public static void putIfAbsent(String key, String path) {
-		if (!DIC.containsKey(key)) {
-			DIC.put(key, KV.with(path, (Forest) null));
+		if (!FILTER.containsKey(key)) {
+			FILTER.put(key, KV.with(path, (FilterRecognition) null));
 		}
 	}
 
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
 	public static void put(String key, String path) {
 		put(key, path, null);
@@ -183,38 +194,30 @@ public class FilterLibrary {
 	 * @param <T>
 	 * @param <T>
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
-	public static synchronized Forest putIfAbsent(String key, String path, Forest forest) {
-		KV<String, Forest> kv = DIC.get(key);
+	public static synchronized FilterRecognition putIfAbsent(String key, String path, FilterRecognition FilterRecognition) {
+		KV<String, FilterRecognition> kv = FILTER.get(key);
 		if (kv != null && kv.getV() != null) {
 			return kv.getV();
 		}
-		put(key, path, forest);
-		return forest;
+		put(key, path, FilterRecognition);
+		return FilterRecognition;
 	}
 
-	public static KV<String, Forest> remove(String key) {
-		return DIC.remove(key);
+	public static KV<String, FilterRecognition> remove(String key) {
+		return FILTER.remove(key);
 	}
 
 	public static Set<String> keys() {
-		return DIC.keySet();
+		return FILTER.keySet();
 	}
 
 	public static void reload(String key) {
-		DIC.get(key).setV(null);
+		FILTER.get(key).setV(null);
 		get(key);
-	}
-
-	private static String fix(String key) {
-		if (key.startsWith(DEFAULT)) {
-			return key;
-		} else {
-			return DEFAULT + key;
-		}
 	}
 
 }

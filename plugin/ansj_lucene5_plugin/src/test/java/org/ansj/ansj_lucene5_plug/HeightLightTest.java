@@ -3,13 +3,12 @@ package org.ansj.ansj_lucene5_plug;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.DicLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.index.CorruptIndexException;
@@ -31,25 +30,22 @@ import org.apache.lucene.store.RAMDirectory;
 public class HeightLightTest {
 
 	private static Directory directory = new RAMDirectory();
-	
+
 	private static Analyzer indexAnalyzer = new AnsjAnalyzer(TYPE.index);
 
 	private static Analyzer queryAnalyzer = new AnsjAnalyzer(TYPE.index);
 
 	public static void main(String[] args) throws CorruptIndexException, IOException, ParseException {
-		
-		UserDefineLibrary.insertWord("交通安全", "n", 2000);
-		UserDefineLibrary.insertWord("交通", "n", 2000);
-		UserDefineLibrary.insertWord("安全", "n", 2000);
-		
-		
+
+		DicLibrary.insert(DicLibrary.DEFAULT, "交通安全", "ansj", 2000);
+		DicLibrary.insert(DicLibrary.DEFAULT, "交通", "ansj", 2000);
+		DicLibrary.insert(DicLibrary.DEFAULT, "安全", "ansj", 2000);
 
 		String content = "不强行上下车，做到先下后上，候车要排队，按秩序上车；下车后要等车辆开走后再行走，如要穿越马路，一定要确保安全的情况下穿行；交通信号灯的正确使用，什么事交通安全出行交通信号灯的正确使用，什么事交通安全出行";
-		
+
 		System.out.println(IndexAnalysis.parse(content));
 
 		String query = "\"交通安全出行\"";
-
 
 		// 建立内存索引对象
 		index(indexAnalyzer, content);

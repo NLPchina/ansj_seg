@@ -32,7 +32,6 @@ public abstract class PathToStream {
 				return new File2Stream().toStream(path);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new LibraryException(e);
 		}
 		throw new LibraryException("not find method type in path " + path);

@@ -8,23 +8,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
-import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class SynonymsLibrary {
 
-	private static final Log LOG = LogFactory.getLog();
+	private static final Log LOG = MyStaticValue.getLog(SynonymsLibrary.class);
 
 	// 同义词典
 	private static final Map<String, KV<String, SmartForest<List<String>>>> SYNONYMS = new HashMap<>();
 
-	public static final String DEFAULT = "synonyms_";
+	public static final String DEFAULT = "synonyms";
+
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		putIfAbsent(DEFAULT, "library/synonyms.dic");
+	}
 
 	public static SmartForest<List<String>> get() {
 		return get(DEFAULT);
@@ -43,7 +53,7 @@ public class SynonymsLibrary {
 
 		SmartForest<List<String>> sw = (SmartForest<List<String>>) kv.getV();
 		if (sw == null) {
-			sw = init(kv);
+			sw = init(key, kv);
 		}
 		return sw;
 	}
@@ -53,7 +63,7 @@ public class SynonymsLibrary {
 	 * 
 	 * @return
 	 */
-	private static synchronized SmartForest<List<String>> init(KV<String, SmartForest<List<String>>> kv) {
+	private static synchronized SmartForest<List<String>> init(String key, KV<String, SmartForest<List<String>>> kv) {
 
 		SmartForest<List<String>> forest = kv.getV();
 		if (forest != null) {
@@ -95,6 +105,7 @@ public class SynonymsLibrary {
 			return forest;
 		} catch (Exception e) {
 			LOG.error("Init synonyms library error :" + e.getMessage() + ", path: " + kv.getK());
+			SYNONYMS.remove(key);
 			return null;
 		}
 	}
@@ -152,6 +163,7 @@ public class SynonymsLibrary {
 	}
 
 	public static void putIfAbsent(String key, String path) {
+		key = fix(key);
 		if (!SYNONYMS.containsKey(key)) {
 			SYNONYMS.put(key, KV.with(path, (SmartForest<List<String>>) null));
 		}

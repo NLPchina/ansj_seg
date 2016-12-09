@@ -2,7 +2,7 @@ package org.ansj.ansj_lucene5_plug;
 
 import java.io.IOException;
 
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.DicLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -23,8 +23,8 @@ import org.apache.lucene.store.RAMDirectory;
 public class PhraseTest {
 	public static void main(String[] args) throws IOException, ParseException {
 
-		UserDefineLibrary.insertWord("上网人");
-		UserDefineLibrary.insertWord("网人");
+		DicLibrary.insert(DicLibrary.DEFAULT, "上网人");
+		DicLibrary.insert(DicLibrary.DEFAULT, "网人");
 		AnsjAnalyzer ansjAnalyzer = new AnsjAnalyzer(AnsjAnalyzer.TYPE.index);
 		TokenStream tokenStream = ansjAnalyzer.tokenStream("上网人员测试", "test");
 		while (tokenStream.incrementToken()) {

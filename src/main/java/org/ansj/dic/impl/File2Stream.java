@@ -45,7 +45,7 @@ public class File2Stream extends PathToStream {
 				throw new LibraryException(e);
 			}
 		}
-		throw new LibraryException("file " + path + " not found or can not to read");
+		throw new LibraryException(" path :" + path + " file:" + file.getAbsolutePath() + " not found or can not to read");
 
 	}
 

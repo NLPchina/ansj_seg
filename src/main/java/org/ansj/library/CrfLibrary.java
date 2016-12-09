@@ -4,24 +4,34 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.ansj.app.crf.model.CRFModel;
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.logging.Log;
-import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-public class CrfLibrary  {
+public class CrfLibrary {
 
-	private static final Log LOG = LogFactory.getLog();
+	private static final Log LOG = MyStaticValue.getLog(CrfLibrary.class);
 
 	// CRF模型
 	private static final Map<String, KV<String, SplitWord>> CRF = new HashMap<>();
 
-	public static final String DEFAULT = "crf_";
-	
+	public static final String DEFAULT = "crf";
+
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		putIfAbsent(DEFAULT, "jar://crf.model");
+	}
+
 	public static SplitWord get() {
 		return get(DEFAULT);
 	}
@@ -33,7 +43,7 @@ public class CrfLibrary  {
 	 * @return crf分词器
 	 */
 	public static SplitWord get(String key) {
-		key = fix(key);
+
 		KV<String, SplitWord> kv = CRF.get(key);
 
 		if (kv == null) {
@@ -82,12 +92,12 @@ public class CrfLibrary  {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
-		key = fix(key);
+
 		put(key, path, null);
 	}
 
 	public static void put(String key, String path, SplitWord sw) {
-		key = fix(key);
+
 		CRF.put(key, KV.with(path, sw));
 	}
 
@@ -98,7 +108,7 @@ public class CrfLibrary  {
 	 * @return
 	 */
 	public KV<String, SplitWord> remove(String key) {
-		key = fix(key);
+
 		return CRF.remove(key);
 	}
 
@@ -109,21 +119,13 @@ public class CrfLibrary  {
 	 * @return
 	 */
 	public static void reload(String key) {
-		key = fix(key);
+
 		CRF.get(key).setV(null);
 		get(key);
 	}
 
 	public static Set<String> keys() {
 		return CRF.keySet();
-	}
-
-	private static String fix(String key) {
-		if (key.startsWith(DEFAULT)) {
-			return key;
-		} else {
-			return DEFAULT + key;
-		}
 	}
 
 	public static void putIfAbsent(String key, String path) {

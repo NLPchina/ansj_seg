@@ -58,7 +58,7 @@ public abstract class Analysis {
 
 	// 是否显示真实词语
 	protected Boolean isRealName = false;
-
+	
 	/**
 	 * 文档读取流
 	 */
