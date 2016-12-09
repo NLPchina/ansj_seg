@@ -1,9 +1,12 @@
 package org.ansj.test;
 
 import org.ansj.domain.Result;
+import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.junit.Assert;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.library.Library;
@@ -13,17 +16,17 @@ public class TestError {
 	@Test
 	public void test() throws Exception {
 
-//		Forest forest = new Forest();
-//
-//		Library.insertWord(forest, "苹果果醋\t10\t10");
-//		Library.insertWord(forest, "苹果\t10	10");
-//		Library.insertWord(forest, "苹果醋	10	10");
-//		Library.insertWord(forest, "果醋	10	10");
-//
-//		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
-//
-//		Result re = DicAnalysis.parse("发扬光大对方地方看苹果醋");
-//		System.out.println(re);
+		//		Forest forest = new Forest();
+		//
+		//		Library.insertWord(forest, "苹果果醋\t10\t10");
+		//		Library.insertWord(forest, "苹果\t10	10");
+		//		Library.insertWord(forest, "苹果醋	10	10");
+		//		Library.insertWord(forest, "果醋	10	10");
+		//
+		//		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
+		//
+		//		Result re = DicAnalysis.parse("发扬光大对方地方看苹果醋");
+		//		System.out.println(re);
 
 		//		UserDefineLibrary.insertWord("中性粒细胞百分数neut%","clear",2000);
 		//		UserDefineLibrary.insertWord("中性粒细胞百分数neut","clear",2000);
@@ -143,7 +146,11 @@ public class TestError {
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
 
-		System.out.println(NlpAnalysis.parse("身高170 出生在1990年 人"));
+		Result parse = NlpAnalysis.parse("身高170 出生在1990年 人");
+
+		for (Term term : parse) {
+			Assert.assertFalse(term.getName().equals(" 人"));
+		}
 
 	}
 }

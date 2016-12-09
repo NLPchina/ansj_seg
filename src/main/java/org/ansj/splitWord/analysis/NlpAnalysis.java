@@ -107,8 +107,7 @@ public class NlpAnalysis extends Analysis {
 						}
 
 						tempOff += word.length(); // 增加偏移量
-
-						if (term.isNewWord() && isRuleWord(word)) { // 如果word不对那么不要了
+						if (isRuleWord(word)) { // 如果word不对那么不要了
 							tempTerm = null;
 							continue;
 						}
@@ -192,6 +191,7 @@ public class NlpAnalysis extends Analysis {
 
 	static {
 		filter.add(':');
+		filter.add(' ');
 		filter.add('：');
 		filter.add('　');
 		filter.add('，');
