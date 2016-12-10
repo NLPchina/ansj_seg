@@ -6,6 +6,9 @@ import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.Value;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
@@ -141,8 +144,11 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
-		
 
+		Forest dict1 = new Forest();
+		Library.insertWord(dict1, new Value("苹果", "userDefine", "1000"));
+		Library.insertWord(dict1, new Value("咖啡", "userDefine", "1000"));
+		System.out.println(DicAnalysis.parse("吃苹果喝咖啡", dict1));
 		
 		//#385 ansj_seg5.0.3版本，加载了默认的default.dic后，句子中带“哎咿呀”的，分词时会报错
 		System.out.println(DicAnalysis.parse("哎咿呀"));
