@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNature;
+import org.ansj.domain.TermNatures;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
@@ -14,8 +16,11 @@ import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.NameFix;
+import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
+import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.util.ObjConver;
 
 /**
  * 默认用户自定义词性优先
@@ -37,9 +42,6 @@ public class DicAnalysis extends Analysis {
 
 				graph.walkPath();
 
-				// 用户自定义词典的识别
-				userDefineRecognition(graph, forests);
-
 				// 数字发现
 				if (isNumRecognition && graph.hasNum) {
 					new NumRecognition().recognition(graph.terms);
@@ -60,10 +62,44 @@ public class DicAnalysis extends Analysis {
 			}
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
-				new UserDefineRecognition(InsertTermType.REPLACE, forests).recognition(graph.terms);
+
+				if (graph.terms[0] == null) {
+					return;
+				}
+
+				int beginOff = graph.terms[0].getOffe();
+
+				Forest forest = null;
+				for (int i = forests.length - 1; i >= 0; i--) {
+					forest = forests[i];
+					if (forest == null) {
+						continue;
+					}
+
+					GetWord word = forest.getWord(graph.chars);
+					String temp = null;
+					int tempFreq = 50;
+					while ((temp = word.getAllWords()) != null) {
+						if (graph.terms[word.offe] == null) {
+							continue;
+						}
+						tempFreq = getInt(word.getParam()[1], 50);
+						Term term = new Term(temp, beginOff + word.offe, word.getParam()[0], tempFreq);
+						term.selfScore(-1 * Math.pow(Math.log(tempFreq), temp.length()));
+						TermUtil.insertTerm(graph.terms, term, InsertTermType.REPLACE);
+					}
+				}
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 				graph.rmLittlePath();
+			}
+
+			private int getInt(String str, int def) {
+				try {
+					return Integer.parseInt(str);
+				} catch (NumberFormatException e) {
+					return def;
+				}
 			}
 
 			private List<Term> getResult() {

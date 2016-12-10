@@ -41,10 +41,9 @@ public class DicLibrary {
 		putIfAbsent(DEFAULT, "library/default.dic");
 
 		Forest forest = get();
-		if(forest==null){
+		if (forest == null) {
 			put(DEFAULT, DEFAULT, new Forest());
 		}
-		
 
 	}
 
@@ -120,6 +119,20 @@ public class DicLibrary {
 		}
 		return forest;
 
+	}
+
+	/**
+	 * 根据keys获取词典集合
+	 * 
+	 * @param keys
+	 * @return
+	 */
+	public static Forest[] gets(String... keys) {
+		Forest[] forests = new Forest[keys.length];
+		for (int i = 0; i < forests.length; i++) {
+			forests[i] = get(keys[i]);
+		}
+		return forests;
 	}
 
 	/**

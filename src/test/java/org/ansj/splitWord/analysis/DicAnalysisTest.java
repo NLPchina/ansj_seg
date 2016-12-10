@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.ansj.CorpusTest;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.junit.Test;
@@ -12,10 +13,17 @@ import org.nlpcn.commons.lang.tire.library.Library;
 
 import junit.framework.Assert;
 
-public class DicAnalysisTest {
+public class DicAnalysisTest  extends CorpusTest {
 
 	@Test
 	public void test() throws IOException {
+		for (String string : lines) {
+			System.out.println(DicAnalysis.parse(string));
+		}
+	}
+	
+	@Test
+	public void test1(){
 		DicLibrary.insert(DicLibrary.DEFAULT, "金水区", "ad", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "渝北区", "ad", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "金童路", "ad", 1000);

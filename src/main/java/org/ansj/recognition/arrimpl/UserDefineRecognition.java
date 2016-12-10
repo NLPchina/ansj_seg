@@ -5,7 +5,6 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DicLibrary;
 import org.ansj.recognition.TermArrRecognition;
-import org.ansj.util.MyStaticValue;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;

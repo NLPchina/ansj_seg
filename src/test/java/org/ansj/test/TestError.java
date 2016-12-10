@@ -2,14 +2,10 @@ package org.ansj.test;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
@@ -145,7 +141,13 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
+		
 
+		
+		//#385 ansj_seg5.0.3版本，加载了默认的default.dic后，句子中带“哎咿呀”的，分词时会报错
+		System.out.println(DicAnalysis.parse("哎咿呀"));
+
+		// #386
 		Result parse = NlpAnalysis.parse("身高170 出生在1990年 人");
 
 		for (Term term : parse) {
