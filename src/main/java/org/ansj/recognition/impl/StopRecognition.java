@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.Recognition;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 对结果增加过滤,支持词性过滤,和词语过滤.
@@ -17,16 +19,18 @@ import org.ansj.recognition.Recognition;
  * @author Ansj
  *
  */
-public class FilterRecognition implements Recognition {
+public class StopRecognition implements Recognition {
+
+	private static final Log LOG = LogFactory.getLog();
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7041503137429986566L;
 
-	private Set<String> filter = new HashSet<String>();
+	private Set<String> stop = new HashSet<String>();
 
-	private Set<String> natureFilter = new HashSet<String>();
+	private Set<String> natureStop = new HashSet<String>();
 
 	private Set<Pattern> regexList = new HashSet<Pattern>();
 
@@ -36,20 +40,20 @@ public class FilterRecognition implements Recognition {
 	 * @param filterWords
 	 * @return
 	 */
-	public FilterRecognition insertStopWords(Collection<String> filterWords) {
-		filter.addAll(filterWords);
+	public StopRecognition insertStopWords(Collection<String> filterWords) {
+		stop.addAll(filterWords);
 		return this;
 	}
 
 	/**
 	 * 批量增加停用词
 	 * 
-	 * @param filterWords
+	 * @param stopWords
 	 * @return
 	 */
-	public FilterRecognition insertStopWords(String... filterWords) {
-		for (String words : filterWords) {
-			filter.add(words);
+	public StopRecognition insertStopWords(String... stopWords) {
+		for (String words : stopWords) {
+			stop.add(words);
 		}
 		return this;
 	}
@@ -57,11 +61,11 @@ public class FilterRecognition implements Recognition {
 	/**
 	 * 批量增加停用词性 比如 增加nr 后.人名将不在结果中
 	 * 
-	 * @param filterWords
+	 * @param stopWords
 	 */
-	public void insertStopNatures(String... filterNatures) {
-		for (String natureStr : filterNatures) {
-			natureFilter.add(natureStr);
+	public void insertStopNatures(String... stopNatures) {
+		for (String natureStr : stopNatures) {
+			natureStop.add(natureStr);
 		}
 	}
 
@@ -72,7 +76,12 @@ public class FilterRecognition implements Recognition {
 	 */
 	public void insertStopRegexes(String... regexes) {
 		for (String regex : regexes) {
-			regexList.add(Pattern.compile(regex));
+			try {
+				regexList.add(Pattern.compile(regex));
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("regex err : " + regex, e);
+			}
 		}
 
 	}
@@ -99,11 +108,11 @@ public class FilterRecognition implements Recognition {
 	 * @return
 	 */
 	public boolean filter(Term term) {
-		if (filter.size() > 0 && (filter.contains(term.getName()))) {
+		if (stop.size() > 0 && (stop.contains(term.getName()))) {
 			return true;
 		}
 
-		if (natureFilter.size() > 0 && (natureFilter.contains(term.natrue().natureStr))) {
+		if (natureStop.size() > 0 && (natureStop.contains(term.natrue().natureStr))) {
 			return true;
 		}
 

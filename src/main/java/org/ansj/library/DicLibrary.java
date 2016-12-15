@@ -110,6 +110,10 @@ public class DicLibrary {
 		KV<String, Forest> kv = DIC.get(key);
 
 		if (kv == null) {
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
 			LOG.warn("dic " + key + " not found in config ");
 			return null;
 		}
@@ -242,7 +246,6 @@ public class DicLibrary {
 	}
 
 	public static KV<String, Forest> remove(String key) {
-
 		return DIC.remove(key);
 	}
 

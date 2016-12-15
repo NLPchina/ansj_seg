@@ -1,6 +1,7 @@
 package org.ansj.lucene5;
 
 import java.io.BufferedReader;
+import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,10 +11,10 @@ import java.util.Map;
 import org.ansj.library.AmbiguityLibrary;
 import org.ansj.library.CrfLibrary;
 import org.ansj.library.DicLibrary;
-import org.ansj.library.FilterLibrary;
+import org.ansj.library.StopLibrary;
 import org.ansj.library.SynonymsLibrary;
 import org.ansj.lucene.util.AnsjTokenizer;
-import org.ansj.recognition.impl.FilterRecognition;
+import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.BaseAnalysis;
@@ -30,7 +31,7 @@ import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class AnsjAnalyzer extends Analyzer {
-	public final Log logger = LogFactory.getLog();
+	public static final Log LOG = LogFactory.getLog();
 
 	/**
 	 * dic equals user , query equals to
@@ -39,7 +40,7 @@ public class AnsjAnalyzer extends Analyzer {
 	 *
 	 */
 	public static enum TYPE {
-		base, index, query, to, dic, user, search, nlp
+		base_ansj, index_ansj, query_ansj, dic_ansj, nlp_ansj
 	}
 
 	/**
@@ -81,29 +82,33 @@ public class AnsjAnalyzer extends Analyzer {
 	 * @param filter
 	 * @return
 	 */
-	public static Tokenizer getTokenizer(BufferedReader reader, Map<String, String> args) {
-
+	public static Tokenizer getTokenizer(Reader reader, Map<String, String> args) {
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("to create tokenizer " + args);
+		}
 		Analysis analysis = null;
 
 		String temp = null;
+		String type = args.get("type");
 
-		switch (AnsjAnalyzer.TYPE.valueOf(args.get("type"))) {
-		case base:
+		if (type == null) {
+			type = AnsjAnalyzer.TYPE.base_ansj.name();
+		}
+
+		switch (AnsjAnalyzer.TYPE.valueOf(type)) {
+		case base_ansj:
 			analysis = new BaseAnalysis();
 			break;
-		case index:
+		case index_ansj:
 			analysis = new IndexAnalysis();
 			break;
-		case dic:
-		case user:
+		case dic_ansj:
 			analysis = new DicAnalysis();
 			break;
-		case to:
-		case query:
-		case search:
+		case query_ansj:
 			analysis = new ToAnalysis();
 			break;
-		case nlp:
+		case nlp_ansj:
 			analysis = new NlpAnalysis();
 			if (StringUtil.isNotBlank(temp = args.get(CrfLibrary.DEFAULT))) {
 				((NlpAnalysis) analysis).setCrfModel(CrfLibrary.get(temp));
@@ -129,14 +134,14 @@ public class AnsjAnalyzer extends Analyzer {
 			analysis.setForests(forests);
 		}
 
-		List<FilterRecognition> filters = null;
-		if (StringUtil.isNotBlank(temp = args.get(FilterLibrary.DEFAULT))) { //用户自定义词典
+		List<StopRecognition> filters = null;
+		if (StringUtil.isNotBlank(temp = args.get(StopLibrary.DEFAULT))) { //用户自定义词典
 			String[] split = temp.split(",");
-			filters = new ArrayList<FilterRecognition>();
+			filters = new ArrayList<StopRecognition>();
 			for (String key : split) {
-				FilterRecognition filter = FilterLibrary.get(key.trim());
-				if (filter != null)
-					filters.add(filter);
+				StopRecognition stop = StopLibrary.get(key.trim());
+				if (stop != null)
+					filters.add(stop);
 			}
 		}
 

@@ -67,7 +67,7 @@ public class MyStaticValue {
 					LOG.info("load ansj_library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
 			} catch (Exception e1) {
-				LOG.warn("not find ansj_library.properties. and err {} i think it is a bug!", e1);
+				LOG.warn("not find ansj_library.properties. and err {} i think it is a bug!");
 			}
 		}
 

@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.recognition.impl.FilterRecognition;
+import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
@@ -30,13 +30,13 @@ public final class AnsjTokenizer extends Tokenizer {
 
 	private LinkedList<Object> result;
 
-	private List<FilterRecognition> filters; //停用词对象
+	private List<StopRecognition> stops; //停用词对象
 
 	private List<SynonymsRecgnition> synonyms; //同义词词典
 
-	public AnsjTokenizer(Analysis ta, List<FilterRecognition> filters, List<SynonymsRecgnition> synonyms) {
+	public AnsjTokenizer(Analysis ta, List<StopRecognition> stops, List<SynonymsRecgnition> synonyms) {
 		this.ta = ta;
-		this.filters = filters;
+		this.stops = stops;
 		this.synonyms = synonyms;
 	}
 
@@ -100,8 +100,8 @@ public final class AnsjTokenizer extends Tokenizer {
 	}
 
 	private boolean filterTerm(Term term) {
-		if (filters != null) {
-			for (FilterRecognition filterRecognition : filters) {
+		if (stops != null) {
+			for (StopRecognition filterRecognition : stops) {
 				if (filterRecognition.filter(term)) {
 					return true;
 				}

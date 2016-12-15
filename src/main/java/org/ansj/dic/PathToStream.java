@@ -26,7 +26,7 @@ public abstract class PathToStream {
 				return new Jar2Stream().toStream(path);
 			} else if (path.startsWith("class://")) {
 				((PathToStream) Class.forName(path.substring(8).split("\\|")[0]).newInstance()).toStream(path);
-			} else if (path.startsWith("url://")) {
+			} else if (path.startsWith("http://")||path.startsWith("https://")) {
 				return new Url2Stream().toStream(path);
 			} else {
 				return new File2Stream().toStream(path);

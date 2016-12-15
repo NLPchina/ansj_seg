@@ -56,6 +56,11 @@ public class AmbiguityLibrary {
 		KV<String, Forest> kv = AMBIGUITY.get(key);
 
 		if (kv == null) {
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
+
 			LOG.warn("crf " + key + " not found in config ");
 			return null;
 		}
@@ -164,8 +169,7 @@ public class AmbiguityLibrary {
 	 * @param key
 	 * @return
 	 */
-	public KV<String, Forest> remove(String key) {
-
+	public static KV<String, Forest> remove(String key) {
 		return AMBIGUITY.remove(key);
 	}
 

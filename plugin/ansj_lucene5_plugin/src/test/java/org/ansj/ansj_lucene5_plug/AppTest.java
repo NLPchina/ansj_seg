@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.lucene.util.AnsjTokenizer;
-import org.ansj.recognition.impl.FilterRecognition;
+import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.DicAnalysis;
@@ -25,7 +25,7 @@ public class AppTest {
 
 		String stopDicStr = "6\n7\n龙";
 
-		FilterRecognition testFilter = new FilterRecognition();
+		StopRecognition testFilter = new StopRecognition();
 
 		BufferedReader br = new BufferedReader(new StringReader(stopDicStr));
 		String temp = null;
@@ -34,7 +34,7 @@ public class AppTest {
 		}
 
 
-		List<FilterRecognition> filters = new ArrayList<FilterRecognition>();
+		List<StopRecognition> filters = new ArrayList<StopRecognition>();
 		filters.add(testFilter);
 		
 		for (int i = 0; i < 1; i++) {
@@ -47,7 +47,7 @@ public class AppTest {
 		}
 	}
 
-	private static void parse(Analysis an, List<FilterRecognition> filters) throws IOException {
+	private static void parse(Analysis an, List<StopRecognition> filters) throws IOException {
 		Tokenizer tokenizer = new AnsjTokenizer(an, filters, null);
 		while (tokenizer.incrementToken()) {
 			CharTermAttribute attribute = tokenizer.getAttribute(CharTermAttribute.class);

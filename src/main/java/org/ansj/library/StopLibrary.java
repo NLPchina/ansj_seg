@@ -5,32 +5,43 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
-import org.ansj.recognition.impl.FilterRecognition;
+import org.ansj.recognition.impl.StopRecognition;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-public class FilterLibrary {
+public class StopLibrary {
 
 	private static final Log LOG = LogFactory.getLog();
 
-	public static final String DEFAULT = "filter";
+	public static final String DEFAULT = "stop";
 
 	// 用户自定义词典
-	private static final Map<String, KV<String, FilterRecognition>> FILTER = new HashMap<>();
+	private static final Map<String, KV<String, StopRecognition>> STOP = new HashMap<>();
+
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		putIfAbsent(DEFAULT, "library/stop.dic");
+	}
 
 	/**
 	 * 词性过滤
 	 * 
 	 * @param key
-	 * @param filterNatures
+	 * @param stopNatures
 	 */
 	public static void insertStopNatures(String key, String... filterNatures) {
-		FilterRecognition fr = get(key);
+		StopRecognition fr = get(key);
 		fr.insertStopNatures(filterNatures);
 	}
 
@@ -41,7 +52,7 @@ public class FilterLibrary {
 	 * @param regexes
 	 */
 	public static void insertStopRegexes(String key, String... regexes) {
-		FilterRecognition fr = get(key);
+		StopRecognition fr = get(key);
 		fr.insertStopRegexes(regexes);
 	}
 
@@ -52,7 +63,7 @@ public class FilterLibrary {
 	 * @param regexes
 	 */
 	public static void insertStopWords(String key, String... stopWords) {
-		FilterRecognition fr = get(key);
+		StopRecognition fr = get(key);
 		fr.insertStopWords(stopWords);
 	}
 
@@ -63,11 +74,11 @@ public class FilterLibrary {
 	 * @param regexes
 	 */
 	public static void insertStopWords(String key, List<String> stopWords) {
-		FilterRecognition fr = get(key);
+		StopRecognition fr = get(key);
 		fr.insertStopWords(stopWords);
 	}
 
-	public static FilterRecognition get() {
+	public static StopRecognition get() {
 		return get(DEFAULT);
 	}
 
@@ -77,18 +88,22 @@ public class FilterLibrary {
 	 * @param modelName
 	 * @return
 	 */
-	public static FilterRecognition get(String key) {
-		KV<String, FilterRecognition> kv = FILTER.get(key);
+	public static StopRecognition get(String key) {
+		KV<String, StopRecognition> kv = STOP.get(key);
 
 		if (kv == null) {
-			LOG.warn("FILTER " + key + " not found in config ");
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
+			LOG.warn("STOP " + key + " not found in config ");
 			return null;
 		}
-		FilterRecognition FilterRecognition = kv.getV();
-		if (FilterRecognition == null) {
-			FilterRecognition = init(key, kv);
+		StopRecognition stopRecognition = kv.getV();
+		if (stopRecognition == null) {
+			stopRecognition = init(key, kv);
 		}
-		return FilterRecognition;
+		return stopRecognition;
 
 	}
 
@@ -100,13 +115,13 @@ public class FilterLibrary {
 	 * @return
 	 */
 
-	private synchronized static FilterRecognition init(String key, KV<String, FilterRecognition> kv) {
-		FilterRecognition filterRecognition = kv.getV();
-		if (filterRecognition != null) {
-			return filterRecognition;
+	private synchronized static StopRecognition init(String key, KV<String, StopRecognition> kv) {
+		StopRecognition stopRecognition = kv.getV();
+		if (stopRecognition != null) {
+			return stopRecognition;
 		}
 		try {
-			filterRecognition = new FilterRecognition();
+			stopRecognition = new StopRecognition();
 			LOG.debug("begin init FILTER !");
 			long start = System.currentTimeMillis();
 			String temp = null;
@@ -118,17 +133,17 @@ public class FilterLibrary {
 						strs = temp.split("\t");
 
 						if (strs.length == 1) {
-							filterRecognition.insertStopWords(strs[0]);
+							stopRecognition.insertStopWords(strs[0]);
 						} else {
 							switch (strs[1]) {
 							case "nature":
-								filterRecognition.insertStopNatures(strs[0]);
+								stopRecognition.insertStopNatures(strs[0]);
 								break;
 							case "regex":
-								filterRecognition.insertStopRegexes(strs[0]);
+								stopRecognition.insertStopRegexes(strs[0]);
 								break;
 							default:
-								filterRecognition.insertStopWords(strs[0]);
+								stopRecognition.insertStopWords(strs[0]);
 								break;
 							}
 						}
@@ -136,12 +151,12 @@ public class FilterLibrary {
 					}
 				}
 			}
-			LOG.info("load FILTER use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
-			kv.setV(filterRecognition);
-			return filterRecognition;
+			LOG.info("load stop use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
+			kv.setV(stopRecognition);
+			return stopRecognition;
 		} catch (Exception e) {
-			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
-			FILTER.remove(key);
+			LOG.error("Init Stop library error :" + e.getMessage() + ", path: " + kv.getK());
+			STOP.remove(key);
 			return null;
 		}
 	}
@@ -153,15 +168,15 @@ public class FilterLibrary {
 	 * @param FILTERDefault2
 	 * @param FILTER2
 	 */
-	public static void put(String key, String path, FilterRecognition filterRecognition) {
-		KV<String, FilterRecognition> kv = FILTER.get(key);
+	public static void put(String key, String path, StopRecognition stopRecognition) {
+		KV<String, StopRecognition> kv = STOP.get(key);
 		if (kv == null) {
-			kv = KV.with(path, filterRecognition);
+			kv = KV.with(path, stopRecognition);
 		} else {
 			kv.setK(path);
-			kv.setV(filterRecognition);
+			kv.setV(stopRecognition);
 		}
-		FILTER.put(key, kv);
+		STOP.put(key, kv);
 	}
 
 	/**
@@ -172,8 +187,8 @@ public class FilterLibrary {
 	 * @param FILTER2
 	 */
 	public static void putIfAbsent(String key, String path) {
-		if (!FILTER.containsKey(key)) {
-			FILTER.put(key, KV.with(path, (FilterRecognition) null));
+		if (!STOP.containsKey(key)) {
+			STOP.put(key, KV.with(path, (StopRecognition) null));
 		}
 	}
 
@@ -198,25 +213,25 @@ public class FilterLibrary {
 	 * @param FILTERDefault2
 	 * @param FILTER2
 	 */
-	public static synchronized FilterRecognition putIfAbsent(String key, String path, FilterRecognition FilterRecognition) {
-		KV<String, FilterRecognition> kv = FILTER.get(key);
+	public static synchronized StopRecognition putIfAbsent(String key, String path, StopRecognition stopRecognition) {
+		KV<String, StopRecognition> kv = STOP.get(key);
 		if (kv != null && kv.getV() != null) {
 			return kv.getV();
 		}
-		put(key, path, FilterRecognition);
-		return FilterRecognition;
+		put(key, path, stopRecognition);
+		return stopRecognition;
 	}
 
-	public static KV<String, FilterRecognition> remove(String key) {
-		return FILTER.remove(key);
+	public static KV<String, StopRecognition> remove(String key) {
+		return STOP.remove(key);
 	}
 
 	public static Set<String> keys() {
-		return FILTER.keySet();
+		return STOP.keySet();
 	}
 
 	public static void reload(String key) {
-		FILTER.get(key).setV(null);
+		STOP.get(key).setV(null);
 		get(key);
 	}
 

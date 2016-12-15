@@ -1,10 +1,10 @@
 package org.ansj.dic.impl;
 
 import java.io.InputStream;
+import java.net.URL;
 
 import org.ansj.dic.PathToStream;
-import org.nutz.http.Http;
-import org.nutz.http.Response;
+import org.ansj.exception.LibraryException;
 
 /**
  * url://http://maven.nlpcn.org/down/library/default.dic
@@ -16,9 +16,13 @@ public class Url2Stream extends PathToStream {
 
 	@Override
 	public InputStream toStream(String path) {
-		path = path.substring(6);
-		Response response = Http.get(path);
-		return response.getStream();
+		try {
+			URL url = new URL(path);
+			return url.openStream();
+		} catch (Exception e) {
+			throw new LibraryException("err to load by http " + path + " message : " + e.getMessage());
+		}
+
 	}
 
 }

@@ -21,7 +21,7 @@ public class FilterRecognitionTest {
 
 		System.out.println(parse);
 
-		FilterRecognition fitler = new FilterRecognition();
+		StopRecognition fitler = new StopRecognition();
 
 		fitler.insertStopNatures("uj");
 		fitler.insertStopNatures("ul");

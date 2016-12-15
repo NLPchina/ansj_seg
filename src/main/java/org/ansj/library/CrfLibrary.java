@@ -47,6 +47,10 @@ public class CrfLibrary {
 		KV<String, SplitWord> kv = CRF.get(key);
 
 		if (kv == null) {
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
 			LOG.warn("crf " + key + " not found in config ");
 			return null;
 		}
@@ -107,7 +111,7 @@ public class CrfLibrary {
 	 * @param key
 	 * @return
 	 */
-	public KV<String, SplitWord> remove(String key) {
+	public static KV<String, SplitWord> remove(String key) {
 
 		return CRF.remove(key);
 	}
