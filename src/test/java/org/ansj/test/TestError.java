@@ -4,6 +4,7 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -144,6 +145,11 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
+		
+		System.out.println(ToAnalysis.parse(""));
+		System.out.println(DicAnalysis.parse(""));
+		System.out.println(ToAnalysis.parse("大"));
+		System.out.println(DicAnalysis.parse("大"));
 
 		Forest dict1 = new Forest();
 		Library.insertWord(dict1, new Value("苹果", "userDefine", "1000"));
