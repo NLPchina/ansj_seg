@@ -45,7 +45,7 @@ public class TagContentTest {
 
 		SummaryComputer sc = new SummaryComputer(300, true, null, content);
 
-		TagContent tc = new TagContent("<begin>", "end");
+		TagContent tc = new TagContent("<begin>", "<end>");
 
 		String[] split = query.split(" ");
 

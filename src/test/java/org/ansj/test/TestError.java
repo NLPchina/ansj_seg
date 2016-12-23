@@ -2,9 +2,11 @@ package org.ansj.test;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.MyStaticValue;
 import org.junit.Assert;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -145,6 +147,13 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
+		
+		//dic分词诡异的bug，自定义词不起作用，非常诡异！ #398
+		MyStaticValue.isRealName = true ;
+		DicLibrary.insert(DicLibrary.DEFAULT,"英雄联盟") ;
+		DicLibrary.insert(DicLibrary.DEFAULT,"英联") ;
+		System.out.println(DicAnalysis.parse("英雄联盟"));
+		
 		
 		System.out.println(ToAnalysis.parse(""));
 		System.out.println(DicAnalysis.parse(""));
