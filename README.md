@@ -18,35 +18,22 @@ Ansj中文分词
 
 
 #####  下载jar
-* 访问 [http://maven.nlpcn.org/org/ansj/](http://maven.nlpcn.org/org/ansj/) 最好下载最新版 ansj_seg/
+* 访问 [http://maven.nlpcn.org/org/ansj/](https://oss.sonatype.org/content/repositories/releases/org/ansj/ansj_seg/) 最好下载最新版 ansj_seg/
   * 如果你用的是1.x版本需要下载[tree_split.jar](http://maven.nlpcn.org/org/ansj/tree_split/)。
-  * 如果你用的是2.x版本需要下载[nlp-lang.jar](http://maven.nlpcn.org/org/nlpcn/nlp-lang/)。
-  * 如果你用的是3.x以上版本只需要下载 ansj_seg-[version]-all-in-one.jar 一个jar包就能浪了。  
+  * 如果你用的是2.x版本需要下载[nlp-lang.jar](https://oss.sonatype.org/content/repositories/releases/org/nlpcn/nlp-lang/)。
 * 导入到eclipse ，开始你的程序吧
 
 
 #####  maven
 
 ````
-	<!-- 增加新的maven源 -->	
-	<repositories>
-		<repository>
-			<id>mvn-repo</id>
-			<url>http://maven.nlpcn.org/</url>
-		</repository>
-	</repositories>
-
-
-    <dependencies>
-        ....
         
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>5.0.1</version>
+            <version>5.1.0</version>
         </dependency>
-        ....
-    </dependencies>
+    
 ````
 
 #####  调用demo
