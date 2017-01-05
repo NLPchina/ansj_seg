@@ -3,8 +3,8 @@ package org.ansj.library;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
@@ -123,8 +123,10 @@ public class CrfLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-
-		CRF.get(key).setV(null);
+		KV<String, SplitWord> kv = CRF.get(key);
+		if (kv != null) {
+			CRF.get(key).setV(null);
+		}
 		get(key);
 	}
 

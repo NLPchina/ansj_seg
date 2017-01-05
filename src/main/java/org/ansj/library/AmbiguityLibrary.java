@@ -180,7 +180,10 @@ public class AmbiguityLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-		AMBIGUITY.get(key).setV(null);
+		KV<String, Forest> kv = AMBIGUITY.get(key);
+		if (kv != null) {
+			AMBIGUITY.get(key).setV(null);
+		}
 		get(key);
 	}
 

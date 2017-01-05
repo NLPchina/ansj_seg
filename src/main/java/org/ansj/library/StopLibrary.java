@@ -231,7 +231,10 @@ public class StopLibrary {
 	}
 
 	public static void reload(String key) {
-		STOP.get(key).setV(null);
+		KV<String, StopRecognition> kv = STOP.get(key);
+		if (kv != null) {
+			STOP.get(key).setV(null);
+		}
 		get(key);
 	}
 

@@ -254,7 +254,10 @@ public class DicLibrary {
 	}
 
 	public static void reload(String key) {
-		DIC.get(key).setV(null);
+		KV<String, Forest> kv = DIC.get(key);
+		if (kv != null) {
+			DIC.get(key).setV(null);
+		}
 		get(key);
 	}
 

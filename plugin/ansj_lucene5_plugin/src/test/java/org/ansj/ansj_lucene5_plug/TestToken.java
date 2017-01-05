@@ -26,7 +26,7 @@ public class TestToken {
 
 		Map<String, String> map = new HashMap<String, String>();
 
-		map.put("type", TYPE.index.name());
+		map.put("type", "dic_ansj");
 		map.put(SynonymsLibrary.DEFAULT, SynonymsLibrary.DEFAULT);
 		
 
