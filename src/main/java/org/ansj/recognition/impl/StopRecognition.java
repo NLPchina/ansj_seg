@@ -89,7 +89,6 @@ public class StopRecognition implements Recognition {
 	@Override
 	public void recognition(Result result) {
 		List<Term> list = result.getTerms();
-
 		Iterator<Term> iterator = list.iterator();
 
 		while (iterator.hasNext()) {
@@ -108,6 +107,7 @@ public class StopRecognition implements Recognition {
 	 * @return
 	 */
 	public boolean filter(Term term) {
+
 		if (stop.size() > 0 && (stop.contains(term.getName()))) {
 			return true;
 		}
