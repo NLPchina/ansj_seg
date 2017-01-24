@@ -145,7 +145,7 @@ public abstract class Analysis {
 				}
 			}
 		}
-		if (startOffe < gp.chars.length - 1) {
+		if (startOffe < gp.chars.length ) {
 			analysis(gp, startOffe, gp.chars.length);
 		}
 		List<Term> result = this.getResult(gp);
@@ -196,7 +196,6 @@ public abstract class Analysis {
 
 				if (status > 3) {
 					i--;
-					end--;
 				}
 
 				gwi.setChars(chars, start, end);
@@ -212,6 +211,14 @@ public abstract class Analysis {
 					}
 					gp.addTerm(term);
 					max = term.toValue();
+				}
+				
+				int len = end - max;
+				if (len > 0) {
+					for (; max < end;) {
+						gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
+						max++;
+					}
 				}
 
 				break;

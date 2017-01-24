@@ -174,7 +174,11 @@ public class TestError {
 //		for (Term term : parse) {
 //			Assert.assertFalse(term.getName().equals(" 人"));
 //		}
-		System.out.println(DicAnalysis.parse("玫玫玫玫玫┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+		
+		System.out.println(DicAnalysis.parse("大"));
+		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
 		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
 		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
 		
