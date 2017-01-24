@@ -106,7 +106,7 @@ public class StopLibrary {
 		return stopRecognition;
 
 	}
-
+	
 	/**
 	 * 用户自定义词典加载
 	 * 
@@ -114,7 +114,6 @@ public class StopLibrary {
 	 * @param path
 	 * @return
 	 */
-
 	private synchronized static StopRecognition init(String key, KV<String, StopRecognition> kv) {
 		StopRecognition stopRecognition = kv.getV();
 		if (stopRecognition != null) {
@@ -235,7 +234,6 @@ public class StopLibrary {
 		if (kv != null) {
 			STOP.get(key).setV(null);
 		}
-		get(key);
 	}
 
 }

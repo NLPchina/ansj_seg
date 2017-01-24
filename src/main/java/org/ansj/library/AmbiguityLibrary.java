@@ -184,7 +184,6 @@ public class AmbiguityLibrary {
 		if (kv != null) {
 			AMBIGUITY.get(key).setV(null);
 		}
-		get(key);
 	}
 
 	public static Set<String> keys() {

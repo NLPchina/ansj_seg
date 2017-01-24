@@ -150,7 +150,6 @@ public class SynonymsLibrary {
 		if (kv != null) {
 			SYNONYMS.get(key).setV(null);
 		}
-		get(key);
 	}
 
 	public static Set<String> keys() {

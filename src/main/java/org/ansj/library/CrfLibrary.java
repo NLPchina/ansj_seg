@@ -127,7 +127,6 @@ public class CrfLibrary {
 		if (kv != null) {
 			CRF.get(key).setV(null);
 		}
-		get(key);
 	}
 
 	public static Set<String> keys() {
