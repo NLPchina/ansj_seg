@@ -1,6 +1,5 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.DATDictionary.IN_SYSTEM;
 import static org.ansj.library.DATDictionary.status;
 
 import java.io.IOException;
@@ -58,7 +57,7 @@ public abstract class Analysis {
 
 	// 是否显示真实词语
 	protected Boolean isRealName = false;
-	
+
 	/**
 	 * 文档读取流
 	 */
@@ -160,18 +159,8 @@ public abstract class Analysis {
 		char[] chars = gp.chars;
 
 		String str = null;
-		char c = 0;
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status(chars[i])) {
-			case 0:
-				if (Character.isHighSurrogate(chars[i]) && (i + 1) < endOffe && Character.isLowSurrogate(chars[i + 1])) {
-					str = new String(Arrays.copyOfRange(chars, i, i + 2));
-					gp.addTerm(new Term(str, i, TermNatures.NULL));
-					i++;
-				} else {
-					gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
-				}
-				break;
 			case 4:
 				start = i;
 				end = 1;
@@ -195,31 +184,34 @@ public abstract class Analysis {
 			default:
 				start = i;
 				end = i;
-				c = chars[start];
-				while (IN_SYSTEM[c] > 0) {
-					end++;
-					if (++i >= endOffe)
-						break;
-					c = chars[i];
-				}
 
-				if (start == end) {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-					continue;
+				int status = 0;
+				do {
+					end = ++i;
+					if (i >= endOffe) {
+						break;
+					}
+					status = status(chars[i]);
+				} while (status < 4);
+
+				if (status > 3) {
+					i--;
+					end--;
 				}
 
 				gwi.setChars(chars, start, end);
+				int max = start;
 				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe, gwi.getItem()));
-				}
-
-				/**
-				 * 如果未分出词.以未知字符加入到gp中
-				 */
-				if (IN_SYSTEM[c] > 0 || status(c) > 3 || Character.isHighSurrogate(chars[i])) {
-					i -= 1;
-				} else {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
+					Term term = new Term(str, gwi.offe, gwi.getItem());
+					int len = term.getOffe() - max;
+					if (len > 0) {
+						for (; max < term.getOffe();) {
+							gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
+							max++;
+						}
+					}
+					gp.addTerm(term);
+					max = term.toValue();
 				}
 
 				break;
@@ -258,6 +250,7 @@ public abstract class Analysis {
 
 	/**
 	 * 通过构造方法传入的reader直接获取到分词结果
+	 * 
 	 * @return
 	 * @throws IOException
 	 */

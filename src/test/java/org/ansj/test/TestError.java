@@ -174,7 +174,9 @@ public class TestError {
 //		for (Term term : parse) {
 //			Assert.assertFalse(term.getName().equals(" 人"));
 //		}
-		
+		System.out.println(DicAnalysis.parse("玫玫玫玫玫┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
 		
 		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
 		

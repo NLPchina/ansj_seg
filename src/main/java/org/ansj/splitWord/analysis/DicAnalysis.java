@@ -63,7 +63,7 @@ public class DicAnalysis extends Analysis {
 
 			private void userDefineRecognition(final Graph graph, Forest... forests) {
 
-				if (graph.terms[0] == null) {
+				if (forests == null) {
 					return;
 				}
 
