@@ -19,8 +19,7 @@ Ansj中文分词
 
 #####  下载jar
 * 访问 [http://maven.nlpcn.org/org/ansj/](https://oss.sonatype.org/content/repositories/releases/org/ansj/ansj_seg/) 最好下载最新版 ansj_seg/
-  * 如果你用的是1.x版本需要下载[tree_split.jar](http://maven.nlpcn.org/org/ansj/tree_split/)。
-  * 如果你用的是2.x版本需要下载[nlp-lang.jar](https://oss.sonatype.org/content/repositories/releases/org/nlpcn/nlp-lang/)。
+  * 同时下载[nlp-lang.jar](https://oss.sonatype.org/content/repositories/releases/org/nlpcn/nlp-lang/) 需要和ansj_seg 配套..配套关系可以看jar包中的maven依赖,一般最新的ansj配最新的nlp-lang不会有错。
 * 导入到eclipse ，开始你的程序吧
 
 
@@ -31,7 +30,7 @@ Ansj中文分词
         <dependency>
             <groupId>org.ansj</groupId>
             <artifactId>ansj_seg</artifactId>
-            <version>5.1.0</version>
+            <version>5.1.1</version>
         </dependency>
     
 ````
