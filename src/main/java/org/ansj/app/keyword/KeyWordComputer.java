@@ -31,7 +31,7 @@ public class KeyWordComputer {
 		POS_SCORE.put("kw", 6.0); //关键词词性
 	}
 
-	private int nKeyword = 5;
+	private int nKeyword = 20;
 
 	public KeyWordComputer() {
 	}
@@ -46,6 +46,15 @@ public class KeyWordComputer {
 
 	}
 
+	public static void main(String[] args) {
+      String str = "基本html+css,处理浏览器兼容问题，掌握原生javascript和jquery,和后台进行数据交互，使用html5和css3对手机端进行布局";
+      KeyWordComputer kwc = new KeyWordComputer();
+      List<Keyword> computeArticleTfidf = kwc.computeArticleTfidf(str);
+      for(Keyword keyword:computeArticleTfidf){
+         System.out.println(keyword);
+      }
+   }
+	
 	/**
 	 * 
 	 * @param content
