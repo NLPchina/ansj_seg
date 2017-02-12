@@ -1,17 +1,17 @@
 package org.ansj.demo;
 
+import org.ansj.dic.LearnTool;
+import org.ansj.domain.Nature;
+import org.ansj.domain.NewWord;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.IOUtil;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
  * 新词发现工具
@@ -28,7 +28,7 @@ public class LearnToolDemo {
 		NlpAnalysis nlpAnalysis = new NlpAnalysis().setLearnTool(learnTool) ;
 
 		// 进行词语分词。也就是nlp方式分词，这里可以分多篇文章
-		nlpAnalysis.parseStr("说过，社交软件也是打着沟通的平台，让无数寂寞男女有了肉体与精神的寄托。");
+		nlpAnalysis.parseStr("成都星瑞农业有限公司嵩县华伊印刷有限公司说过，社交软件也是打着沟通的平台，让无数寂寞男女有了肉体与精神的寄托。");
 		nlpAnalysis.parseStr("其实可以打着这个需求点去运作的互联网公司不应只是社交类软件与可穿戴设备，还有携程网，去哪儿网等等，订房订酒店多好的寓意");
 		nlpAnalysis.parseStr("张艺谋的卡宴，马明哲的戏");
 

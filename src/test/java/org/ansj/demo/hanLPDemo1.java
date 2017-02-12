@@ -13,7 +13,7 @@ import java.util.List;
 public class hanLPDemo1 {
 	public static void main(String[] args) throws IOException {
 
-		System.out.println(HanLP.segment("你好，欢迎使用HanLP汉语处理包！无锡通宝房地产有限公司\n" +
+		System.out.println(HanLP.segment("成都星瑞农业有限公司嵩县华伊印刷有限公司你好，欢迎使用HanLP汉语处理包！无锡通宝房地产有限公司\n" +
 				"宁夏广洹工贸有限公司\n" +
 				"苏州茶恩春茶业有限公司\n" +
 				"东海县迅捷贸易有限公司"));

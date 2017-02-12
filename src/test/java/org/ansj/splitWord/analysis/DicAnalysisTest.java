@@ -1,16 +1,15 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
+import junit.framework.Assert;
 import org.ansj.domain.Term;
 import org.ansj.library.UserDefineLibrary;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
-import junit.framework.Assert;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class DicAnalysisTest {
 
@@ -24,7 +23,7 @@ public class DicAnalysisTest {
 		UserDefineLibrary.insertWord("自大学", "ab", 2000);
 		UserDefineLibrary.insertWord("网大学", "ab", 1000);
 
-		System.out.println(DicAnalysis.parse("重庆重庆市渝北区金童路奥山别墅162"));
+		System.out.println(DicAnalysis.parse("患者有ADH分泌过多综合征及新的疤痕性秃发和疤痕，请治疗。重庆重庆市渝北区金童路奥山别墅162"));
 		System.out.println(DicAnalysis.parse("河南省郑州市金水区金水区农科路与文博西路交叉口向东２００米路南"));
 		System.out.println(DicAnalysis.parse("来自大学生小说网大学"));
 		
