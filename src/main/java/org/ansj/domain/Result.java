@@ -75,11 +75,17 @@ public class Result implements Iterable<Term> {
 	 */
 	public String toStringWithOutNature(String split) {
 		
-		StringBuilder sb = new StringBuilder(terms.get(0).getRealName()) ;
+		if(terms==null || terms.size()==0){
+			return "" ;
+		}
 		
-		for (int i = 1; i < terms.size(); i++) {
+		Iterator<Term> iterator = terms.iterator() ;
+		
+		StringBuilder sb = new StringBuilder(iterator.next().getRealName()) ;
+		
+		while(iterator.hasNext()){
 			sb.append(split);
-			sb.append(terms.get(i).getRealName()) ;
+			sb.append(iterator.next().getRealName()) ;
 		}
 		
 		return sb.toString();
