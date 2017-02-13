@@ -39,6 +39,8 @@ public final class AnsjTokenizer extends Tokenizer {
 		this.stops = stops;
 		this.synonyms = synonyms;
 	}
+	
+	int position = -1;
 
 	@Override
 	public final boolean incrementToken() throws IOException {
@@ -52,7 +54,6 @@ public final class AnsjTokenizer extends Tokenizer {
 			result = null;
 			return false;
 		}
-		int position = 0;
 
 		if (obj instanceof Term) {
 			clearAttributes();

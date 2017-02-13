@@ -1,9 +1,9 @@
-package org.ansj.ansj_lucene5_plug;
+package org.ansj.ansj_lucene_plug;
 
 import java.io.IOException;
 
 import org.ansj.library.DicLibrary;
-import org.ansj.lucene5.AnsjAnalyzer;
+import org.ansj.lucene6.AnsjAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
