@@ -1,4 +1,4 @@
-package org.ansj.ansj_lucene5_plug;
+package org.ansj.ansj_lucene_plug;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -7,8 +7,8 @@ import java.util.Map;
 
 import org.ansj.library.DicLibrary;
 import org.ansj.library.SynonymsLibrary;
-import org.ansj.lucene5.AnsjAnalyzer;
-import org.ansj.lucene5.AnsjAnalyzer.TYPE;
+import org.ansj.lucene6.AnsjAnalyzer;
+import org.ansj.lucene6.AnsjAnalyzer.TYPE;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;

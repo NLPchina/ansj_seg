@@ -1,14 +1,13 @@
-package org.ansj.ansj_lucene5_plug;
+package org.ansj.ansj_lucene_plug;
 
 import java.io.IOException;
 import java.io.StringReader;
 
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
-import org.ansj.lucene5.AnsjAnalyzer;
-import org.ansj.lucene5.AnsjAnalyzer.TYPE;
+import org.ansj.lucene6.AnsjAnalyzer;
+import org.ansj.lucene6.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;

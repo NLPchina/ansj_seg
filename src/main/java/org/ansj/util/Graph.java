@@ -99,7 +99,7 @@ public class Graph {
 		Term maxTerm = null;
 		// 是否有交叉
 		boolean flag = false;
-		int length = terms.length - 1;
+		final int length = terms.length - 1;
 		for (int i = 0; i < length; i++) {
 			maxTerm = getMaxTerm(i);
 			if (maxTerm == null)
@@ -289,10 +289,8 @@ public class Graph {
 	/**
 	 * 具体的遍历打分方法
 	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
+	 * @param i 起始位置
+	 * @param j 起始属性
 	 * @param to
 	 */
 	private void merger(Term fromTerm, int to, Map<String, Double> relationMap) {
@@ -318,10 +316,8 @@ public class Graph {
 	/**
 	 * 根据分数
 	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
+	 * @param i 起始位置
+	 * @param j 起始属性
 	 * @param to
 	 */
 	private void mergerByScore(Term fromTerm, int to) {

@@ -27,6 +27,10 @@ public class SynonymsRecgnition implements Recognition {
 	public SynonymsRecgnition(String key) {
 		this.synonyms = SynonymsLibrary.get(key);
 	}
+	
+	public SynonymsRecgnition(SmartForest<List<String>> synonyms){
+		this.synonyms = synonyms ;
+	}
 
 	@Override
 	public void recognition(Result result) {

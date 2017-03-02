@@ -1,4 +1,4 @@
-package org.ansj.ansj_lucene5_plug;
+package org.ansj.ansj_lucene_plug;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -21,11 +21,6 @@ public class DATDictionary {
 	private static final Log LOG = LogFactory.getLog(DATDictionary.class);
 
 	/**
-	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
-	 */
-	public static final char[] IN_SYSTEM = new char[65536];
-
-	/**
 	 * 核心词典
 	 */
 	private static final DoubleArrayTire DAT = loadDAT();
@@ -51,19 +46,11 @@ public class DATDictionary {
 				if (item == null || item.getName() == null) {
 					continue;
 				}
-
-				if (item.getStatus() < 4) {
-					for (int i = 0; i < item.getName().length(); i++) {
-						IN_SYSTEM[item.getName().charAt(i)] = item.getName().charAt(i);
-					}
-				}
 				if (item.getStatus() < 2) {
 					item.setName(null);
 					continue;
 				}
 			}
-			// 特殊字符标准化
-			IN_SYSTEM['％'] = '%';
 			LOG.info("init core library ok use time : " + (System.currentTimeMillis() - start));
 			return dat;
 		} catch (InstantiationException e) {
@@ -156,5 +143,5 @@ public class DATDictionary {
 	public static int getId(String str) {
 		return DAT.getId(str);
 	}
-
+	
 }

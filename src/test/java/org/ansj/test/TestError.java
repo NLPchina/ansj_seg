@@ -1,10 +1,16 @@
 package org.ansj.test;
 
 import org.ansj.domain.Result;
+import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.MyStaticValue;
+import org.junit.Assert;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
@@ -12,17 +18,17 @@ public class TestError {
 	@Test
 	public void test() throws Exception {
 
-		Forest forest = new Forest();
-
-		Library.insertWord(forest, "苹果果醋\t10\t10");
-		Library.insertWord(forest, "苹果\t10	10");
-		Library.insertWord(forest, "苹果醋	10	10");
-		Library.insertWord(forest, "果醋	10	10");
-
-		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
-
-		Result re = DicAnalysis.parse("发扬光大对方地方看苹果醋");
-		System.out.println(re);
+		//		Forest forest = new Forest();
+		//
+		//		Library.insertWord(forest, "苹果果醋\t10\t10");
+		//		Library.insertWord(forest, "苹果\t10	10");
+		//		Library.insertWord(forest, "苹果醋	10	10");
+		//		Library.insertWord(forest, "果醋	10	10");
+		//
+		//		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, forest);
+		//
+		//		Result re = DicAnalysis.parse("发扬光大对方地方看苹果醋");
+		//		System.out.println(re);
 
 		//		UserDefineLibrary.insertWord("中性粒细胞百分数neut%","clear",2000);
 		//		UserDefineLibrary.insertWord("中性粒细胞百分数neut","clear",2000);
@@ -141,6 +147,49 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
+		
+//		//dic分词诡异的bug，自定义词不起作用，非常诡异！ #398
+//		MyStaticValue.isRealName = true ;
+//		DicLibrary.insert(DicLibrary.DEFAULT,"英雄联盟") ;
+//		DicLibrary.insert(DicLibrary.DEFAULT,"英联") ;
+//		System.out.println(DicAnalysis.parse("英雄联盟"));
+//		
+//		
+//		System.out.println(ToAnalysis.parse(""));
+//		System.out.println(DicAnalysis.parse(""));
+//		System.out.println(ToAnalysis.parse("大"));
+//		System.out.println(DicAnalysis.parse("大"));
+//
+//		Forest dict1 = new Forest();
+//		Library.insertWord(dict1, new Value("苹果", "userDefine", "1000"));
+//		Library.insertWord(dict1, new Value("咖啡", "userDefine", "1000"));
+//		System.out.println(DicAnalysis.parse("吃苹果喝咖啡", dict1));
+//		
+//		//#385 ansj_seg5.0.3版本，加载了默认的default.dic后，句子中带“哎咿呀”的，分词时会报错
+//		System.out.println(DicAnalysis.parse("哎咿呀"));
+//
+//		// #386
+//		Result parse = NlpAnalysis.parse("身高170 出生在1990年 人");
+//
+//		for (Term term : parse) {
+//			Assert.assertFalse(term.getName().equals(" 人"));
+//		}
+		
+		System.out.println(DicAnalysis.parse("大"));
+		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
+		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
+		
+		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
+		
+		//5.1.0版本dic分词加入的词无效 #409
+		
+		DicLibrary.insert(DicLibrary.DEFAULT, "琅琊榜","user",1000) ;
+		DicLibrary.insert(DicLibrary.DEFAULT, "玫红色");
+		System.out.println(ToAnalysis.parse("玫红色玫红色玫红色"));
+		System.out.println(DicAnalysis.parse("琅琊榜")) ;
 
 	}
 }

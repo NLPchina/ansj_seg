@@ -2,15 +2,15 @@ package org.ansj.library;
 
 import java.io.BufferedReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.util.MyStaticValue;
-import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
@@ -20,61 +20,65 @@ public class StopLibrary {
 
 	private static final Log LOG = LogFactory.getLog();
 
-	public static final String DEFAULT = "dic_";
-
-	public static final String DEFAULT_NATURE = "userDefine";
-
-	public static final Integer DEFAULT_FREQ = 1000;
-
-	public static final String DEFAULT_FREQ_STR = "1000";
-	
+	public static final String DEFAULT = "stop";
 
 	// 用户自定义词典
-	private static final Map<String, KV<String, Forest>> DIC = new HashMap<>();
+	private static final Map<String, KV<String, StopRecognition>> STOP = new HashMap<>();
 
-	/**
-	 * 关键词增加
-	 *
-	 * @param keyword 所要增加的关键词
-	 * @param nature 关键词的词性
-	 * @param freq 关键词的词频
-	 */
-	public static void insert(String key, String keyword, String nature, int freq) {
-		Forest dic = get(key);
-		String[] paramers = new String[2];
-		paramers[0] = nature;
-		paramers[1] = String.valueOf(freq);
-		Value value = new Value(keyword, paramers);
-		Library.insertWord(dic, value);
-	}
-
-	/**
-	 * 增加关键词
-	 *
-	 * @param keyword
-	 */
-	public static void insert(String key, String keyword) {
-		insert(key, keyword, DEFAULT_NATURE, DEFAULT_FREQ);
-	}
-
-	/**
-	 * 删除关键词
-	 */
-	public static void delete(String key, String word) {
-		Forest dic = get(key);
-		if (dic != null) {
-			Library.removeWord(dic, word);
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
 		}
+		putIfAbsent(DEFAULT, "library/stop.dic");
 	}
 
 	/**
-	 * 将用户自定义词典清空
+	 * 词性过滤
+	 * 
+	 * @param key
+	 * @param stopNatures
 	 */
-	public static void clear(String key) {
-		get(key).clear();
+	public static void insertStopNatures(String key, String... filterNatures) {
+		StopRecognition fr = get(key);
+		fr.insertStopNatures(filterNatures);
 	}
 
-	public static Forest get() {
+	/**
+	 * 正则过滤
+	 * 
+	 * @param key
+	 * @param regexes
+	 */
+	public static void insertStopRegexes(String key, String... regexes) {
+		StopRecognition fr = get(key);
+		fr.insertStopRegexes(regexes);
+	}
+
+	/**
+	 * 增加停用词
+	 * 
+	 * @param key
+	 * @param regexes
+	 */
+	public static void insertStopWords(String key, String... stopWords) {
+		StopRecognition fr = get(key);
+		fr.insertStopWords(stopWords);
+	}
+
+	/**
+	 * 增加停用词
+	 * 
+	 * @param key
+	 * @param regexes
+	 */
+	public static void insertStopWords(String key, List<String> stopWords) {
+		StopRecognition fr = get(key);
+		fr.insertStopWords(stopWords);
+	}
+
+	public static StopRecognition get() {
 		return get(DEFAULT);
 	}
 
@@ -84,21 +88,25 @@ public class StopLibrary {
 	 * @param modelName
 	 * @return
 	 */
-	public static Forest get(String key) {
-		KV<String, Forest> kv = DIC.get(fix(key));
+	public static StopRecognition get(String key) {
+		KV<String, StopRecognition> kv = STOP.get(key);
 
 		if (kv == null) {
-			LOG.warn("dic " + key + " not found in config ");
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
+			LOG.warn("STOP " + key + " not found in config ");
 			return null;
 		}
-		Forest forest = kv.getV();
-		if (forest == null) {
-			forest = init(kv);
+		StopRecognition stopRecognition = kv.getV();
+		if (stopRecognition == null) {
+			stopRecognition = init(key, kv);
 		}
-		return forest;
+		return stopRecognition;
 
 	}
-
+	
 	/**
 	 * 用户自定义词典加载
 	 * 
@@ -106,43 +114,48 @@ public class StopLibrary {
 	 * @param path
 	 * @return
 	 */
-
-	private synchronized static Forest init(KV<String, Forest> kv) {
-		Forest forest = kv.getV();
-		if (forest != null) {
-			return forest;
+	private synchronized static StopRecognition init(String key, KV<String, StopRecognition> kv) {
+		StopRecognition stopRecognition = kv.getV();
+		if (stopRecognition != null) {
+			return stopRecognition;
 		}
 		try {
-			forest = new Forest();
-			LOG.info("begin init dic !");
+			stopRecognition = new StopRecognition();
+			LOG.debug("begin init FILTER !");
 			long start = System.currentTimeMillis();
 			String temp = null;
 			String[] strs = null;
-			Value value = null;
 			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "UTF-8")) {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
 						temp = StringUtil.trim(temp);
 						strs = temp.split("\t");
-						strs[0] = strs[0].toLowerCase();
-						// 如何核心辞典存在那么就放弃
-						if (MyStaticValue.isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {
-							continue;
-						}
-						if (strs.length != 3) {
-							value = new Value(strs[0], DEFAULT_NATURE, DEFAULT_FREQ_STR);
+
+						if (strs.length == 1) {
+							stopRecognition.insertStopWords(strs[0]);
 						} else {
-							value = new Value(strs[0], strs[1], strs[2]);
+							switch (strs[1]) {
+							case "nature":
+								stopRecognition.insertStopNatures(strs[0]);
+								break;
+							case "regex":
+								stopRecognition.insertStopRegexes(strs[0]);
+								break;
+							default:
+								stopRecognition.insertStopWords(strs[0]);
+								break;
+							}
 						}
-						Library.insertWord(forest, value);
+
 					}
 				}
 			}
-			LOG.info("load dic use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
-			kv.setV(forest);
-			return forest;
+			LOG.info("load stop use time:" + (System.currentTimeMillis() - start) + " path is : " + kv.getK());
+			kv.setV(stopRecognition);
+			return stopRecognition;
 		} catch (Exception e) {
-			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
+			LOG.error("Init Stop library error :" + e.getMessage() + ", path: " + kv.getK());
+			STOP.remove(key);
 			return null;
 		}
 	}
@@ -150,33 +163,40 @@ public class StopLibrary {
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
-	public static void put(String key, String path, Forest forest) {
-		DIC.put(key, KV.with(path, forest));
+	public static void put(String key, String path, StopRecognition stopRecognition) {
+		KV<String, StopRecognition> kv = STOP.get(key);
+		if (kv == null) {
+			kv = KV.with(path, stopRecognition);
+		} else {
+			kv.setK(path);
+			kv.setV(stopRecognition);
+		}
+		STOP.put(key, kv);
 	}
 
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
 	public static void putIfAbsent(String key, String path) {
-		if (!DIC.containsKey(key)) {
-			DIC.put(key, KV.with(path, (Forest) null));
+		if (!STOP.containsKey(key)) {
+			STOP.put(key, KV.with(path, (StopRecognition) null));
 		}
 	}
 
 	/**
 	 * 动态添加词典
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
 	public static void put(String key, String path) {
 		put(key, path, null);
@@ -188,37 +208,31 @@ public class StopLibrary {
 	 * @param <T>
 	 * @param <T>
 	 * 
-	 * @param dicDefault
-	 * @param dicDefault2
-	 * @param dic2
+	 * @param FILTERDefault
+	 * @param FILTERDefault2
+	 * @param FILTER2
 	 */
-	public static synchronized Forest putIfAbsent(String key, String path, Forest forest) {
-		KV<String, Forest> kv = DIC.get(key);
+	public static synchronized StopRecognition putIfAbsent(String key, String path, StopRecognition stopRecognition) {
+		KV<String, StopRecognition> kv = STOP.get(key);
 		if (kv != null && kv.getV() != null) {
 			return kv.getV();
 		}
-		put(key, path, forest);
-		return forest;
+		put(key, path, stopRecognition);
+		return stopRecognition;
 	}
 
-	public static KV<String, Forest> remove(String key) {
-		return DIC.remove(key);
+	public static KV<String, StopRecognition> remove(String key) {
+		return STOP.remove(key);
 	}
 
 	public static Set<String> keys() {
-		return DIC.keySet();
+		return STOP.keySet();
 	}
 
 	public static void reload(String key) {
-		DIC.get(key).setV(null);
-		get(key);
-	}
-
-	private static String fix(String key) {
-		if (key.startsWith(DEFAULT)) {
-			return key;
-		} else {
-			return DEFAULT + key;
+		KV<String, StopRecognition> kv = STOP.get(key);
+		if (kv != null) {
+			STOP.get(key).setV(null);
 		}
 	}
 

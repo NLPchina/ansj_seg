@@ -21,15 +21,15 @@ public class FilterRecognitionTest {
 
 		System.out.println(parse);
 
-		FilterRecognition fitler = new FilterRecognition();
+		StopRecognition fitler = new StopRecognition();
 
 		fitler.insertStopNatures("uj");
 		fitler.insertStopNatures("ul");
 		fitler.insertStopNatures("null");
 
-		fitler.insertStopWord("我");
+		fitler.insertStopWords("我");
 
-		fitler.insertStopRegex("小.*?");
+		fitler.insertStopRegexes("小.*?");
 
 		Result modifResult = parse.recognition(fitler);
 

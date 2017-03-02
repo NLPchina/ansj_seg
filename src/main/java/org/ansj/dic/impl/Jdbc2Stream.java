@@ -43,6 +43,8 @@ public class Jdbc2Stream extends PathToStream {
 
 		String sqlStr = split[3];
 
+		String logStr = jdbc + "|" + username + "|********|" + sqlStr;
+
 		SimpleDataSource ds = null;
 
 		try {
@@ -62,14 +64,15 @@ public class Jdbc2Stream extends PathToStream {
 					ByteArrayOutputStream baos = new ByteArrayOutputStream(100 * 1024);
 					while (rs.next()) {
 						try {
-							baos.write(rs.getString(0).getBytes());
-							baos.write(TAB);
-							baos.write(rs.getString(1).getBytes());
-							baos.write(TAB);
-							baos.write(rs.getString(2).getBytes());
+							int count = rs.getMetaData().getColumnCount();
+							for (int i = 1; i < count; i++) {
+								baos.write(String.valueOf(rs.getObject(i)).getBytes());
+								baos.write(TAB);
+							}
+							baos.write(String.valueOf(rs.getObject(count)).getBytes());
 							baos.write(LINE);
+
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -79,13 +82,28 @@ public class Jdbc2Stream extends PathToStream {
 
 			return new ByteArrayInputStream((byte[]) execute.getResult());
 		} catch (Exception e) {
-			throw new LibraryException(e);
+			throw new LibraryException("err to load by jdbc " + logStr);
 		} finally {
 			if (ds != null) {
 				ds.close();
 			}
 		}
 
+	}
+
+	public static String encryption(String path){
+
+		String[] split = path.split("\\|");
+
+		String jdbc = split[0];
+
+		String username = split[1];
+
+		String password = split[2];
+
+		String sqlStr = split[3];
+
+		return jdbc + "|" + username + "|********|" + sqlStr;
 	}
 
 }

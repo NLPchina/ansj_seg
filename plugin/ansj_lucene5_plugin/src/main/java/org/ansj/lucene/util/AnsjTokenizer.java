@@ -1,8 +1,13 @@
 package org.ansj.lucene.util;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.recognition.impl.StopRecognition;
+import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.apache.lucene.analysis.Tokenizer;
@@ -23,38 +28,83 @@ public final class AnsjTokenizer extends Tokenizer {
 
 	protected Analysis ta = null;
 
-	public AnsjTokenizer(Analysis ta) {
+	private LinkedList<Object> result;
+
+	private List<StopRecognition> stops; //停用词对象
+
+	private List<SynonymsRecgnition> synonyms; //同义词词典
+
+	public AnsjTokenizer(Analysis ta, List<StopRecognition> stops, List<SynonymsRecgnition> synonyms) {
 		this.ta = ta;
+		this.stops = stops;
+		this.synonyms = synonyms;
 	}
+	
+	int position = -1;
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-		clearAttributes();
 
-		int position = 0;
-		Term term = null;
-		String name = null;
-		int length = 0;
-		boolean flag = true;
-		do {
-			term = ta.next();
-			if (term == null) {
-				break;
-			}
-			name = term.getName();
-			length = name.length();
-			position++;
-			flag = false;
-		} while (flag);
-		if (term != null) {
-			positionAttr.setPositionIncrement(position);
-			termAtt.setEmpty().append(term.getName());
-			offsetAtt.setOffset(term.getOffe(), term.getOffe() + length);
-			typeAtt.setType(term.getNatureStr());
-			return true;
-		} else {
+		if (result == null) {
+			parse();
+		}
+
+		Object obj = result.pollFirst();
+		if (obj == null) {
+			result = null;
 			return false;
 		}
+
+		if (obj instanceof Term) {
+			clearAttributes();
+			Term term = (Term) obj;
+			while (filterTerm(term)) { //停用词
+				term = (Term) result.pollFirst();
+				if (term == null) {
+					result = null;
+					return false;
+				}
+				position++;
+			}
+
+			position++;
+
+			List<String> synonyms = term.getSynonyms(); //获得同义词
+
+			String rName = null;
+
+			if (synonyms != null) {
+				for (int i = 1; i < synonyms.size(); i++) {
+					result.addFirst(synonyms.get(i));
+				}
+				rName = synonyms.get(0);
+			} else {
+				rName = term.getName();
+			}
+
+			offsetAtt.setOffset(term.getOffe(), term.getOffe() + term.getName().length());
+			typeAtt.setType(term.getNatureStr());
+
+			positionAttr.setPositionIncrement(position);
+			termAtt.setEmpty().append(rName);
+
+		} else {
+			positionAttr.setPositionIncrement(position);
+			termAtt.setEmpty().append(obj.toString());
+		}
+
+		return true;
+	}
+
+	private boolean filterTerm(Term term) {
+		if (stops != null && stops.size() > 0) {
+			for (StopRecognition filterRecognition : stops) {
+				if (filterRecognition.filter(term)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -64,6 +114,18 @@ public final class AnsjTokenizer extends Tokenizer {
 	public void reset() throws IOException {
 		super.reset();
 		ta.resetContent(new AnsjReader(this.input));
+		parse();
+	}
+
+	private void parse() throws IOException {
+		Result parse = ta.parse();
+		if (synonyms != null) {
+			for (SynonymsRecgnition sr : synonyms) {
+				parse.recognition(sr);
+			}
+		}
+
+		result = new LinkedList<Object>(parse.getTerms());
 	}
 
 }

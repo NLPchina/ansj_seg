@@ -8,23 +8,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
-import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class SynonymsLibrary {
 
-	private static final Log LOG = LogFactory.getLog();
+	private static final Log LOG = MyStaticValue.getLog(SynonymsLibrary.class);
 
 	// 同义词典
 	private static final Map<String, KV<String, SmartForest<List<String>>>> SYNONYMS = new HashMap<>();
 
-	public static final String DEFAULT = "synonyms_";
+	public static final String DEFAULT = "synonyms";
+
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		putIfAbsent(DEFAULT, "library/synonyms.dic");
+	}
 
 	public static SmartForest<List<String>> get() {
 		return get(DEFAULT);
@@ -33,17 +43,20 @@ public class SynonymsLibrary {
 	/**
 	 */
 	public static SmartForest<List<String>> get(String key) {
-		key = fix(key);
 		KV<String, SmartForest<List<String>>> kv = SYNONYMS.get(key);
 
 		if (kv == null) {
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
 			LOG.warn("crf " + key + " not found in config ");
 			return null;
 		}
 
 		SmartForest<List<String>> sw = (SmartForest<List<String>>) kv.getV();
 		if (sw == null) {
-			sw = init(kv);
+			sw = init(key, kv);
 		}
 		return sw;
 	}
@@ -53,7 +66,7 @@ public class SynonymsLibrary {
 	 * 
 	 * @return
 	 */
-	private static synchronized SmartForest<List<String>> init(KV<String, SmartForest<List<String>>> kv) {
+	private static synchronized SmartForest<List<String>> init(String key, KV<String, SmartForest<List<String>>> kv) {
 
 		SmartForest<List<String>> forest = kv.getV();
 		if (forest != null) {
@@ -62,7 +75,7 @@ public class SynonymsLibrary {
 
 		forest = new SmartForest<>();
 
-		LOG.info("begin init synonyms " + kv.getK());
+		LOG.debug("begin init synonyms " + kv.getK());
 		long start = System.currentTimeMillis();
 
 		try (BufferedReader reader = IOUtil.getReader(PathToStream.stream(kv.getK()), IOUtil.UTF8)) {
@@ -95,6 +108,7 @@ public class SynonymsLibrary {
 			return forest;
 		} catch (Exception e) {
 			LOG.error("Init synonyms library error :" + e.getMessage() + ", path: " + kv.getK());
+			SYNONYMS.remove(key);
 			return null;
 		}
 	}
@@ -107,12 +121,10 @@ public class SynonymsLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
-		key = fix(key);
 		put(key, path, null);
 	}
 
 	public static void put(String key, String path, SmartForest<List<String>> value) {
-		key = fix(key);
 		SYNONYMS.put(key, KV.with(path, value));
 	}
 
@@ -122,8 +134,8 @@ public class SynonymsLibrary {
 	 * @param key
 	 * @return
 	 */
-	public KV<String, SmartForest<List<String>>> remove(String key) {
-		key = fix(key);
+	public static KV<String, SmartForest<List<String>>> remove(String key) {
+
 		return SYNONYMS.remove(key);
 	}
 
@@ -134,21 +146,14 @@ public class SynonymsLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-		key = fix(key);
-		SYNONYMS.get(key).setV(null);
-		get(key);
+		KV<String, SmartForest<List<String>>> kv = SYNONYMS.get(key);
+		if (kv != null) {
+			SYNONYMS.get(key).setV(null);
+		}
 	}
 
 	public static Set<String> keys() {
 		return SYNONYMS.keySet();
-	}
-
-	private static String fix(String key) {
-		if (key.startsWith(DEFAULT)) {
-			return key;
-		} else {
-			return DEFAULT + key;
-		}
 	}
 
 	public static void putIfAbsent(String key, String path) {
@@ -163,7 +168,6 @@ public class SynonymsLibrary {
 	 * @param words
 	 */
 	public static void insert(String key, String[] words) {
-		key = fix(key);
 		SmartForest<List<String>> synonyms = get(key);
 
 		List<String> list = new ArrayList<>();
@@ -195,7 +199,7 @@ public class SynonymsLibrary {
 	}
 
 	private static Set<String> findAllWords(String key, String[] words) {
-		key = fix(key);
+
 		SmartForest<List<String>> synonyms = get(key);
 
 		Set<String> set = new HashSet<>();
@@ -217,7 +221,7 @@ public class SynonymsLibrary {
 	 * @param words
 	 */
 	public static void append(String key, String[] words) {
-		key = fix(key);
+
 		SmartForest<List<String>> synonyms = get(key);
 
 		Set<String> set = new HashSet<>();
@@ -249,7 +253,7 @@ public class SynonymsLibrary {
 	 * @param words
 	 */
 	public static void remove(String key, String word) {
-		key = fix(key);
+
 		SmartForest<List<String>> synonyms = get(key);
 
 		SmartForest<List<String>> branch = synonyms.getBranch(word);

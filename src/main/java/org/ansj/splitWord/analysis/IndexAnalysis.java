@@ -91,12 +91,17 @@ public class IndexAnalysis extends Analysis {
 
 				char[] chars = graph.chars;
 
-				for (Forest forest : forests) {
-					GetWord word = forest.getWord(chars);
-					while ((temp = word.getAllWords()) != null) {
-						if (!set.contains(temp + word.offe)) {
-							set.add(temp + word.offe);
-							last.add(new Term(temp, word.offe, word.getParam(0), ObjConver.getIntValue(word.getParam(1))));
+				if (forests != null) {
+					for (Forest forest : forests) {
+						if (forest == null) {
+							continue;
+						}
+						GetWord word = forest.getWord(chars);
+						while ((temp = word.getAllWords()) != null) {
+							if (!set.contains(temp + word.offe)) {
+								set.add(temp + word.offe);
+								last.add(new Term(temp, word.offe, word.getParam(0), ObjConver.getIntValue(word.getParam(1))));
+							}
 						}
 					}
 				}

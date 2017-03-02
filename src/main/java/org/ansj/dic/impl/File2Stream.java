@@ -1,6 +1,7 @@
 package org.ansj.dic.impl;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
@@ -45,7 +46,7 @@ public class File2Stream extends PathToStream {
 				throw new LibraryException(e);
 			}
 		}
-		throw new LibraryException("file " + path + " not found or can not to read");
+		throw new LibraryException(" path :" + path + " file:" + file.getAbsolutePath() + " not found or can not to read");
 
 	}
 
@@ -59,16 +60,13 @@ public class File2Stream extends PathToStream {
 				libs = new File[1];
 				libs[0] = file;
 			} else if (file.isDirectory()) {
-				File[] files = file.listFiles(new FilenameFilter() {
-					@Override
-					public boolean accept(File dir, String name) {
-						if (dir.canRead() && !dir.isHidden() && !dir.isDirectory()) {
-							return true;
-						} else {
-							return false;
-						}
+
+				File[] files = file.listFiles(new FileFilter() {
+					public boolean accept(File file) {
+						return file.canRead() && !file.isHidden() && !file.isDirectory();
 					}
 				});
+
 				if (files != null && files.length > 0) {
 					libs = files;
 				}

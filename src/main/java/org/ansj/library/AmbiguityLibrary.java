@@ -4,26 +4,36 @@ import java.io.BufferedReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
-import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 public class AmbiguityLibrary {
 
-	private static final Log LOG = LogFactory.getLog();
+	private static final Log LOG = MyStaticValue.getLog(AmbiguityLibrary.class);
 
 	// 同义词典
 	private static final Map<String, KV<String, Forest>> AMBIGUITY = new HashMap<>();
 
-	public static final String DEFAULT = "ambiguity_";
+	public static final String DEFAULT = "ambiguity";
+
+	static {
+		for (Entry<String, String> entry : MyStaticValue.ENV.entrySet()) {
+			if (entry.getKey().startsWith(DEFAULT)) {
+				put(entry.getKey(), entry.getValue());
+			}
+		}
+		putIfAbsent(DEFAULT, "library/ambiguity.dic");
+	}
 
 	/**
 	 * 获取系统默认词典
@@ -31,27 +41,36 @@ public class AmbiguityLibrary {
 	 * @return
 	 */
 	public static Forest get() {
+		if (!AMBIGUITY.containsKey(DEFAULT)) {
+			return null;
+		}
 		return get(DEFAULT);
 	}
 
 	/**
 	 * 根据key获取
 	 * 
-	 * @param key
-	 * @return crf分词器
 	 */
 	public static Forest get(String key) {
-		key = fix(key);
+
 		KV<String, Forest> kv = AMBIGUITY.get(key);
 
 		if (kv == null) {
+			if (MyStaticValue.ENV.containsKey(key)) {
+				putIfAbsent(key, MyStaticValue.ENV.get(key));
+				return get(key);
+			}
+
 			LOG.warn("crf " + key + " not found in config ");
 			return null;
 		}
 
 		Forest sw = (Forest) kv.getV();
 		if (sw == null) {
-			sw = init(kv);
+			try {
+				sw = init(key, kv);
+			} catch (Exception e) {
+			}
 		}
 		return sw;
 	}
@@ -61,7 +80,7 @@ public class AmbiguityLibrary {
 	 * 
 	 * @return
 	 */
-	private static synchronized Forest init(KV<String, Forest> kv) {
+	private static synchronized Forest init(String key, KV<String, Forest> kv) {
 		Forest forest = kv.getV();
 		if (forest != null) {
 			return forest;
@@ -69,7 +88,7 @@ public class AmbiguityLibrary {
 		forest = new Forest();
 		try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "utf-8")) {
 			String temp;
-			LOG.info("begin init dic !");
+			LOG.debug("begin init ambiguity");
 			long start = System.currentTimeMillis();
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isNotBlank(temp)) {
@@ -91,6 +110,7 @@ public class AmbiguityLibrary {
 			return forest;
 		} catch (Exception e) {
 			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
+			AMBIGUITY.remove(key);
 			return null;
 		}
 	}
@@ -117,6 +137,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 插入到树种
+	 * 
 	 * @param key
 	 * @param value
 	 */
@@ -133,12 +154,12 @@ public class AmbiguityLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
-		key = fix(key);
+
 		put(key, path, null);
 	}
 
 	public static void put(String key, String path, Forest value) {
-		key = fix(key);
+
 		AMBIGUITY.put(key, KV.with(path, value));
 	}
 
@@ -148,8 +169,7 @@ public class AmbiguityLibrary {
 	 * @param key
 	 * @return
 	 */
-	public KV<String, Forest> remove(String key) {
-		key = fix(key);
+	public static KV<String, Forest> remove(String key) {
 		return AMBIGUITY.remove(key);
 	}
 
@@ -160,21 +180,14 @@ public class AmbiguityLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-		key = fix(key);
-		AMBIGUITY.get(key).setV(null);
-		get(key);
+		KV<String, Forest> kv = AMBIGUITY.get(key);
+		if (kv != null) {
+			AMBIGUITY.get(key).setV(null);
+		}
 	}
 
 	public static Set<String> keys() {
 		return AMBIGUITY.keySet();
-	}
-
-	private static String fix(String key) {
-		if (key.startsWith(DEFAULT)) {
-			return key;
-		} else {
-			return DEFAULT + key;
-		}
 	}
 
 	public static void putIfAbsent(String key, String path) {

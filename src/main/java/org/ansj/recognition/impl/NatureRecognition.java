@@ -123,7 +123,7 @@ public class NatureRecognition implements Recognition {
 	 * @param word
 	 * @return
 	 */
-	public  TermNatures getTermNatures(String word) {
+	public TermNatures getTermNatures(String word) {
 		String[] params = null;
 		// 获得词性 ， 先从系统辞典。在从用户自定义辞典
 		AnsjItem ansjItem = DATDictionary.getItem(word);
@@ -151,6 +151,9 @@ public class NatureRecognition implements Recognition {
 	 */
 	public String[] getParams(String word) {
 		for (Forest forest : forests) {
+			if (forest == null) {
+				continue;
+			}
 			SmartForest<String[]> sf = forest;
 			for (int i = 0; i < word.length(); i++) {
 				sf = sf.get(word.charAt(i));
