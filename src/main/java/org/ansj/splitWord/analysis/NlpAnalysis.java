@@ -63,7 +63,7 @@ public class NlpAnalysis extends Analysis {
 
 				graph.walkPath();
 
-				learn.learn(graph, splitWord);
+				learn.learn(graph, splitWord ,forests);
 
 				// 姓名识别
 				if (graph.hasPerson && isNameRecognition) {
