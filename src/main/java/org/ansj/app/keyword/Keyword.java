@@ -8,7 +8,7 @@ public class Keyword implements Comparable<Keyword> {
 
 	public Keyword(String name, int docFreq, double weight) {
 		this.name = name;
-		this.idf = Math.log(10000 + 10000.0 / (docFreq + 1));
+		this.idf = Math.log(1 + 10000.0 / (docFreq + 1));
 		this.score = idf * weight;
 		freq++;
 	}
