@@ -40,7 +40,7 @@ public final class AnsjTokenizer extends Tokenizer {
 		this.synonyms = synonyms;
 	}
 	
-	int position = -1;
+	int position = 0;
 
 	@Override
 	public final boolean incrementToken() throws IOException {
