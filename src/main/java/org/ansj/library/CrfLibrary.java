@@ -127,6 +127,8 @@ public class CrfLibrary {
 		if (kv != null) {
 			CRF.get(key).setV(null);
 		}
+
+		LOG.warn("make sure ,this reload not use same obj , it to instance a new model");
 	}
 
 	public static Set<String> keys() {

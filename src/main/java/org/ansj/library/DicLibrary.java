@@ -119,7 +119,7 @@ public class DicLibrary {
 		}
 		Forest forest = kv.getV();
 		if (forest == null) {
-			forest = init(key, kv);
+			forest = init(key, kv, false);
 		}
 		return forest;
 
@@ -157,13 +157,19 @@ public class DicLibrary {
 	 * @return
 	 */
 
-	private synchronized static Forest init(String key, KV<String, Forest> kv) {
+	private synchronized static Forest init(String key, KV<String, Forest> kv, boolean reload) {
 		Forest forest = kv.getV();
 		if (forest != null) {
-			return forest;
+			if (reload) {
+				forest.clear();
+			} else {
+				return forest;
+			}
+		} else {
+			forest = new Forest();
 		}
 		try {
-			forest = new Forest();
+
 			LOG.debug("begin init dic !");
 			long start = System.currentTimeMillis();
 			String temp = null;
@@ -256,6 +262,10 @@ public class DicLibrary {
 	}
 
 	public static KV<String, Forest> remove(String key) {
+		KV<String, Forest> kv = DIC.get(key);
+		if (kv != null && kv.getV() != null) {
+			kv.getV().clear();
+		}
 		return DIC.remove(key);
 	}
 
@@ -264,10 +274,15 @@ public class DicLibrary {
 	}
 
 	public static void reload(String key) {
-		KV<String, Forest> kv = DIC.get(key);
-		if (kv != null) {
-			DIC.get(key).setV(null);
+		if (!MyStaticValue.ENV.containsKey(key)) { //如果变量中不存在直接删掉这个key不解释了
+			remove(key);
 		}
+
+		putIfAbsent(key, MyStaticValue.ENV.get(key));
+
+		KV<String, Forest> kv = DIC.get(key);
+
+		init(key, kv, true);
 	}
 
 }

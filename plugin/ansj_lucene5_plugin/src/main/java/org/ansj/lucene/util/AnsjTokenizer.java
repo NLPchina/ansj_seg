@@ -40,11 +40,11 @@ public final class AnsjTokenizer extends Tokenizer {
 		this.synonyms = synonyms;
 	}
 	
-	int position = 0;
+
 
 	@Override
 	public final boolean incrementToken() throws IOException {
-
+		int position = 0;
 		if (result == null) {
 			parse();
 		}
@@ -67,7 +67,6 @@ public final class AnsjTokenizer extends Tokenizer {
 				position++;
 			}
 
-			position++;
 
 			List<String> synonyms = term.getSynonyms(); //获得同义词
 
@@ -81,7 +80,7 @@ public final class AnsjTokenizer extends Tokenizer {
 			} else {
 				rName = term.getName();
 			}
-
+			position++;
 			offsetAtt.setOffset(term.getOffe(), term.getOffe() + term.getName().length());
 			typeAtt.setType(term.getNatureStr());
 

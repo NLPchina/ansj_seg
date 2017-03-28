@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.domain.KV;
@@ -101,12 +101,12 @@ public class StopLibrary {
 		}
 		StopRecognition stopRecognition = kv.getV();
 		if (stopRecognition == null) {
-			stopRecognition = init(key, kv);
+			stopRecognition = init(key, kv, false);
 		}
 		return stopRecognition;
 
 	}
-	
+
 	/**
 	 * 用户自定义词典加载
 	 * 
@@ -114,13 +114,20 @@ public class StopLibrary {
 	 * @param path
 	 * @return
 	 */
-	private synchronized static StopRecognition init(String key, KV<String, StopRecognition> kv) {
+	private synchronized static StopRecognition init(String key, KV<String, StopRecognition> kv, boolean reload) {
 		StopRecognition stopRecognition = kv.getV();
+
 		if (stopRecognition != null) {
-			return stopRecognition;
-		}
-		try {
+			if (reload) {
+				stopRecognition.clear();
+			} else {
+				return stopRecognition;
+			}
+		} else {
 			stopRecognition = new StopRecognition();
+		}
+
+		try {
 			LOG.debug("begin init FILTER !");
 			long start = System.currentTimeMillis();
 			String temp = null;
@@ -222,6 +229,10 @@ public class StopLibrary {
 	}
 
 	public static KV<String, StopRecognition> remove(String key) {
+		KV<String, StopRecognition> kv = STOP.get(key);
+		if (kv != null && kv.getV() != null) {
+			kv.getV().clear();
+		}
 		return STOP.remove(key);
 	}
 
@@ -230,10 +241,16 @@ public class StopLibrary {
 	}
 
 	public static void reload(String key) {
-		KV<String, StopRecognition> kv = STOP.get(key);
-		if (kv != null) {
-			STOP.get(key).setV(null);
+
+		if (!MyStaticValue.ENV.containsKey(key)) { //如果变量中不存在直接删掉这个key不解释了
+			remove(key);
 		}
+
+		putIfAbsent(key, MyStaticValue.ENV.get(key));
+
+		KV<String, StopRecognition> kv = STOP.get(key);
+
+		init(key, kv, true);
 	}
 
 }

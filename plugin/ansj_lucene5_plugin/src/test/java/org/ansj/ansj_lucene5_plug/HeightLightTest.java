@@ -11,6 +11,7 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
@@ -45,7 +46,7 @@ public class HeightLightTest {
 
 		System.out.println(IndexAnalysis.parse(content));
 
-		String query = "\"交通安全出行\"";
+		String query = "text:\"交通安全出行\"";
 
 		// 建立内存索引对象
 		index(indexAnalyzer, content);
@@ -60,6 +61,7 @@ public class HeightLightTest {
 		IndexSearcher isearcher = new IndexSearcher(directoryReader);
 		System.out.println(query);
 		TopDocs hits = isearcher.search(query, 5);
+		System.out.println(hits.scoreDocs.length);
 		for (int i = 0; i < hits.scoreDocs.length; i++) {
 			int docId = hits.scoreDocs[i].doc;
 			Document document = isearcher.doc(docId);
@@ -96,7 +98,7 @@ public class HeightLightTest {
 	private static void index(Analyzer analysis, String content) throws CorruptIndexException, IOException {
 		Document doc = new Document();
 		IndexWriter iwriter = new IndexWriter(directory, new IndexWriterConfig(analysis));
-		doc.add(new Field("text", content, Field.Store.YES, Field.Index.ANALYZED));
+		doc.add(new TextField("text", content, Field.Store.YES));
 		iwriter.addDocument(doc);
 		iwriter.commit();
 		iwriter.close();

@@ -68,7 +68,7 @@ public class AmbiguityLibrary {
 		Forest sw = (Forest) kv.getV();
 		if (sw == null) {
 			try {
-				sw = init(key, kv);
+				sw = init(key, kv, false);
 			} catch (Exception e) {
 			}
 		}
@@ -80,12 +80,17 @@ public class AmbiguityLibrary {
 	 * 
 	 * @return
 	 */
-	private static synchronized Forest init(String key, KV<String, Forest> kv) {
+	private static synchronized Forest init(String key, KV<String, Forest> kv, boolean reload) {
 		Forest forest = kv.getV();
 		if (forest != null) {
-			return forest;
+			if (reload) {
+				forest.clear();
+			} else {
+				return forest;
+			}
+		} else {
+			forest = new Forest();
 		}
-		forest = new Forest();
 		try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "utf-8")) {
 			String temp;
 			LOG.debug("begin init ambiguity");
@@ -170,6 +175,10 @@ public class AmbiguityLibrary {
 	 * @return
 	 */
 	public static KV<String, Forest> remove(String key) {
+		KV<String, Forest> kv = AMBIGUITY.get(key);
+		if (kv != null && kv.getV() != null) {
+			kv.getV().clear();
+		}
 		return AMBIGUITY.remove(key);
 	}
 
@@ -180,10 +189,15 @@ public class AmbiguityLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-		KV<String, Forest> kv = AMBIGUITY.get(key);
-		if (kv != null) {
-			AMBIGUITY.get(key).setV(null);
+		if (!MyStaticValue.ENV.containsKey(key)) { //如果变量中不存在直接删掉这个key不解释了
+			remove(key);
 		}
+
+		putIfAbsent(key, MyStaticValue.ENV.get(key));
+
+		KV<String, Forest> kv = AMBIGUITY.get(key);
+
+		init(key, kv, true);
 	}
 
 	public static Set<String> keys() {

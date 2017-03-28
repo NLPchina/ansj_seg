@@ -67,7 +67,7 @@ public class MyStaticValue {
 					LOG.info("load ansj_library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 				}
 			} catch (Exception e1) {
-				LOG.warn("not find ansj_library.properties. and err {} i think it is a bug!");
+				LOG.warn("not find ansj_library.properties. reason: " + e1.getMessage());
 			}
 		}
 
@@ -82,7 +82,7 @@ public class MyStaticValue {
 						LOG.info("load library not find in classPath ! i find it in " + find.getAbsolutePath() + " make sure it is your config!");
 					}
 				} catch (Exception e1) {
-					LOG.warn("not find library.properties. and err {} i think it is a bug!", e1);
+					LOG.warn("not find library.properties. reason: " + e1.getMessage());
 				}
 			}
 		}

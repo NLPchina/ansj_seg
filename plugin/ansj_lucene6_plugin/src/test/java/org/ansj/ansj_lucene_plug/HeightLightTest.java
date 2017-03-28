@@ -46,7 +46,7 @@ public class HeightLightTest {
 
 		System.out.println(IndexAnalysis.parse(content));
 
-		String query = "\"交通安全出行\"";
+		String query = "text:\"交通安全出行\"";
 
 		// 建立内存索引对象
 		index(indexAnalyzer, content);

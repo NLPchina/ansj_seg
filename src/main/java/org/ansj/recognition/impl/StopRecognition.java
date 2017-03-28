@@ -127,4 +127,10 @@ public class StopRecognition implements Recognition {
 		return false;
 	}
 
+	public void clear() {
+		this.stop.clear();
+		this.natureStop.clear();
+		this.regexList.clear();
+	}
+
 }

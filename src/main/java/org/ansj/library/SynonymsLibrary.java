@@ -56,24 +56,32 @@ public class SynonymsLibrary {
 
 		SmartForest<List<String>> sw = (SmartForest<List<String>>) kv.getV();
 		if (sw == null) {
-			sw = init(key, kv);
+			sw = init(key, kv, false);
 		}
 		return sw;
 	}
 
 	/**
-	 * 加载
+	 * 加载词典
 	 * 
+	 * @param key
+	 * @param kv
+	 * @param reload 是否更新词典
 	 * @return
 	 */
-	private static synchronized SmartForest<List<String>> init(String key, KV<String, SmartForest<List<String>>> kv) {
+	private static synchronized SmartForest<List<String>> init(String key, KV<String, SmartForest<List<String>>> kv, boolean reload) {
 
 		SmartForest<List<String>> forest = kv.getV();
-		if (forest != null) {
-			return forest;
-		}
 
-		forest = new SmartForest<>();
+		if (forest != null) {
+			if (reload) {
+				forest.clear();
+			} else {
+				return forest;
+			}
+		} else {
+			forest = new SmartForest<>();
+		}
 
 		LOG.debug("begin init synonyms " + kv.getK());
 		long start = System.currentTimeMillis();
@@ -135,7 +143,10 @@ public class SynonymsLibrary {
 	 * @return
 	 */
 	public static KV<String, SmartForest<List<String>>> remove(String key) {
-
+		KV<String, SmartForest<List<String>>> kv = SYNONYMS.get(key);
+		if (kv != null && kv.getV() != null) { //先清空后删除
+			kv.getV().clear();
+		}
 		return SYNONYMS.remove(key);
 	}
 
@@ -146,10 +157,16 @@ public class SynonymsLibrary {
 	 * @return
 	 */
 	public static void reload(String key) {
-		KV<String, SmartForest<List<String>>> kv = SYNONYMS.get(key);
-		if (kv != null) {
-			SYNONYMS.get(key).setV(null);
+
+		if (!MyStaticValue.ENV.containsKey(key)) { //如果变量中不存在直接删掉这个key不解释了
+			remove(key);
 		}
+
+		putIfAbsent(key, MyStaticValue.ENV.get(key));
+
+		KV<String, SmartForest<List<String>>> kv = SYNONYMS.get(key);
+
+		init(key, kv, true);
 	}
 
 	public static Set<String> keys() {
