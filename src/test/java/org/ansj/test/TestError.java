@@ -4,6 +4,7 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
@@ -175,21 +176,30 @@ public class TestError {
 //			Assert.assertFalse(term.getName().equals(" 人"));
 //		}
 		
-		System.out.println(DicAnalysis.parse("大"));
-		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
-		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
-		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
-		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
-		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
+//		System.out.println(DicAnalysis.parse("大"));
+//		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
+//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
+//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
+//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+//		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
+//		
+//		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
+//		
+//		//5.1.0版本dic分词加入的词无效 #409
+//		
+//		DicLibrary.insert(DicLibrary.DEFAULT, "琅琊榜","user",1000) ;
+//		DicLibrary.insert(DicLibrary.DEFAULT, "玫红色");
+//		System.out.println(ToAnalysis.parse("玫红色玫红色玫红色"));
+//		System.out.println(DicAnalysis.parse("琅琊榜")) ;
 		
-		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
-		
-		//5.1.0版本dic分词加入的词无效 #409
-		
-		DicLibrary.insert(DicLibrary.DEFAULT, "琅琊榜","user",1000) ;
-		DicLibrary.insert(DicLibrary.DEFAULT, "玫红色");
-		System.out.println(ToAnalysis.parse("玫红色玫红色玫红色"));
-		System.out.println(DicAnalysis.parse("琅琊榜")) ;
+//		DicLibrary.insert(DicLibrary.DEFAULT, "动漫游戏","n",10000);
+//		System.out.println(IndexAnalysis.parse("邓超过生日玩动漫游戏")) ;
+//		System.out.println(ToAnalysis.parse("邓超过生日玩动漫游戏")) ;
+//		DicLibrary.insert(DicLibrary.DEFAULT, "邓超","nr",10000);
+//		System.out.println(DicAnalysis.parse("邓超过生日玩动漫游戏")) ;
 
+
+		System.out.println(ToAnalysis.parse("美股纳斯达克道琼斯"));
+		System.out.println(ToAnalysis.parse("美股纳斯达克道琼斯美股"));
 	}
 }
