@@ -35,6 +35,7 @@ public class AsianPersonRecognition implements TermArrRecognition{
 	// public int m = -1;//44 可拆分的姓名
 	// double[] factory = {"BC", "BCD", "BCDE"}
 
+	@Override
 	public void recognition(Term[] terms) {
 		this.terms = terms;
 		List<Term> termList = recogntion_();

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.ansj.library.CrfLibrary;
-import org.ansj.util.MyStaticValue;
 import org.junit.Test;
 
 import junit.framework.Assert;

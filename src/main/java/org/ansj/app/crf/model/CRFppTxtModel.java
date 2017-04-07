@@ -34,6 +34,7 @@ public class CRFppTxtModel extends Model {
 	 * 
 	 * @return
 	 */
+	@Override
 	public CRFppTxtModel loadModel(String modelPath) throws Exception {
 		try (InputStream is = new FileInputStream(modelPath)) {
 			loadModel(new FileInputStream(modelPath));

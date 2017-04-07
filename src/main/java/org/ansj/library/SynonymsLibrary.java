@@ -54,7 +54,7 @@ public class SynonymsLibrary {
 			return null;
 		}
 
-		SmartForest<List<String>> sw = (SmartForest<List<String>>) kv.getV();
+		SmartForest<List<String>> sw = kv.getV();
 		if (sw == null) {
 			sw = init(key, kv, false);
 		}
@@ -134,6 +134,7 @@ public class SynonymsLibrary {
 
 	public static void put(String key, String path, SmartForest<List<String>> value) {
 		SYNONYMS.put(key, KV.with(path, value));
+		MyStaticValue.ENV.put(key, path);
 	}
 
 	/**
@@ -147,6 +148,7 @@ public class SynonymsLibrary {
 		if (kv != null && kv.getV() != null) { //先清空后删除
 			kv.getV().clear();
 		}
+		MyStaticValue.ENV.remove(key) ;
 		return SYNONYMS.remove(key);
 	}
 

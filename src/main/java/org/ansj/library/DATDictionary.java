@@ -104,7 +104,7 @@ public class DATDictionary {
 	}
 
 	public static int status(char c) {
-		Item item = (AnsjItem) DAT.getDAT()[c];
+		Item item = DAT.getDAT()[c];
 		if (item == null) {
 			return 0;
 		}

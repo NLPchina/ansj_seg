@@ -21,6 +21,7 @@ public class IDCardRecognition implements Recognition {
 	private static final long serialVersionUID = -32133440735240290L;
 	private static final Nature ID_CARD_NATURE = new Nature("idcard");
 
+	@Override
 	public void recognition(Result result) {
 
 		List<Term> terms = result.getTerms() ;
@@ -43,7 +44,7 @@ public class IDCardRecognition implements Recognition {
 		}
 
 		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext();) {
-			Term term = (Term) iterator.next();
+			Term term = iterator.next();
 			if (term.getName() == null) {
 				iterator.remove();
 			}

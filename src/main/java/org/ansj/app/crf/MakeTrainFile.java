@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.ansj.app.crf.pojo.Element;
-import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;

@@ -74,6 +74,7 @@ public class NatureRecognition implements Recognition {
 	/**
 	 * 进行最佳词性查找,引用赋值.所以不需要有返回值
 	 */
+	@Override
 	public void recognition(Result result) {
 		this.terms = result.getTerms();
 		natureTermTable = new NatureTerm[terms.size() + 1][];

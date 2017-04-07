@@ -1,12 +1,9 @@
 package org.ansj.app.summary;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.app.keyword.Keyword;
-import org.ansj.app.summary.pojo.Summary;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
 

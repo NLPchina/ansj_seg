@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.Result;
-import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 
 public class NlpDemo {

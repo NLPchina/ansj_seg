@@ -303,6 +303,7 @@ public class SummaryComputer {
 			this.score += score / size;
 		}
 
+		@Override
 		public String toString() {
 			return value;
 		}

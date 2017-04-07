@@ -58,6 +58,7 @@ public class AnsjReader extends Reader {
 	/**
 	 * 为了功能的单一性我还是不实现了
 	 */
+	@Override
 	public int read(char cbuf[], int off, int len) throws IOException {
 		throw new IOException("AnsjBufferedReader not support this interface! ");
 	}
@@ -198,6 +199,7 @@ public class AnsjReader extends Reader {
 
 	}
 
+	@Override
 	public void close() throws IOException {
 		synchronized (lock) {
 			if (in == null)

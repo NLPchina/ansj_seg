@@ -12,6 +12,7 @@ public class NumRecognition implements TermArrRecognition {
 	 * 
 	 * @param terms
 	 */
+	@Override
 	public void recognition(Term[] terms) {
 		int length = terms.length - 1;
 		Term from = null;

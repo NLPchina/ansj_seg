@@ -1,18 +1,11 @@
 package org.ansj.test;
 
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
-import org.ansj.util.MyStaticValue;
-import org.junit.Assert;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
@@ -198,8 +191,6 @@ public class TestError {
 //		DicLibrary.insert(DicLibrary.DEFAULT, "邓超","nr",10000);
 //		System.out.println(DicAnalysis.parse("邓超过生日玩动漫游戏")) ;
 
-
-		System.out.println(ToAnalysis.parse("美股纳斯达克道琼斯"));
-		System.out.println(ToAnalysis.parse("美股纳斯达克道琼斯美股"));
+		System.out.println(DicAnalysis.parse("女装照"));
 	}
 }

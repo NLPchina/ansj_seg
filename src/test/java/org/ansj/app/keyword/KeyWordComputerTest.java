@@ -1,13 +1,7 @@
 package org.ansj.app.keyword;
 
-import org.ansj.domain.Term;
-import org.ansj.library.DicLibrary;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.junit.Test;
-
-import java.util.List;
 
 public class KeyWordComputerTest {
 

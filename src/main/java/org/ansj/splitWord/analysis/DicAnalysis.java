@@ -6,12 +6,9 @@ import java.util.List;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
-import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
@@ -20,7 +17,6 @@ import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.util.ObjConver;
 
 /**
  * 默认用户自定义词性优先

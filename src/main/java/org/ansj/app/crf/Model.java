@@ -12,7 +12,6 @@ import java.util.zip.GZIPOutputStream;
 import org.ansj.app.crf.model.CRFModel;
 import org.ansj.app.crf.model.CRFppTxtModel;
 import org.ansj.app.crf.model.WapitiCRFModel;
-import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.logging.Log;
@@ -129,7 +128,7 @@ public abstract class Model {
 		if (tempW.length == 4) {
 			name = "U";
 		}
-		name += "*" + ((int) cs.charAt(cs.length() - 1) - Config.FEATURE_BEGIN + 1) + ":" + cs.substring(0, cs.length() - 1);
+		name += "*" + (cs.charAt(cs.length() - 1) - Config.FEATURE_BEGIN + 1) + ":" + cs.substring(0, cs.length() - 1);
 		for (int i = 0; i < tempW.length; i++) {
 			if (tempW[i] != 0) {
 				System.out.println(name + "\t" + Config.getTagName(i / 4 - 1) + "\t" + Config.getTagName(i % 4) + "\t" + tempW[i]);

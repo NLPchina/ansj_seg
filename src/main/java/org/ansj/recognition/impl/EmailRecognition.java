@@ -32,6 +32,7 @@ public class EmailRecognition implements Recognition{
 
 	}
 
+	@Override
 	public void recognition(Result result) {
 		
 		List<Term> terms = result.getTerms() ;
@@ -44,7 +45,7 @@ public class EmailRecognition implements Recognition{
 		}
 
 		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext();) {
-			Term term = (Term) iterator.next();
+			Term term = iterator.next();
 			if (term.getName() == null) {
 				iterator.remove();
 			}

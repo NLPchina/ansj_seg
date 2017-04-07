@@ -33,7 +33,7 @@ public class CoreLibraryMaker {
 			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
 		}
 
-		insertToArray(dat, (char) '\'', (byte) 4, "{en=1}");
+		insertToArray(dat, '\'', (byte) 4, "{en=1}");
 
 		for (int i = 'a'; i <= 'z'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");

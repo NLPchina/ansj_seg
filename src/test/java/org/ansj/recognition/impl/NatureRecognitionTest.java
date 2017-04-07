@@ -1,7 +1,6 @@
 package org.ansj.recognition.impl;
 
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
 /**

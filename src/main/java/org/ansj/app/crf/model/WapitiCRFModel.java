@@ -27,12 +27,14 @@ import org.nlpcn.commons.lang.util.tuples.Pair;
  */
 public class WapitiCRFModel extends Model {
 
+	@Override
 	public WapitiCRFModel loadModel(String modelPath) throws Exception {
 		try (InputStream is = IOUtil.getInputStream(modelPath)) {
 			return loadModel(is);
 		}
 	}
 
+	@Override
 	public WapitiCRFModel loadModel(InputStream is) throws Exception {
 		BufferedReader br = IOUtil.getReader(is, IOUtil.UTF8);
 

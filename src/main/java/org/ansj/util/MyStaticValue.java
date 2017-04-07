@@ -8,14 +8,25 @@ import java.io.ObjectInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
+import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.dic.impl.Jdbc2Stream;
 import org.ansj.domain.AnsjItem;
+import org.ansj.exception.LibraryException;
+import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.CrfLibrary;
 import org.ansj.library.DATDictionary;
+import org.ansj.library.DicLibrary;
+import org.ansj.library.StopLibrary;
+import org.ansj.library.SynonymsLibrary;
+import org.ansj.recognition.impl.StopRecognition;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.FileFinder;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.ObjConver;
@@ -271,5 +282,95 @@ public class MyStaticValue {
 	 */
 	public static Log getLog(Class<?> clazz) {
 		return LogFactory.getLog(clazz);
+	}
+
+	/**
+	 * 增加一个词典
+	 * 
+	 * @param key
+	 * @param path
+	 * @param value
+	 */
+	public static void putLibrary(String key, String path, Object value) {
+		if (key.startsWith(DicLibrary.DEFAULT)) {
+			DicLibrary.put(key, path, (Forest) value);
+		} else if (key.startsWith(StopLibrary.DEFAULT)) {
+			StopLibrary.put(key, path, (StopRecognition) value);
+		} else if (key.startsWith(SynonymsLibrary.DEFAULT)) {
+			SynonymsLibrary.put(key, path, (SmartForest) value);
+		} else if (key.startsWith(AmbiguityLibrary.DEFAULT)) {
+			AmbiguityLibrary.put(key, path, (Forest) value);
+		} else if (key.startsWith(CrfLibrary.DEFAULT)) {
+			CrfLibrary.put(key, path, (SplitWord) value);
+		} else {
+			throw new LibraryException(key + " type err must start with dic,stop,ambiguity,synonyms");
+		}
+		ENV.put(key, path);
+	}
+
+	/**
+	 * 懒加载一个词典
+	 * 
+	 * @param key
+	 * @param path
+	 */
+	public static void putLibrary(String key, String path) {
+		if (key.startsWith(DicLibrary.DEFAULT)) {
+			DicLibrary.put(key, path);
+		} else if (key.startsWith(StopLibrary.DEFAULT)) {
+			StopLibrary.put(key, path);
+		} else if (key.startsWith(SynonymsLibrary.DEFAULT)) {
+			SynonymsLibrary.put(key, path);
+		} else if (key.startsWith(AmbiguityLibrary.DEFAULT)) {
+			AmbiguityLibrary.put(key, path);
+		} else if (key.startsWith(CrfLibrary.DEFAULT)) {
+			CrfLibrary.put(key, path);
+		} else {
+			throw new LibraryException(key + " type err must start with dic,stop,ambiguity,synonyms");
+		}
+		ENV.put(key, path);
+	}
+
+	/**
+	 * 删除一个词典
+	 * 
+	 * @param key
+	 */
+	public static void removeLibrary(String key) {
+		if (key.startsWith(DicLibrary.DEFAULT)) {
+			DicLibrary.remove(key);
+		} else if (key.startsWith(StopLibrary.DEFAULT)) {
+			StopLibrary.remove(key);
+		} else if (key.startsWith(SynonymsLibrary.DEFAULT)) {
+			SynonymsLibrary.remove(key);
+		} else if (key.startsWith(AmbiguityLibrary.DEFAULT)) {
+			AmbiguityLibrary.remove(key);
+		} else if (key.startsWith(CrfLibrary.DEFAULT)) {
+			CrfLibrary.remove(key);
+		} else {
+			throw new LibraryException(key + " type err must start with dic,stop,ambiguity,synonyms");
+		}
+		ENV.remove(key);
+	}
+
+	/**
+	 * 重置一个词典
+	 * 
+	 * @param key
+	 */
+	public static void reloadLibrary(String key) {
+		if (key.startsWith(DicLibrary.DEFAULT)) {
+			DicLibrary.reload(key);
+		} else if (key.startsWith(StopLibrary.DEFAULT)) {
+			StopLibrary.reload(key);
+		} else if (key.startsWith(SynonymsLibrary.DEFAULT)) {
+			SynonymsLibrary.reload(key);
+		} else if (key.startsWith(AmbiguityLibrary.DEFAULT)) {
+			AmbiguityLibrary.reload(key);
+		} else if (key.startsWith(CrfLibrary.DEFAULT)) {
+			CrfLibrary.reload(key);
+		} else {
+			throw new LibraryException(key + " type err must start with dic,stop,ambiguity,synonyms");
+		}
 	}
 }

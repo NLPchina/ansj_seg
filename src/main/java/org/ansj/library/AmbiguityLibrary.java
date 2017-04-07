@@ -65,7 +65,7 @@ public class AmbiguityLibrary {
 			return null;
 		}
 
-		Forest sw = (Forest) kv.getV();
+		Forest sw = kv.getV();
 		if (sw == null) {
 			try {
 				sw = init(key, kv, false);
@@ -159,13 +159,12 @@ public class AmbiguityLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
-
 		put(key, path, null);
 	}
 
 	public static void put(String key, String path, Forest value) {
-
 		AMBIGUITY.put(key, KV.with(path, value));
+		MyStaticValue.ENV.put(key, path);
 	}
 
 	/**
@@ -179,6 +178,7 @@ public class AmbiguityLibrary {
 		if (kv != null && kv.getV() != null) {
 			kv.getV().clear();
 		}
+		MyStaticValue.ENV.remove(key) ;
 		return AMBIGUITY.remove(key);
 	}
 

@@ -52,6 +52,7 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 	private LinkedList<NameChar> prList = null;
 	private Term[] terms = null;
 
+	@Override
 	public void recognition(Term[] terms) {
 		this.terms = terms;
 		String name = null;

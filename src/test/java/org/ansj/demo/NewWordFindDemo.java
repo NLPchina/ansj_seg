@@ -2,15 +2,11 @@ package org.ansj.demo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
 import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.CollectionUtil;
 import org.nlpcn.commons.lang.util.IOUtil;
 
 /**

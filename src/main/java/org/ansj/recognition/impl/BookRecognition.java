@@ -31,6 +31,7 @@ public class BookRecognition implements Recognition {
 		ruleMap.put("《", "》");
 	}
 
+	@Override
 	public void recognition(Result result) {
 		List<Term> terms = result.getTerms() ;
 		String end = null;

@@ -10,7 +10,6 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.*;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.nutz.dao.entity.annotation.Default;
 
 public class KeyWordComputer<T extends Analysis> {
 
@@ -143,7 +142,7 @@ public class KeyWordComputer<T extends Analysis> {
         if (titleLength > term.getOffe()) {
             return 5 * posScore;
         }
-        return (length - term.getOffe()) * posScore / (double) length;
+        return (length - term.getOffe()) * posScore / length;
     }
 
 }

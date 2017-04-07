@@ -198,7 +198,7 @@ public class DicLibrary {
 			kv.setV(forest);
 			return forest;
 		} catch (Exception e) {
-			LOG.error("Init ambiguity library error :" + e.getMessage() + ", path: " + kv.getK());
+			LOG.error("Init dic library error :" + e.getMessage() + ", path: " + kv.getK());
 			DIC.remove(key);
 			return null;
 		}
@@ -213,6 +213,7 @@ public class DicLibrary {
 	 */
 	public static void put(String key, String path, Forest forest) {
 		DIC.put(key, KV.with(path, forest));
+		MyStaticValue.ENV.put(key, path);
 	}
 
 	/**
@@ -237,7 +238,6 @@ public class DicLibrary {
 	 * @param dic2
 	 */
 	public static void put(String key, String path) {
-
 		put(key, path, null);
 	}
 
@@ -266,6 +266,7 @@ public class DicLibrary {
 		if (kv != null && kv.getV() != null) {
 			kv.getV().clear();
 		}
+		MyStaticValue.ENV.remove(key) ;
 		return DIC.remove(key);
 	}
 

@@ -175,14 +175,8 @@ public class StopLibrary {
 	 * @param FILTER2
 	 */
 	public static void put(String key, String path, StopRecognition stopRecognition) {
-		KV<String, StopRecognition> kv = STOP.get(key);
-		if (kv == null) {
-			kv = KV.with(path, stopRecognition);
-		} else {
-			kv.setK(path);
-			kv.setV(stopRecognition);
-		}
-		STOP.put(key, kv);
+		STOP.put(key, KV.with(path, stopRecognition));
+		MyStaticValue.ENV.put(key, path);
 	}
 
 	/**
@@ -233,6 +227,7 @@ public class StopLibrary {
 		if (kv != null && kv.getV() != null) {
 			kv.getV().clear();
 		}
+		MyStaticValue.ENV.remove(key) ;
 		return STOP.remove(key);
 	}
 

@@ -5,7 +5,6 @@ import static org.ansj.library.DATDictionary.status;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 

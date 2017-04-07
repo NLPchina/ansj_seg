@@ -44,6 +44,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 	}
 
+	@Override
 	public void recognition(Term[] terms) {
 		this.terms = terms;
 		for (Forest forest : forests) {

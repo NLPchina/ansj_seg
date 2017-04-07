@@ -1,7 +1,5 @@
 package org.ansj.app.crf;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.ansj.app.crf.pojo.Element;

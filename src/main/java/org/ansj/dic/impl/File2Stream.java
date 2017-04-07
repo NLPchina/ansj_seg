@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.util.Vector;
@@ -62,6 +61,7 @@ public class File2Stream extends PathToStream {
 			} else if (file.isDirectory()) {
 
 				File[] files = file.listFiles(new FileFilter() {
+					@Override
 					public boolean accept(File file) {
 						return file.canRead() && !file.isHidden() && !file.isDirectory();
 					}

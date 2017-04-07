@@ -55,7 +55,7 @@ public class CrfLibrary {
 			return null;
 		}
 
-		SplitWord sw = (SplitWord) kv.getV();
+		SplitWord sw = kv.getV();
 		if (sw == null) {
 			sw = initCRFModel(kv);
 		}
@@ -101,8 +101,8 @@ public class CrfLibrary {
 	}
 
 	public static void put(String key, String path, SplitWord sw) {
-
 		CRF.put(key, KV.with(path, sw));
+		MyStaticValue.ENV.put(key, path);
 	}
 
 	/**
@@ -112,7 +112,7 @@ public class CrfLibrary {
 	 * @return
 	 */
 	public static KV<String, SplitWord> remove(String key) {
-
+		MyStaticValue.ENV.remove(key) ;
 		return CRF.remove(key);
 	}
 
