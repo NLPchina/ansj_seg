@@ -142,6 +142,19 @@ public class Term implements Serializable{
 	}
 
 	/**
+	 * 进行term合并,能合并空白字符
+	 * 
+	 * @param term
+	 * @param maxNature
+	 */
+	public Term merageWithBlank(Term to) {
+		this.name = this.name + to.getName();
+		this.realName = this.realName + to.getRealName();
+		this.setTo(to.to);
+		return this;
+	}
+	
+	/**
 	 * 更新偏移量
 	 * 
 	 * @param offe
