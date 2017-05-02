@@ -5,6 +5,7 @@ import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 public class DicLibraryTest {
 
@@ -61,4 +62,20 @@ public class DicLibraryTest {
 		Assert.assertFalse(flag);
 	}
 
+	/**
+	 * 自定义key
+	 */
+	@Test
+	public void keyTest(){
+		String key = "dic_mykey" ;
+		DicLibrary.put(key, key, new Forest());
+		DicLibrary.insert(key, "增加新词", "我是词性", 1000);
+		Result parse = DicAnalysis.parse("这是用户自定义词典增加新词的例子",DicLibrary.gets(key));
+		System.out.println(parse);
+		boolean flag = false;
+		for (Term term : parse) {
+			flag = flag || "增加新词".equals(term.getName());
+		}
+		Assert.assertTrue(flag);
+	}
 }
