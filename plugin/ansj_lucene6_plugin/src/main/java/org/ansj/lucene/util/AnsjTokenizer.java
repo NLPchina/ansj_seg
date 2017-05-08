@@ -54,6 +54,7 @@ public final class AnsjTokenizer extends Tokenizer {
 			return false;
 		}
 
+		position = 0;
 		if (obj instanceof Term) {
 			clearAttributes();
 			Term term = (Term) obj;
