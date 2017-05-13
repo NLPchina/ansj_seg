@@ -1,109 +1,99 @@
 package org.ansj.dic.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.ansj.dic.PathToStream;
 import org.ansj.exception.LibraryException;
-import org.nutz.dao.Dao;
-import org.nutz.dao.Sqls;
-import org.nutz.dao.impl.NutDao;
-import org.nutz.dao.impl.SimpleDataSource;
-import org.nutz.dao.sql.Sql;
-import org.nutz.dao.sql.SqlCallback;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  * jdbc:mysql://192.168.10.103:3306/infcn_mss?useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull|username|password|select name as name,nature,freq from dic where type=1
- * 
- * @author ansj
  *
+ * @author ansj
  */
 public class Jdbc2Stream extends PathToStream {
 
-	private static final byte[] TAB = "\t".getBytes();
+    private static final byte[] TAB = "\t".getBytes();
 
-	private static final byte[] LINE = "\n".getBytes();
+    private static final byte[] LINE = "\n".getBytes();
 
-	@Override
-	public InputStream toStream(String path) {
-		path = path.substring(7);
+    static {
+        String[] drivers = {"org.h2.Driver",
+                "com.ibm.db2.jcc.DB2Driver",
+                "org.hsqldb.jdbcDriver",
+                "org.gjt.mm.mysql.Driver",
+                "oracle.jdbc.OracleDriver",
+                "org.postgresql.Driver",
+                "net.sourceforge.jtds.jdbc.Driver",
+                "com.microsoft.sqlserver.jdbc.SQLServerDriver",
+                "org.sqlite.JDBC",
+                "com.mysql.jdbc.Driver"};
+        for (String driverClassName : drivers) {
+            try {
+                try {
+                    Thread.currentThread().getContextClassLoader().loadClass(driverClassName);
+                } catch (ClassNotFoundException e) {
+                    Class.forName(driverClassName);
+                }
+            } catch (Throwable e) {
+            }
+        }
+    }
 
-		String[] split = path.split("\\|");
+    @Override
+    public InputStream toStream(String path) {
+        path = path.substring(7);
 
-		String jdbc = split[0];
+        String[] split = path.split("\\|");
 
-		String username = split[1];
+        String jdbc = split[0];
 
-		String password = split[2];
+        String username = split[1];
 
-		String sqlStr = split[3];
+        String password = split[2];
 
-		String logStr = jdbc + "|" + username + "|********|" + sqlStr;
+        String sqlStr = split[3];
 
-		SimpleDataSource ds = null;
+        String logStr = jdbc + "|" + username + "|********|" + sqlStr;
 
-		try {
-			ds = new SimpleDataSource();
+        try (Connection conn = DriverManager.getConnection(jdbc, username, password);
+             PreparedStatement statement = conn.prepareStatement(sqlStr);
+             ResultSet rs = statement.executeQuery();
+             ByteArrayOutputStream baos = new ByteArrayOutputStream(100 * 1024)) {
 
-			ds.setJdbcUrl(jdbc);
-			ds.setUsername(username);
-			ds.setPassword(password);
+            int i, count;
+            while (rs.next()) {
+                for (i = 1, count = rs.getMetaData().getColumnCount(); i < count; ++i) {
+                    baos.write(String.valueOf(rs.getObject(i)).getBytes());
+                    baos.write(TAB);
+                }
+                baos.write(String.valueOf(rs.getObject(count)).getBytes());
+                baos.write(LINE);
+            }
 
-			Dao dao = new NutDao(ds);
+            return new ByteArrayInputStream(baos.toByteArray());
+        } catch (Exception e) {
+            throw new LibraryException("err to load by jdbc " + logStr);
+        }
+    }
 
-			Sql sql = Sqls.create(sqlStr);
+    public static String encryption(String path) {
 
-			Sql execute = dao.execute(sql.setCallback(new SqlCallback() {
-				@Override
-				public byte[] invoke(Connection conn, ResultSet rs, Sql sql) throws SQLException {
-					ByteArrayOutputStream baos = new ByteArrayOutputStream(100 * 1024);
-					while (rs.next()) {
-						try {
-							int count = rs.getMetaData().getColumnCount();
-							for (int i = 1; i < count; i++) {
-								baos.write(String.valueOf(rs.getObject(i)).getBytes());
-								baos.write(TAB);
-							}
-							baos.write(String.valueOf(rs.getObject(count)).getBytes());
-							baos.write(LINE);
+        String[] split = path.split("\\|");
 
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-					}
-					return baos.toByteArray();
-				}
-			}));
+        String jdbc = split[0];
 
-			return new ByteArrayInputStream((byte[]) execute.getResult());
-		} catch (Exception e) {
-			throw new LibraryException("err to load by jdbc " + logStr);
-		} finally {
-			if (ds != null) {
-				ds.close();
-			}
-		}
+        String username = split[1];
 
-	}
+        String password = split[2];
 
-	public static String encryption(String path){
+        String sqlStr = split[3];
 
-		String[] split = path.split("\\|");
-
-		String jdbc = split[0];
-
-		String username = split[1];
-
-		String password = split[2];
-
-		String sqlStr = split[3];
-
-		return jdbc + "|" + username + "|********|" + sqlStr;
-	}
-
+        return jdbc + "|" + username + "|********|" + sqlStr;
+    }
 }
