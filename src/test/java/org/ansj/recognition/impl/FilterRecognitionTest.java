@@ -2,6 +2,7 @@ package org.ansj.recognition.impl;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.library.StopLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
@@ -42,6 +43,14 @@ public class FilterRecognitionTest {
 		}
 
 		System.out.println(modifResult);
+	}
+	
+	@Test
+	public void stopTest(){
+		StopLibrary.insertStopWords(StopLibrary.DEFAULT, "的", "呵呵", "哈哈", "噢", "啊");
+		Result terms = ToAnalysis.parse("英文版是小田亲自翻译的");
+		//使用停用词
+		System.out.println(terms.recognition(StopLibrary.get()));
 	}
 
 }
