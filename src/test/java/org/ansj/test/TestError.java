@@ -2,10 +2,9 @@ package org.ansj.test;
 
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 
 public class TestError {
 
@@ -141,56 +140,65 @@ public class TestError {
 		//
 		//		
 		//		System.out.println(NlpAnalysis.parse("2015年无锡市突发环境事件"));
-		
-//		//dic分词诡异的bug，自定义词不起作用，非常诡异！ #398
-//		MyStaticValue.isRealName = true ;
-//		DicLibrary.insert(DicLibrary.DEFAULT,"英雄联盟") ;
-//		DicLibrary.insert(DicLibrary.DEFAULT,"英联") ;
-//		System.out.println(DicAnalysis.parse("英雄联盟"));
-//		
-//		
-//		System.out.println(ToAnalysis.parse(""));
-//		System.out.println(DicAnalysis.parse(""));
-//		System.out.println(ToAnalysis.parse("大"));
-//		System.out.println(DicAnalysis.parse("大"));
-//
-//		Forest dict1 = new Forest();
-//		Library.insertWord(dict1, new Value("苹果", "userDefine", "1000"));
-//		Library.insertWord(dict1, new Value("咖啡", "userDefine", "1000"));
-//		System.out.println(DicAnalysis.parse("吃苹果喝咖啡", dict1));
-//		
-//		//#385 ansj_seg5.0.3版本，加载了默认的default.dic后，句子中带“哎咿呀”的，分词时会报错
-//		System.out.println(DicAnalysis.parse("哎咿呀"));
-//
-//		// #386
-//		Result parse = NlpAnalysis.parse("身高170 出生在1990年 人");
-//
-//		for (Term term : parse) {
-//			Assert.assertFalse(term.getName().equals(" 人"));
-//		}
-		
-//		System.out.println(DicAnalysis.parse("大"));
-//		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
-//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
-//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
-//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
-//		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
-//		
-//		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
-//		
-//		//5.1.0版本dic分词加入的词无效 #409
-//		
-//		DicLibrary.insert(DicLibrary.DEFAULT, "琅琊榜","user",1000) ;
-//		DicLibrary.insert(DicLibrary.DEFAULT, "玫红色");
-//		System.out.println(ToAnalysis.parse("玫红色玫红色玫红色"));
-//		System.out.println(DicAnalysis.parse("琅琊榜")) ;
-		
-//		DicLibrary.insert(DicLibrary.DEFAULT, "动漫游戏","n",10000);
-//		System.out.println(IndexAnalysis.parse("邓超过生日玩动漫游戏")) ;
-//		System.out.println(ToAnalysis.parse("邓超过生日玩动漫游戏")) ;
-//		DicLibrary.insert(DicLibrary.DEFAULT, "邓超","nr",10000);
-//		System.out.println(DicAnalysis.parse("邓超过生日玩动漫游戏")) ;
 
-		System.out.println(DicAnalysis.parse("女装照"));
+		//		//dic分词诡异的bug，自定义词不起作用，非常诡异！ #398
+		//		MyStaticValue.isRealName = true ;
+		//		DicLibrary.insert(DicLibrary.DEFAULT,"英雄联盟") ;
+		//		DicLibrary.insert(DicLibrary.DEFAULT,"英联") ;
+		//		System.out.println(DicAnalysis.parse("英雄联盟"));
+		//		
+		//		
+		//		System.out.println(ToAnalysis.parse(""));
+		//		System.out.println(DicAnalysis.parse(""));
+		//		System.out.println(ToAnalysis.parse("大"));
+		//		System.out.println(DicAnalysis.parse("大"));
+		//
+		//		Forest dict1 = new Forest();
+		//		Library.insertWord(dict1, new Value("苹果", "userDefine", "1000"));
+		//		Library.insertWord(dict1, new Value("咖啡", "userDefine", "1000"));
+		//		System.out.println(DicAnalysis.parse("吃苹果喝咖啡", dict1));
+		//		
+		//		//#385 ansj_seg5.0.3版本，加载了默认的default.dic后，句子中带“哎咿呀”的，分词时会报错
+		//		System.out.println(DicAnalysis.parse("哎咿呀"));
+		//
+		//		// #386
+		//		Result parse = NlpAnalysis.parse("身高170 出生在1990年 人");
+		//
+		//		for (Term term : parse) {
+		//			Assert.assertFalse(term.getName().equals(" 人"));
+		//		}
+
+		//		System.out.println(DicAnalysis.parse("大"));
+		//		System.out.println(DicAnalysis.parse("“Microsoft”一词由“MICROcomputer（微型计算机）”和“SOFTware（软件）”两部分组成"));
+		//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫12312312玫玫玫玫玫玫玫"));
+		//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫"));
+		//		System.out.println(DicAnalysis.parse("┏┏┏┏┏玫玫玫玫玫玫玫玫玫玫玫玫玫",null));
+		//		System.out.println(DicAnalysis.parse("┏玫┏红色┏玫红┏色┏玫红色",null));
+		//		
+		//		System.out.println(ToAnalysis.parse("┏玫红色玫红色玫红色",null));
+		//		
+		//		//5.1.0版本dic分词加入的词无效 #409
+		//		
+		//		DicLibrary.insert(DicLibrary.DEFAULT, "琅琊榜","user",1000) ;
+		//		DicLibrary.insert(DicLibrary.DEFAULT, "玫红色");
+		//		System.out.println(ToAnalysis.parse("玫红色玫红色玫红色"));
+		//		System.out.println(DicAnalysis.parse("琅琊榜")) ;
+
+		//		DicLibrary.insert(DicLibrary.DEFAULT, "动漫游戏","n",10000);
+		//		System.out.println(IndexAnalysis.parse("邓超过生日玩动漫游戏")) ;
+		//		System.out.println(ToAnalysis.parse("邓超过生日玩动漫游戏")) ;
+		//		DicLibrary.insert(DicLibrary.DEFAULT, "邓超","nr",10000);
+		//		System.out.println(DicAnalysis.parse("邓超过生日玩动漫游戏")) ;
+
+		//		System.out.println(DicAnalysis.parse("女装照"));
+
+		String key = "dic_entity";
+		DicLibrary.put(key, key, new Forest());
+		DicLibrary.insert(key, "魅族", "entity", 1000);
+		DicLibrary.insert(key, "骁龙", "entity", 1000);
+		System.out.println(DicAnalysis.parse("魅族", DicLibrary.gets(key)));
+		System.out.println(ToAnalysis.parse("魅族", DicLibrary.gets(key)));
+		System.out.println(DicAnalysis.parse("骁龙", DicLibrary.gets(key)));
+		System.out.println(ToAnalysis.parse("骁龙", DicLibrary.gets(key)));
 	}
 }
