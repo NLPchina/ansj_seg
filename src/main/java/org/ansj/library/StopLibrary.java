@@ -135,7 +135,6 @@ public class StopLibrary {
 			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "UTF-8")) {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
-						temp = StringUtil.trim(temp);
 						strs = temp.split("\t");
 
 						if (strs.length == 1) {

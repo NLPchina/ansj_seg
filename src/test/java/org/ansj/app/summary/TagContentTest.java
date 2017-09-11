@@ -81,6 +81,8 @@ public class TagContentTest {
 				keywords.add(new Keyword(kw, 100.0d * kw.length()));
 			}
 		}
+		
+		System.out.println(sc.toSummary(keywords).getSummary());
 
 		String tagContent = tc.tagContent(sc.toSummary(keywords));
 

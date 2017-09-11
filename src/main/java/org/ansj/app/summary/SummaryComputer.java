@@ -145,7 +145,7 @@ public class SummaryComputer {
 				}
 				mc.get().clear();
 			}
-			for (int j = i + 1; j < sentences.size(); j++) {
+			for (int j = i ; j < sentences.size(); j++) {
 				tempScore += sentences.get(j).score;
 				tempLength += sentences.get(j).value.length();
 				mc.addAll(sentences.get(j).mc.get());

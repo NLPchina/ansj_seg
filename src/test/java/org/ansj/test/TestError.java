@@ -2,9 +2,11 @@ package org.ansj.test;
 
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 public class TestError {
 
@@ -192,13 +194,23 @@ public class TestError {
 
 		//		System.out.println(DicAnalysis.parse("女装照"));
 
-		String key = "dic_entity";
-		DicLibrary.put(key, key, new Forest());
-		DicLibrary.insert(key, "魅族", "entity", 1000);
-		DicLibrary.insert(key, "骁龙", "entity", 1000);
-		System.out.println(DicAnalysis.parse("魅族", DicLibrary.gets(key)));
-		System.out.println(ToAnalysis.parse("魅族", DicLibrary.gets(key)));
-		System.out.println(DicAnalysis.parse("骁龙", DicLibrary.gets(key)));
-		System.out.println(ToAnalysis.parse("骁龙", DicLibrary.gets(key)));
+//		String key = "dic_entity";
+//		DicLibrary.put(key, key, new Forest());
+//		DicLibrary.insert(key, "魅族", "entity", 1000);
+//		DicLibrary.insert(key, "骁龙", "entity", 1000);
+//		System.out.println(DicAnalysis.parse("魅族", DicLibrary.gets(key)));
+//		System.out.println(ToAnalysis.parse("魅族", DicLibrary.gets(key)));
+//		System.out.println(DicAnalysis.parse("骁龙", DicLibrary.gets(key)));
+//		System.out.println(ToAnalysis.parse("骁龙", DicLibrary.gets(key)));
+		
+		
+//		System.out.println(ToAnalysis.parse("提醒我吃饭"));
+//		System.out.println(IndexAnalysis.parse("提醒我吃饭"));
+		
+		Forest forest = new Forest() ;
+		
+		Library.insertWord(forest, "中华人\taa\t100000");
+		
+		System.out.println(DicAnalysis.parse("中华人民共和",forest));
 	}
 }
