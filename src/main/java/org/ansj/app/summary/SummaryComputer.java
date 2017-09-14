@@ -121,7 +121,7 @@ public class SummaryComputer {
 
 		// 先断句
 		List<Sentence> sentences = toSentenceList(content.toCharArray());
-		
+
 		for (Sentence sentence : sentences) {
 			computeScore(sentence, sf);
 		}
@@ -138,21 +138,22 @@ public class SummaryComputer {
 
 			if (tempLength >= len) {
 				tempScore = tempScore * mc.get().size();
-				if (maxScore < tempScore) {
+				if (maxScore <= tempScore) {
 					maxScore = tempScore;
 					maxIndex = i;
-					continue;
+				} else {
+					mc.get().clear();
 				}
-				mc.get().clear();
+				continue;
 			}
-			for (int j = i ; j < sentences.size(); j++) {
+			for (int j = i + 1; j < sentences.size(); j++) {
 				tempScore += sentences.get(j).score;
 				tempLength += sentences.get(j).value.length();
 				mc.addAll(sentences.get(j).mc.get());
 
 				if (tempLength >= len) {
 					tempScore = tempScore * mc.get().size();
-					if (maxScore < tempScore) {
+					if (maxScore <= tempScore) {
 						maxScore = tempScore;
 						maxIndex = i;
 					}
@@ -163,7 +164,7 @@ public class SummaryComputer {
 
 			if (tempLength < len) {
 				tempScore = tempScore * mc.get().size();
-				if (maxScore < tempScore) {
+				if (maxScore <= tempScore) {
 					maxScore = tempScore;
 					maxIndex = i;
 					break;
