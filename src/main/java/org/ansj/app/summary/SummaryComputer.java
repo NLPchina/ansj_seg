@@ -8,11 +8,13 @@ import java.util.Set;
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.pojo.Summary;
+import org.ansj.domain.KV;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.tire.SmartGetWord;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.MapCount;
+import org.nlpcn.commons.lang.util.tuples.Triplet;
 
 /**
  * 自动摘要,同时返回关键词
@@ -123,7 +125,7 @@ public class SummaryComputer {
 		List<Sentence> sentences = toSentenceList(content.toCharArray());
 
 		for (Sentence sentence : sentences) {
-			computeScore(sentence, sf);
+			computeScore(sentence, sf, false);
 		}
 
 		double maxScore = 0;
@@ -188,29 +190,61 @@ public class SummaryComputer {
 		 */
 
 		if (isSplitSummary && sb.length() > len) {
-			double value = len;
 
-			StringBuilder newSummary = new StringBuilder();
-			char c = 0;
-			for (int i = 0; i < sb.length(); i++) {
-				c = sb.charAt(i);
-				if (c < 256) {
-					value -= 0.5;
-				} else {
-					value -= 1;
+			String str = sb.toString();
+			Sentence sentence = new Sentence(str);
+
+			computeScore(sentence, sf, true);
+
+			List<Triplet<Integer, Integer, Double>> offset = sentence.offset;
+			if(offset.size()>0){
+				maxScore = -1000;
+
+				List<Integer> resultOffset = null;
+
+				for (int i = 0; i < offset.size(); i++) {
+					List<Integer> tempOffset = new ArrayList<>();
+					double score = 0;
+					for (int j = i; j < offset.size(); j++) {
+
+						Triplet<Integer, Integer, Double> triplet = offset.get(j);
+
+						if (tempOffset.size() == 0) {
+							tempOffset.add(triplet.getValue0());
+						} else {
+							int endOff = triplet.getValue0() + triplet.getValue1();
+							tempOffset.add(endOff);
+							if (endOff - triplet.getValue0() - 1 > len) {
+								break;
+							}
+						}
+
+						score += offset.get(j).getValue2();
+						if (resultOffset== null || maxScore < score) {
+							resultOffset = tempOffset;
+							maxScore = score ;
+						}
+
+					}
 				}
-
-				if (value < 0) {
-					break;
+				
+				int sumOff = 0 ;
+				
+				for (Integer off : resultOffset) {
+					sumOff += off ;
 				}
-
-				newSummary.append(c);
+				
+				int midOff = sumOff / resultOffset.size();
+				int beginIndex = midOff - len / 2 - 1;
+				beginIndex = beginIndex < 0 ? 0 : beginIndex;
+				summaryStr = str.substring(beginIndex, Math.min(beginIndex + len + 1, str.length()));
+			}else{
+				summaryStr = str.substring(0,len) ;
 			}
-
-			summaryStr = newSummary.toString();
 		}
 
 		return new Summary(keywords, summaryStr);
+
 	}
 
 	/**
@@ -219,11 +253,15 @@ public class SummaryComputer {
 	 * @param sentence
 	 * @param sf
 	 */
-	private void computeScore(Sentence sentence, SmartForest<Double> forest) {
+	private void computeScore(Sentence sentence, SmartForest<Double> forest, boolean offset) {
 		SmartGetWord<Double> sgw = new SmartGetWord<Double>(forest, sentence.value);
 		String name = null;
 		while ((name = sgw.getFrontWords()) != null) {
 			sentence.updateScore(name, sgw.getParam());
+			if (offset) {
+				Triplet<Integer, Integer, Double> triplet = new Triplet<Integer, Integer, Double>(sgw.offe, name.length(), sgw.getParam());
+				sentence.offset.add(triplet);
+			}
 		}
 		if (sentence.score == 0) {
 			sentence.score = sentence.value.length() * -0.005;
@@ -251,7 +289,7 @@ public class SummaryComputer {
 					sb = new StringBuilder();
 				}
 				break;
-			//case ' ':
+			//			case ' ':
 			case '	':
 			case '　':
 			case ' ':
@@ -292,6 +330,8 @@ public class SummaryComputer {
 		String value;
 		private double score;
 
+		List<Triplet<Integer, Integer, Double>> offset = new ArrayList<>();
+
 		private MapCount<String> mc = new MapCount<>();
 
 		public Sentence(String value) {
@@ -308,6 +348,7 @@ public class SummaryComputer {
 		public String toString() {
 			return value;
 		}
+
 	}
 
 }
