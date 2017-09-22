@@ -25,7 +25,7 @@ public abstract class PathToStream {
 			} else if (path.startsWith("jar://")) {
 				return new Jar2Stream().toStream(path);
 			} else if (path.startsWith("class://")) {
-				((PathToStream) Class.forName(path.substring(8).split("\\|")[0]).newInstance()).toStream(path);
+				return ((PathToStream) Class.forName(path.substring(8).split("\\|")[0]).newInstance()).toStream(path);
 			} else if (path.startsWith("http://")||path.startsWith("https://")) {
 				return new Url2Stream().toStream(path);
 			} else {
@@ -34,7 +34,6 @@ public abstract class PathToStream {
 		} catch (Exception e) {
 			throw new LibraryException(e);
 		}
-		throw new LibraryException("not find method type in path " + path);
 	}
 
 	public abstract InputStream toStream(String path);
