@@ -124,8 +124,17 @@ public class SummaryComputer {
 		// 先断句
 		List<Sentence> sentences = toSentenceList(content.toCharArray());
 
+		boolean flag = false ;
+
 		for (Sentence sentence : sentences) {
-			computeScore(sentence, sf, false);
+			flag = flag||computeScore(sentence, sf, false);
+		}
+
+		if(!flag){
+			if(content.length()<=len){
+				return new Summary(keywords, content);
+			}
+			return new Summary(keywords, content.substring(0,len));
 		}
 
 		double maxScore = 0;
@@ -251,12 +260,13 @@ public class SummaryComputer {
 	 * 计算一个句子的分数
 	 * 
 	 * @param sentence
-	 * @param sf
 	 */
-	private void computeScore(Sentence sentence, SmartForest<Double> forest, boolean offset) {
+	private boolean computeScore(Sentence sentence, SmartForest<Double> forest, boolean offset) {
 		SmartGetWord<Double> sgw = new SmartGetWord<Double>(forest, sentence.value);
 		String name = null;
+		boolean flag = false ;
 		while ((name = sgw.getFrontWords()) != null) {
+			flag = true ;
 			sentence.updateScore(name, sgw.getParam());
 			if (offset) {
 				Triplet<Integer, Integer, Double> triplet = new Triplet<Integer, Integer, Double>(sgw.offe, name.length(), sgw.getParam());
@@ -268,6 +278,7 @@ public class SummaryComputer {
 		} else {
 			sentence.score /= Math.log(sentence.value.length() + 3);
 		}
+		return flag ;
 	}
 
 	public List<Sentence> toSentenceList(char[] chars) {

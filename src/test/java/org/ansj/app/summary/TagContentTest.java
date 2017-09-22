@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.ansj.app.keyword.Keyword;
+import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
@@ -121,15 +122,15 @@ public class TagContentTest {
 		
 		TagContent tc = new TagContent("<begin>", "<end>");
 
-		String query = "疑问";
 
-		String content = "　　最近工信部把锤子Smartisan T3的外观给曝光了，这让老罗的发布会又少了一个看点，目前仅剩下的两个疑问就是配置和价格了。　　配置方面，骁龙820/821处理器应该是板上钉钉的，虽然锤子不拼配置，但在每一代产品发布时，其配置并不算落伍，所以这次用上骁龙820或者821应该很正常。　　价格就不太好猜了，前两代产品都不能算成功，这固然有产能方面的因素，但价格应该也是其中一个原因，不知道老罗这次还会不会坚持“高端”策略。　　开卖时间今天也确定了，就在刚刚，罗永浩在微博上回答网友提问时表示“当然有现货”。　　这可能意味着锤子Smartisan T3在发布会之后应该就会开卖，就像T2刚发布时候那样。" ;
+		String content = "您好,         1986年出国留学,2008年回国后 发现户口被注销(本人不知情),当时出国时还没有办理身份证,去入户派出所查询,只有入户的信息,其他材料一概没有,甚至没有所谓的注销情况之类(据说期间材料被转过三个派出所,最大可能是派出所转移时候遗失.现在是几个派出所互相推,) ,    1,这种情况我如何恢复户籍??没有身份证在中国处处不方便..    2,我有国外永久居留,如恢复的话是否可以保留?        谢谢" ;
 		
 		List<Keyword> keywords = new ArrayList<>() ;
 		
-		keywords.add(new Keyword("疑问", 2d)) ;
+		keywords.add(new Keyword("中国", 2d)) ;
+		keywords.add(new Keyword("信息", 2d)) ;
 
-		SummaryComputer sc = new SummaryComputer(200 <= 0 ? Integer.MAX_VALUE : 200, true, "", content);
+		SummaryComputer sc = new SummaryComputer(22, true, "", content);
 		String tagContent = tc.tagContent(sc.toSummary(keywords));
 
 		System.out.println(tagContent);
@@ -159,4 +160,7 @@ public class TagContentTest {
 
 		System.out.println(tagContent);
 	}
+
+
+
 }
