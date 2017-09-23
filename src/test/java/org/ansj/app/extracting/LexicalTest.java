@@ -22,8 +22,6 @@ public class LexicalTest {
 				continue;
 			}
 			System.out.println(Lexical.parse(temp)); ;
-
-			System.out.println("---------------");
 		}
 
 

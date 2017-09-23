@@ -24,14 +24,15 @@ public class ExtractingTask implements Runnable {
 	private Result terms;
 	private int step;
 
-	private List[] list ;
+	private List[] list;
 
 
 	public ExtractingTask(ExtractingResult result, Rule rule, int index, Result terms) {
+		this.result = result;
 		this.rule = rule;
 		this.index = index;
 		this.terms = terms;
-		this.list = new ArrayList[rule.getTokens().size()] ;
+		this.list = new ArrayList[rule.getTokens().size()];
 	}
 
 
@@ -42,11 +43,11 @@ public class ExtractingTask implements Runnable {
 		for (int i = index; i < terms.size(); i++) {
 			Term term = terms.get(i);
 			switch (validate(token, term)) {
-				case STOP: //此路不同
+				case STOP: //此路不通
 					return;
 				case OVER: //说明匹配完毕
-					System.out.println(list);
-
+					result.add(this);
+					return;
 				case NEXT_TERM:
 					break;
 				case NEXT_TOKEN:
@@ -76,33 +77,45 @@ public class ExtractingTask implements Runnable {
 		int[] range = token.getRange();
 
 		if (_validate(token, term)) {
-			if(range!=null && range[0]==0){
-				return Action.NEXT_TOKEN ;
+			if (range != null && range[0] == 0) {
+				return Action.NEXT_TOKEN;
 			}
 			return Action.STOP;
 		}
 
 
-
 		if (range == null) {
-			insertInto(term,token.getIndex());
-			return Action.NEXT_TERM_TOKEN;
+			insertInto(term, token.getIndex());
+			if (token.getNext() == null) {
+				return Action.OVER;
+			} else {
+				return Action.NEXT_TERM_TOKEN;
+			}
 		} else {
-			step++;
-			if (step < range[0] || step > range[1]) {
+			if(step < range[0]){
+				step++;
+				return Action.NEXT_TERM ;
+			}
+
+			if (step > range[1]) {
 				return Action.STOP;
 			}
 
+			step++;
 			if (step > range[0]) {
 				if (_validate(token.getNext(), term)) {
-					insertInto(term,token.getIndex());
-					return Action.NEXT_TERM;
+					insertInto(term, token.getIndex());
+					if (token.getNext() == null) {
+						return Action.OVER;
+					} else {
+						return Action.NEXT_TERM;
+					}
 				} else {
-					step = 0 ;
+					step = 0;
 					return Action.NEXT_TOKEN;
 				}
 			} else {
-				insertInto(term,token.getIndex());
+				insertInto(term, token.getNext().getIndex());
 				return Action.NEXT_TERM;
 			}
 
@@ -112,13 +125,14 @@ public class ExtractingTask implements Runnable {
 	}
 
 	private void insertInto(Term term, int index) {
-		List tempList = this.list[index];
-		if(tempList==null){
-			tempList = new ArrayList() ;
+		List<Term> tempList = this.list[index];
+		if (tempList == null) {
+			tempList = new ArrayList();
 			this.list[index] = tempList;
 		}
-		tempList.add(term) ;
+		tempList.add(term);
 	}
+
 
 	/**
 	 * 验证term的名字或者词性是否符合条件
@@ -134,11 +148,11 @@ public class ExtractingTask implements Runnable {
 		}
 
 		Set<String> terms = token.getTerms();
-		if ((!terms.contains(Token.ALL)) && !terms.contains(term.getName()) && !(terms.contains(":"+term.getNatureStr()))) {
+		if ((!terms.contains(Token.ALL)) && !terms.contains(term.getName()) && !(terms.contains(":" + term.getNatureStr()))) {
 			return true;
 		}
 
-		boolean flag = true;
+		boolean flag = token.getRegexs().size()!=0;
 
 		for (String regex : token.getRegexs()) {
 			if (term.getName().matches(regex)) {
@@ -148,5 +162,17 @@ public class ExtractingTask implements Runnable {
 		}
 
 		return flag;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public Rule getRule() {
+		return rule;
+	}
+
+	public List[] getList() {
+		return list;
 	}
 }

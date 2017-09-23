@@ -71,9 +71,9 @@ public class Extracting {
 		}
 	}
 
-	public void parse(String content, Forest... forests) {
+	public ExtractingResult parse(String content, Forest... forests) {
 		Forest[] myForests = null;
-		if (forests == null) {
+		if (forests == null || forests.length == 0) {
 			myForests = new Forest[]{ruleIndex.getForest(), DicLibrary.get()};
 		} else {
 			myForests = new Forest[forests.length + 1];
@@ -87,37 +87,37 @@ public class Extracting {
 
 		List<ExtractingTask> tasks = new ArrayList<>();
 
-		ExtractingResult result = new ExtractingResult() ;
+		ExtractingResult result = new ExtractingResult();
 
 		for (int i = 0; i < terms.size(); i++) {
 			Term term = terms.get(i);
 
-			Set<Rule> sets = new HashSet<>() ;
+			Set<Rule> sets = new HashSet<>();
 
 			Set<Rule> rules = ruleIndex.getRules(term.getName());
 			if (rules != null) {
-				sets.addAll(rules) ;
+				sets.addAll(rules);
 			}
 
 			rules = ruleIndex.getRules(":" + term.getNatureStr());
 			if (rules != null) {
-				sets.addAll(rules) ;
+				sets.addAll(rules);
 			}
 
 			rules = ruleIndex.getRules(":*");
 			if (rules != null) {
-				sets.addAll(rules) ;
+				sets.addAll(rules);
 			}
 
 			for (Rule rule : sets) {
-				tasks.add(new ExtractingTask(result,rule, i, terms));
+				tasks.add(new ExtractingTask(result, rule, i, terms));
 			}
 		}
 
-		for (ExtractingTask task : tasks){
+		for (ExtractingTask task : tasks) {
 			task.run();
 		}
 
-		System.out.println(result);
+		return result;
 	}
 }

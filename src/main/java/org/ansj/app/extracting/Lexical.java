@@ -67,6 +67,7 @@ public class Lexical {
 			String str = list.get(i);
 			if (str.startsWith("(")) {
 				Token tempToken = new Token(index, str);
+				index++ ;
 				tokens.add(tempToken);
 				if (token != null) {
 					token.setNext(tempToken);
