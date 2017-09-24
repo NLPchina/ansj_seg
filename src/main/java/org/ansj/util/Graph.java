@@ -1,20 +1,20 @@
 package org.ansj.util;
 
-import java.util.List;
-import java.util.Map;
-
 import org.ansj.domain.AnsjItem;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.Analysis.Merger;
 import org.ansj.util.TermUtil.InsertTermType;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 最短路径
- * 
+ *
  * @author ansj
- * 
  */
 public class Graph {
 	public char[] chars = null;
@@ -40,6 +40,19 @@ public class Graph {
 		terms[chars.length] = end;
 	}
 
+	public Graph(Result result) {
+		Term last = result.get(result.size() - 1);
+		int beginOff = result.get(0).getOffe();
+		int len = last.getOffe() - beginOff + last.getName().length();
+		terms = new Term[len + 1];
+		end = new Term(E, len, AnsjItem.END);
+		root = new Term(B, -1, AnsjItem.BEGIN);
+		terms[len] = end;
+		for (Term term : result) {
+			terms[term.getOffe() - beginOff] = term;
+		}
+	}
+
 	/**
 	 * 构建最优路径
 	 */
@@ -49,7 +62,7 @@ public class Graph {
 
 	/**
 	 * 增加一个词语到图中
-	 * 
+	 *
 	 * @param term
 	 */
 	public void addTerm(Term term) {
@@ -67,7 +80,7 @@ public class Graph {
 
 	/**
 	 * 取得最优路径的root Term
-	 * 
+	 *
 	 * @return
 	 */
 	protected Term optimalRoot() {
@@ -111,13 +124,13 @@ public class Graph {
 			 * 对字数进行优化.如果一个字.就跳过..两个字.且第二个为null则.也跳过.从第二个后开始
 			 */
 			switch (maxTerm.getName().length()) {
-			case 1:
-				continue;
-			case 2:
-				if (terms[i + 1] == null) {
-					i = i + 1;
+				case 1:
 					continue;
-				}
+				case 2:
+					if (terms[i + 1] == null) {
+						i = i + 1;
+						continue;
+					}
 			}
 
 			/**
@@ -156,7 +169,7 @@ public class Graph {
 
 	/**
 	 * 得道最到本行最大term,也就是最右面的term
-	 * 
+	 *
 	 * @param i
 	 * @return
 	 */
@@ -223,7 +236,8 @@ public class Graph {
 				if (maxTo - i == 1 || i + 1 == terms.length)
 					continue;
 				boolean flag = true;// 可以删除
-				out: for (int j = i; j < maxTo; j++) {
+				out:
+				for (int j = i; j < maxTo; j++) {
 					temp = terms[j];
 					if (temp == null) {
 						continue;
@@ -267,7 +281,7 @@ public class Graph {
 
 	/**
 	 * 干涉性增加相对权重
-	 * 
+	 *
 	 * @param relationMap
 	 */
 	public void walkPath(Map<String, Double> relationMap) {
@@ -288,9 +302,9 @@ public class Graph {
 
 	/**
 	 * 具体的遍历打分方法
-	 * 
-	 * @param i 起始位置
-	 * @param j 起始属性
+	 *
+	 * @param i  起始位置
+	 * @param j  起始属性
 	 * @param to
 	 */
 	private void merger(Term fromTerm, int to, Map<String, Double> relationMap) {
@@ -315,9 +329,9 @@ public class Graph {
 
 	/**
 	 * 根据分数
-	 * 
-	 * @param i 起始位置
-	 * @param j 起始属性
+	 *
+	 * @param i  起始位置
+	 * @param j  起始属性
 	 * @param to
 	 */
 	private void mergerByScore(Term fromTerm, int to) {

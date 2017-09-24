@@ -1,41 +1,47 @@
 package org.ansj.recognition.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import org.ansj.app.extracting.Extracting;
+import org.ansj.app.extracting.exception.RuleFormatException;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.Recognition;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 电子邮箱抽取
- * 
- * @author ansj
  *
+ * @author ansj
  */
-public class EmailRecognition implements Recognition{
+public class EmailRecognition implements Recognition {
 
-	private static Map<String, String> FEATURE = new HashMap<String,String>();
+	private static final Log LOG = LogFactory.getLog();
 
-	private static final String NOT_HEAD = "NOT";
-	private static final String NATURE_HEAD = "nature:";
-	private static final String ALL = "ALL";
+	private static final Extracting EXTRACTING = new Extracting();
 
 	static {
-		FEATURE.put("-", NOT_HEAD);
-		FEATURE.put("_", NOT_HEAD);
-		FEATURE.put(".", NOT_HEAD);
-		FEATURE.put(NATURE_HEAD + "en", ALL);
-		FEATURE.put(NATURE_HEAD + "m", ALL);
+		try {
+			EXTRACTING.addRuleStr("(:m|:en|.|-)[\\\\d+][[a-zA-Z]+][\\\\.][-]{1,50}(@)(:m|:en|.|-)[\\\\d+][[a-zA-Z]+][\\\\.][-]{1,50}\temail:0,1,2");
+		} catch (RuleFormatException e) {
+			e.printStackTrace();
+			LOG.error("email recognition err ", e);
+		}
+
+	}
+
+	public static void main(String[] args) {
+		//我的邮箱是ansj-sun@163.com
+		System.out.println(EXTRACTING.parse("我的qq邮箱是5144694@qq.com").getAllResult());
 
 	}
 
 	@Override
 	public void recognition(Result result) {
-		
-		List<Term> terms = result.getTerms() ;
+
+		List<Term> terms = result.getTerms();
 
 		for (Term term : terms) {
 			if (!"@".equals(term.getName())) {
@@ -44,7 +50,7 @@ public class EmailRecognition implements Recognition{
 
 		}
 
-		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext();) {
+		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext(); ) {
 			Term term = iterator.next();
 			if (term.getName() == null) {
 				iterator.remove();

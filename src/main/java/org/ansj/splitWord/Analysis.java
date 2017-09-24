@@ -25,9 +25,9 @@ import org.nlpcn.commons.lang.util.WordAlert;
 
 /**
  * 基本分词+人名识别
- * 
+ *
  * @author ansj
- * 
+ *
  */
 public abstract class Analysis {
 
@@ -46,16 +46,16 @@ public abstract class Analysis {
 	private Forest ambiguityForest = AmbiguityLibrary.get();
 
 	// 是否开启人名识别
-	protected Boolean isNameRecognition = true;
+	protected boolean isNameRecognition = true;
 
 	// 是否开启数字识别
-	protected Boolean isNumRecognition = true;
+	protected boolean isNumRecognition = true;
 
 	// 是否数字和量词合并
-	protected Boolean isQuantifierRecognition = true;
+	protected boolean isQuantifierRecognition = true;
 
 	// 是否显示真实词语
-	protected Boolean isRealName = false;
+	protected boolean isRealName = false;
 
 	/**
 	 * 文档读取流
@@ -74,7 +74,7 @@ public abstract class Analysis {
 
 	/**
 	 * while 循环调用.直到返回为null则分词结束
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -121,7 +121,7 @@ public abstract class Analysis {
 
 	/**
 	 * 一整句话分词,用户设置的歧异优先
-	 * 
+	 *
 	 * @param temp
 	 * @return
 	 */
@@ -211,7 +211,7 @@ public abstract class Analysis {
 					gp.addTerm(term);
 					max = term.toValue();
 				}
-				
+
 				int len = end - max;
 				if (len > 0) {
 					for (; max < end;) {
@@ -227,13 +227,13 @@ public abstract class Analysis {
 
 	/**
 	 * 将为标准化的词语设置到分词中
-	 * 
+	 *
 	 * @param gp
 	 * @param result
 	 */
 	protected void setRealName(Graph graph, List<Term> result) {
 
-		if (!MyStaticValue.isRealName) {
+		if (!isRealName) {
 			return;
 		}
 
@@ -246,7 +246,7 @@ public abstract class Analysis {
 
 	/**
 	 * 一句话进行分词并且封装
-	 * 
+	 *
 	 * @param temp
 	 * @return
 	 */
@@ -256,7 +256,7 @@ public abstract class Analysis {
 
 	/**
 	 * 通过构造方法传入的reader直接获取到分词结果
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -278,7 +278,7 @@ public abstract class Analysis {
 
 	/**
 	 * 重置分词器
-	 * 
+	 *
 	 * @param br
 	 */
 	public void resetContent(AnsjReader br) {

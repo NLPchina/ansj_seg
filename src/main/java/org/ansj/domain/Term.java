@@ -252,6 +252,10 @@ public class Term implements Serializable{
 		return realName;
 	}
 
+	public String getRealNameIfnull() {
+		return realName;
+	}
+
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}

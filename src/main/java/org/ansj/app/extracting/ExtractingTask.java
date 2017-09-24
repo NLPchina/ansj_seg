@@ -59,6 +59,19 @@ public class ExtractingTask implements Runnable {
 					break;
 			}
 		}
+
+		boolean end = true;
+
+		while ((token = token.getNext()) != null) { //判断是否结尾
+			if (token.getRange() != null && token.getRange()[0] != 0) {
+				end = false;
+			}
+		}
+
+		if (end) {
+			result.add(this);
+
+		}
 	}
 
 	/**
@@ -79,8 +92,12 @@ public class ExtractingTask implements Runnable {
 		if (_validate(token, term)) {
 			if (range != null && range[0] == 0) {
 				return Action.NEXT_TOKEN;
+			} else if (range != null && step >= range[0] && step <= range[1]) {
+				step = 0;
+				return Action.NEXT_TOKEN;
+			} else {
+				return Action.STOP;
 			}
-			return Action.STOP;
 		}
 
 
@@ -89,12 +106,14 @@ public class ExtractingTask implements Runnable {
 			if (token.getNext() == null) {
 				return Action.OVER;
 			} else {
+				insertInto(term, token.getIndex());
 				return Action.NEXT_TERM_TOKEN;
 			}
 		} else {
-			if(step < range[0]){
+			if (step < range[0]) {
 				step++;
-				return Action.NEXT_TERM ;
+				insertInto(term, token.getIndex());
+				return Action.NEXT_TERM;
 			}
 
 			if (step > range[1]) {
@@ -106,7 +125,11 @@ public class ExtractingTask implements Runnable {
 				if (_validate(token.getNext(), term)) {
 					insertInto(term, token.getIndex());
 					if (token.getNext() == null) {
-						return Action.OVER;
+						if (step >= range[1]) {
+							return Action.OVER;
+						} else {
+							return Action.NEXT_TERM;
+						}
 					} else {
 						return Action.NEXT_TERM;
 					}
@@ -152,7 +175,7 @@ public class ExtractingTask implements Runnable {
 			return true;
 		}
 
-		boolean flag = token.getRegexs().size()!=0;
+		boolean flag = token.getRegexs().size() != 0;
 
 		for (String regex : token.getRegexs()) {
 			if (term.getName().matches(regex)) {

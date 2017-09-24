@@ -31,6 +31,10 @@ public class Extracting {
 
 	private RuleIndex ruleIndex = new RuleIndex();
 
+	public Extracting(){
+
+	}
+
 	public Extracting(List<String> lines) throws RuleFormatException {
 		addRules(lines);
 	}
