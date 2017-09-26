@@ -7,6 +7,12 @@ import org.ansj.util.TermUtil;
 
 public class NumRecognition implements TermArrRecognition {
 
+	private boolean quantifierRecognition ;
+
+	public NumRecognition(boolean quantifierRecognition){
+		this.quantifierRecognition = quantifierRecognition ;
+	}
+
 	/**
 	 * 数字+数字合并,zheng
 	 * 
@@ -43,7 +49,7 @@ public class NumRecognition implements TermArrRecognition {
 				terms[i].setName(terms[i].getName() + temp.getName());
 			}
 			// 如果是数字结尾
-			if (MyStaticValue.isQuantifierRecognition && temp.termNatures().numAttr.numEndFreq > 0) {
+			if (quantifierRecognition && temp.termNatures().numAttr.numEndFreq > 0) {
 				terms[i].setName(terms[i].getName() + temp.getName());
 				temp = temp.to();
 			}

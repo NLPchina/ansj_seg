@@ -142,7 +142,7 @@ public class NlpAnalysis extends Analysis {
 
 				// 数字发现
 				if (graph.hasNum && isNumRecognition) {
-					new NumRecognition().recognition(graph.terms);
+					new NumRecognition(isQuantifierRecognition).recognition(graph.terms);
 				}
 
 				// 词性标注

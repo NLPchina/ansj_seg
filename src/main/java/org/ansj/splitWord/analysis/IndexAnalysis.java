@@ -41,7 +41,7 @@ public class IndexAnalysis extends Analysis {
 
 				// 数字发现
 				if (isNumRecognition && graph.hasNum) {
-					new NumRecognition().recognition(graph.terms);
+					new NumRecognition(isQuantifierRecognition).recognition(graph.terms);
 				}
 
 				// 姓名识别
