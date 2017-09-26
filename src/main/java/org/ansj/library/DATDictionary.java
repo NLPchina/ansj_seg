@@ -6,11 +6,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.ansj.dic.DicReader;
-import org.ansj.domain.AnsjItem;
-import org.ansj.domain.PersonNatureAttr;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
+import org.ansj.domain.*;
 import org.ansj.library.name.PersonAttrLibrary;
+import org.ansj.recognition.arrimpl.NumRecognition;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
 import org.nlpcn.commons.lang.util.logging.Log;
@@ -39,6 +37,20 @@ public class DATDictionary {
 		long start = System.currentTimeMillis();
 		try {
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
+
+			//特殊处理某些
+			((AnsjItem)dat.getDAT()['.']).termNatures.numAttr = NumNatureAttr.NUM;
+			((AnsjItem)dat.getDAT()['．']).termNatures.numAttr = NumNatureAttr.NUM;
+
+			for (char c : NumRecognition.f_NUM){
+				((AnsjItem)dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+			}
+
+			for (char c : NumRecognition.j_NUM){
+				((AnsjItem)dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+			}
+
+
 			// 人名识别必备的
 			personNameFull(dat);
 			// 记录词典中的词语，并且清除部分数据

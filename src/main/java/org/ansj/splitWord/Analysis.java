@@ -1,17 +1,6 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.DATDictionary.status;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
+import org.ansj.domain.*;
 import org.ansj.library.AmbiguityLibrary;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
@@ -23,11 +12,18 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.WordAlert;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.ansj.library.DATDictionary.status;
+
 /**
  * 基本分词+人名识别
  *
  * @author ansj
- *
  */
 public abstract class Analysis {
 
@@ -63,12 +59,14 @@ public abstract class Analysis {
 	private AnsjReader br;
 
 	protected Analysis() {
-		this.forests = new Forest[] { DicLibrary.get() };
+		this.forests = new Forest[]{DicLibrary.get()};
 		this.isNameRecognition = MyStaticValue.isNameRecognition;
 		this.isNumRecognition = MyStaticValue.isNumRecognition;
 		this.isQuantifierRecognition = MyStaticValue.isQuantifierRecognition;
 		this.isRealName = MyStaticValue.isRealName;
-	};
+	}
+
+	;
 
 	private LinkedList<Term> terms = new LinkedList<Term>();
 
@@ -144,7 +142,7 @@ public abstract class Analysis {
 				}
 			}
 		}
-		if (startOffe < gp.chars.length ) {
+		if (startOffe < gp.chars.length) {
 			analysis(gp, startOffe, gp.chars.length);
 		}
 		List<Term> result = this.getResult(gp);
@@ -160,67 +158,69 @@ public abstract class Analysis {
 		String str = null;
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status(chars[i])) {
-			case 4:
-				start = i;
-				end = 1;
-				while (++i < endOffe && status(chars[i]) == 4) {
-					end++;
-				}
-				str = WordAlert.alertEnglish(chars, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.EN));
-				i--;
-				break;
-			case 5:
-				start = i;
-				end = 1;
-				while (++i < endOffe && status(chars[i]) == 5) {
-					end++;
-				}
-				str = WordAlert.alertNumber(chars, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.M));
-				i--;
-				break;
-			default:
-				start = i;
-				end = i;
-
-				int status = 0;
-				do {
-					end = ++i;
-					if (i >= endOffe) {
-						break;
+				case 4:
+					start = i;
+					end = 1;
+					while (++i < endOffe && status(chars[i]) == 4) {
+						end++;
 					}
-					status = status(chars[i]);
-				} while (status < 4);
-
-				if (status > 3) {
+					str = WordAlert.alertEnglish(chars, start, end);
+					gp.addTerm(new Term(str, start, TermNatures.EN));
 					i--;
-				}
+					break;
+				case 5:
+					start = i;
+					end = 1;
+					while (++i < endOffe && status(chars[i]) == 5) {
+						end++;
+					}
+					str = WordAlert.alertNumber(chars, start, end);
+					Term numTerm = new Term(str, start, TermNatures.M);
+					numTerm.termNatures().numAttr = NumNatureAttr.NUM;
+					gp.addTerm(numTerm);
+					i--;
+					break;
+				default:
+					start = i;
+					end = i;
 
-				gwi.setChars(chars, start, end);
-				int max = start;
-				while ((str = gwi.allWords()) != null) {
-					Term term = new Term(str, gwi.offe, gwi.getItem());
-					int len = term.getOffe() - max;
+					int status = 0;
+					do {
+						end = ++i;
+						if (i >= endOffe) {
+							break;
+						}
+						status = status(chars[i]);
+					} while (status < 4);
+
+					if (status > 3) {
+						i--;
+					}
+
+					gwi.setChars(chars, start, end);
+					int max = start;
+					while ((str = gwi.allWords()) != null) {
+						Term term = new Term(str, gwi.offe, gwi.getItem());
+						int len = term.getOffe() - max;
+						if (len > 0) {
+							for (; max < term.getOffe(); ) {
+								gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
+								max++;
+							}
+						}
+						gp.addTerm(term);
+						max = term.toValue();
+					}
+
+					int len = end - max;
 					if (len > 0) {
-						for (; max < term.getOffe();) {
+						for (; max < end; ) {
 							gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
 							max++;
 						}
 					}
-					gp.addTerm(term);
-					max = term.toValue();
-				}
 
-				int len = end - max;
-				if (len > 0) {
-					for (; max < end;) {
-						gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
-						max++;
-					}
-				}
-
-				break;
+					break;
 			}
 		}
 	}
@@ -237,10 +237,10 @@ public abstract class Analysis {
 			return;
 		}
 
-		String str = graph.realStr;
+		char[] chars = graph.chars;
 
 		for (Term term : result) {
-			term.setRealName(str.substring(term.getOffe(), term.getOffe() + term.getName().length()));
+			term.setRealName(new String(chars, term.getOffe(), term.getName().length()));
 		}
 	}
 

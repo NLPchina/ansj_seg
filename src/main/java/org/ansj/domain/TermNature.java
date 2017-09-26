@@ -38,21 +38,6 @@ public class TermNature implements Serializable{
 		this.frequency = frequency;
 	}
 
-	public static TermNature[] setNatureStrToArray(String natureStr) {
-		
-		natureStr = natureStr.substring(1, natureStr.length() - 1);
-		String[] split = natureStr.split(",");
-		String[] strs = null;
-		Integer frequency = null;
-		TermNature[] all = new TermNature[split.length];
-		for (int i = 0; i < split.length; i++) {
-			strs = split[i].split("=");
-			frequency = Integer.parseInt(strs[1]);
-			all[i] = new TermNature(strs[0].trim(), frequency);
-		}
-		return all;
-	}
-
 	@Override
 	public String toString() {
 		return nature.natureStr + "/" + frequency;

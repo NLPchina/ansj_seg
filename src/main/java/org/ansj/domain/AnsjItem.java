@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Map;
 
 import org.nlpcn.commons.lang.dat.Item;
@@ -46,9 +47,10 @@ public class AnsjItem extends Item implements Serializable{
 		base = Integer.parseInt(split[2]);
 		check = Integer.parseInt(split[3]);
 		status = Byte.parseByte(split[4]);
+
 		if (status > 1) {
 			name = split[1];
-			termNatures = new TermNatures(TermNature.setNatureStrToArray(split[5]), index);
+			termNatures = new TermNatures(split[5], index);
 		}else{
 			termNatures = new TermNatures(TermNature.NULL); 
 		}

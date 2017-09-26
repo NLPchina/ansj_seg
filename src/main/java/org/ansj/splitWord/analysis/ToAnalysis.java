@@ -35,7 +35,7 @@ public class ToAnalysis extends Analysis {
 				graph.walkPath();
 
 				// 数字发现
-				if (isNumRecognition && graph.hasNum) {
+				if (isNumRecognition) {
 					new NumRecognition(isQuantifierRecognition).recognition(graph.terms);
 				}
 

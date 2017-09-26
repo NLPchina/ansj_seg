@@ -5,6 +5,7 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
+import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.splitWord.Analysis.Merger;
 import org.ansj.util.TermUtil.InsertTermType;
 
@@ -18,7 +19,6 @@ import java.util.Map;
  */
 public class Graph {
 	public char[] chars = null;
-	public String realStr = null;
 	public Term[] terms = null;
 	protected Term end = null;
 	protected Term root = null;
@@ -26,13 +26,11 @@ public class Graph {
 	protected static final String B = "始##始";
 	// 是否有人名
 	public boolean hasPerson;
-	// 是否有数字
-	public boolean hasNum;
+
 
 	// 是否需有歧异
 
 	public Graph(String str) {
-		realStr = str;
 		this.chars = str.toCharArray();
 		terms = new Term[chars.length + 1];
 		end = new Term(E, chars.length, AnsjItem.END);
@@ -66,10 +64,6 @@ public class Graph {
 	 * @param term
 	 */
 	public void addTerm(Term term) {
-		// 是否有数字
-		if (!hasNum && term.termNatures().numAttr.numFreq > 0) {
-			hasNum = true;
-		}
 		// 是否有人名
 		if (!hasPerson && term.termNatures().personAttr.flag) {
 			hasPerson = true;
@@ -303,8 +297,6 @@ public class Graph {
 	/**
 	 * 具体的遍历打分方法
 	 *
-	 * @param i  起始位置
-	 * @param j  起始属性
 	 * @param to
 	 */
 	private void merger(Term fromTerm, int to, Map<String, Double> relationMap) {
@@ -330,9 +322,6 @@ public class Graph {
 	/**
 	 * 根据分数
 	 *
-	 * @param i  起始位置
-	 * @param j  起始属性
-	 * @param to
 	 */
 	private void mergerByScore(Term fromTerm, int to) {
 		Term term = null;

@@ -30,6 +30,8 @@ public class Nature implements Serializable {
 
 	public static final Nature NR = NatureLibrary.getNature("nr");
 
+	public static final Nature MQ = NatureLibrary.getNature("mq");
+
 	public static final Nature NULL = NatureLibrary.getNature("null");
 
 	public Nature(String natureStr, int index, int natureIndex, int allFrequency) {
