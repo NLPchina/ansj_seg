@@ -87,7 +87,7 @@ public class TermNatures implements Serializable {
 				this.numAttr = new NumNatureAttr(false, true, strs[0].replaceFirst("q_", ""));
 			} else {
 				all[i] = new TermNature(strs[0], frequency);
-				if (maxFreq < frequency) {
+				if (maxFreq <= frequency) {
 					maxFreq = frequency;
 					maxTermNature = all[i];
 				}
