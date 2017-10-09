@@ -1,9 +1,5 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.arrimpl.AsianPersonRecognition;
@@ -17,11 +13,14 @@ import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 标准分词
- * 
+ *
  * @author ansj
- * 
  */
 public class ToAnalysis extends Analysis {
 
@@ -36,7 +35,7 @@ public class ToAnalysis extends Analysis {
 
 				// 数字发现
 				if (isNumRecognition) {
-					new NumRecognition(isQuantifierRecognition).recognition(graph.terms);
+					new NumRecognition(isQuantifierRecognition && graph.hasNumQua).recognition(graph.terms);
 				}
 
 				// 姓名识别
@@ -84,7 +83,7 @@ public class ToAnalysis extends Analysis {
 	public ToAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
-	
+
 	public static Result parse(String str) {
 		return new ToAnalysis().parseStr(str);
 	}

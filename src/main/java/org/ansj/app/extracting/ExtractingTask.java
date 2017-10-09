@@ -63,7 +63,7 @@ public class ExtractingTask implements Runnable {
 		boolean end = true;
 
 		while ((token = token.getNext()) != null) { //判断是否结尾
-			if (token.getRange() != null && token.getRange()[0] != 0) {
+			if (token.getRange() == null || token.getRange()[0] != 0) {
 				end = false;
 			}
 		}
@@ -106,7 +106,6 @@ public class ExtractingTask implements Runnable {
 			if (token.getNext() == null) {
 				return Action.OVER;
 			} else {
-				insertInto(term, token.getIndex());
 				return Action.NEXT_TERM_TOKEN;
 			}
 		} else {

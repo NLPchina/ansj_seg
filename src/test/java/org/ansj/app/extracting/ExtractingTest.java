@@ -21,6 +21,7 @@ public class ExtractingTest {
 
 		ExtractingResult result = null ;
 
+
          result = extracting.parse("2017年2月12日是一个特殊的日子");
 
 		System.out.println(result.getAllResult()); ;
@@ -39,7 +40,7 @@ public class ExtractingTest {
 
 		//填写规则 可以写多条
 		lines.add("(:bName)(:*){0,3}(并发症)(有|都有)(哪些|什么)\t名称:0;限定:2;目的:(个数)") ;
-		lines.add("(:bName)(如何|怎么){0,1}(防治|避免){0,1}\t名称:0;限定:2;目的:(防治)") ;
+		lines.add("(:bName)(如何|怎么){0,1}(防治|避免)\t名称:0;限定:2") ;
 
 		Extracting extracting = new Extracting(lines) ;
 

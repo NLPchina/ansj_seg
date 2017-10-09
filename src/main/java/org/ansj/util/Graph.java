@@ -1,11 +1,7 @@
 package org.ansj.util;
 
-import org.ansj.domain.AnsjItem;
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.domain.*;
 import org.ansj.library.DATDictionary;
-import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.splitWord.Analysis.Merger;
 import org.ansj.util.TermUtil.InsertTermType;
 
@@ -26,6 +22,8 @@ public class Graph {
 	protected static final String B = "始##始";
 	// 是否有人名
 	public boolean hasPerson;
+
+	public boolean hasNumQua;
 
 
 	// 是否需有歧异
@@ -67,6 +65,10 @@ public class Graph {
 		// 是否有人名
 		if (!hasPerson && term.termNatures().personAttr.flag) {
 			hasPerson = true;
+		}
+
+		if (!hasNumQua && term.termNatures().numAttr.qua) {
+			hasNumQua = true;
 		}
 		TermUtil.insertTerm(terms, term, InsertTermType.REPLACE);
 
@@ -321,7 +323,6 @@ public class Graph {
 
 	/**
 	 * 根据分数
-	 *
 	 */
 	private void mergerByScore(Term fromTerm, int to) {
 		Term term = null;

@@ -132,9 +132,6 @@ public class NumRecognition implements TermArrRecognition {
 			}
 
 
-
-
-
 			if (quantifierRecognition) { //开启量词识别
 				to = temp.to();
 				if (to.termNatures().numAttr.qua) {

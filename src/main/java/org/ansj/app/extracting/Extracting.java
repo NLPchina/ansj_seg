@@ -8,6 +8,7 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
