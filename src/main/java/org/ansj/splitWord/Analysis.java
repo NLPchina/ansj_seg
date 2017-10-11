@@ -175,7 +175,7 @@ public abstract class Analysis {
 						end++;
 					}
 					str = WordAlert.alertNumber(chars, start, end);
-					Term numTerm = new Term(str, start, TermNatures.M);
+					Term numTerm = new Term(str, start, TermNatures.M_ALB);
 					numTerm.termNatures().numAttr = NumNatureAttr.NUM;
 					gp.addTerm(numTerm);
 					i--;

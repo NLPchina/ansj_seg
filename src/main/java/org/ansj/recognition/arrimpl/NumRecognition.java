@@ -1,6 +1,7 @@
 package org.ansj.recognition.arrimpl;
 
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.TermUtil;
 
@@ -64,7 +65,6 @@ public class NumRecognition implements TermArrRecognition {
 	@Override
 	public void recognition(Term[] terms) {
 		int length = terms.length - 1;
-		Term from = null;
 		Term to = null;
 		Term temp = null;
 		for (int i = 0; i < length; i++) {
@@ -108,27 +108,17 @@ public class NumRecognition implements TermArrRecognition {
 					i-- ;
 					continue;
 				}
+			}
 
-				if (".".equals(temp.getName()) || "．".equals(temp.getName())) { //修复小数
-					// 如果是.前后都为数字进行特殊处理
-					to = temp.to();
-					from = temp.from();
-					if (to.to().getName().equals(temp.getName())) { //防止123.231.123
-						continue;
-					}
-					if (from.from().getName().equals(temp.getName())) { //防止123.231.123
-						continue;
-					}
-					if (from.termNatures().numAttr.num && to.termNatures().numAttr.num) {
-						from.setName(from.getName() + "." + to.getName());
-						TermUtil.termLink(from, to.to());
-						terms[to.getOffe()] = null;
-						terms[i] = null;
-					}
-					i = from.getOffe() - 1;
-					continue;
+
+			if (temp.termNatures() == TermNatures.M_ALB) { //阿拉伯数字
+				if(!temp.from().getName().equals(".") && temp.to().getName().equals(".")&&temp.to().to().termNatures()==TermNatures.M_ALB&&!temp.to().to().to().getName().equals(".")){
+					temp.setName(temp.getName()+temp.to().getName()+temp.to().to().getName());
+					terms[temp.to().getOffe()] = null ;
+					terms[temp.to().to().getOffe()] = null ;
+					TermUtil.termLink(temp, temp.to().to().to());
+					i = temp.getOffe() - 1;
 				}
-
 			}
 
 

@@ -14,6 +14,8 @@ public class TermNatures implements Serializable {
 
 	public static final TermNatures M = new TermNatures(TermNature.M);
 
+	public static final TermNatures M_ALB = new TermNatures(TermNature.M);
+
 	public static final TermNatures NR = new TermNatures(TermNature.NR);
 
 	public static final TermNatures EN = new TermNatures(TermNature.EN);

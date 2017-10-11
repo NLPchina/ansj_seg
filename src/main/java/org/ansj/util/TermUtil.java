@@ -116,14 +116,14 @@ public class TermUtil {
 		terms[term.getOffe()] = term;
 	}
 
-	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures nr) {
+	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures tns) {
 		StringBuilder sb = new StringBuilder();
 		int offe = tempList.get(0).getOffe();
 		for (Term term : tempList) {
 			sb.append(term.getName());
 			terms[term.getOffe()] = null;
 		}
-		Term term = new Term(sb.toString(), offe, TermNatures.NR);
+		Term term = new Term(sb.toString(), offe, tns);
 		insertTermNum(terms, term);
 	}
 

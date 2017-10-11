@@ -2,6 +2,7 @@ package org.ansj.app.extracting.domain;
 
 import org.ansj.app.extracting.ExtractingTask;
 import org.ansj.domain.Term;
+import org.ansj.util.TermUtil;
 
 import java.util.*;
 
@@ -18,6 +19,26 @@ public class ExtractingResult {
 			taskResults = new ArrayList<>();
 		}
 		taskResults.add(task);
+	}
+
+	public List<List<Term>> findAll(){
+		if (taskResults == null) {
+			return Collections.emptyList();
+		}
+
+		List<List<Term>> result = new ArrayList<>(taskResults.size());
+
+		for (ExtractingTask task : taskResults) {
+			List<Term> tempList = new ArrayList<>() ;
+			for (List<Term> list : task.getList()){
+				for (Term term : list){
+					tempList.add(term) ;
+				}
+			}
+			result.add(tempList) ;
+
+		}
+		return result ;
 	}
 
 	public List<Map<String, String>> getAllResult() {

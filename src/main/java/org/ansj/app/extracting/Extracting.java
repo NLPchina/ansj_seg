@@ -7,8 +7,12 @@ import org.ansj.app.extracting.exception.RuleFormatException;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
+import org.ansj.recognition.arrimpl.UserDefineRecognition;
+import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.util.MyStaticValue;
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.Graph;
+import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
@@ -32,7 +36,7 @@ public class Extracting {
 
 	private RuleIndex ruleIndex = new RuleIndex();
 
-	public Extracting(){
+	public Extracting() {
 
 	}
 
@@ -76,9 +80,17 @@ public class Extracting {
 		}
 	}
 
+	/**
+	 * 传入文本分词并抽取
+	 * @param content 需要分析的文本
+	 * @param forests 对文本分词加载的词典
+	 * @return 抽取结果集
+	 */
 	public ExtractingResult parse(String content, Forest... forests) {
 		Forest[] myForests = null;
-		if (forests == null || forests.length == 0) {
+		if (forests == null) {
+			myForests = new Forest[]{ruleIndex.getForest()};
+		} else if (forests.length == 0) {
 			myForests = new Forest[]{ruleIndex.getForest(), DicLibrary.get()};
 		} else {
 			myForests = new Forest[forests.length + 1];
@@ -89,6 +101,42 @@ public class Extracting {
 		}
 
 		Result terms = DicAnalysis.parse(content, myForests);
+
+		return parse(terms, false);
+	}
+
+
+	/**
+	 * 对分词后的结果进行抽取
+	 * @param terms 分词后的结果
+	 * @return 抽取结果集
+	 */
+	public ExtractingResult parse(Result terms){
+		return parse(terms,true) ;
+	}
+
+	/**
+	 * 对分词后的结果进行抽取
+	 * @param terms 分词后的结果
+	 * @param useForest 是否使用词典
+	 * @return 抽取结果集
+	 */
+	private ExtractingResult parse(Result terms, boolean useForest) {
+
+		if (useForest) {
+			Graph graph = new Graph(terms);
+			new UserDefineRecognition(TermUtil.InsertTermType.REPLACE,ruleIndex.getForest()).recognition(graph.terms);
+			graph.rmLittlePath();
+			List<Term> result = new ArrayList<Term>();
+			int length = graph.terms.length - 1;
+			for (int i = 0; i < length; i++) {
+				if (graph.terms[i] != null) {
+					result.add(graph.terms[i]);
+				}
+			}
+			terms = new Result(result) ;
+		}
+
 
 		List<ExtractingTask> tasks = new ArrayList<>();
 

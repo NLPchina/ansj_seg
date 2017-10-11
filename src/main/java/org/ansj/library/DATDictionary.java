@@ -38,10 +38,6 @@ public class DATDictionary {
 		try {
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
 
-			//特殊处理某些
-			((AnsjItem)dat.getDAT()['.']).termNatures.numAttr = NumNatureAttr.NUM;
-			((AnsjItem)dat.getDAT()['．']).termNatures.numAttr = NumNatureAttr.NUM;
-
 			for (char c : NumRecognition.f_NUM){
 				((AnsjItem)dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
 			}

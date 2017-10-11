@@ -40,7 +40,7 @@ public class ExtractingTask implements Runnable {
 	public void run() {//排除一切干扰我只看我自己能走到多远
 		List<Token> tokens = rule.getTokens();
 		Token token = tokens.get(0);
-		for (int i = index; i < terms.size(); i++) {
+		loop: for (int i = index; i < terms.size(); i++) {
 			Term term = terms.get(i);
 			switch (validate(token, term)) {
 				case STOP: //此路不通
@@ -53,6 +53,9 @@ public class ExtractingTask implements Runnable {
 				case NEXT_TOKEN:
 					i--;
 					token = token.getNext();
+					if (token == null) {
+						break loop;
+					}
 					break;
 				case NEXT_TERM_TOKEN:
 					token = token.getNext();
@@ -62,7 +65,7 @@ public class ExtractingTask implements Runnable {
 
 		boolean end = true;
 
-		while ((token = token.getNext()) != null) { //判断是否结尾
+		while (token!=null && (token = token.getNext()) != null) { //判断是否结尾
 			if (token.getRange() == null || token.getRange()[0] != 0) {
 				end = false;
 			}
