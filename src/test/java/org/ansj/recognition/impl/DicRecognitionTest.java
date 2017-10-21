@@ -3,6 +3,7 @@ package org.ansj.recognition.impl;
 import org.ansj.domain.Result;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class DicRecognitionTest {
 
 		System.out.println(parse);
 
-		Assert.assertEquals(parse.toString(),ToAnalysis.parse(str).toString());
+		Assert.assertEquals(parse.toString(), ToAnalysis.parse(str).toString());
 	}
 
 }
