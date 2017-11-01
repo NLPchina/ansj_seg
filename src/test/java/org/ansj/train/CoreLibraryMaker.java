@@ -7,10 +7,7 @@ import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -38,26 +35,26 @@ public class CoreLibraryMaker {
 		for (int i = '0'; i <= '9'; i++) {
 			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
 		}
-		for (int i = '０'; i <= '９'; i++) {
-			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
-		}
+//		for (int i = '０'; i <= '９'; i++) {
+//			insertToArray(dat, (char) i, (byte) 5, "{nb=1}");
+//		}
 
 
 		for (int i = 'a'; i <= 'z'; i++) {
 			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
 		}
 
-		for (int i = 'ａ'; i <= 'ｚ'; i++) {
-			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
-		}
+//		for (int i = 'ａ'; i <= 'ｚ'; i++) {
+//			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+//		}
 
-		for (int i = 'Ａ'; i <= 'Ｚ'; i++) {
-			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
-		}
-
-		for (int i = 'A'; i <= 'Z'; i++) {
-			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
-		}
+//		for (int i = 'Ａ'; i <= 'Ｚ'; i++) {
+//			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+//		}
+//
+//		for (int i = 'A'; i <= 'Z'; i++) {
+//			insertToArray(dat, (char) i, (byte) 4, "{en=1}");
+//		}
 
 		datM.saveText("src/main/resources/core.dic");
 
@@ -77,6 +74,12 @@ public class CoreLibraryMaker {
 
 		File[] files = new File[]{
 				new File("train_file/dic/dic.txt"),
+				new File("train_file/dic/two_len.txt"),
+				new File("train_file/dic/three_len.txt"),
+				new File("train_file/dic/leaders.txt"),
+				new File("train_file/dic/dept.txt"),
+				new File("train_file/dic/person_newword.txt"),
+				new File("train_file/dic/cn_en.txt"),
 				new File("train_file/dic/w.txt"),
 				new File("train_file/dic/q.txt"),
 		};
@@ -86,6 +89,10 @@ public class CoreLibraryMaker {
 		TreeMap<String, TreeMap<String, Integer>> dic = new TreeMap<String, TreeMap<String, Integer>>();
 
 		for (File file : files) {
+
+			if(!file.exists()){
+				throw  new FileNotFoundException(file.getAbsolutePath()) ;
+			}
 
 			BufferedReader br = IOUtil.getReader(file, "utf-8");
 
