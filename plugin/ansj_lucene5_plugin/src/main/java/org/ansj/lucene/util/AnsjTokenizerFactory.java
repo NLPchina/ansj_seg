@@ -1,13 +1,13 @@
 package org.ansj.lucene.util;
 
-import java.util.Map;
-
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
 import org.apache.lucene.util.AttributeFactory;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.util.Map;
 
 public class AnsjTokenizerFactory extends TokenizerFactory {
 

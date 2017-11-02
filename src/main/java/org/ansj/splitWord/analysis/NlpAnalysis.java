@@ -1,29 +1,14 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
+import org.ansj.domain.*;
 import org.ansj.library.CrfLibrary;
-import org.ansj.recognition.arrimpl.AsianPersonRecognition;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
-import org.ansj.recognition.arrimpl.NewWordRecognition;
-import org.ansj.recognition.arrimpl.NumRecognition;
-import org.ansj.recognition.arrimpl.UserDefineRecognition;
+import org.ansj.recognition.arrimpl.*;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
-import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -31,6 +16,12 @@ import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.WordAlert;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -68,11 +59,10 @@ public class NlpAnalysis extends Analysis {
 				// 姓名识别
 				if (graph.hasPerson && isNameRecognition) {
 					// 亚洲人名识别
-					new AsianPersonRecognition().recognition(graph.terms);
+					new PersonRecognition().recognition(graph);
 					graph.walkPathByScore();
-					NameFix.nameAmbiguity(graph.terms);
 					// 外国人名识别
-					new ForeignPersonRecognition().recognition(graph.terms);
+					new ForeignPersonRecognition().recognition(graph);
 					graph.walkPathByScore();
 				}
 
@@ -142,19 +132,19 @@ public class NlpAnalysis extends Analysis {
 
 				// 数字发现
 				if (isNumRecognition) {
-					new NumRecognition(isQuantifierRecognition).recognition(graph.terms);
+					new NumRecognition(isQuantifierRecognition).recognition(graph);
 				}
 
 				// 词性标注
 				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(InsertTermType.SCORE_ADD_SORT, forests).recognition(graph.terms);
+				new UserDefineRecognition(InsertTermType.SCORE_ADD_SORT, forests).recognition(graph);
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 
 				// 进行新词发现
-				new NewWordRecognition(learn).recognition(graph.terms);
+				new NewWordRecognition(learn).recognition(graph);
 				graph.walkPathByScore();
 
 				// 优化后重新获得最优路径

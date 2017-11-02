@@ -1,18 +1,15 @@
 package org.ansj.train;
 
-import com.sun.xml.internal.rngom.parse.host.Base;
 import org.ansj.domain.Result;
 import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.CollectionUtil;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.MapCount;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +37,8 @@ public class PersonLibraryMaker {
 			}
 
 			Result parse = BaseAnalysis.parse(name);
-			if(parse.size()==1){
-				mc.add("Y\t"+parse.get(0).getName(),freq);
+			if(parse.size()==1){//单名成词在这里先放弃
+//				mc.add("Y\t"+parse.get(0).getName(),freq);
 				continue;
 			}
 
@@ -81,6 +78,16 @@ public class PersonLibraryMaker {
 		}
 
 		IOUtil.writeMap(lhm,"train_file/dic/person_split.txt","utf-8");
+	}
+
+	@Test
+	public void merge() throws IOException {
+		String[] paths =  new String[]{"train_file/dic/person_split.txt","train_file/dic/person_fix.txt"} ;
+		List<String> result = new ArrayList<>() ;
+		for (String path : paths){
+			result.addAll(IOUtil.readFile2List(path, "utf-8"));
+		}
+		IOUtil.writeList(result,"src/main/resources/person.dic","utf-8");
 	}
 
 

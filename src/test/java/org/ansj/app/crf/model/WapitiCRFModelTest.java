@@ -1,17 +1,13 @@
 package org.ansj.app.crf.model;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-
 import org.ansj.app.crf.Check;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
+
+import java.io.*;
+import java.util.List;
 
 public class WapitiCRFModelTest {
 

@@ -1,15 +1,13 @@
 package org.ansj.util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.NatureLibrary;
-import org.ansj.library.company.CompanyAttrLibrary;
 import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * term的操作类
@@ -134,8 +132,6 @@ public class TermUtil {
 		return from;
 	}
 
-	private static final HashMap<String, int[]> companyMap = CompanyAttrLibrary.getCompanyMap();
-
 	/**
 	 * 得到细颗粒度的分词，并且确定词性
 	 * 
@@ -160,28 +156,13 @@ public class TermUtil {
 
 		List<Term> subTerm = term.getSubTerm();
 
-		// 判断是否是机构名
-		term.setSubTerm(subTerm);
-		Term first = subTerm.get(0);
-		Term last = subTerm.get(subTerm.size() - 1);
-		int[] is = companyMap.get(first.getName());
-		int all = 0;
+		// TODO:判断是否是机构名
 
-		is = companyMap.get(last.getName());
-		if (is != null) {
-			all += is[1];
-		}
-
-		if (all > 1000) {
-			term.setNature(NatureLibrary.getNature("nt"));
-			return;
-		}
 	}
 
 	/**
 	 * 从from到to生成subterm
 	 * 
-	 * @param terms
 	 * @param from
 	 * @param to
 	 * @return

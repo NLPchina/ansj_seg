@@ -1,8 +1,5 @@
 package org.ansj.ansj_lucene_plug;
 
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.ansj.library.DicLibrary;
 import org.ansj.lucene6.AnsjAnalyzer;
 import org.ansj.lucene6.AnsjAnalyzer.TYPE;
@@ -27,6 +24,9 @@ import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 public class HeightLightTest {
 

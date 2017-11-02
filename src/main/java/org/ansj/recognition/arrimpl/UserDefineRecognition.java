@@ -5,6 +5,7 @@ import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DicLibrary;
 import org.ansj.recognition.TermArrRecognition;
+import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -44,8 +45,8 @@ public class UserDefineRecognition implements TermArrRecognition {
 	}
 
 	@Override
-	public void recognition(Term[] terms) {
-		this.terms = terms;
+	public void recognition(Graph graph) {
+		this.terms = graph.terms;
 		for (Forest forest : forests) {
 			if (forest == null) {
 				continue;

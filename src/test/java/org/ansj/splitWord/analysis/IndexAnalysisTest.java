@@ -1,9 +1,9 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.IOException;
-
 import org.ansj.CorpusTest;
 import org.junit.Test;
+
+import java.io.IOException;
 
 public class IndexAnalysisTest extends CorpusTest {
 

@@ -1,11 +1,11 @@
 package org.ansj.test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.TagContent;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagWordTest {
 	@Test

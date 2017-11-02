@@ -1,9 +1,9 @@
 package org.ansj.demo;
 
-import java.util.Collection;
-
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
+
+import java.util.Collection;
 
 /**
  * 关键词提取的例子

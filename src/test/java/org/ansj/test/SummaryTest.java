@@ -1,12 +1,12 @@
 package org.ansj.test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-
 import org.ansj.app.summary.SummaryComputer;
 import org.ansj.app.summary.TagContent;
 import org.ansj.app.summary.pojo.Summary;
 import org.nlpcn.commons.lang.util.IOUtil;
+
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class SummaryTest {
 	public static void main(String[] args) throws IOException {

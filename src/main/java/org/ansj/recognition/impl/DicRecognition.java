@@ -39,7 +39,7 @@ public class DicRecognition implements Recognition {
 	@Override
 	public void recognition(Result result) {
 		Graph graph = new Graph(result);
-		new UserDefineRecognition(type, forests).recognition(graph.terms);
+		new UserDefineRecognition(type, forests).recognition(graph);
 		graph.rmLittlePath();
 		graph.walkPathByScore();
 

@@ -1,10 +1,10 @@
 package org.ansj.demo;
 
-import java.io.IOException;
-
 import org.ansj.domain.Result;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
+
+import java.io.IOException;
 
 /**
  * 词性标注

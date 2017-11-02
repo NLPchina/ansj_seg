@@ -8,13 +8,9 @@ import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.Recognition;
-import org.nlpcn.commons.lang.util.logging.Log;
-import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 电子邮箱抽取

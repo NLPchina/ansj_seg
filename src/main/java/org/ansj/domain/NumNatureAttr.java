@@ -2,11 +2,7 @@ package org.ansj.domain;
 
 import org.ansj.library.NatureLibrary;
 
-import java.io.Serializable;
-
-public class NumNatureAttr implements Serializable {
-
-	private static final long serialVersionUID = 1L;
+public class NumNatureAttr  {
 
 	public static final NumNatureAttr NULL = new NumNatureAttr(false, false);
 
@@ -15,9 +11,9 @@ public class NumNatureAttr implements Serializable {
 	public Nature nature;
 
 	// 是有可能是一个数字
-	public boolean num;
+	private boolean num;
 
-	public boolean qua;
+	private boolean qua;
 
 
 	private NumNatureAttr(boolean num, boolean qua) {
@@ -30,5 +26,25 @@ public class NumNatureAttr implements Serializable {
 		this.num = num;
 		this.qua = qua;
 		this.nature = NatureLibrary.getNature(natureStr);
+	}
+
+	public boolean isNum() {
+		return num;
+	}
+
+	public boolean isQua() {
+		return qua;
+	}
+
+	public void setNum(boolean num) {
+		this.num = num;
+	}
+
+	public void setQua(boolean qua) {
+		this.qua = qua;
+	}
+
+	public Nature getNature() {
+		return nature;
 	}
 }

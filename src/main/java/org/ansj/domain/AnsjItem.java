@@ -1,10 +1,9 @@
 package org.ansj.domain;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Map;
-
 import org.nlpcn.commons.lang.dat.Item;
+
+import java.io.Serializable;
+import java.util.Map;
 
 public class AnsjItem extends Item implements Serializable{
 
@@ -24,6 +23,8 @@ public class AnsjItem extends Item implements Serializable{
 
 		END.index = -1;
 		END.termNatures = TermNatures.END;
+
+		NULL.termNatures = TermNatures.NULL ;
 	}
 
 	public String param;

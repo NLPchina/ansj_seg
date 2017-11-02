@@ -1,20 +1,19 @@
 package org.ansj.app.summary;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.ansj.app.keyword.KeyWordComputer;
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.pojo.Summary;
-import org.ansj.domain.KV;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.tire.SmartGetWord;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.tuples.Triplet;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 自动摘要,同时返回关键词

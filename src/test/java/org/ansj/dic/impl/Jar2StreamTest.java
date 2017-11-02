@@ -1,10 +1,10 @@
 package org.ansj.dic.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.ansj.dic.PathToStream;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Jar2StreamTest {
 

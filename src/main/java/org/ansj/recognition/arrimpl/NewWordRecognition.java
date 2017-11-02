@@ -4,6 +4,7 @@ import org.ansj.dic.LearnTool;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
+import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
@@ -42,8 +43,8 @@ public class NewWordRecognition {
 		branch = learn.getForest();
 	}
 
-	public void recognition(Term[] terms) {
-		this.terms = terms;
+	public void recognition(Graph graph) {
+		this.terms = graph.terms;
 		if (branch == null) {
 			return;
 		}

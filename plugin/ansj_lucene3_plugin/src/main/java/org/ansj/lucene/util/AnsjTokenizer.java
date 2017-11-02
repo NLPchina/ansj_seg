@@ -1,17 +1,16 @@
 package org.ansj.lucene.util;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Set;
-
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Set;
 
 public class AnsjTokenizer extends Tokenizer {
 	// 当前词

@@ -1,9 +1,13 @@
 package org.ansj.util;
 
-import org.ansj.domain.*;
+import org.ansj.domain.AnsjItem;
+import org.ansj.domain.Result;
+import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.Analysis.Merger;
 import org.ansj.util.TermUtil.InsertTermType;
+import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +33,7 @@ public class Graph {
 	// 是否需有歧异
 
 	public Graph(String str) {
-		this.chars = str.toCharArray();
+		this.chars = WordAlert.alertStr(str);
 		terms = new Term[chars.length + 1];
 		end = new Term(E, chars.length, AnsjItem.END);
 		root = new Term(B, -1, AnsjItem.BEGIN);
@@ -63,11 +67,11 @@ public class Graph {
 	 */
 	public void addTerm(Term term) {
 		// 是否有人名
-		if (!hasPerson && term.termNatures().personAttr.flag) {
+		if (!hasPerson && term.termNatures().personAttr.isActive()) {
 			hasPerson = true;
 		}
 
-		if (!hasNumQua && term.termNatures().numAttr.qua) {
+		if (!hasNumQua && term.termNatures().numAttr.isQua()) {
 			hasNumQua = true;
 		}
 		TermUtil.insertTerm(terms, term, InsertTermType.REPLACE);
@@ -152,13 +156,6 @@ public class Graph {
 				for (int j = i + 1; j < maxTo; j++) {
 					terms[j] = null;
 				}
-				// FIXME: 这里理论上得设置。但是跑了这么久，还不发生错误。应该是不依赖于双向链接。需要确认下。这段代码是否有用
-				// //将下面的to的from设置回来
-				// temp = terms[i+maxTerm.getName().length()] ;
-				// do{
-				// temp.setFrom(maxTerm) ;
-				// }while((temp=temp.next())!=null) ;
-
 			}
 		}
 	}

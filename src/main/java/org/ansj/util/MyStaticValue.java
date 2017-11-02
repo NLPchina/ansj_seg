@@ -1,29 +1,11 @@
 package org.ansj.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.DicReader;
 import org.ansj.dic.impl.Jdbc2Stream;
 import org.ansj.domain.AnsjItem;
 import org.ansj.exception.LibraryException;
-import org.ansj.library.AmbiguityLibrary;
-import org.ansj.library.CrfLibrary;
-import org.ansj.library.DATDictionary;
-import org.ansj.library.DicLibrary;
-import org.ansj.library.StopLibrary;
-import org.ansj.library.SynonymsLibrary;
+import org.ansj.library.*;
 import org.ansj.recognition.impl.StopRecognition;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
@@ -34,11 +16,17 @@ import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
+import java.io.*;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
+
 /**
  * 这个类储存一些公用变量.
- * 
+ *
  * @author ansj
- * 
  */
 public class MyStaticValue {
 
@@ -121,7 +109,7 @@ public class MyStaticValue {
 
 	/**
 	 * 人名词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getPersonReader() {
@@ -130,7 +118,7 @@ public class MyStaticValue {
 
 	/**
 	 * 机构名词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getCompanReader() {
@@ -139,7 +127,7 @@ public class MyStaticValue {
 
 	/**
 	 * 机构名词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getNewWordReader() {
@@ -148,7 +136,7 @@ public class MyStaticValue {
 
 	/**
 	 * 核心词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getArraysReader() {
@@ -157,25 +145,17 @@ public class MyStaticValue {
 
 	/**
 	 * 数字词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getNumberReader() {
 		return DicReader.getReader("numberLibrary.dic");
 	}
 
-	/**
-	 * 英文词典
-	 * 
-	 * @return
-	 */
-	public static BufferedReader getEnglishReader() {
-		return DicReader.getReader("englishLibrary.dic");
-	}
 
 	/**
 	 * 词性表
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getNatureMapReader() {
@@ -184,7 +164,7 @@ public class MyStaticValue {
 
 	/**
 	 * 词性关联表
-	 * 
+	 *
 	 * @return
 	 */
 	public static BufferedReader getNatureTableReader() {
@@ -192,45 +172,23 @@ public class MyStaticValue {
 	}
 
 	/**
-	 * 得道姓名单字的词频词典
-	 * 
+	 * 词性关联表
+	 *
 	 * @return
 	 */
+	public static BufferedReader getPersonDicReader() {
+		return DicReader.getReader("person.dic");
+	}
+
+
 	public static BufferedReader getNatureClassSuffix() {
 		return DicReader.getReader("nature_class_suffix.txt");
 	}
 
-	/**
-	 * 根据词语后缀判断词性
-	 * 
-	 * @return
-	 */
-	public static BufferedReader getPersonFreqReader() {
-		return DicReader.getReader("person/name_freq.dic");
-	}
-
-	/**
-	 * 名字词性对象反序列化
-	 * 
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public static Map<String, int[][]> getPersonFreqMap() {
-		Map<String, int[][]> map = new HashMap<String, int[][]>(0);
-		try (InputStream inputStream = DicReader.getInputStream("person/asian_name_freq.data")) {
-			ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
-			map = (Map<String, int[][]>) objectInputStream.readObject();
-		} catch (IOException e) {
-			LOG.warn("IO异常", e);
-		} catch (ClassNotFoundException e) {
-			LOG.warn("找不到类", e);
-		}
-		return map;
-	}
 
 	/**
 	 * 词与词之间的关联表数据
-	 * 
+	 *
 	 * @return
 	 */
 	public static void initBigramTables() {
@@ -286,7 +244,7 @@ public class MyStaticValue {
 
 	/**
 	 * 增加一个词典
-	 * 
+	 *
 	 * @param key
 	 * @param path
 	 * @param value
@@ -310,7 +268,7 @@ public class MyStaticValue {
 
 	/**
 	 * 懒加载一个词典
-	 * 
+	 *
 	 * @param key
 	 * @param path
 	 */
@@ -333,7 +291,7 @@ public class MyStaticValue {
 
 	/**
 	 * 删除一个词典
-	 * 
+	 *
 	 * @param key
 	 */
 	public static void removeLibrary(String key) {
@@ -355,7 +313,7 @@ public class MyStaticValue {
 
 	/**
 	 * 重置一个词典
-	 * 
+	 *
 	 * @param key
 	 */
 	public static void reloadLibrary(String key) {
@@ -373,4 +331,5 @@ public class MyStaticValue {
 			throw new LibraryException(key + " type err must start with dic,stop,ambiguity,synonyms");
 		}
 	}
+
 }

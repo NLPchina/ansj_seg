@@ -1,25 +1,17 @@
 package org.ansj.ansj_lucene5_plug;
 
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.ansj.lucene5.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.util.MyStaticValue;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -32,6 +24,9 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 public class IndexAndTest {
 

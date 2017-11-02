@@ -1,10 +1,10 @@
 package org.ansj.demo;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.ansj.domain.Term;
 import org.ansj.recognition.impl.NatureRecognition;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 对非ansj的分词结果进行词性标注

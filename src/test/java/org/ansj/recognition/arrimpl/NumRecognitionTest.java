@@ -1,11 +1,8 @@
 package org.ansj.recognition.arrimpl;
 
-import com.sun.xml.internal.rngom.parse.host.Base;
-import org.ansj.splitWord.analysis.BaseAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.domain.Forest;
 
 /**
  * Created by Ansj on 26/09/2017.
@@ -15,8 +12,9 @@ public class NumRecognitionTest {
 	public void test() {
 
 		MyStaticValue.isRealName = false;
-
-
+		System.out.println(ToAnalysis.parse("五年"));
+		System.out.println(ToAnalysis.parse("我有2323万多人次"));
+		System.out.println(ToAnalysis.parse("我有2323亿多人次"));
 		System.out.println(ToAnalysis.parse("一下2016年"));
 		System.out.println(ToAnalysis.parse("实际上相对于此次未来AN TPY-2的天线指向"));
 		System.out.println(ToAnalysis.parse("2中性粒细胞百分数NEUT%70.2040.00--75.00%\n").toString("\t"));
@@ -40,6 +38,16 @@ public class NumRecognitionTest {
 		System.out.println(ToAnalysis.parse("一九八一年是一个"));
 
 		System.out.println(ToAnalysis.parse("一九八二年是一个"));
+
+		System.out.println(ToAnalysis.parse("中华人民共和国万岁万岁万万岁"));
+
+		System.out.println(ToAnalysis.parse("中华人民共和国万岁万岁万万岁"));
+
+		System.out.println(ToAnalysis.parse("三个和尚抬水喝!"));
+
+		System.out.println(ToAnalysis.parse("和天猫本年度"));
+
+
 
 
 	}

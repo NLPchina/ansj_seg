@@ -2,7 +2,6 @@ package org.ansj.app.extracting.domain;
 
 import org.ansj.app.extracting.ExtractingTask;
 import org.ansj.domain.Term;
-import org.ansj.util.TermUtil;
 
 import java.util.*;
 

@@ -8,9 +8,7 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.recognition.arrimpl.UserDefineRecognition;
-import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -125,7 +123,7 @@ public class Extracting {
 
 		if (useForest) {
 			Graph graph = new Graph(terms);
-			new UserDefineRecognition(TermUtil.InsertTermType.REPLACE,ruleIndex.getForest()).recognition(graph.terms);
+			new UserDefineRecognition(TermUtil.InsertTermType.REPLACE,ruleIndex.getForest()).recognition(graph);
 			graph.rmLittlePath();
 			List<Term> result = new ArrayList<Term>();
 			int length = graph.terms.length - 1;

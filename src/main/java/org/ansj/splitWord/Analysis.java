@@ -2,6 +2,7 @@ package org.ansj.splitWord;
 
 import org.ansj.domain.*;
 import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
@@ -10,7 +11,6 @@ import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -145,6 +145,7 @@ public abstract class Analysis {
 		if (startOffe < gp.chars.length) {
 			analysis(gp, startOffe, gp.chars.length);
 		}
+		gp.rmLittlePath();
 		List<Term> result = this.getResult(gp);
 
 		return result;
@@ -164,7 +165,7 @@ public abstract class Analysis {
 					while (++i < endOffe && status(chars[i]) == 4) {
 						end++;
 					}
-					str = WordAlert.alertEnglish(chars, start, end);
+					str = new String(chars, start, end);
 					gp.addTerm(new Term(str, start, TermNatures.EN));
 					i--;
 					break;
@@ -174,7 +175,7 @@ public abstract class Analysis {
 					while (++i < endOffe && status(chars[i]) == 5) {
 						end++;
 					}
-					str = WordAlert.alertNumber(chars, start, end);
+					str = new String(chars, start, end);
 					Term numTerm = new Term(str, start, TermNatures.M_ALB);
 					numTerm.termNatures().numAttr = NumNatureAttr.NUM;
 					gp.addTerm(numTerm);
@@ -215,7 +216,9 @@ public abstract class Analysis {
 					int len = end - max;
 					if (len > 0) {
 						for (; max < end; ) {
-							gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
+							String temp = String.valueOf(chars[max]) ;
+							AnsjItem item = DATDictionary.getItem(temp);
+							gp.addTerm(new Term(temp, max, item.termNatures));
 							max++;
 						}
 					}
@@ -228,7 +231,7 @@ public abstract class Analysis {
 	/**
 	 * 将为标准化的词语设置到分词中
 	 *
-	 * @param gp
+	 * @param graph
 	 * @param result
 	 */
 	protected void setRealName(Graph graph, List<Term> result) {

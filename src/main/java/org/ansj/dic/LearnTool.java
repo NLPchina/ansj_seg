@@ -1,20 +1,18 @@
 package org.ansj.dic;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map.Entry;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.domain.Nature;
 import org.ansj.domain.NewWord;
 import org.ansj.domain.TermNatures;
-import org.ansj.recognition.arrimpl.AsianPersonRecognition;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.util.Graph;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.CollectionUtil;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map.Entry;
 
 /**
  * 新词发现,这是个线程安全的.所以可以多个对象公用一个
@@ -58,28 +56,9 @@ public class LearnTool {
 		this.splitWord = splitWord;
 
 		this.forests = forests;
-
-		// 亚洲人名识别
-		if (isAsianName) {
-			findAsianPerson(graph);
-		}
-
-		// 外国人名识别
-		if (isForeignName) {
-			findForeignPerson(graph);
-		}
-
 	}
 
-	private void findAsianPerson(Graph graph) {
-		List<NewWord> newWords = new AsianPersonRecognition().getNewWords(graph.terms);
-		addListToTerm(newWords);
-	}
 
-	private void findForeignPerson(Graph graph) {
-		List<NewWord> newWords = new ForeignPersonRecognition().getNewWords(graph.terms);
-		addListToTerm(newWords);
-	}
 
 	// 批量将新词加入到词典中
 	private void addListToTerm(List<NewWord> newWords) {

@@ -3,9 +3,9 @@ package org.ansj.recognition.arrimpl;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.TermArrRecognition;
+import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +17,7 @@ public class NumRecognition implements TermArrRecognition {
 	static {
 		j_NUM.add('零');
 		j_NUM.add('一');
+		j_NUM.add('两');
 		j_NUM.add('二');
 		j_NUM.add('三');
 		j_NUM.add('四');
@@ -60,10 +61,11 @@ public class NumRecognition implements TermArrRecognition {
 	/**
 	 * 数字+数字合并,zheng
 	 *
-	 * @param terms
+	 * @param graph
 	 */
 	@Override
-	public void recognition(Term[] terms) {
+	public void recognition(Graph graph) {
+		Term[] terms = graph.terms ;
 		int length = terms.length - 1;
 		Term to = null;
 		Term temp = null;
@@ -74,7 +76,7 @@ public class NumRecognition implements TermArrRecognition {
 				continue;
 			}
 
-			if (!temp.termNatures().numAttr.num) {
+			if (!temp.termNatures().numAttr.isNum()) {
 				continue;
 			}
 
@@ -124,7 +126,7 @@ public class NumRecognition implements TermArrRecognition {
 
 			if (quantifierRecognition) { //开启量词识别
 				to = temp.to();
-				if (to.termNatures().numAttr.qua) {
+				if (to.termNatures().numAttr.isQua()) {
 					temp.setName(temp.getName() + to.getName());
 					terms[to.getOffe()] = null;
 					TermUtil.termLink(temp, to.to());

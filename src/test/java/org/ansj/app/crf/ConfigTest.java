@@ -1,9 +1,9 @@
 package org.ansj.app.crf;
 
-import java.util.List;
-
 import org.ansj.app.crf.pojo.Element;
 import org.junit.Test;
+
+import java.util.List;
 
 public class ConfigTest {
 

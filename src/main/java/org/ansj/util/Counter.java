@@ -28,6 +28,7 @@ public class Counter {
 	}
 
 
+
 	/**
 	 * @param file     需要统计词频的文件。如果是文件夹。则此文件夹下递归目录的所有txt
 	 * @param analysis 分词器构造

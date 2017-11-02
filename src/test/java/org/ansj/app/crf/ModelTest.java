@@ -1,13 +1,12 @@
 package org.ansj.app.crf;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import junit.framework.Assert;
 import org.ansj.library.CrfLibrary;
 import org.junit.Test;
 
-import junit.framework.Assert;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ModelTest {
 	

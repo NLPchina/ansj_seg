@@ -1,14 +1,14 @@
 package org.ansj.demo;
 
-import java.io.IOException;
-import java.io.StringReader;
-
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 public class NlpDemoTest {
 	public static void main(String[] args) throws IOException {

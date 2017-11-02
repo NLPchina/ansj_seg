@@ -1,10 +1,10 @@
 package org.ansj.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.TagContent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TagWordDemo {
 	public static void main(String[] args) {

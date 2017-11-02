@@ -1,22 +1,17 @@
 package org.ansj.recognition.arrimpl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.recognition.TermArrRecognition;
+import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
 
+import java.util.*;
+
 /**
  * 外国人名识别
- * 
+ *
  * @author ansj
  */
 public class ForeignPersonRecognition implements TermArrRecognition {
@@ -53,8 +48,8 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 	private Term[] terms = null;
 
 	@Override
-	public void recognition(Term[] terms) {
-		this.terms = terms;
+	public void recognition(Graph graph) {
+		this.terms = graph.terms;
 		String name = null;
 		Term term = null;
 		reset();
@@ -66,10 +61,6 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 			term = terms[i];
 			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
 			if (tempList.size() == 0) {
-				if (term.termNatures().personAttr.end > 10) {
-					continue;
-				}
-
 				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
 					continue;
 				}
@@ -109,7 +100,7 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 
 	@SuppressWarnings("unchecked")
 	private void reset() {
-		
+
 		tempList.clear();
 		prList = (LinkedList<NameChar>) PRLIST.clone();
 	}
@@ -139,94 +130,5 @@ public class ForeignPersonRecognition implements TermArrRecognition {
 		}
 	}
 
-	public List<NewWord> getNewWords(Term[] terms) {
-		this.terms = terms ;
-		List<NewWord> all = new ArrayList<NewWord>();
-		String name = null;
-		Term term = null;
-		reset();
-		for (int i = 0; i < terms.length; i++) {
-			if (terms[i] == null) {
-				continue;
-			}
 
-			term = terms[i];
-			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
-			if (tempList.size() == 0) {
-				if (term.termNatures().personAttr.end > 10) {
-					continue;
-				}
-
-				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
-					continue;
-				}
-			}
-
-			name = term.getName();
-			if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
-				boolean flag = validate(name);
-				if (flag) {
-					tempList.add(term);
-				}
-			} else if (tempList.size() == 1) {
-				reset();
-			} else if (tempList.size() > 1) {
-				StringBuilder sb = new StringBuilder();
-				for (Term temp : tempList) {
-					sb.append(temp.getName());
-				}
-				all.add(new NewWord(sb.toString(), Nature.NRF));
-				reset();
-			}
-		}
-		return all;
-	}
-
-	public List<Term> getNewTerms() {
-		LinkedList<Term> result = new LinkedList<Term>();
-		String name = null;
-		Term term = null;
-		reset();
-		for (int i = 0; i < terms.length; i++) {
-			if (terms[i] == null) {
-				continue;
-			}
-
-			term = terms[i];
-			// 如果名字的开始是人名的前缀,或者后缀.那么忽略
-			if (tempList.size() == 0) {
-				if (term.termNatures().personAttr.end > 10) {
-					continue;
-				}
-
-				if ((terms[i].getName().length() == 1 && ISNOTFIRST.contains(terms[i].getName().charAt(0)))) {
-					continue;
-				}
-			}
-
-			name = term.getName();
-
-			if (term.termNatures() == TermNatures.NR || term.termNatures() == TermNatures.NW || name.length() == 1) {
-				boolean flag = validate(name);
-				if (flag) {
-					tempList.add(term);
-				}
-			} else if (tempList.size() == 1) {
-				reset();
-			} else if (tempList.size() > 1) {
-				result.add(makeNewTerm());
-				reset();
-			}
-		}
-		return result;
-	}
-
-	public Term makeNewTerm() {
-		StringBuilder sb = new StringBuilder();
-		int offe = tempList.get(0).getOffe();
-		for (Term term : tempList) {
-			sb.append(term.getName());
-		}
-		return new Term(sb.toString(), offe, TermNatures.NR);
-	}
 }

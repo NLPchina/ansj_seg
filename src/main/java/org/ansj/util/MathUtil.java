@@ -1,11 +1,11 @@
 package org.ansj.util;
 
-import java.util.Map;
-
 import org.ansj.domain.Term;
 import org.ansj.library.NatureLibrary;
 import org.ansj.library.NgramLibrary;
 import org.ansj.recognition.impl.NatureRecognition.NatureTerm;
+
+import java.util.Map;
 
 public class MathUtil {
 
@@ -21,7 +21,7 @@ public class MathUtil {
 	/**
 	 * 从一个词的词性到另一个词的词的分数
 	 * 
-	 * @param form
+	 * @param from
 	 *            前面的词
 	 * @param to
 	 *            后面的词

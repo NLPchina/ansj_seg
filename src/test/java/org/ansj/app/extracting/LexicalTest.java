@@ -4,7 +4,6 @@ import org.ansj.app.extracting.exception.RuleFormatException;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.nlpcn.commons.lang.util.WordAlert;
 
 import java.io.BufferedReader;
 import java.io.IOException;

@@ -1,7 +1,5 @@
 package org.ansj.ansj_lucene5_plug;
 
-import java.io.IOException;
-
 import org.ansj.library.DicLibrary;
 import org.ansj.lucene5.AnsjAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
@@ -19,6 +17,8 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.store.RAMDirectory;
+
+import java.io.IOException;
 
 public class PhraseTest {
 	public static void main(String[] args) throws IOException, ParseException {

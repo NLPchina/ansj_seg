@@ -1,10 +1,10 @@
 package org.ansj.test;
 
-import java.io.IOException;
-
 import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.util.MyStaticValue;
+
+import java.io.IOException;
 
 public class IndexAnalysisTest {
 	public static void main(String[] args) throws IOException {

@@ -1,17 +1,17 @@
 package org.ansj.demo;
 
+import org.ansj.dic.LearnTool;
+import org.ansj.domain.Nature;
+import org.ansj.domain.NewWord;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.IOUtil;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.nlpcn.commons.lang.util.IOUtil;
 
 /**
  * 新词发现工具

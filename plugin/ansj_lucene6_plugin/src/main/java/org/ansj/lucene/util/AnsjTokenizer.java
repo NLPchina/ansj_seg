@@ -1,9 +1,5 @@
 package org.ansj.lucene.util;
 
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.impl.StopRecognition;
@@ -15,6 +11,10 @@ import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
+
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 public final class AnsjTokenizer extends Tokenizer {
 	// 当前词

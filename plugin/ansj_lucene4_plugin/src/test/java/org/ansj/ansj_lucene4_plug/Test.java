@@ -1,14 +1,14 @@
 package org.ansj.ansj_lucene4_plug;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-
 import org.ansj.lucene4.AnsjAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Token;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 
 public class Test {
 	public static void main(String[] args) {

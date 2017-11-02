@@ -1,13 +1,11 @@
 package org.ansj.app.summary;
 
+import org.ansj.app.keyword.Keyword;
+import org.junit.Test;
+import org.nlpcn.commons.lang.util.StringUtil;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.ansj.app.keyword.Keyword;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.junit.Test;
-import org.nlpcn.commons.lang.util.IOUtil;
-import org.nlpcn.commons.lang.util.StringUtil;
 
 public class TagContentTest {
 

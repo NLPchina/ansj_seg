@@ -1,21 +1,16 @@
 package org.ansj.ansj_lucene_plug;
 
+import org.ansj.lucene.util.AnsjTokenizer;
+import org.ansj.recognition.impl.StopRecognition;
+import org.ansj.splitWord.Analysis;
+import org.apache.lucene.analysis.Tokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.ansj.lucene.util.AnsjTokenizer;
-import org.ansj.recognition.impl.StopRecognition;
-import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.apache.lucene.analysis.Tokenizer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 /**
  * Unit test for simple App.

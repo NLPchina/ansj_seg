@@ -1,14 +1,15 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
+
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 基本的分词.只做了.ngram模型.和数字发现.其他一律不管
@@ -24,8 +25,14 @@ public class BaseAnalysis extends Analysis {
 			@Override
 			public List<Term> merger() {
 				graph.walkPath();
+				// 数字发现
+				if (isNumRecognition) {
+					new NumRecognition(isQuantifierRecognition && graph.hasNumQua).recognition(graph);
+				}
 				return getResult();
 			}
+
+
 
 			private List<Term> getResult() {
 				List<Term> result = new ArrayList<Term>();

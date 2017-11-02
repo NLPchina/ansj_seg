@@ -1,10 +1,10 @@
 package org.ansj.demo;
 
-import java.io.File;
-
 import org.ansj.library.DicLibrary;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.library.Library;
+
+import java.io.File;
 
 /**
  * 重新加载用户自定义辞典的两种方式

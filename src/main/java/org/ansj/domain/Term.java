@@ -1,11 +1,11 @@
 package org.ansj.domain;
 
+import org.ansj.util.MathUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
-import org.ansj.util.MathUtil;
-import org.nlpcn.commons.lang.util.StringUtil;
 
 public class Term implements Serializable{
 	/**
@@ -98,7 +98,8 @@ public class Term implements Serializable{
 	/**
 	 * 核心构建最优的路径
 	 * 
-	 * @param term
+	 * @param from
+	 * @param re
 	 */
 	public void setPathScore(Term from, Map<String, Double> relationMap) {
 		// 维特比进行最优路径的构建

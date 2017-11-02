@@ -1,15 +1,12 @@
 package org.ansj.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.sun.corba.se.impl.oa.toa.TOA;
 import org.ansj.domain.Result;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.jianfan.JianFan;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JianFanZhuanhuanDemo {
 	public static void main(String[] args) {

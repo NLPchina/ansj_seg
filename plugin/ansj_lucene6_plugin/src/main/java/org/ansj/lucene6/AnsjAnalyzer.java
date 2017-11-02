@@ -1,27 +1,9 @@
 package org.ansj.lucene6;
 
-import java.io.BufferedReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.ansj.library.AmbiguityLibrary;
-import org.ansj.library.CrfLibrary;
-import org.ansj.library.DicLibrary;
-import org.ansj.library.StopLibrary;
-import org.ansj.library.SynonymsLibrary;
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.BaseAnalysis;
-import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -29,6 +11,14 @@ import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.BufferedReader;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AnsjAnalyzer extends Analyzer {
 	public static final Log LOG = LogFactory.getLog();

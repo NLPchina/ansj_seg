@@ -1,4 +1,4 @@
-package org.ansj.util;
+package org.ansj.train;
 
 import org.ansj.domain.AnsjItem;
 import org.nlpcn.commons.lang.dat.DATMaker;

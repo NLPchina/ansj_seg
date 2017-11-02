@@ -1,9 +1,9 @@
 package org.ansj.ansj_lucene4_plug;
 
-import java.io.IOException;
-
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.PrefixQuery;
+
+import java.io.IOException;
 
 /**
  * Unit test for simple App.

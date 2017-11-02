@@ -1,12 +1,12 @@
 package org.ansj.lucene4;
 
-import java.io.Reader;
-import java.util.Set;
-
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
+
+import java.io.Reader;
+import java.util.Set;
 
 public class AnsjIndexAnalysis extends Analyzer {
 

@@ -1,18 +1,21 @@
 package org.ansj.library;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.ansj.dic.DicReader;
-import org.ansj.domain.*;
-import org.ansj.library.name.PersonAttrLibrary;
+import org.ansj.domain.AnsjItem;
+import org.ansj.domain.NumNatureAttr;
+import org.ansj.domain.PersonNatureAttr;
 import org.ansj.recognition.arrimpl.NumRecognition;
+import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
+import org.nlpcn.commons.lang.util.ObjConver;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DATDictionary {
 
@@ -24,13 +27,18 @@ public class DATDictionary {
 	private static final DoubleArrayTire DAT = loadDAT();
 
 	/**
+	 * 人名补充
+	 */
+	private static final Map<String, PersonNatureAttr> PERSONMAP = new HashMap<>();
+
+	/**
 	 * 数组长度
 	 */
 	public static int arrayLength = DAT.arrayLength;
 
 	/**
 	 * 加载词典
-	 * 
+	 *
 	 * @return
 	 */
 	private static DoubleArrayTire loadDAT() {
@@ -38,17 +46,27 @@ public class DATDictionary {
 		try {
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
 
-			for (char c : NumRecognition.f_NUM){
-				((AnsjItem)dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+			for (char c : NumRecognition.f_NUM) {
+				NumNatureAttr numAttr = ((AnsjItem) dat.getDAT()[c]).termNatures.numAttr;
+				if (numAttr == null || numAttr == NumNatureAttr.NULL) {
+					((AnsjItem) dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+				} else {
+					numAttr.setNum(true);
+				}
 			}
 
-			for (char c : NumRecognition.j_NUM){
-				((AnsjItem)dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+			for (char c : NumRecognition.j_NUM) {
+				NumNatureAttr numAttr = ((AnsjItem) dat.getDAT()[c]).termNatures.numAttr;
+				if (numAttr == null || numAttr == NumNatureAttr.NULL) {
+					((AnsjItem) dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+				} else {
+					numAttr.setNum(true);
+				}
 			}
-
 
 			// 人名识别必备的
 			personNameFull(dat);
+
 			// 记录词典中的词语，并且清除部分数据
 			for (Item item : dat.getDAT()) {
 				if (item == null || item.getName() == null) {
@@ -75,39 +93,33 @@ public class DATDictionary {
 	}
 
 	private static void personNameFull(DoubleArrayTire dat) throws NumberFormatException, IOException {
-		HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
+		BufferedReader reader = null;
+		try {
+			reader = MyStaticValue.getPersonDicReader();
+			String temp = null;
+			AnsjItem item = null;
 
-		AnsjItem ansjItem = null;
-		// 人名词性补录
-		Set<Entry<String, PersonNatureAttr>> entrySet = personMap.entrySet();
-		char c = 0;
-		String temp = null;
-		for (Entry<String, PersonNatureAttr> entry : entrySet) {
-			temp = entry.getKey();
-
-			if (temp.length() == 1 && (ansjItem = (AnsjItem) dat.getDAT()[temp.charAt(0)]) == null) {
-				ansjItem = new AnsjItem();
-				ansjItem.setBase(c);
-				ansjItem.setCheck(-1);
-				ansjItem.setStatus((byte) 3);
-				ansjItem.setName(temp);
-				dat.getDAT()[temp.charAt(0)] = ansjItem;
-			} else {
-				ansjItem = dat.getItem(temp);
-			}
-
-			if (ansjItem == null) {
-				continue;
-			}
-
-			if ((ansjItem.termNatures) == null) {
-				if (temp.length() == 1 && temp.charAt(0) < 256) {
-					ansjItem.termNatures = TermNatures.NULL;
+			while ((temp = reader.readLine()) != null) {
+				String[] split = temp.split("\t");
+				item = dat.getItem(split[1]);
+				if (item == null || item.getStatus() < 2) {
+					PersonNatureAttr pna = PERSONMAP.get(split[1]);
+					if (pna == null) {
+						pna = new PersonNatureAttr();
+					}
+					pna.set(temp.charAt(0), ObjConver.getIntValue(split[2]));
+					PERSONMAP.put(split[1], pna);
 				} else {
-					ansjItem.termNatures = new TermNatures(TermNature.NR);
+					PersonNatureAttr personAttr = item.termNatures.personAttr;
+					if (personAttr == PersonNatureAttr.NULL) {
+						personAttr = new PersonNatureAttr();
+						item.termNatures.personAttr = personAttr;
+					}
+					personAttr.set(temp.charAt(0), ObjConver.getIntValue(split[2]));
 				}
 			}
-			ansjItem.termNatures.setPersonNatureAttr(entry.getValue());
+		} finally {
+			reader.close();
 		}
 	}
 
@@ -121,7 +133,7 @@ public class DATDictionary {
 
 	/**
 	 * 判断一个词语是否在词典中
-	 * 
+	 *
 	 * @param word
 	 * @return
 	 */
@@ -151,5 +163,14 @@ public class DATDictionary {
 	public static int getId(String str) {
 		return DAT.getId(str);
 	}
-	
+
+	/**
+	 * 取得人名补充
+	 * @param name
+	 * @return
+	 */
+	public static PersonNatureAttr person(String name){
+		return PERSONMAP.get(name) ;
+	}
+
 }

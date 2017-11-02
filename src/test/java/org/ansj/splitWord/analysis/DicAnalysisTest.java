@@ -1,9 +1,6 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-
+import junit.framework.Assert;
 import org.ansj.CorpusTest;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
@@ -11,7 +8,9 @@ import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
-import junit.framework.Assert;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
 
 public class DicAnalysisTest  extends CorpusTest {
 
