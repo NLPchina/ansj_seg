@@ -215,4 +215,5 @@ public class Counter {
             result.writeToFile(output, IOUtil.UTF8);
         }
     }
+
 }
