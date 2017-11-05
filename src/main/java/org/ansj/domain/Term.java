@@ -7,9 +7,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class Term implements Serializable{
+public class Term implements Serializable {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 	// 当前词
@@ -35,10 +35,10 @@ public class Term implements Serializable{
 	// 本身这个term的词性.需要在词性识别之后才会有值,默认是空
 	private Nature nature = Nature.NULL;
 	//是否是一个新词
-	private boolean newWord ;
+	private boolean newWord;
 	//同义词
-	private List<String> synonyms ;
-	
+	private List<String> synonyms;
+
 
 	private List<Term> subTerm = null;
 
@@ -97,7 +97,7 @@ public class Term implements Serializable{
 
 	/**
 	 * 核心构建最优的路径
-	 * 
+	 *
 	 * @param from
 	 * @param re
 	 */
@@ -111,14 +111,19 @@ public class Term implements Serializable{
 
 	/**
 	 * 核心分数的最优的路径,越小越好
-	 * 
+	 *
 	 * @param term
 	 */
-	public void setPathSelfScore(Term from) {
+	public void setPathSelfScore(Term from, boolean asc) {
 		double score = this.selfScore + from.score;
 		// 维特比进行最优路径的构建
-		if (this.from == null || this.score > score) {
+		if (this.from == null) {
 			this.setFromAndScore(from, score);
+		} else {
+			if ((this.score > score) == asc) {
+				this.setFromAndScore(from, score);
+			}
+
 		}
 	}
 
@@ -129,7 +134,7 @@ public class Term implements Serializable{
 
 	/**
 	 * 进行term合并
-	 * 
+	 *
 	 * @param term
 	 * @param maxNature
 	 */
@@ -144,7 +149,7 @@ public class Term implements Serializable{
 
 	/**
 	 * 进行term合并,能合并空白字符
-	 * 
+	 *
 	 * @param term
 	 * @param maxNature
 	 */
@@ -154,10 +159,10 @@ public class Term implements Serializable{
 		this.setTo(to.to);
 		return this;
 	}
-	
+
 	/**
 	 * 更新偏移量
-	 * 
+	 *
 	 * @param offe
 	 */
 	public void updateOffe(int offe) {
@@ -170,9 +175,8 @@ public class Term implements Serializable{
 
 	/**
 	 * 返回他自己
-	 * 
-	 * @param next
-	 *            设置他的下一个
+	 *
+	 * @param next 设置他的下一个
 	 * @return
 	 */
 	public Term setNext(Term next) {
@@ -198,7 +202,7 @@ public class Term implements Serializable{
 
 	/**
 	 * 获得这个term的所有词性
-	 * 
+	 *
 	 * @return
 	 */
 	public TermNatures termNatures() {
@@ -211,7 +215,7 @@ public class Term implements Serializable{
 
 	/**
 	 * 获得这个词的词性.词性计算后才可生效
-	 * 
+	 *
 	 * @return
 	 */
 	public Nature natrue() {
@@ -291,7 +295,7 @@ public class Term implements Serializable{
 
 	public void updateTermNaturesAndNature(TermNatures termNatures) {
 		this.termNatures = termNatures;
-		this.nature = termNatures.nature ;
+		this.nature = termNatures.nature;
 	}
 
 	public List<String> getSynonyms() {
@@ -301,5 +305,5 @@ public class Term implements Serializable{
 	public void setSynonyms(List<String> synonyms) {
 		this.synonyms = synonyms;
 	}
-	
+
 }

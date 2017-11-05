@@ -177,7 +177,7 @@ public class MyStaticValue {
 	 * @return
 	 */
 	public static BufferedReader getPersonDicReader() {
-		return DicReader.getReader("person.dic");
+		return DicReader.getReader("person.txt");
 	}
 
 

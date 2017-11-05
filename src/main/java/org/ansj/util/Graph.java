@@ -22,8 +22,8 @@ public class Graph {
 	public Term[] terms = null;
 	protected Term end = null;
 	protected Term root = null;
-	protected static final String E = "末##末";
-	protected static final String B = "始##始";
+	protected static final String E = "BEGIN";
+	protected static final String B = "END";
 	// 是否有人名
 	public boolean hasPerson;
 
@@ -252,16 +252,27 @@ public class Graph {
 		}
 	}
 
-	public void walkPathByScore() {
+	/**
+	 * 默认按照最大分数作为路径
+	 */
+	public void walkPathByScore(){
+		walkPathByScore(true);
+	}
+
+	/**
+	 * 路径方式
+	 * @param asc true 最大路径，false 最小路径
+	 */
+	public void walkPathByScore(boolean asc) {
 		Term term = null;
 		// BEGIN先行打分
-		mergerByScore(root, 0);
+		mergerByScore(root, 0, asc);
 		// 从第一个词开始往后打分
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
 			while (term != null && term.from() != null && term != end) {
 				int to = term.toValue();
-				mergerByScore(term, to);
+				mergerByScore(term, to, asc);
 				term = term.next();
 			}
 		}
@@ -321,13 +332,13 @@ public class Graph {
 	/**
 	 * 根据分数
 	 */
-	private void mergerByScore(Term fromTerm, int to) {
+	private void mergerByScore(Term fromTerm, int to, boolean asc) {
 		Term term = null;
 		if (terms[to] != null) {
 			term = terms[to];
 			while (term != null) {
 				// 关系式to.set(from)
-				term.setPathSelfScore(fromTerm);
+				term.setPathSelfScore(fromTerm, asc);
 				term = term.next();
 			}
 		}

@@ -12,7 +12,7 @@ public class NumRecognitionTest {
 	public void test() {
 
 		MyStaticValue.isRealName = false;
-		System.out.println(ToAnalysis.parse("五年"));
+		System.out.println(ToAnalysis.parse("习近平和朱镕基情切照相"));
 		System.out.println(ToAnalysis.parse("我有2323万多人次"));
 		System.out.println(ToAnalysis.parse("我有2323亿多人次"));
 		System.out.println(ToAnalysis.parse("一下2016年"));

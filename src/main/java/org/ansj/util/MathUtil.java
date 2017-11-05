@@ -80,8 +80,17 @@ public class MathUtil {
 		return score;
 	}
 
+
+	public static double lnSum(float... fs) {
+		double result = 0 ;
+		for (int i =0 ;i<fs.length ;i++) {
+			result += -Math.log(fs[i]);
+		}
+		return result;
+	}
+
 	public static void main(String[] args) {
-		System.out.println(Math.log(dTemp * 2));
+		System.out.println(Math.log(0.1));
 	}
 
 }

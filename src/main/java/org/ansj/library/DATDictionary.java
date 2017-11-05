@@ -22,14 +22,15 @@ public class DATDictionary {
 	private static final Log LOG = LogFactory.getLog(DATDictionary.class);
 
 	/**
+	 * 人名补充
+	 */
+	private static final Map<String, PersonNatureAttr> PERSONMAP = new HashMap<>();
+
+	/**
 	 * 核心词典
 	 */
 	private static final DoubleArrayTire DAT = loadDAT();
 
-	/**
-	 * 人名补充
-	 */
-	private static final Map<String, PersonNatureAttr> PERSONMAP = new HashMap<>();
 
 	/**
 	 * 数组长度
@@ -96,26 +97,30 @@ public class DATDictionary {
 		BufferedReader reader = null;
 		try {
 			reader = MyStaticValue.getPersonDicReader();
-			String temp = null;
 			AnsjItem item = null;
+			String temp = null, word = null;
+			float pFreq, freq;
 
 			while ((temp = reader.readLine()) != null) {
 				String[] split = temp.split("\t");
-				item = dat.getItem(split[1]);
+				word = split[1];
+				pFreq = ObjConver.getFloatValue(split[2]);
+				freq = ObjConver.getFloatValue(split[3]);
+				item = dat.getItem(word);
 				if (item == null || item.getStatus() < 2) {
 					PersonNatureAttr pna = PERSONMAP.get(split[1]);
 					if (pna == null) {
 						pna = new PersonNatureAttr();
 					}
-					pna.set(temp.charAt(0), ObjConver.getIntValue(split[2]));
-					PERSONMAP.put(split[1], pna);
+					pna.set(temp.charAt(0), (pFreq + 1) / (freq + 1));
+					PERSONMAP.put(word, pna);
 				} else {
 					PersonNatureAttr personAttr = item.termNatures.personAttr;
 					if (personAttr == PersonNatureAttr.NULL) {
 						personAttr = new PersonNatureAttr();
 						item.termNatures.personAttr = personAttr;
 					}
-					personAttr.set(temp.charAt(0), ObjConver.getIntValue(split[2]));
+					personAttr.set(temp.charAt(0), (pFreq + 1) / (freq + 1));
 				}
 			}
 		} finally {
@@ -166,11 +171,12 @@ public class DATDictionary {
 
 	/**
 	 * 取得人名补充
+	 *
 	 * @param name
 	 * @return
 	 */
-	public static PersonNatureAttr person(String name){
-		return PERSONMAP.get(name) ;
+	public static PersonNatureAttr person(String name) {
+		return PERSONMAP.get(name);
 	}
 
 }
