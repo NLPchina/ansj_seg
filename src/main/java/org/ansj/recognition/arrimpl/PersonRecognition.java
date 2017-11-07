@@ -158,11 +158,15 @@ public class PersonRecognition implements TermArrRecognition {
 		List<PersonNode> result = new Viterbi<PersonNode>(nodes, new Values<PersonNode>() {
 			@Override
 			public int step(Node<PersonNode> node) {
+				if(node.getObj()==null)return 0;
+				if(node.getObj().name==null)return  0;
 				return node.getObj().name.length();
 			}
 
 			@Override
 			public double selfSscore(Node<PersonNode> node) {
+				if(node.getObj()==null)return 0;
+				if(node.getObj().name==null)return  0;
 				return node.getObj().score;
 			}
 		}).compute(new Score<PersonNode>() {
@@ -171,6 +175,9 @@ public class PersonRecognition implements TermArrRecognition {
 				if (from == null || to == null) {
 					return -10000;
 				}
+        if (from.getT() == null || to.getT() == null) {
+          return -10000;
+        }
 
 				if (!filter.contains(from.getT().tag * 1000 + to.getT().tag)) {
 					return -10000;
