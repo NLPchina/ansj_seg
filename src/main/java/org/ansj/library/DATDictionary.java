@@ -99,28 +99,29 @@ public class DATDictionary {
 			reader = MyStaticValue.getPersonDicReader();
 			AnsjItem item = null;
 			String temp = null, word = null;
-			float pFreq, freq;
+			float score;
 
 			while ((temp = reader.readLine()) != null) {
 				String[] split = temp.split("\t");
 				word = split[1];
-				pFreq = ObjConver.getFloatValue(split[2]);
-				freq = ObjConver.getFloatValue(split[3]);
+				score = ObjConver.getFloatValue(split[2]);
 				item = dat.getItem(word);
 				if (item == null || item.getStatus() < 2) {
-					PersonNatureAttr pna = PERSONMAP.get(split[1]);
-					if (pna == null) {
-						pna = new PersonNatureAttr();
+					if (word.length() < 2 || word.charAt(0) == ':' || "BEGIN".equals(word) || "END".equals(word)) {
+						PersonNatureAttr pna = PERSONMAP.get(split[1]);
+						if (pna == null) {
+							pna = new PersonNatureAttr();
+						}
+						pna.set(temp.charAt(0), score);
+						PERSONMAP.put(word, pna);
 					}
-					pna.set(temp.charAt(0), (pFreq + 1) / (freq + 1));
-					PERSONMAP.put(word, pna);
 				} else {
 					PersonNatureAttr personAttr = item.termNatures.personAttr;
 					if (personAttr == PersonNatureAttr.NULL) {
 						personAttr = new PersonNatureAttr();
 						item.termNatures.personAttr = personAttr;
 					}
-					personAttr.set(temp.charAt(0), (pFreq + 1) / (freq + 1));
+					personAttr.set(temp.charAt(0), score);
 				}
 			}
 		} finally {
@@ -178,5 +179,6 @@ public class DATDictionary {
 	public static PersonNatureAttr person(String name) {
 		return PERSONMAP.get(name);
 	}
+
 
 }

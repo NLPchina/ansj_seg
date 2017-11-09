@@ -116,12 +116,15 @@ public class TermUtil {
 
 	public static void insertTerm(Term[] terms, List<Term> tempList, TermNatures tns) {
 		StringBuilder sb = new StringBuilder();
-		int offe = tempList.get(0).getOffe();
 		for (Term term : tempList) {
 			sb.append(term.getName());
 			terms[term.getOffe()] = null;
 		}
-		Term term = new Term(sb.toString(), offe, tns);
+		Term term = new Term(sb.toString(), tempList.get(0).getOffe(), tns);
+
+		termLink(tempList.get(0),tempList.get(0).to());
+		termLink(term,tempList.get(tempList.size()-1).to());
+
 		insertTermNum(terms, term);
 	}
 

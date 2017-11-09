@@ -2,17 +2,20 @@ package org.ansj.recognition.arrimpl;
 
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.Graph;
+import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.viterbi.Node;
 import org.nlpcn.commons.lang.viterbi.Viterbi;
 import org.nlpcn.commons.lang.viterbi.function.Score;
 import org.nlpcn.commons.lang.viterbi.function.Values;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 /**
  * 人名识别工具类
@@ -21,48 +24,48 @@ import java.util.Set;
  */
 public class PersonRecognition implements TermArrRecognition {
 
+	private static final int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
+
 	//BE BCD  XD BZ
-	private static final float[] FACTORY = {0.16271366224044456f, 0.8060521860870434f, 0.031234151672511947f};
+	private static final Map<Integer, Double> transition = new HashMap<>();
 
-	private static final Set<Integer> filter = new HashSet<>();
-
+	//0B 1C 2D 3E 4K 5L 6M 7X 8Y 9Z 10A
 	static {
-		filter.add('B' * 1000 + 'E');
-		filter.add('B' * 1000 + 'C');
-
-		filter.add('C' * 1000 + 'D');
-
-		filter.add('D' * 1000 + 'L');
-		filter.add('D' * 1000 + 'M');
-		filter.add('D' * 1000 + 'A');
-
-		filter.add('E' * 1000 + 'L');
-		filter.add('E' * 1000 + 'M');
-		filter.add('E' * 1000 + 'A');
-
-		filter.add('K' * 1000 + 'B');
-		filter.add('K' * 1000 + 'X');
-
-		filter.add('L' * 1000 + 'B');
-		filter.add('L' * 1000 + 'X');
-		filter.add('L' * 1000 + 'A');
-
-		filter.add('M' * 1000 + 'B');
-		filter.add('M' * 1000 + 'X');
-
-		filter.add('X' * 1000 + 'D');
-
-		filter.add('Y' * 1000 + 'L');
-		filter.add('Y' * 1000 + 'M');
-		filter.add('Y' * 1000 + 'A');
-
-		filter.add('Z' * 1000 + 'L');
-		filter.add('Z' * 1000 + 'M');
-		filter.add('Z' * 1000 + 'A');
-
-		filter.add('A' * 1000 + 'B');
-		filter.add('A' * 1000 + 'X');
-		filter.add('A' * 1000 + 'A');
+		transition.put(X * 1000 + D, 0.35999);
+		transition.put(Y * 1000 + B, -3.73687);
+		transition.put(Y * 1000 + M, -0.43878);
+		transition.put(Y * 1000 + L, 0.28621);
+		transition.put(Z * 1000 + X, -2.52373);
+		transition.put(Z * 1000 + Y, -3.11504);
+		transition.put(Z * 1000 + B, -1.83448);
+		transition.put(Z * 1000 + L, 0.26402);
+		transition.put(Z * 1000 + M, -0.06501);
+		transition.put(Y * 1000 + Y, -1.88320);
+		transition.put(Y * 1000 + X, -4.32692);
+		transition.put(K * 1000 + Y, 0.28621);
+		transition.put(K * 1000 + X, -0.49013);
+		transition.put(E * 1000 + M, -0.49013);
+		transition.put(K * 1000 + B, 0.42897);
+		transition.put(D * 1000 + L, 0.48905);
+		transition.put(D * 1000 + M, -0.10071);
+		transition.put(L * 1000 + A, -0.02154);
+		transition.put(C * 1000 + D, 0.76553);
+		transition.put(E * 1000 + Y, -3.73687);
+		transition.put(E * 1000 + X, -4.02912);
+		transition.put(M * 1000 + B, -0.30355);
+		transition.put(D * 1000 + B, -2.05756);
+		transition.put(L * 1000 + K, -0.49884);
+		transition.put(M * 1000 + Y, -0.43878);
+		transition.put(M * 1000 + X, -0.78341);
+		transition.put(E * 1000 + B, -2.80074);
+		transition.put(D * 1000 + X, -2.94393);
+		transition.put(D * 1000 + Y, -3.83297);
+		transition.put(A * 1000 + K, -0.15840);
+		transition.put(A * 1000 + A, 0.89299);
+		transition.put(E * 1000 + L, 0.46686);
+		transition.put(B * 1000 + E, 0.79864);
+		transition.put(B * 1000 + C, 0.76553);
+		transition.put(B * 1000 + Z, 0.26402);
 
 		//0B 1C 2D 3E 4K 5L 6M 7X 8Y 9Z 10A
 
@@ -89,16 +92,16 @@ public class PersonRecognition implements TermArrRecognition {
 		beginOff = terms[0].getOffe();
 
 
-		for (int i = 0; i < terms.length; i++) {
+		for (int i = 0; i < terms.length - 1; i++) {
 			first = terms[i];
 
 			if (first == null) {
 				continue;
 			}
-			fPna = getPersonNature(first);
-			setNode(first, 'A');
 
 			fPna = getPersonNature(first);
+			setNode(first, A);
+
 			if (fPna == null || !fPna.isActive()) {
 				continue;
 			}
@@ -113,26 +116,26 @@ public class PersonRecognition implements TermArrRecognition {
 
 			//XD
 			if (first.getName().length() == 2) {
-				setNode(from, 'K');
-				setNode(from, 'M');
-				setNode(first, 'X');
-				setNode(sencond, 'D');
-				setNode(third, 'M');
-				setNode(third, 'L');
+				setNode(from, K);
+				setNode(from, M);
+				setNode(first, X);
+				setNode(sencond, D);
+				setNode(third, M);
+				setNode(third, L);
 				continue;
 			}
 
-			setNode(from, 'K');
-			setNode(from, 'M');
-			setNode(first, 'B');
-			setNode(third, 'M');
-			setNode(third, 'L');
+			setNode(from, K);
+			setNode(from, M);
+			setNode(first, B);
+			setNode(third, M);
+			setNode(third, L);
 			//BZ
 			if (sencond.getName().length() == 2) {
-				setNode(sencond, 'Z');
+				setNode(sencond, Z);
 				continue;
 			} else {//BE
-				setNode(sencond, 'E');
+				setNode(sencond, E);
 			}
 
 
@@ -141,21 +144,25 @@ public class PersonRecognition implements TermArrRecognition {
 			}
 
 			//BCD
-			setNode(first, 'B');
-			setNode(sencond, 'C');
-			setNode(third, 'D');
-			setNode(third.to(), 'M');
-			setNode(third.to(), 'L');
+			setNode(first, B);
+			setNode(sencond, C);
+			setNode(third, D);
+			setNode(third.to(), M);
+			setNode(third.to(), L);
 
 		}
+		PersonNatureAttr begin = DATDictionary.person("BEGIN");
 
 		nodes[0][6] = null;
-		nodes[0][10] = new PersonNode(10, "B", DATDictionary.person("BEGIN").getA());
-		nodes[0][10] = new PersonNode(4, "B", DATDictionary.person("BEGIN").getK());
-		nodes[terms.length - 1][6] = null;
+		nodes[0][4] = new PersonNode(4, "B", -Math.log(begin.getK()));
+		nodes[0][10] = new PersonNode(10, "B", -Math.log(begin.getA()));
 
+		PersonNatureAttr end = DATDictionary.person("END");
+		nodes[terms.length][5] = new PersonNode(5, "E", -Math.log(end.getL()));
+		nodes[terms.length][6] = null;
+		nodes[terms.length][10] = new PersonNode(10, "E", -Math.log(end.getA()));
 
-		List<PersonNode> result = new Viterbi<PersonNode>(nodes, new Values<PersonNode>() {
+		Viterbi<PersonNode> viterbi = new Viterbi<PersonNode>(nodes, new Values<PersonNode>() {
 			@Override
 			public int step(Node<PersonNode> node) {
 				return node.getObj().name.length();
@@ -165,17 +172,21 @@ public class PersonRecognition implements TermArrRecognition {
 			public double selfSscore(Node<PersonNode> node) {
 				return node.getObj().score;
 			}
-		}).compute(new Score<PersonNode>() {
-			@Override
-			public double score(Node<PersonNode> from, Node<PersonNode> to) {
-				if (from == null || to == null) {
-					return -10000;
-				}
 
-				if (!filter.contains(from.getT().tag * 1000 + to.getT().tag)) {
-					return -10000;
+		});
+
+
+		List<PersonNode> result = viterbi.compute(new Score<PersonNode>() {
+			@Override
+			public Double score(Node<PersonNode> from, Node<PersonNode> to) {
+				if (from == null || to == null) {
+					return null;
 				}
-				return from.getScore() + to.getSelfScore();
+				Double tValue = transition.get(from.getT().tag * 1000 + to.getT().tag);
+				if (tValue == null || from.getScore() == null) {
+					return null;
+				}
+				return from.getScore() + to.getSelfScore() + tValue;
 			}
 
 			@Override
@@ -184,65 +195,84 @@ public class PersonRecognition implements TermArrRecognition {
 			}
 		});
 
-		System.out.println(result);
+
+		//BE BCD  XD BZ
+		//int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
+
+		int off = 0;
+
+		int len = result.size() - 1;
+		for (int i = 1; i < len; i++) {
+			PersonNode p1 = result.get(i), p2 = null;
+
+			if (p1.tag != B && p1.tag != X) {
+				off += p1.name.length();
+				continue;
+			}
+
+			List<Term> tempList = new ArrayList<>();
+			tempList.add(terms[off]);
+			off += p1.name.length();
+
+
+			for (int j = i + 1; j < result.size(); j++) {
+				p2 = result.get(j);
+				tempList.add(terms[off]);
+				off += p2.name.length();
+				if (p2.tag == E || p2.tag == D || p2.tag == Z) {
+					TermUtil.insertTerm(terms, tempList, TermNatures.NR);
+					i = j;
+					break;
+				}
+			}
+		}
 
 	}
 
-	private void setNode(Term term, char tag) {
+	private void setNode(Term term, int tag) {
 		int index = term.getOffe() - beginOff + 1;
 		PersonNatureAttr pna = getPersonNature(term);
 		double score = 0D;
 
 		//0B 1C 2D 3E 4K 5L 6M 7X 8Y 9Z 10A
 		switch (tag) {
-			case 'B':
+			case B:
 				score = pna.getB();
-				tag = 0;
 				break;
-			case 'C':
+			case C:
 				score = pna.getC();
-				tag = 1;
 				break;
-			case 'D':
+			case D:
 				score = pna.getD();
-				tag = 2;
 				break;
-			case 'E':
+			case E:
 				score = pna.getE();
-				tag = 3;
 				break;
-			case 'K':
+			case K:
 				score = pna.getK();
-				tag = 4;
 				break;
-			case 'L':
+			case L:
 				score = pna.getL();
-				tag = 5;
 				break;
-			case 'M':
+			case M:
 				score = pna.getM();
-				tag = 6;
 				break;
-			case 'X':
+			case X:
 				score = pna.getX();
-				tag = 7;
 				break;
-			case 'Y':
+			case Y:
 				score = pna.getY();
-				tag = 8;
 				break;
-			case 'Z':
+			case Z:
 				score = pna.getZ();
-				tag = 9;
 				break;
-			case 'A':
+			case A:
 				score = pna.getA();
-				tag = 10;
 				break;
 		}
 
 		if (nodes[index][tag] == null) {
-			nodes[index][tag] = new PersonNode(tag, term.getName(), -Math.log(score));
+			nodes[index][tag] = new PersonNode(tag, term.getName(), score);
 		}
 	}
 

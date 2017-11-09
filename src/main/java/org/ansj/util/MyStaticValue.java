@@ -172,12 +172,12 @@ public class MyStaticValue {
 	}
 
 	/**
-	 * 词性关联表
+	 * 人名识别
 	 *
 	 * @return
 	 */
-	public static BufferedReader getPersonDicReader() {
-		return DicReader.getReader("person.txt");
+	public static BufferedReader getPersonDicReader() throws FileNotFoundException, UnsupportedEncodingException {
+		return IOUtil.getReader(new SequenceInputStream(DicReader.getInputStream("person/person.txt"), DicReader.getInputStream("person/person_split.txt")), "UTF-8");
 	}
 
 

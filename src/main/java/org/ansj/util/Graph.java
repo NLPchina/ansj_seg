@@ -22,8 +22,8 @@ public class Graph {
 	public Term[] terms = null;
 	protected Term end = null;
 	protected Term root = null;
-	protected static final String E = "BEGIN";
-	protected static final String B = "END";
+	protected static final String B = "BEGIN";
+	protected static final String E = "END";
 	// 是否有人名
 	public boolean hasPerson;
 

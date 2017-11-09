@@ -48,7 +48,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 	public void recognition(Graph graph) {
 		this.terms = graph.terms;
 		for (Forest forest : forests) {
-			if (forest == null) {
+			if (forest == null || forest.branches==null) {
 				continue;
 			}
 			reset();
