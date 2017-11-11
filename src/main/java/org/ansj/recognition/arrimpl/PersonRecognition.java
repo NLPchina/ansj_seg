@@ -1,5 +1,6 @@
 package org.ansj.recognition.arrimpl;
 
+import org.ansj.domain.AnsjItem;
 import org.ansj.domain.PersonNatureAttr;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
@@ -7,6 +8,8 @@ import org.ansj.library.DATDictionary;
 import org.ansj.recognition.TermArrRecognition;
 import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 import org.nlpcn.commons.lang.viterbi.Node;
 import org.nlpcn.commons.lang.viterbi.Viterbi;
 import org.nlpcn.commons.lang.viterbi.function.Score;
@@ -25,6 +28,8 @@ import java.util.Map;
 public class PersonRecognition implements TermArrRecognition {
 
 	private static final int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
+
+	private static final Log LOG = LogFactory.getLog();
 
 	//BE BCD  XD BZ
 	private static final Map<Integer, Double> transition = new HashMap<>();
@@ -101,6 +106,41 @@ public class PersonRecognition implements TermArrRecognition {
 
 			fPna = getPersonNature(first);
 			setNode(first, A);
+
+			if (fPna.getU() > 0) { //人名的上文和姓成词
+				String name = first.getName();
+				if (name.length() == 2) {
+					setAllNode(first.from().getName() + name.charAt(0), first.getOffe(), true);
+					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
+					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
+				} else if (name.length() == 3) {
+					setAllNode(first.from().getName() + name.charAt(0), first.getOffe(), true);
+					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
+					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
+					setAllNode(String.valueOf(name.charAt(2)), first.getOffe() + 2, false);
+					setAllNode(name.substring(1), first.getOffe(), true);
+				} else {
+					LOG.warn("length out of person recognition so skip U : " + name);
+				}
+			}
+
+
+			if (fPna.getV() > 0) { //人名的上文和姓成词
+				String name = first.getName();
+				if (name.length() == 2) {
+					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
+					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
+					setAllNode(name.charAt(1) + first.to().getName(), first.getOffe() + 1, true);
+				} else if (name.length() == 3) {
+					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
+					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
+					setAllNode(String.valueOf(name.charAt(2)), first.getOffe() + 2, false);
+					setAllNode(name.charAt(2) + first.to().getName(), first.getOffe() + 2, true);
+					setAllNode(name.substring(0, 2), first.getOffe(), true);
+				} else {
+					LOG.warn("length out of person recognition so skip V : " + name);
+				}
+			}
 
 			if (fPna == null || !fPna.isActive()) {
 				continue;
@@ -227,6 +267,24 @@ public class PersonRecognition implements TermArrRecognition {
 			}
 		}
 
+	}
+
+	/**
+	 * 把所有可能放入到图中
+	 *
+	 * @param name
+	 * @param offe
+	 * @param skip 是否跳过不再词典中的词语
+	 */
+	private void setAllNode(String name, int offe, boolean skip) {
+		AnsjItem item = DATDictionary.getItem(String.valueOf(name));
+		if (skip && item == AnsjItem.NULL || item.getStatus() < 2) {
+			return;
+		}
+		Term term = new Term(name, offe, item);
+		for (int j = 0; j < 11; j++) {
+			setNode(term, j);
+		}
 	}
 
 	private void setNode(Term term, int tag) {
