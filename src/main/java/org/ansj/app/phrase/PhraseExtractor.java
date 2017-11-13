@@ -5,6 +5,7 @@ import org.ansj.library.StopLibrary;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.nlpcn.commons.lang.util.CollectionUtil;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.StringUtil;
 
@@ -12,9 +13,10 @@ import java.util.*;
 
 public class PhraseExtractor {
 
-    private static final double DEFAULT_TERM_FREQUENCY = 10.24;
-    private static final int TERM_MAP_CAPACITY = 100000;
-    private static final int OCCURRENCE_MAP_CAPACITY = 50000;
+    public static double DEFAULT_TERM_FREQUENCY = 10.24;
+    public static int TERM_MAP_CAPACITY = 100000;
+    public static int OCCURRENCE_MAP_CAPACITY = 100000;
+    public static float FACTOR = 0.2F;
 
     /**
      * 默认使用NLP的分词方式
@@ -123,21 +125,12 @@ public class PhraseExtractor {
 
     private void addTerm(String t) {
         // 超过容量, 移除低频TERM
-        if (TERM_MAP_CAPACITY == termMap.size()) {
-            int min = Integer.MAX_VALUE;
-            Set<Map.Entry<String, Integer>> entries = termMap.entrySet();
-            for (Map.Entry<String, Integer> e : entries) {
-                if (e.getValue() < min) {
-                    min = e.getValue();
-                }
+        int capacity = (int) (TERM_MAP_CAPACITY * (1 + FACTOR));
+        if (capacity <= termMap.size()) {
+            List<Map.Entry<String, Integer>> items = CollectionUtil.sortMapByValue(termMap, 1);
+            for (Map.Entry<String, Integer> item : items.subList(TERM_MAP_CAPACITY, items.size())) {
+                termMap.remove(item.getKey());
             }
-            Set<String> keys = new HashSet<>();
-            for (Map.Entry<String, Integer> e : entries) {
-                if (min == e.getValue()) {
-                    keys.add(e.getKey());
-                }
-            }
-            termMap.keySet().removeAll(keys);
         }
 
         //
@@ -145,27 +138,23 @@ public class PhraseExtractor {
     }
 
     private void addOccurrence(String k, Occurrence occurrence) {
-        if (OCCURRENCE_MAP_CAPACITY == occurrenceMap.size()) {
+        // 超过容量
+        int capacity = (int) (OCCURRENCE_MAP_CAPACITY * (1 + FACTOR));
+        if (capacity <= occurrenceMap.size()) {
+
             calculateScore();
 
-            //
-            Occurrence occ;
-            double min = Double.MAX_VALUE;
-            Set<Map.Entry<String, Occurrence>> entries = occurrenceMap.entrySet();
-            for (Map.Entry<String, Occurrence> entry : entries) {
-                occ = entry.getValue();
-                if (occ.getScore() < min) {
-                    min = occ.getScore();
+            List<Map.Entry<String, Occurrence>> ordered = new ArrayList<Map.Entry<String, Occurrence>>(occurrenceMap.entrySet());
+            Collections.sort(ordered, new Comparator<Map.Entry<String, Occurrence>>() {
+                @Override
+                public int compare(Map.Entry<String, Occurrence> o1, Map.Entry<String, Occurrence> o2) {
+                    return -Double.compare(o1.getValue().getScore(), o2.getValue().getScore());
                 }
-            }
+            });
 
-            Set<String> keys = new HashSet<>();
-            for (Map.Entry<String, Occurrence> entry : entries) {
-                if (Double.compare(min, entry.getValue().getScore()) == 0) {
-                    keys.add(entry.getKey());
-                }
+            for (Map.Entry<String, Occurrence> item : ordered.subList(OCCURRENCE_MAP_CAPACITY, ordered.size())) {
+                occurrenceMap.remove(item.getKey());
             }
-            occurrenceMap.keySet().removeAll(keys);
         }
 
         //
