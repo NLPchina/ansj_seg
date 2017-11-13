@@ -17,6 +17,7 @@ public class PhraseExtractor {
     public static int TERM_MAP_CAPACITY = 100000;
     public static int OCCURRENCE_MAP_CAPACITY = 100000;
     public static float FACTOR = 0.2F;
+    public static int DEDUP_THRESHOLD = 2000;
 
     /**
      * 默认使用NLP的分词方式
@@ -181,14 +182,18 @@ public class PhraseExtractor {
         occurrenceMap.keySet().removeAll(toRemove);
         toRemove.clear();
 
-        // 去重
         List<Map.Entry<String, Occurrence>> entryList = new ArrayList<Map.Entry<String, Occurrence>>(occurrenceMap.entrySet());
-        dedup(entryList, toRemove);
-        occurrenceMap.keySet().removeAll(toRemove);
+
+        // TODO: 如果短语量大, 去重会很慢
+        if (occurrenceMap.size() < DEDUP_THRESHOLD) {
+            dedup(entryList, toRemove);
+            occurrenceMap.keySet().removeAll(toRemove);
+
+            entryList.clear();
+            entryList.addAll(occurrenceMap.entrySet());
+        }
 
         // 排序
-        entryList.clear();
-        entryList.addAll(occurrenceMap.entrySet());
         Collections.sort(entryList, new Comparator<Map.Entry<String, Occurrence>>() {
             @Override
             public int compare(Map.Entry<String, Occurrence> o1, Map.Entry<String, Occurrence> o2) {
