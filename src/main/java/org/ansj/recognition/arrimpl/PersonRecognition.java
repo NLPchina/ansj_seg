@@ -96,6 +96,62 @@ public class PersonRecognition implements TermArrRecognition {
 
 		beginOff = terms[0].getOffe();
 
+		for (int i = 0; i < terms.length - 1; i++) {
+			first = terms[i];
+
+			if (first == null) {
+				continue;
+			}
+
+			fPna = first.termNatures().personAttr ；
+
+			if(fPna.getU()<=0 && fPna.getV()<=0){
+				continue;
+			}
+
+			if(first.getName().length()==2){
+				String name = String.valueOf(first.getName().charAt(0)) ;
+				terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
+				name = String.valueOf(first.getName().charAt(1)) ;
+				terms[i+1] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
+			}else{
+				if(fPna.getU()>0){
+					String name = first.getName().substring(0,2) ;
+					AnsjItem item = DATDictionary.getItem(name);
+					if(item!=AnsjItem.NULL){
+						terms[i] = new Term(name,first.getOffe(),item) ;
+						terms[i+1] = null ;
+						name = String.valueOf(first.getName().charAt(2)) ;
+						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					}else {
+						name = String.valueOf(first.getName().charAt(0)) ;
+						terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
+						name = String.valueOf(first.getName().charAt(1)) ;
+						terms[i+1] = new Term(name,first.getOffe()+1,DATDictionary.getItem(name)) ;
+						name = String.valueOf(first.getName().charAt(2)) ;
+						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					}
+
+				}else{
+					String name = first.getName().substring(1,3) ;
+					AnsjItem item = DATDictionary.getItem(name);
+					if(item!=AnsjItem.NULL){
+						terms[i] = new Term(name,first.getOffe(),item) ;
+						terms[i+1] = null ;
+						name = String.valueOf(first.getName().charAt(2)) ;
+						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					}else {
+						name = String.valueOf(first.getName().charAt(0)) ;
+						terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
+						name = String.valueOf(first.getName().charAt(1)) ;
+						terms[i+1] = new Term(name,first.getOffe()+1,DATDictionary.getItem(name)) ;
+						name = String.valueOf(first.getName().charAt(2)) ;
+						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					}
+				}
+			}
+		}
+
 
 		for (int i = 0; i < terms.length - 1; i++) {
 			first = terms[i];
@@ -107,40 +163,6 @@ public class PersonRecognition implements TermArrRecognition {
 			fPna = getPersonNature(first);
 			setNode(first, A);
 
-			if (fPna.getU() > 0) { //人名的上文和姓成词
-				String name = first.getName();
-				if (name.length() == 2) {
-					setAllNode(first.from().getName() + name.charAt(0), first.getOffe(), true);
-					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
-					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
-				} else if (name.length() == 3) {
-					setAllNode(first.from().getName() + name.charAt(0), first.getOffe(), true);
-					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
-					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
-					setAllNode(String.valueOf(name.charAt(2)), first.getOffe() + 2, false);
-					setAllNode(name.substring(1), first.getOffe(), true);
-				} else {
-					LOG.warn("length out of person recognition so skip U : " + name);
-				}
-			}
-
-
-			if (fPna.getV() > 0) { //人名的上文和姓成词
-				String name = first.getName();
-				if (name.length() == 2) {
-					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
-					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
-					setAllNode(name.charAt(1) + first.to().getName(), first.getOffe() + 1, true);
-				} else if (name.length() == 3) {
-					setAllNode(String.valueOf(name.charAt(0)), first.getOffe(), false);
-					setAllNode(String.valueOf(name.charAt(1)), first.getOffe() + 1, false);
-					setAllNode(String.valueOf(name.charAt(2)), first.getOffe() + 2, false);
-					setAllNode(name.charAt(2) + first.to().getName(), first.getOffe() + 2, true);
-					setAllNode(name.substring(0, 2), first.getOffe(), true);
-				} else {
-					LOG.warn("length out of person recognition so skip V : " + name);
-				}
-			}
 
 			if (fPna == null || !fPna.isActive()) {
 				continue;
