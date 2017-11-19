@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 人名识别工具类
@@ -103,50 +104,71 @@ public class PersonRecognition implements TermArrRecognition {
 				continue;
 			}
 
-			fPna = first.termNatures().personAttr ；
+			fPna = first.termNatures().personAttr;
 
-			if(fPna.getU()<=0 && fPna.getV()<=0){
+			if (fPna.getU() <= 0 && fPna.getV() <= 0) {
 				continue;
 			}
 
-			if(first.getName().length()==2){
-				String name = String.valueOf(first.getName().charAt(0)) ;
-				terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
-				name = String.valueOf(first.getName().charAt(1)) ;
-				terms[i+1] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
-			}else{
-				if(fPna.getU()>0){
-					String name = first.getName().substring(0,2) ;
+			if (first.getName().length() == 2) {
+				String name = String.valueOf(first.getName().charAt(0));
+				terms[i] = new Term(name, first.getOffe(), DATDictionary.getItem(name));
+				name = String.valueOf(first.getName().charAt(1));
+				terms[i + 1] = new Term(name, first.getOffe()+1, DATDictionary.getItem(name));
+				TermUtil.termLink(first.from(), terms[i]);
+				TermUtil.termLink(terms[i], terms[i + 1]);
+				TermUtil.termLink(terms[i + 1], first.to());
+			} else {
+				if (fPna.getU() > 0) {
+					String name = first.getName().substring(0, 2);
 					AnsjItem item = DATDictionary.getItem(name);
-					if(item!=AnsjItem.NULL){
-						terms[i] = new Term(name,first.getOffe(),item) ;
-						terms[i+1] = null ;
-						name = String.valueOf(first.getName().charAt(2)) ;
-						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
-					}else {
-						name = String.valueOf(first.getName().charAt(0)) ;
-						terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
-						name = String.valueOf(first.getName().charAt(1)) ;
-						terms[i+1] = new Term(name,first.getOffe()+1,DATDictionary.getItem(name)) ;
-						name = String.valueOf(first.getName().charAt(2)) ;
-						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					if (item != AnsjItem.NULL) {
+						terms[i] = new Term(name, first.getOffe(), item);
+						terms[i + 1] = null;
+						name = String.valueOf(first.getName().charAt(2));
+						terms[i + 2] = new Term(name, first.getOffe() + 2, DATDictionary.getItem(name));
+						TermUtil.termLink(first.from(), terms[i]);
+						TermUtil.termLink(terms[i], terms[i + 2]);
+						TermUtil.termLink(terms[i + 2], first.to());
+					} else {
+						name = String.valueOf(first.getName().charAt(0));
+						terms[i] = new Term(name, first.getOffe(), DATDictionary.getItem(name));
+						name = String.valueOf(first.getName().charAt(1));
+						terms[i + 1] = new Term(name, first.getOffe() + 1, DATDictionary.getItem(name));
+						name = String.valueOf(first.getName().charAt(2));
+						terms[i + 2] = new Term(name, first.getOffe() + 2, DATDictionary.getItem(name));
+
+						TermUtil.termLink(first.from(), terms[i]);
+						TermUtil.termLink(terms[i], terms[i + 1]);
+						TermUtil.termLink(terms[i + 1], terms[i + 2]);
+						TermUtil.termLink(terms[i + 2], first.to());
 					}
 
-				}else{
-					String name = first.getName().substring(1,3) ;
+				} else {
+					String name = first.getName().substring(1, 3);
 					AnsjItem item = DATDictionary.getItem(name);
-					if(item!=AnsjItem.NULL){
-						terms[i] = new Term(name,first.getOffe(),item) ;
-						terms[i+1] = null ;
-						name = String.valueOf(first.getName().charAt(2)) ;
-						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
-					}else {
-						name = String.valueOf(first.getName().charAt(0)) ;
-						terms[i] = new Term(name,first.getOffe(),DATDictionary.getItem(name)) ;
-						name = String.valueOf(first.getName().charAt(1)) ;
-						terms[i+1] = new Term(name,first.getOffe()+1,DATDictionary.getItem(name)) ;
-						name = String.valueOf(first.getName().charAt(2)) ;
-						terms[i+2] =  new Term(name,first.getOffe()+2,DATDictionary.getItem(name)) ;
+					if (item != AnsjItem.NULL) {
+						terms[i + 1] = new Term(name, first.getOffe() + 1, item);
+						terms[i + 2] = null;
+
+						name = String.valueOf(first.getName().charAt(0));
+						terms[i] = new Term(name, first.getOffe(), DATDictionary.getItem(name));
+
+						TermUtil.termLink(first.from(), terms[i]);
+						TermUtil.termLink(terms[i], terms[i + 1]);
+						TermUtil.termLink(terms[i + 1], first.to());
+
+					} else {
+						name = String.valueOf(first.getName().charAt(0));
+						terms[i] = new Term(name, first.getOffe(), DATDictionary.getItem(name));
+						name = String.valueOf(first.getName().charAt(1));
+						terms[i + 1] = new Term(name, first.getOffe() + 1, DATDictionary.getItem(name));
+						name = String.valueOf(first.getName().charAt(2));
+						terms[i + 2] = new Term(name, first.getOffe() + 2, DATDictionary.getItem(name));
+						TermUtil.termLink(first.from(), terms[i]);
+						TermUtil.termLink(terms[i], terms[i + 1]);
+						TermUtil.termLink(terms[i + 1], terms[i + 2]);
+						TermUtil.termLink(terms[i + 2], first.to());
 					}
 				}
 			}
