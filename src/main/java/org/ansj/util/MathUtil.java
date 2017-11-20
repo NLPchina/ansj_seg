@@ -89,8 +89,4 @@ public class MathUtil {
 		return result;
 	}
 
-	public static void main(String[] args) {
-		System.out.println(Math.log(0.1));
-	}
-
 }

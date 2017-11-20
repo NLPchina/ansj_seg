@@ -1,7 +1,8 @@
 package org.ansj.domain;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 每一个term都拥有一个词性集合
@@ -75,9 +76,13 @@ public class TermNatures implements Serializable {
 		this.id = id;
 		this.termNatures = termNatures;
 
+		//{n=2707,q=0,q_mq=0,r=0,v=1}
+
 		natureStr = natureStr.substring(1, natureStr.length() - 1);
 		String[] split = natureStr.split(",");
-		TermNature[] all = new TermNature[split.length];
+
+		List<TermNature> all = new ArrayList<>();
+
 		TermNature maxTermNature = null;
 		int maxFreq = 0, frequency = -1;
 		int size = 0;
@@ -88,17 +93,17 @@ public class TermNatures implements Serializable {
 			if (strs[0].startsWith("q_")) { //内置词性
 				this.numAttr = new NumNatureAttr(false, true, strs[0].replaceFirst("q_", ""));
 			} else {
-				all[i] = new TermNature(strs[0], frequency);
+				TermNature termNature = new TermNature(strs[0], frequency);
+				all.add(termNature);
 				if (maxFreq <= frequency) {
 					maxFreq = frequency;
-					maxTermNature = all[i];
+					maxTermNature = termNature;
 				}
 				size++;
 			}
 		}
 
-
-		termNatures = Arrays.copyOf(all, size);
+		termNatures = all.toArray(new TermNature[all.size()]);
 
 		if (maxTermNature != null) {
 			this.nature = maxTermNature.nature;
