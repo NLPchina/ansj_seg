@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * 人名识别工具类
@@ -97,10 +96,210 @@ public class PersonRecognition implements TermArrRecognition {
 
 		beginOff = terms[0].getOffe();
 
+		List<Term> replaceTerm = new ArrayList<>();
+
+		termSplit(terms, replaceTerm); //将错误的合并拆开
+
+
+		Viterbi<PersonNode> viterbi = getPersonNodeViterbi(terms); //构建viterbi路径
+
+
+		List<PersonNode> result = viterbi.compute(new Score<PersonNode>() {
+			@Override
+			public Double score(Node<PersonNode> from, Node<PersonNode> to) {
+				if (from == null || to == null) {
+					return null;
+				}
+				Double tValue = transition.get(from.getT().tag * 1000 + to.getT().tag);
+				if (tValue == null || from.getScore() == null) {
+					return null;
+				}
+				return from.getScore() + to.getSelfScore() + tValue;
+			}
+
+			@Override
+			public boolean sort() {
+				return true;
+			}
+		});
+
+		//BE BCD  XD BZ
+		//int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
+
+		int off = 0;
+
+		int len = result.size() - 1;
+		for (int i = 1; i < len; i++) {
+			PersonNode p1 = result.get(i), p2 = null;
+
+			if (p1.tag != B && p1.tag != X) {
+				off += p1.name.length();
+				continue;
+			}
+
+			List<Term> tempList = new ArrayList<>();
+			tempList.add(terms[off]);
+			off += p1.name.length();
+
+
+			for (int j = i + 1; j < result.size(); j++) {
+				p2 = result.get(j);
+				tempList.add(terms[off]);
+				off += p2.name.length();
+				if (p2.tag == E || p2.tag == D || p2.tag == Z) {
+					TermUtil.insertTerm(terms, tempList, TermNatures.NR);
+					i = j;
+					break;
+				}
+			}
+		}
+
+		for (int i = 0; i < replaceTerm.size(); i++) {
+			Term term = replaceTerm.get(i);
+
+			len = 0;
+			int end = term.getOffe() - beginOff + term.getName().length();
+			for (int j = term.getOffe() - beginOff; j < end; j++) {
+				if (terms[j] != null) {
+					len += terms[j].getName().length();
+				}
+			}
+
+			if (len == term.getName().length()) {
+				int beginIndex = term.getOffe() - beginOff ;
+
+				Term f1 = terms[beginIndex].from();
+
+				for (int j = beginIndex; j < end; j++) {
+					terms[j] = null;
+				}
+
+				terms[term.getOffe() - beginOff] = term;
+
+				TermUtil.termLink(f1,term);
+				TermUtil.termLink(term,terms[beginIndex+term.getName().length()]);
+			}
+
+		}
+
+
+	}
+
+	/**
+	 * 构建viterbi路径
+	 *
+	 * @param terms
+	 * @return
+	 */
+	private Viterbi<PersonNode> getPersonNodeViterbi(Term[] terms) {
+		Term first;
+		PersonNatureAttr fPna;
+		Term sencond;
+		Term third;
+		Term from;
 		for (int i = 0; i < terms.length - 1; i++) {
 			first = terms[i];
 
 			if (first == null) {
+				continue;
+			}
+
+			fPna = getPersonNature(first);
+			setNode(first, A);
+
+			if(fPna.getY()>0){
+				setNode(first, Y);
+			}
+
+			if (fPna == null || !fPna.isActive()) {
+				continue;
+			}
+
+			sencond = first.to();
+			if (sencond.getOffe() == terms.length || sencond.getName().length() > 2) { //说明到结尾了,或者后面长度不符合规则
+				continue;
+			}
+
+			third = sencond.to();
+			from = first.from();
+
+
+			//XD
+			if (first.getName().length() == 2) {
+				setNode(from, K);
+				setNode(from, M);
+				setNode(first, X);
+				setNode(sencond, D);
+				setNode(third, M);
+				setNode(third, L);
+				continue;
+			}
+
+			setNode(from, K);
+			setNode(from, M);
+			setNode(first, B);
+			setNode(third, M);
+			setNode(third, L);
+			//BZ
+			if (sencond.getName().length() == 2) {
+				setNode(sencond, Z);
+				continue;
+			} else {//BE
+				setNode(sencond, E);
+			}
+
+
+			if (third.getOffe() == terms.length || third.getName().length() > 1) { //说明到结尾了,或者后面长度不符合规则
+				continue;
+			}
+
+			//BCD
+			setNode(first, B);
+			setNode(sencond, C);
+			setNode(third, D);
+			setNode(third.to(), M);
+			setNode(third.to(), L);
+
+		}
+		PersonNatureAttr begin = DATDictionary.person("BEGIN");
+
+		nodes[0][6] = null;
+		nodes[0][4] = new PersonNode(4, "B", -Math.log(begin.getK()));
+		nodes[0][10] = new PersonNode(10, "B", -Math.log(begin.getA()));
+
+		PersonNatureAttr end = DATDictionary.person("END");
+		nodes[terms.length][5] = new PersonNode(5, "E", -Math.log(end.getL()));
+		nodes[terms.length][6] = null;
+		nodes[terms.length][10] = new PersonNode(10, "E", -Math.log(end.getA()));
+
+		return new Viterbi<PersonNode>(nodes, new Values<PersonNode>() {
+			@Override
+			public int step(Node<PersonNode> node) {
+				return node.getObj().name.length();
+			}
+
+			@Override
+			public double selfSscore(Node<PersonNode> node) {
+				return node.getObj().score;
+			}
+
+		});
+	}
+
+	private void termSplit(Term[] terms, List<Term> replaceTerm) {
+		Term first;
+		PersonNatureAttr fPna;
+		for (int i = 0; i < terms.length - 1; i++) {
+			first = terms[i];
+
+
+			if (first == null) {
+				continue;
+			}
+
+			int len = first.getName().length();
+
+			if (len == 1 || len == 3) {//这里写死了只支持2-3个字的拆分
 				continue;
 			}
 
@@ -110,11 +309,13 @@ public class PersonRecognition implements TermArrRecognition {
 				continue;
 			}
 
+			replaceTerm.add(first);
+
 			if (first.getName().length() == 2) {
 				String name = String.valueOf(first.getName().charAt(0));
 				terms[i] = new Term(name, first.getOffe(), DATDictionary.getItem(name));
 				name = String.valueOf(first.getName().charAt(1));
-				terms[i + 1] = new Term(name, first.getOffe()+1, DATDictionary.getItem(name));
+				terms[i + 1] = new Term(name, first.getOffe() + 1, DATDictionary.getItem(name));
 				TermUtil.termLink(first.from(), terms[i]);
 				TermUtil.termLink(terms[i], terms[i + 1]);
 				TermUtil.termLink(terms[i + 1], first.to());
@@ -173,144 +374,6 @@ public class PersonRecognition implements TermArrRecognition {
 				}
 			}
 		}
-
-
-		for (int i = 0; i < terms.length - 1; i++) {
-			first = terms[i];
-
-			if (first == null) {
-				continue;
-			}
-
-			fPna = getPersonNature(first);
-			setNode(first, A);
-
-
-			if (fPna == null || !fPna.isActive()) {
-				continue;
-			}
-
-			sencond = first.to();
-			if (sencond.getOffe() == terms.length || sencond.getName().length() > 2) { //说明到结尾了,或者后面长度不符合规则
-				continue;
-			}
-
-			third = sencond.to();
-			from = first.from();
-
-			//XD
-			if (first.getName().length() == 2) {
-				setNode(from, K);
-				setNode(from, M);
-				setNode(first, X);
-				setNode(sencond, D);
-				setNode(third, M);
-				setNode(third, L);
-				continue;
-			}
-
-			setNode(from, K);
-			setNode(from, M);
-			setNode(first, B);
-			setNode(third, M);
-			setNode(third, L);
-			//BZ
-			if (sencond.getName().length() == 2) {
-				setNode(sencond, Z);
-				continue;
-			} else {//BE
-				setNode(sencond, E);
-			}
-
-
-			if (third.getOffe() == terms.length || third.getName().length() > 1) { //说明到结尾了,或者后面长度不符合规则
-				continue;
-			}
-
-			//BCD
-			setNode(first, B);
-			setNode(sencond, C);
-			setNode(third, D);
-			setNode(third.to(), M);
-			setNode(third.to(), L);
-
-		}
-		PersonNatureAttr begin = DATDictionary.person("BEGIN");
-
-		nodes[0][6] = null;
-		nodes[0][4] = new PersonNode(4, "B", -Math.log(begin.getK()));
-		nodes[0][10] = new PersonNode(10, "B", -Math.log(begin.getA()));
-
-		PersonNatureAttr end = DATDictionary.person("END");
-		nodes[terms.length][5] = new PersonNode(5, "E", -Math.log(end.getL()));
-		nodes[terms.length][6] = null;
-		nodes[terms.length][10] = new PersonNode(10, "E", -Math.log(end.getA()));
-
-		Viterbi<PersonNode> viterbi = new Viterbi<PersonNode>(nodes, new Values<PersonNode>() {
-			@Override
-			public int step(Node<PersonNode> node) {
-				return node.getObj().name.length();
-			}
-
-			@Override
-			public double selfSscore(Node<PersonNode> node) {
-				return node.getObj().score;
-			}
-
-		});
-
-
-		List<PersonNode> result = viterbi.compute(new Score<PersonNode>() {
-			@Override
-			public Double score(Node<PersonNode> from, Node<PersonNode> to) {
-				if (from == null || to == null) {
-					return null;
-				}
-				Double tValue = transition.get(from.getT().tag * 1000 + to.getT().tag);
-				if (tValue == null || from.getScore() == null) {
-					return null;
-				}
-				return from.getScore() + to.getSelfScore() + tValue;
-			}
-
-			@Override
-			public boolean sort() {
-				return true;
-			}
-		});
-
-
-		//BE BCD  XD BZ
-		//int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
-
-		int off = 0;
-
-		int len = result.size() - 1;
-		for (int i = 1; i < len; i++) {
-			PersonNode p1 = result.get(i), p2 = null;
-
-			if (p1.tag != B && p1.tag != X) {
-				off += p1.name.length();
-				continue;
-			}
-
-			List<Term> tempList = new ArrayList<>();
-			tempList.add(terms[off]);
-			off += p1.name.length();
-
-
-			for (int j = i + 1; j < result.size(); j++) {
-				p2 = result.get(j);
-				tempList.add(terms[off]);
-				off += p2.name.length();
-				if (p2.tag == E || p2.tag == D || p2.tag == Z) {
-					TermUtil.insertTerm(terms, tempList, TermNatures.NR);
-					i = j;
-					break;
-				}
-			}
-		}
-
 	}
 
 	/**

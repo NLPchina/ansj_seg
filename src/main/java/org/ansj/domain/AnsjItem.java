@@ -53,9 +53,6 @@ public class AnsjItem extends Item implements Serializable{
 			name = split[1];
 			termNatures = new TermNatures(split[5], index);
 		}
-//		else{ 理论上不需要了
-//			termNatures = new TermNatures(TermNature.NULL);
-//		}
 	}
 
 	@Override
