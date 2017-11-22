@@ -10,13 +10,12 @@ import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.ansj.library.DATDictionary.status;
 
@@ -53,6 +52,9 @@ public abstract class Analysis {
 	// 是否显示真实词语
 	protected boolean isRealName = false;
 
+	// 是否标记新词
+	protected boolean isNewWord = true;
+
 	/**
 	 * 文档读取流
 	 */
@@ -64,6 +66,7 @@ public abstract class Analysis {
 		this.isNumRecognition = MyStaticValue.isNumRecognition;
 		this.isQuantifierRecognition = MyStaticValue.isQuantifierRecognition;
 		this.isRealName = MyStaticValue.isRealName;
+		this.isNewWord = MyStaticValue.isNewWord;
 	}
 
 	;
@@ -124,6 +127,10 @@ public abstract class Analysis {
 	 * @return
 	 */
 	private List<Term> analysisStr(String temp) {
+		if(temp.length()==0){
+			return Collections.emptyList() ;
+		}
+
 		Graph gp = new Graph(temp);
 		int startOffe = 0;
 
@@ -216,7 +223,7 @@ public abstract class Analysis {
 					int len = end - max;
 					if (len > 0) {
 						for (; max < end; ) {
-							String temp = String.valueOf(chars[max]) ;
+							String temp = String.valueOf(chars[max]);
 							AnsjItem item = DATDictionary.getItem(temp);
 							gp.addTerm(new Term(temp, max, item.termNatures));
 							max++;
@@ -245,6 +252,49 @@ public abstract class Analysis {
 		for (Term term : result) {
 			term.setRealName(new String(chars, term.getOffe(), term.getName().length()));
 		}
+	}
+
+	/**
+	 * 标记这个词语是否是新词
+	 *
+	 * @param term
+	 */
+	protected void setIsNewWord(Term term) {
+
+		if (!isNewWord) {
+			return;
+		}
+
+		if (term.termNatures().id > 0) {
+			return;
+		}
+
+		int id = DATDictionary.getId(term.getName());
+
+		if (id > 0) {
+			return;
+		}
+
+		if (forests != null) {
+			for (int i = 0; i < forests.length; i++) {
+				if (forests[i] == null) {
+					continue;
+				}
+
+				SmartForest<String[]> branch = forests[i].getBranch(term.getName());
+
+				if (branch == null) {
+					continue;
+				}
+
+				if (branch.getStatus() > 1) {
+					return;
+				}
+			}
+		}
+
+		term.setNewWord(true);
+
 	}
 
 	/**
@@ -328,8 +378,13 @@ public abstract class Analysis {
 		return this;
 	}
 
-	public Analysis setIsRealName(Boolean isRealName) {
+	public Analysis setIsRealName(boolean isRealName) {
 		this.isRealName = isRealName;
+		return this;
+	}
+
+	public Analysis setIsNewWord(boolean isNewWord) {
+		this.isNewWord = isNewWord;
 		return this;
 	}
 

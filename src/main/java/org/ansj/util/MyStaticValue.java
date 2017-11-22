@@ -45,11 +45,17 @@ public class MyStaticValue {
 	public static Boolean isRealName = false;
 
 	/**
+	 * 标记是否是新词
+	 */
+	public static boolean isNewWord = true;
+
+	/**
 	 * 是否用户辞典不加载相同的词
 	 */
 	public static boolean isSkipUserDefine = false;
 
 	public static final Map<String, String> ENV = new HashMap<>();
+
 
 	static {
 		/**

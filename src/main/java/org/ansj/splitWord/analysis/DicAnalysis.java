@@ -108,8 +108,10 @@ public class DicAnalysis extends Analysis {
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
-					if (graph.terms[i] != null) {
-						result.add(graph.terms[i]);
+					Term term = graph.terms[i] ;
+					if (term != null) {
+						setIsNewWord(term) ;
+						result.add(term);
 					}
 				}
 				setRealName(graph, result);

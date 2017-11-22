@@ -40,7 +40,7 @@
 		<dependency>
 			<groupId>org.nlpcn</groupId>
 			<artifactId>nlp-lang</artifactId>
-			<version>1.7.6</version>
+			<version>1.7.7</version>
 			<scope>compile</scope>
 		</dependency>
 

@@ -120,6 +120,9 @@ public class Extracting {
 	 * @return 抽取结果集
 	 */
 	private ExtractingResult parse(Result terms, boolean useForest) {
+		if(terms==null || terms.size()==0){
+			return new ExtractingResult() ;
+		}
 
 		if (useForest) {
 			Graph graph = new Graph(terms);

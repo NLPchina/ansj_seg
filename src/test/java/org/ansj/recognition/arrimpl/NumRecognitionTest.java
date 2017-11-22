@@ -48,6 +48,9 @@ public class NumRecognitionTest {
 		System.out.println(ToAnalysis.parse("和天猫本年度"));
 
 
+		System.out.println(ToAnalysis.parse("12,345.60元"));
+
+
 
 
 	}

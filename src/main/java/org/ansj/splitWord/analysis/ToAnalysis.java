@@ -62,6 +62,7 @@ public class ToAnalysis extends Analysis {
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					if (graph.terms[i] != null) {
+						setIsNewWord(graph.terms[i]) ;
 						result.add(graph.terms[i]);
 					}
 				}

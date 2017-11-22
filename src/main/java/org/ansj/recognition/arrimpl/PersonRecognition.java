@@ -168,16 +168,16 @@ public class PersonRecognition implements TermArrRecognition {
 			if (len == term.getName().length()) {
 				int beginIndex = term.getOffe() - beginOff ;
 
-				Term f1 = terms[beginIndex].from();
+				if(terms[beginIndex]!=null){
+					Term f1 = terms[beginIndex].from();
+					for (int j = beginIndex; j < end; j++) {
+						terms[j] = null;
+					}
+					terms[term.getOffe() - beginOff] = term;
 
-				for (int j = beginIndex; j < end; j++) {
-					terms[j] = null;
+					TermUtil.termLink(f1,term);
+					TermUtil.termLink(term,terms[beginIndex+term.getName().length()]);
 				}
-
-				terms[term.getOffe() - beginOff] = term;
-
-				TermUtil.termLink(f1,term);
-				TermUtil.termLink(term,terms[beginIndex+term.getName().length()]);
 			}
 
 		}

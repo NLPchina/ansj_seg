@@ -99,7 +99,7 @@ public class Term implements Serializable {
 	 * 核心构建最优的路径
 	 *
 	 * @param from
-	 * @param re
+	 * @param relationMap
 	 */
 	public void setPathScore(Term from, Map<String, Double> relationMap) {
 		// 维特比进行最优路径的构建
@@ -112,7 +112,7 @@ public class Term implements Serializable {
 	/**
 	 * 核心分数的最优的路径,越小越好
 	 *
-	 * @param term
+	 * @param from
 	 */
 	public void setPathSelfScore(Term from, boolean asc) {
 		double score = this.selfScore + from.score;
@@ -135,8 +135,7 @@ public class Term implements Serializable {
 	/**
 	 * 进行term合并
 	 *
-	 * @param term
-	 * @param maxNature
+	 * @param to
 	 */
 	public Term merage(Term to) {
 		this.name = this.name + to.getName();
@@ -150,8 +149,7 @@ public class Term implements Serializable {
 	/**
 	 * 进行term合并,能合并空白字符
 	 *
-	 * @param term
-	 * @param maxNature
+	 * @param to
 	 */
 	public Term merageWithBlank(Term to) {
 		this.name = this.name + to.getName();

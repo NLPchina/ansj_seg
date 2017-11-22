@@ -93,7 +93,6 @@ public class NlpAnalysis extends Analysis {
 							term = new Term(word, tempOff, termNatures);
 						} else {
 							term = new Term(word, tempOff, TermNatures.NW);
-							term.setNewWord(true);
 						}
 
 						tempOff += word.length(); // 增加偏移量
@@ -168,6 +167,7 @@ public class NlpAnalysis extends Analysis {
 					if (graph.terms[i] == null) {
 						continue;
 					}
+					setIsNewWord(graph.terms[i]) ;
 					result.add(graph.terms[i]);
 				}
 				return result;

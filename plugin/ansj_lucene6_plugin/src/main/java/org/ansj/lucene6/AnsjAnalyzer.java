@@ -1,9 +1,11 @@
 package org.ansj.lucene6;
 
+import org.ansj.library.*;
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.splitWord.analysis.*;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.tire.domain.Forest;

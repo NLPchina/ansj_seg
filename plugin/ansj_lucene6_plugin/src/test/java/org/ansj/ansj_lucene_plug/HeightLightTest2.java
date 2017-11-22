@@ -1,6 +1,5 @@
 package org.ansj.ansj_lucene_plug;
 
-import org.ansj.library.DicLibrary;
 import org.ansj.lucene6.AnsjAnalyzer;
 import org.ansj.lucene6.AnsjAnalyzer.TYPE;
 import org.ansj.splitWord.analysis.IndexAnalysis;
@@ -28,7 +27,7 @@ import org.apache.lucene.store.RAMDirectory;
 import java.io.IOException;
 import java.io.StringReader;
 
-public class HeightLightTest {
+public class HeightLightTest2 {
 
 	private static Directory directory = new RAMDirectory();
 
@@ -37,16 +36,13 @@ public class HeightLightTest {
 	private static Analyzer queryAnalyzer = new AnsjAnalyzer(TYPE.index_ansj);
 
 	public static void main(String[] args) throws CorruptIndexException, IOException, ParseException {
+		String content = "<span\",\n" +
+				"\"rgb(123, 12, 0);\">。而4月4日即将公开的作为WINNER其中一首主打曲《really really》的mv。虽然画面公开只有短短的10秒钟，但抓耳的旋律一下就吸引了粉丝的目光。" ;
 
-		DicLibrary.insert(DicLibrary.DEFAULT, "交通安全", "ansj", 2000);
-		DicLibrary.insert(DicLibrary.DEFAULT, "交通", "ansj", 2000);
-		DicLibrary.insert(DicLibrary.DEFAULT, "安全", "ansj", 2000);
-
-		String content = "不强行上下车，做到先下后上，候车要排队，按秩序上车；下车后要等车辆开走后再行走，如要穿越马路，一定要确保安全的情况下穿行；交通信号灯的正确使用，什么事交通安全出行交通信号灯的正确使用，什么事交通安全出行";
 
 		System.out.println(IndexAnalysis.parse(content));
 
-		String query = "text:\"交通安全出行\"";
+		String query = "text:\"really\"";
 
 		// 建立内存索引对象
 		index(indexAnalyzer, content);
@@ -59,7 +55,6 @@ public class HeightLightTest {
 		DirectoryReader directoryReader = DirectoryReader.open(directory);
 		// 查询索引
 		IndexSearcher isearcher = new IndexSearcher(directoryReader);
-		System.out.println(query);
 		TopDocs hits = isearcher.search(query, 5);
 		for (int i = 0; i < hits.scoreDocs.length; i++) {
 			int docId = hits.scoreDocs[i].doc;

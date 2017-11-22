@@ -1,5 +1,6 @@
 package org.ansj.recognition.arrimpl;
 
+import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
@@ -36,10 +37,20 @@ public class PersonRecognitionTest {
 				"苏宁易付宝",//#101
 				"我通向了幸福之路，我总和你说要多写代码，心理有万马奔腾",
 				"孙健和石源在韩小的右面，最左面是刘洁菲用电脑",
+				"哈利法首相向江泽民主席和其他中国领导人转达了巴林王国国王哈马德·本·伊萨·阿勒哈利法陛下的问候。",
+				"这群人中中国王健林是首富",
 		} ;
 
 		for (String str : tests){
-			System.out.println(ToAnalysis.parse(str));
+
+			for (Term term : ToAnalysis.parse(str).getTerms()){
+				if(term.isNewWord()) {
+					System.out.print(term + "/" + term.isNewWord() + " ");
+				}else{
+					System.out.print(term + " ");
+				}
+			}
+			System.out.println();
 		}
 
 
