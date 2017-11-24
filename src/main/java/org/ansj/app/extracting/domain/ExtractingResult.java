@@ -26,15 +26,17 @@ public class ExtractingResult {
 		}
 
 		List<List<Term>> result = new ArrayList<>(taskResults.size());
-
+		RESULT:
 		for (ExtractingTask task : taskResults) {
-			List<Term> tempList = new ArrayList<>() ;
-			for (List<Term> list : task.getList()){
-				for (Term term : list){
-					tempList.add(term) ;
+			List<Term> tempList = new ArrayList<>();
+			for (List<Term> list : task.getList()) {
+				if (list == null)
+					continue RESULT;
+				for (Term term : list) {
+					tempList.add(term);
 				}
 			}
-			result.add(tempList) ;
+			result.add(tempList);
 
 		}
 		return result ;
