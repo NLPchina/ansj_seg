@@ -133,7 +133,7 @@ public class NumRecognition implements TermArrRecognition {
 					temp.setNature(to.termNatures().numAttr.nature);
 
 					if ("m".equals(to.termNatures().numAttr.nature.natureStr)) {
-						i--;
+						i = temp.getOffe() - 1 ;
 					} else {
 						i = to.getOffe();
 					}

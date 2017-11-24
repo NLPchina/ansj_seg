@@ -58,12 +58,8 @@ public class NlpAnalysis extends Analysis {
 
 				// 姓名识别
 				if (graph.hasPerson && isNameRecognition) {
-					// 亚洲人名识别
+					// 人名识别
 					new PersonRecognition().recognition(graph);
-					graph.walkPathByScore();
-					// 外国人名识别
-					new ForeignPersonRecognition().recognition(graph);
-					graph.walkPathByScore();
 				}
 
 				if (splitWord != null) {

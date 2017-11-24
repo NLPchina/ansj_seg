@@ -4,7 +4,6 @@ import org.ansj.domain.*;
 import org.ansj.library.DATDictionary;
 import org.ansj.library.DicLibrary;
 import org.ansj.recognition.Recognition;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MathUtil;
 import org.ansj.util.MyStaticValue;
@@ -17,7 +16,6 @@ import org.nlpcn.commons.lang.util.logging.LogFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -88,7 +86,6 @@ public class NatureRecognition implements Recognition {
 	 * 传入一组。词对词语进行。词性标注
 	 * 
 	 * @param words
-	 * @param offe
 	 * @return
 	 */
 	public List<Term> recognition(List<String> words) {
@@ -203,7 +200,7 @@ public class NatureRecognition implements Recognition {
 					return TermNatures.NR;
 				}
 			}
-		} else if (ForeignPersonRecognition.isFName(word)) {
+		} else if (DATDictionary.foreign(word)) {
 			return TermNatures.NRF;
 		}
 

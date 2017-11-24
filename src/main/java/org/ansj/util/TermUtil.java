@@ -3,8 +3,8 @@ package org.ansj.util;
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
+import org.ansj.library.DATDictionary;
 import org.ansj.library.NatureLibrary;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,7 +152,7 @@ public class TermUtil {
 		}
 
 		// 是否是外国人名
-		if (ForeignPersonRecognition.isFName(name)) {
+		if (DATDictionary.foreign(name)) {
 			term.setNature(NatureLibrary.getNature("nrf"));
 			return;
 		}

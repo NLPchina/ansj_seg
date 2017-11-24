@@ -90,6 +90,7 @@ public class TermNatures implements Serializable {
 		for (int i = 0; i < split.length; i++) {
 			String[] strs = split[i].split("=");
 			frequency = Integer.parseInt(strs[1]);
+			allFreq+= frequency ;
 			if (strs[0].startsWith("q_")) { //内置词性
 				this.numAttr = new NumNatureAttr(false, true, strs[0].replaceFirst("q_", ""));
 			} else {

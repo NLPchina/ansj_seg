@@ -166,22 +166,80 @@ public class PersonRecognition implements TermArrRecognition {
 			}
 
 			if (len == term.getName().length()) {
-				int beginIndex = term.getOffe() - beginOff ;
+				int beginIndex = term.getOffe() - beginOff;
 
-				if(terms[beginIndex]!=null){
+				if (terms[beginIndex] != null) {
 					Term f1 = terms[beginIndex].from();
 					for (int j = beginIndex; j < end; j++) {
 						terms[j] = null;
 					}
 					terms[term.getOffe() - beginOff] = term;
 
-					TermUtil.termLink(f1,term);
-					TermUtil.termLink(term,terms[beginIndex+term.getName().length()]);
+					TermUtil.termLink(f1, term);
+					TermUtil.termLink(term, terms[beginIndex + term.getName().length()]);
 				}
 			}
 
 		}
 
+
+		foreign(terms) ;
+
+	}
+
+	/**
+	 * 识别外国人名
+	 *
+	 * @param terms
+	 */
+	private void foreign(Term[] terms) {
+		List<Term> list = new ArrayList<>();
+
+		Term term = null;
+		Term temp = null;
+
+		boolean mid = false ;
+
+		for (int i = 0; i < terms.length; i++) {
+			term = terms[i];
+			if(term==null){
+				continue;
+			}
+
+			if (DATDictionary.foreign(term.getName())) {
+				if("·".equals(term.getName())){
+					mid = true ;
+				}else {
+					mid = false ;
+				}
+
+				if(mid && list.size()==0){ // mid 不能出现在名字首位
+					continue;
+				}
+
+				list.add(term);
+				continue;
+			}
+
+			if(mid){
+				list = list.subList(0,list.size()-1) ;
+			}
+
+			if (list.size() == 0) {
+				continue;
+			}
+
+			if (list.size() == 1) { //只有一个就别识别了
+				mid = false ;
+				list.clear();
+				continue;
+			}
+
+			TermUtil.insertTerm(terms,list, TermNatures.NRF);
+
+			list.clear();
+
+		}
 
 	}
 
@@ -207,7 +265,7 @@ public class PersonRecognition implements TermArrRecognition {
 			fPna = getPersonNature(first);
 			setNode(first, A);
 
-			if(fPna.getY()>0){
+			if (fPna.getY() > 0) {
 				setNode(first, Y);
 			}
 

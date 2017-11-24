@@ -51,6 +51,10 @@ public class NumRecognitionTest {
 		System.out.println(ToAnalysis.parse("12,345.60元"));
 
 
+		System.out.println(ToAnalysis.parse("3.2亿元"));
+
+
+
 
 
 	}

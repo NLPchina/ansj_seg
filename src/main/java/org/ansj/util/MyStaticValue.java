@@ -186,6 +186,15 @@ public class MyStaticValue {
 		return IOUtil.getReader(new SequenceInputStream(DicReader.getInputStream("person/person.txt"), DicReader.getInputStream("person/person_split.txt")), "UTF-8");
 	}
 
+	/**
+	 * 人名识别
+	 *
+	 * @return
+	 */
+	public static BufferedReader getForeignDicReader() throws FileNotFoundException, UnsupportedEncodingException {
+		return IOUtil.getReader(new SequenceInputStream(DicReader.getInputStream("person/foreign.txt"), DicReader.getInputStream("person/person_split.txt")), "UTF-8");
+	}
+
 
 	public static BufferedReader getNatureClassSuffix() {
 		return DicReader.getReader("nature_class_suffix.txt");

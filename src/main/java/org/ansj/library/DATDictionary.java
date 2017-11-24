@@ -15,7 +15,9 @@ import org.nlpcn.commons.lang.util.logging.LogFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class DATDictionary {
 
@@ -25,6 +27,13 @@ public class DATDictionary {
 	 * 人名补充
 	 */
 	private static final Map<String, PersonNatureAttr> PERSONMAP = new HashMap<>();
+
+	/**
+	 * 外国人名补充
+	 */
+	private static final Set<String> FOREIGNSET = new HashSet<>();
+
+
 
 	/**
 	 * 核心词典
@@ -127,6 +136,17 @@ public class DATDictionary {
 		} finally {
 			reader.close();
 		}
+
+
+		try { //将外国人名放入到map中
+			reader = MyStaticValue.getForeignDicReader();
+			String temp = null ;
+			while ((temp = reader.readLine()) != null) {
+				FOREIGNSET.add(temp) ;
+			}
+		} finally {
+			reader.close();
+		}
 	}
 
 	public static int status(char c) {
@@ -178,6 +198,16 @@ public class DATDictionary {
 	 */
 	public static PersonNatureAttr person(String name) {
 		return PERSONMAP.get(name);
+	}
+
+	/**
+	 * 取得人名补充
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static boolean foreign(String name) {
+		return FOREIGNSET.contains(name) ;
 	}
 
 

@@ -2,7 +2,6 @@ package org.ansj.splitWord.analysis;
 
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.recognition.arrimpl.PersonRecognition;
 import org.ansj.recognition.arrimpl.UserDefineRecognition;
@@ -34,10 +33,8 @@ public class ToAnalysis extends Analysis {
 
 				// 姓名识别
 				if (graph.hasPerson && isNameRecognition) {
-					// 亚洲人名识别
+					// 人名识别
 					new PersonRecognition().recognition(graph);
-					// 外国人名识别
-					new ForeignPersonRecognition().recognition(graph);
 				}
 
 				// 数字发现
