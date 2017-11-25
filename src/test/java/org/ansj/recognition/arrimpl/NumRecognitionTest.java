@@ -53,6 +53,8 @@ public class NumRecognitionTest {
 
 		System.out.println(ToAnalysis.parse("3.2亿元"));
 
+		System.out.println(ToAnalysis.parse("pm2.5平方公里含量20mg"));
+
 
 
 
