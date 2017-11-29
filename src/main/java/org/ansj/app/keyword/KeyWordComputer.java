@@ -77,7 +77,7 @@ public class KeyWordComputer<T extends Analysis> {
 
 
             if (keyword == null) {
-                keyword = new Keyword(term.getName(), term.natrue().allFrequency, weight);
+                keyword = new Keyword(term.getName(), term.termNatures().allFreq, weight);
                 tm.put(term.getName(), keyword);
             } else {
                 keyword.updateWeight(1);
