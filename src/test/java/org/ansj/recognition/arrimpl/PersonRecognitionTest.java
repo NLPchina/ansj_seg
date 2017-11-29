@@ -55,9 +55,5 @@ public class PersonRecognitionTest {
 			System.out.println();
 		}
 
-		结婚 的  和 尚未 结婚的
-				和尚 未 结婚的
-
-
 	}
 }

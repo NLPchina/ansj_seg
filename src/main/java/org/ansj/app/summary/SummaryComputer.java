@@ -108,7 +108,7 @@ public class SummaryComputer {
 	/**
 	 * 计算摘要
 	 *
-	 * @param keyword
+	 * @param keywords
 	 * @param content
 	 * @return
 	 */
