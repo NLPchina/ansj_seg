@@ -4,7 +4,10 @@ import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
 import org.ansj.domain.*;
 import org.ansj.library.CrfLibrary;
-import org.ansj.recognition.arrimpl.*;
+import org.ansj.recognition.arrimpl.NewWordRecognition;
+import org.ansj.recognition.arrimpl.NumRecognition;
+import org.ansj.recognition.arrimpl.PersonRecognition;
+import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
@@ -225,7 +228,7 @@ public class NlpAnalysis extends Analysis {
 			c = word.charAt(i);
 
 			if (c != '·') {
-				if (c < 256 || filter.contains(c) || (c = WordAlert.CharCover(word.charAt(i))) > 0) {
+				if ((c = WordAlert.CharCover(word.charAt(i))) < 256 || filter.contains(c) ) {
 					return true;
 				}
 			}
