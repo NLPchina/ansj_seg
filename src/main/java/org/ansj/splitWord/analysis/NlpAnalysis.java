@@ -100,11 +100,6 @@ public class NlpAnalysis extends Analysis {
 							continue;
 						}
 
-						if (term.isNewWord()) { // 尝试猜测词性
-							termNatures = NatureRecognition.guessNature(word);
-							term.updateTermNaturesAndNature(termNatures);
-						}
-
 						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
 
 						// 对于非词典中的词持有保守态度
@@ -148,9 +143,19 @@ public class NlpAnalysis extends Analysis {
 				// 优化后重新获得最优路径
 				result = getResult();
 
+
 				// 激活辞典
 				for (Term term : result) {
-					learn.active(term.getName());
+					if(term.isNewWord()) {
+						if("nw".equals(term.getNatureStr())) {
+							TermNatures termNatures = NatureRecognition.guessNature(term.getName());
+							if(!"nw".equals(termNatures.nature.natureStr)){
+								term.setNature(termNatures.nature);
+							}
+						}
+
+						learn.active(term.getName());
+					}
 				}
 
 				setRealName(graph, result);
