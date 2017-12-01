@@ -247,10 +247,8 @@ public abstract class Analysis {
 			return;
 		}
 
-		char[] chars = graph.chars;
-
 		for (Term term : result) {
-			term.setRealName(new String(chars, term.getOffe(), term.getName().length()));
+			term.setRealName(graph.str.substring(term.getOffe(),term.getOffe()+term.getName().length()));
 		}
 	}
 
