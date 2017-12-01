@@ -224,6 +224,7 @@ public class PersonRecognition implements TermArrRecognition {
 
 			if(mid){
 				list = list.subList(0,list.size()-1) ;
+				mid = false ;
 			}
 
 			if (list.size() == 0) {

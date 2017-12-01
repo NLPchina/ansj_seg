@@ -207,18 +207,7 @@ public class DATDictionary {
 	 * @return
 	 */
 	public static boolean foreign(String name) {
-
-		boolean contains = FOREIGNSET.contains(name);
-		if (contains) {
-			return contains;
-		}
-
-		for (int i = 0; i < name.length(); i++) {
-			if (!FOREIGNSET.contains(String.valueOf(name.charAt(i)))) {
-				return false;
-			}
-		}
-		return true ;
+		return FOREIGNSET.contains(name);
 	}
 
 	/**

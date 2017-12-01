@@ -39,7 +39,7 @@ public class ExtractingTest {
 		List<String> lines = new ArrayList<>() ;
 
 		//填写规则 可以写多条
-		lines.add("(:bName)(:*){0,3}(并发症)(有|都有)(哪些|什么)\t名称:0;限定:2;目的:(个数)") ;
+		lines.add("(:bName)(:*){0,3}(并发症)(有|都有)(哪些|什么)	名称:0;限定:2;目的:(个数)") ;
 		lines.add("(:bName)(如何|怎么){0,1}(防治|避免)\t名称:0;限定:2") ;
 
 		Extracting extracting = new Extracting(lines) ;

@@ -5,7 +5,7 @@ import org.ansj.library.SynonymsLibrary;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
-public class SynonymsRecgnitionTest {
+public class  SynonymsRecgnitionTest {
 
 	@Test
 	public void test() {
