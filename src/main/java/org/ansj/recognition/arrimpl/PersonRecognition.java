@@ -206,7 +206,7 @@ public class PersonRecognition implements TermArrRecognition {
 				continue;
 			}
 
-			if (DATDictionary.foreign(term.getName())) {
+			if (DATDictionary.foreign(term)) {
 				if("·".equals(term.getName())){
 					mid = true ;
 				}else {
@@ -214,6 +214,7 @@ public class PersonRecognition implements TermArrRecognition {
 				}
 
 				if(mid && list.size()==0){ // mid 不能出现在名字首位
+					mid = false ;
 					continue;
 				}
 

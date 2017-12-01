@@ -152,7 +152,7 @@ public class TermUtil {
 		}
 
 		// 是否是外国人名
-		if (DATDictionary.foreign(name)) {
+		if (DATDictionary.foreign(term)) {
 			term.setNature(NatureLibrary.getNature("nrf"));
 			return;
 		}
