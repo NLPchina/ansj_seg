@@ -2,7 +2,9 @@ package org.ansj.domain;
 
 import org.ansj.library.NatureLibrary;
 
-public class NumNatureAttr  {
+import java.io.Serializable;
+
+public class NumNatureAttr implements Serializable {
 
 	public static final NumNatureAttr NULL = new NumNatureAttr(false, false);
 

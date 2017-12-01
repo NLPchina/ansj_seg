@@ -10,14 +10,13 @@ public class IndexAnalysisTest {
 	public static void main(String[] args) throws IOException {
 		MyStaticValue.isNumRecognition = true;
 		MyStaticValue.isQuantifierRecognition = false;
-		DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, null);
 		DicLibrary.insert(DicLibrary.DEFAULT, "蛇药片", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "蛇药", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "鲁花", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "隐形", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "眼镜", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "隐形眼镜", "n", 1000);
-		DicLibrary.insert(DicLibrary.DEFAULT, "海昌 ", "n", 1000);
+		DicLibrary.insert(DicLibrary.DEFAULT, "海昌", "n", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "美瞳", "n", 1000);
 
 		System.out.println(IndexAnalysis.parse("海昌 润洁除蛋白隐形眼镜美瞳护理液 500+120ml"));

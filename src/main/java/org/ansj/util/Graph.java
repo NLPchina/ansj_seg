@@ -29,10 +29,13 @@ public class Graph {
 
 	public boolean hasNumQua;
 
+	public String str ;
+
 
 	// 是否需有歧异
 
 	public Graph(String str) {
+		this.str = str ;
 		this.chars = WordAlert.alertStr(str);
 		terms = new Term[chars.length + 1];
 		end = new Term(E, chars.length, AnsjItem.END);

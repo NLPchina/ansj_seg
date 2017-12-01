@@ -12,8 +12,7 @@ import org.nlpcn.commons.lang.util.ObjConver;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -52,6 +51,7 @@ public class DATDictionary {
 	 * @return
 	 */
 	private static DoubleArrayTire loadDAT() {
+
 		long start = System.currentTimeMillis();
 		try {
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
@@ -208,6 +208,37 @@ public class DATDictionary {
 	 */
 	public static boolean foreign(String name) {
 		return FOREIGNSET.contains(name) ;
+	}
+
+
+	public static void write2File(String path) throws IOException {
+		ObjectOutput oop = new ObjectOutputStream(new FileOutputStream(new File(path))) ;
+
+		oop.writeObject(DAT.getDAT());
+
+		oop.writeObject(PERSONMAP);
+
+		oop.writeObject(FOREIGNSET);
+
+		oop.flush();
+
+		oop.close();
+	}
+
+
+	public static DoubleArrayTire loadFromFile(String path) throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path))) ;
+
+		Item[] items = (Item[]) ois.readObject();
+
+		DoubleArrayTire dat = new DoubleArrayTire(items) ;
+
+
+		PERSONMAP.putAll( ((Map<String, PersonNatureAttr>)ois.readObject()));
+
+		FOREIGNSET.addAll(((Set<String>)ois.readObject()));
+
+		return dat ;
 	}
 
 
