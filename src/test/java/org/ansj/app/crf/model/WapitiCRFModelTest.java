@@ -20,6 +20,7 @@ public class WapitiCRFModelTest {
 	@Before
 	public void init() throws Exception {
 		if (!Check.checkFileExit(modelPath)) {
+			System.out.println(modelPath+" not found so skip!");
 			return;
 		}
 		model = new WapitiCRFModel();
@@ -121,8 +122,9 @@ public class WapitiCRFModelTest {
 			if (error > 0) {
 				System.out.println("example:" + temp_str);
 				System.out.println(" result:" + paser.toString().replace("[", "").replace("]", "").replace(", ", "\t"));
+				System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			}
-			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
+
 			line_number++;
 		}
 		// 正确数/总词数

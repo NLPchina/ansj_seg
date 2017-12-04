@@ -127,7 +127,7 @@ public abstract class Analysis {
 	 * @return
 	 */
 	private List<Term> analysisStr(String temp) {
-		if(temp.length()==0){
+		if(temp==null || temp.length()==0){
 			return Collections.emptyList() ;
 		}
 

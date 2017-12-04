@@ -4,6 +4,7 @@ import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
 import org.ansj.domain.NumNatureAttr;
 import org.ansj.domain.PersonNatureAttr;
+import org.ansj.domain.Term;
 import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
@@ -31,7 +32,6 @@ public class DATDictionary {
 	 * 外国人名补充
 	 */
 	private static final Set<String> FOREIGNSET = new HashSet<>();
-
 
 
 	/**
@@ -140,9 +140,9 @@ public class DATDictionary {
 
 		try { //将外国人名放入到map中
 			reader = MyStaticValue.getForeignDicReader();
-			String temp = null ;
+			String temp = null;
 			while ((temp = reader.readLine()) != null) {
-				FOREIGNSET.add(temp) ;
+				FOREIGNSET.add(temp);
 			}
 		} finally {
 			reader.close();
@@ -207,12 +207,38 @@ public class DATDictionary {
 	 * @return
 	 */
 	public static boolean foreign(String name) {
-		return FOREIGNSET.contains(name) ;
+		return FOREIGNSET.contains(name);
+	}
+
+	/**
+	 * 取得人名补充
+	 *
+	 * @param term
+	 * @return
+	 */
+	public static boolean foreign(Term term) {
+		String name = term.getName();
+
+		boolean contains = FOREIGNSET.contains(name);
+		if (contains) {
+			return contains;
+		}
+
+		if (!term.getNatureStr().startsWith("nr")) {
+			return false;
+		}
+
+		for (int i = 0; i < name.length(); i++) {
+			if (!FOREIGNSET.contains(String.valueOf(name.charAt(i)))) {
+				return false;
+			}
+		}
+		return true ;
 	}
 
 
 	public static void write2File(String path) throws IOException {
-		ObjectOutput oop = new ObjectOutputStream(new FileOutputStream(new File(path))) ;
+		ObjectOutput oop = new ObjectOutputStream(new FileOutputStream(new File(path)));
 
 		oop.writeObject(DAT.getDAT());
 
@@ -227,18 +253,18 @@ public class DATDictionary {
 
 
 	public static DoubleArrayTire loadFromFile(String path) throws IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path))) ;
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path)));
 
 		Item[] items = (Item[]) ois.readObject();
 
-		DoubleArrayTire dat = new DoubleArrayTire(items) ;
+		DoubleArrayTire dat = new DoubleArrayTire(items);
 
 
-		PERSONMAP.putAll( ((Map<String, PersonNatureAttr>)ois.readObject()));
+		PERSONMAP.putAll(((Map<String, PersonNatureAttr>) ois.readObject()));
 
-		FOREIGNSET.addAll(((Set<String>)ois.readObject()));
+		FOREIGNSET.addAll(((Set<String>) ois.readObject()));
 
-		return dat ;
+		return dat;
 	}
 
 

@@ -35,7 +35,6 @@ public class EmailRecognition implements Recognition {
 
 	@Override
 	public void recognition(Result result) {
-
 		ExtractingResult parse = EXTRACTING.parse(result);
 
 		for (List<Term> list : parse.findAll()) {

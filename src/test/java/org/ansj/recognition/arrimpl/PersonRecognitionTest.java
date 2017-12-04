@@ -1,8 +1,14 @@
 package org.ansj.recognition.arrimpl;
 
 import org.ansj.domain.Term;
+import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
+import org.nlpcn.commons.lang.util.IOUtil;
+
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 public class PersonRecognitionTest {
 
@@ -11,6 +17,7 @@ public class PersonRecognitionTest {
 
 
 		String[] tests = new String[]{
+				"本赛季丁威迪出场16次场均11.4分2.9篮板6助攻。",
 				"万圣节被识别为人名nr",
 				"证明原告孙辉与被告姚宏旭之间的借款关系。",
 				"欧阳娜娜借了长孙无忌三块钱",
@@ -45,6 +52,8 @@ public class PersonRecognitionTest {
 						"“这是一种恩赐，我很幸运。无法用语言来表达。我很幸运能够去投那些投篮，能够去打比赛。能处于这种环境这是一种恩赐，随着经验的累积你会感到越来越舒适。这真的是这样。”\n" +
 						"“随着比赛的进行，他变得越来越好。他打得更舒适，更有侵略性。”阿特金森说道：“一开始，当我们第一次见到他的时候，他缺少侵略性和信心。以前他在做每件事情上都很胆怯。现在他很棒。观看一个年轻球员的成长，关于他的发展。你可以看到，他现在非常有信心。他在比赛中不断的进步。我们需要他在防守端持续注入一股力量。这需要承担很多的责任，但是以他的体型和运动能力，他可以在进攻和防守两端都做到这一点。这对于他来说是一个挑战。”\n" +
 						"本赛季丁威迪出场16次场均11.4分2.9篮板6助攻。",
+				"俞志龙和陈举亚是南京维数公司的同事 ,保护协会，协会主席亚拉·巴洛斯说他们是在1990年开始寻找野生金刚鹦鹉的，最后终于找到了唯一的一只，是一只雄性鹦鹉，从那以后生物学家一直在观察它，因为再没有发现第二只野生的金刚鹦鹉。巴洛斯说",
+				"而如今Facebook的CEO马克·扎克伯格表示，押在HTML5上是Facebook最大的错误。由于HTML5应用性能差到不能忍受"
 		};
 
 		for (String str : tests) {
@@ -56,4 +65,5 @@ public class PersonRecognitionTest {
 		}
 
 	}
+
 }
