@@ -2,6 +2,7 @@ package org.ansj.test;
 
 import org.ansj.app.keyword.Keyword;
 import org.ansj.app.summary.TagContent;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;

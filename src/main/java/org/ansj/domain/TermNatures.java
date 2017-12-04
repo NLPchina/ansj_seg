@@ -126,6 +126,7 @@ public class TermNatures implements Serializable {
 		termNatures = new TermNature[1];
 		termNature.frequency = allFreq;
 		this.termNatures[0] = termNature;
+		nature = termNature.nature ;
 		this.allFreq = allFreq;
 	}
 
