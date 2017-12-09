@@ -13,6 +13,7 @@ import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -20,6 +21,7 @@ import org.nlpcn.commons.lang.tire.library.Library;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class TestError {
 

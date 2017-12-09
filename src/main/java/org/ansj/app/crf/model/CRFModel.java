@@ -66,7 +66,7 @@ public class CRFModel extends Model {
 				return true;
 			}
 		} catch (ZipException ze) {
-			logger.warn("解压异常", ze);
+			logger.debug("解压异常", ze);
 		} catch (FileNotFoundException e) {
 			logger.warn("文件没有找到", e);
 		} catch (IOException e) {

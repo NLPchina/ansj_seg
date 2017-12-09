@@ -3,6 +3,7 @@ package org.ansj.splitWord.analysis;
 import junit.framework.Assert;
 import org.ansj.CorpusTest;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNatures;
 import org.ansj.library.DicLibrary;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Value;
@@ -12,13 +13,26 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+
 public class DicAnalysisTest  extends CorpusTest {
 
 	@Test
+
 	public void test() throws IOException {
 		for (String string : lines) {
 			System.out.println(DicAnalysis.parse(string));
 		}
+	}
+
+
+	@Test
+	public void test2(){
+		for (String string : lines) {
+			System.out.println(DicAnalysis.parse(string));
+		}
+		System.out.println(TermNatures.M_ALB.nature);
+		System.out.println(ToAnalysis.parse("ansj-sun@163.com是一个好网址")); ;
+
 	}
 	
 	@Test

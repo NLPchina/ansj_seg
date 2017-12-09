@@ -5,6 +5,7 @@ import org.ansj.CorpusTest;
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
 
@@ -109,8 +110,9 @@ public class CRFModelTest extends CorpusTest {
 					System.out.println("example:" + temp_str);
 					System.out.println(
 							" result:" + paser.toString().replace("[", "").replace("]", "").replace(", ", "\t"));
+					System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 				}
-				System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
+
 				line_number++;
 			}
 			// 正确数/总词数
