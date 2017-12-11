@@ -120,13 +120,14 @@ public class SummaryComputer {
 			sf.add(keyword.getName(), keyword.getScore());
 		}
 
+
 		// 先断句
 		List<Sentence> sentences = toSentenceList(content.toCharArray());
 
 		boolean flag = false;
 
 		for (Sentence sentence : sentences) {
-			flag = flag || computeScore(sentence, sf, false);
+			flag = computeScore(sentence, sf, false) || flag ;
 		}
 
 		if (!flag) {
@@ -277,6 +278,7 @@ public class SummaryComputer {
 		} else {
 			sentence.score /= Math.log(sentence.value.length() + 3);
 		}
+
 		return flag;
 	}
 
