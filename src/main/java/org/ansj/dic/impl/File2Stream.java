@@ -2,10 +2,12 @@ package org.ansj.dic.impl;
 
 import org.ansj.dic.PathToStream;
 import org.ansj.exception.LibraryException;
+import org.nlpcn.commons.lang.util.IOUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 
 /**
@@ -80,6 +82,10 @@ public class File2Stream extends PathToStream {
 
 		for (int i = 0; i < libs.length; i++) {
 			vector.add(new FileInputStream(libs[i]));
+
+            if (i < libs.length - 1) {
+                vector.add(new ByteArrayInputStream(IOUtil.LINE.getBytes(StandardCharsets.UTF_8)));
+            }
 		}
 
 		return new SequenceInputStream(vector.elements());
