@@ -104,7 +104,7 @@ public class PersonRecognition implements TermArrRecognition {
 		Viterbi<PersonNode> viterbi = getPersonNodeViterbi(terms); //构建viterbi路径
 
 
-		List<PersonNode> result = viterbi.compute(new Score<PersonNode>() {
+		List<PersonNode> result = new ArrayList<>(viterbi.compute(new Score<PersonNode>() {
 			@Override
 			public Double score(Node<PersonNode> from, Node<PersonNode> to) {
 				if (from == null || to == null) {
@@ -121,7 +121,7 @@ public class PersonRecognition implements TermArrRecognition {
 			public boolean sort() {
 				return true;
 			}
-		});
+		}));
 
 		//BE BCD  XD BZ
 		//int B = 0, C = 1, D = 2, E = 3, K = 4, L = 5, M = 6, X = 7, Y = 8, Z = 9, A = 10;
