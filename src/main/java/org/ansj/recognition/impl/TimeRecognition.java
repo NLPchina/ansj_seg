@@ -48,7 +48,6 @@ public class TimeRecognition implements Recognition {
 		LinkedList<Term> mergeList = new LinkedList<Term>();
 		List<Term> list = new LinkedList<Term>();
 
-		long start = System.currentTimeMillis();
 		for (int i = 0; i < terms.size(); i++) {
 			boolean isTime = false;
 			Term termBase = terms.get(i);
@@ -90,7 +89,6 @@ public class TimeRecognition implements Recognition {
 			timeWord = "";
 
 		}
-		System.out.println(System.currentTimeMillis() - start);
 		result.setTerms(list);
 	}
 
