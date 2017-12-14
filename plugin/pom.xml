@@ -34,7 +34,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<seg_version>5.1.2</seg_version>
+		<seg_version>5.1.5</seg_version>
 	</properties>
 
 	<dependencies>
