@@ -89,15 +89,16 @@ public abstract class Analysis {
 		}
 
 		String temp = br.readLine();
-		offe = br.getStart();
 		while (StringUtil.isBlank(temp)) {
 			if (temp == null) {
+                offe = br.getStart();
 				return null;
 			} else {
 				temp = br.readLine();
 			}
 
 		}
+        offe = br.getStart();
 
 		// 歧异处理字符串
 
