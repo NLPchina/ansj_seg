@@ -279,8 +279,6 @@ public class SummaryComputer {
 			sentence.score /= Math.log(sentence.value.length() + 3);
 		}
 
-		System.out.println(sentence.score+"\t"+sentence.value);
-
 		return flag;
 	}
 
