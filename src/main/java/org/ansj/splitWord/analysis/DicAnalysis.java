@@ -72,9 +72,6 @@ public class DicAnalysis extends Analysis {
 					String temp = null;
 					int tempFreq = 50;
 					while ((temp = word.getAllWords()) != null) {
-						if (graph.terms[word.offe] == null) {
-							continue;
-						}
 						Term tempTerm = graph.terms[word.offe];
 						tempFreq = getInt(word.getParam()[1], 50);
 						if (graph.terms[word.offe] != null && graph.terms[word.offe].getName().equals(temp)) {

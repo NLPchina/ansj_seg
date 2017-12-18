@@ -1,26 +1,9 @@
 package org.ansj.test;
 
-import org.ansj.dic.LearnTool;
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.library.AmbiguityLibrary;
-import org.ansj.library.CrfLibrary;
-import org.ansj.library.DATDictionary;
 import org.ansj.library.DicLibrary;
-import org.ansj.recognition.impl.UserDicNatureRecognition;
 import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.splitWord.analysis.IndexAnalysis;
-import org.ansj.splitWord.analysis.NlpAnalysis;
-import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.MyStaticValue;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.domain.Forest;
-import org.nlpcn.commons.lang.tire.domain.Value;
-import org.nlpcn.commons.lang.tire.library.Library;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class TestError {
@@ -211,10 +194,10 @@ public class TestError {
 //		System.out.println(ToAnalysis.parse("提醒我吃饭"));
 //		System.out.println(IndexAnalysis.parse("提醒我吃饭"));
 
-		DicLibrary.insert(DicLibrary.DEFAULT,"mmol/L","danwei",10000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"/HP","danwei",10000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"mmHg","danwei",10000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"℃","danwei",10000);
+//		DicLibrary.insert(DicLibrary.DEFAULT,"mmol/L","danwei",10000);
+//		DicLibrary.insert(DicLibrary.DEFAULT,"/HP","danwei",10000);
+//		DicLibrary.insert(DicLibrary.DEFAULT,"mmHg","danwei",10000);
+//		DicLibrary.insert(DicLibrary.DEFAULT,"℃","danwei",10000);
 
 		MyStaticValue.isQuantifierRecognition = false ;
 
@@ -222,12 +205,18 @@ public class TestError {
 //		DicLibrary.insert(DicLibrary.DEFAULT,"/HP".toLowerCase(),"danwei",10000);
 //		DicLibrary.insert(DicLibrary.DEFAULT,"mmHg".toLowerCase(),"danwei",10000);
 //		DicLibrary.insert(DicLibrary.DEFAULT,"℃".toLowerCase(),"danwei",10000);
+//
+//
+//		Result recognition = ToAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃").recognition(new UserDicNatureRecognition());
+//		System.out.println(recognition);
+//		recognition = DicAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃");
+//		System.out.println(recognition);
 
+		DicLibrary.insert(DicLibrary.DEFAULT,"心","pos",100000);
+		DicLibrary.insert(DicLibrary.DEFAULT,"律齐","describe",100000);
 
-		Result recognition = ToAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃").recognition(new UserDicNatureRecognition());
-		System.out.println(recognition);
-		recognition = DicAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃");
-		System.out.println(recognition);
+		System.out.println(DicAnalysis.parse("心律齐"));
+		System.out.println(DicAnalysis.parse("我的心律齐身体神健康")); ;
 
 
 
