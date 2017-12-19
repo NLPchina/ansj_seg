@@ -212,11 +212,10 @@ public class TestError {
 //		recognition = DicAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃");
 //		System.out.println(recognition);
 
-		DicLibrary.insert(DicLibrary.DEFAULT,"心","pos",100000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"律齐","describe",100000);
+		DicLibrary.insert(DicLibrary.DEFAULT,"高清","pos",100000);
+		DicLibrary.insert(DicLibrary.DEFAULT,"真机","describe",100000);
 
-		System.out.println(DicAnalysis.parse("心律齐"));
-		System.out.println(DicAnalysis.parse("我的心律齐身体神健康")); ;
+		System.out.println(DicAnalysis.parse("高清真机"));
 
 
 

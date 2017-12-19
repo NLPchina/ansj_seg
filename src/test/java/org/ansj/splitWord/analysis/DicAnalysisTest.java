@@ -5,19 +5,30 @@ import org.ansj.CorpusTest;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DicLibrary;
+import org.junit.Before;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.Value;
 import org.nlpcn.commons.lang.tire.library.Library;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 
 
-public class DicAnalysisTest  extends CorpusTest {
+public class DicAnalysisTest extends CorpusTest {
+
+	@Before
+	public void init() throws UnsupportedEncodingException, FileNotFoundException {
+		super.init();
+		if (DicLibrary.get() == null) {
+			DicLibrary.put(DicLibrary.DEFAULT, DicLibrary.DEFAULT, new Forest());
+		}
+	}
 
 	@Test
-
 	public void test() throws IOException {
 		for (String string : lines) {
 			System.out.println(DicAnalysis.parse(string));
@@ -26,17 +37,18 @@ public class DicAnalysisTest  extends CorpusTest {
 
 
 	@Test
-	public void test2(){
+	public void test2() {
 		for (String string : lines) {
 			System.out.println(DicAnalysis.parse(string));
 		}
 		System.out.println(TermNatures.M_ALB.nature);
-		System.out.println(ToAnalysis.parse("ansj-sun@163.com是一个好网址")); ;
+		System.out.println(ToAnalysis.parse("ansj-sun@163.com是一个好网址"));
+		;
 
 	}
-	
+
 	@Test
-	public void test1(){
+	public void test1() {
 		DicLibrary.insert(DicLibrary.DEFAULT, "金水区", "ad", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "渝北区", "ad", 1000);
 		DicLibrary.insert(DicLibrary.DEFAULT, "金童路", "ad", 1000);
