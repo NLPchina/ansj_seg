@@ -4,10 +4,19 @@ import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 
 public class DicLibraryTest {
+
+	@Before
+	public void init(){
+		Forest forest = DicLibrary.get();
+		if(forest==null){
+			DicLibrary.put(DicLibrary.DEFAULT,DicLibrary.DEFAULT,new Forest());
+		}
+	}
 
 	/**
 	 * 关键词增加
