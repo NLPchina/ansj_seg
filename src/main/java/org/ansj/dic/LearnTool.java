@@ -10,6 +10,7 @@ import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.CollectionUtil;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -115,7 +116,7 @@ public class LearnTool {
 
 	public List<Entry<String, Double>> getTopTree(int num, Nature nature) {
 		if (sf.branches == null) {
-			return null;
+			return Collections.emptyList();
 		}
 		HashMap<String, Double> hm = new HashMap<String, Double>();
 		for (int i = 0; i < sf.branches.length; i++) {

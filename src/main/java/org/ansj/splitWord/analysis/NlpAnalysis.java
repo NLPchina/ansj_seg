@@ -82,9 +82,10 @@ public class NlpAnalysis extends Analysis {
 						}
 					}
 
+					NatureRecognition natureRecognition = new NatureRecognition(forests);
 					for (String word : words) {
 
-						TermNatures termNatures = new NatureRecognition(forests).getTermNatures(word); // 尝试从词典获取词性
+						TermNatures termNatures = natureRecognition.getTermNatures(word); // 尝试从词典获取词性
 
 						Term term = null;
 
@@ -92,6 +93,7 @@ public class NlpAnalysis extends Analysis {
 							term = new Term(word, tempOff, termNatures);
 						} else {
 							term = new Term(word, tempOff, TermNatures.NW);
+							term.setNewWord(true);
 						}
 
 						tempOff += word.length(); // 增加偏移量
