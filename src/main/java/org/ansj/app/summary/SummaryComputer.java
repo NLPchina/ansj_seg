@@ -206,51 +206,41 @@ public class SummaryComputer {
 			computeScore(sentence, sf, true);
 
 			List<Triplet<Integer, Integer, Double>> offset = sentence.offset;
-			if (offset.size() > 0) {
-				maxScore = -1000;
 
-				List<Integer> resultOffset = null;
+			List<Integer> beginArr = new ArrayList<>() ;
 
-				for (int i = 0; i < offset.size(); i++) {
-					List<Integer> tempOffset = new ArrayList<>();
-					double score = 0;
-					for (int j = i; j < offset.size(); j++) {
-
-						Triplet<Integer, Integer, Double> triplet = offset.get(j);
-
-						if (tempOffset.size() == 0) {
-							tempOffset.add(triplet.getValue0());
-						} else {
-							int endOff = triplet.getValue0() + triplet.getValue1();
-							tempOffset.add(endOff);
-							if (endOff - triplet.getValue0() - 1 > len) {
-								break;
-							}
-						}
-
-						score += offset.get(j).getValue2();
-						if (resultOffset == null || maxScore < score) {
-							resultOffset = tempOffset;
-							maxScore = score;
-						}
-
+			f: for (int i = 0; i < str.length(); i++) {
+				for (Triplet<Integer,Integer,Double> t : offset) {
+					if(i>t.getValue0() && i<t.getValue1()){
+						continue f;
 					}
 				}
 
-				int sumOff = 0;
-
-				for (Integer off : resultOffset) {
-					sumOff += off;
+				if(str.length()-i < len){
+					break  ;
 				}
 
-				int midOff = sumOff / resultOffset.size();
-				int beginIndex = midOff - len / 2 - 1;
-				beginIndex = beginIndex < 0 ? 0 : beginIndex;
-				summaryStr = str.substring(beginIndex, Math.min(beginIndex + len + 1, str.length()));
-			} else {
-				summaryStr = str.substring(0, len);
+				beginArr.add(i);
 			}
+
+			maxIndex = 0 ;
+			maxScore = -10000 ;
+
+			for (Integer begin : beginArr) {
+				double score = 0 ;
+				for (Triplet<Integer,Integer,Double> t : offset) {
+					if(begin<t.getValue0() && begin+len>t.getValue1()){
+						score += t.getValue2() ;
+					}
+				}
+				if(score>maxScore){
+					maxIndex = begin ;
+				}
+			}
+
+			summaryStr = str.substring(maxIndex, Math.min(maxIndex + len + 1, str.length()));
 		}
+
 
 		return new Summary(keywords, summaryStr);
 
@@ -269,7 +259,7 @@ public class SummaryComputer {
 			flag = true;
 			sentence.updateScore(name, sgw.getParam());
 			if (offset) {
-				Triplet<Integer, Integer, Double> triplet = new Triplet<Integer, Integer, Double>(sgw.offe, name.length(), sgw.getParam());
+				Triplet<Integer, Integer, Double> triplet = new Triplet<Integer, Integer, Double>(sgw.offe, sgw.offe+name.length(), sgw.getParam());
 				sentence.offset.add(triplet);
 			}
 		}

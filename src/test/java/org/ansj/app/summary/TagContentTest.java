@@ -200,10 +200,11 @@ public class TagContentTest {
 	@Test
 	public void testHighlight() {
 
-		Forest forest = new Forest() ;
-		forest.add("nuclear",null);
+		Forest forest = new Forest();
+		forest.add("nuclear", null);
 
-		System.out.println(forest.getWord("联系邮箱 ：Nuclear_net@163.com\n").getFrontWords()); ;
+		System.out.println(forest.getWord("联系邮箱 ：Nuclear_net@163.com\n").getFrontWords());
+		;
 
 
 		String content = "中国核网\n" +
@@ -440,15 +441,14 @@ public class TagContentTest {
 				" \n";
 
 
+		boolean single = true;
 
-		boolean single = true ;
-
-		HashSet<String> kwSet = new HashSet<>() ;
+		HashSet<String> kwSet = new HashSet<>();
 
 
 		Result nuclear = DicAnalysis.parse("nuclear");
 
-		for (Term t : nuclear){
+		for (Term t : nuclear) {
 			if (!",".equals(t.getName()) && (single || t.getName().length() > 0)) { //skip lenth 1
 				kwSet.add(t.getName());
 			}
@@ -461,10 +461,9 @@ public class TagContentTest {
 
 		List<Keyword> keywords = new ArrayList<>();
 
-		for (String s : kwSet){
-			keywords.add(new Keyword(s.toLowerCase(), s.length() * s.length() * 10)) ;
+		for (String s : kwSet) {
+			keywords.add(new Keyword(s.toLowerCase(), s.length() * s.length() * 10));
 		}
-
 
 
 		TagContent tc = new TagContent("<begin>", "<end>");
@@ -473,7 +472,8 @@ public class TagContentTest {
 		SummaryComputer sc = new SummaryComputer(100, true, null, content);
 
 
-		System.out.println(tc.tagContent(sc.toSummary(keywords))); ;
+		System.out.println(tc.tagContent(sc.toSummary(keywords)));
+		;
 
 
 		System.out.println("gine' that could provide power to the first humans on Mars http://www.dailymail.co.uk/sciencetech/article-508".length());
@@ -484,40 +484,40 @@ public class TagContentTest {
 	@Test
 	public void test3() {
 
-		DicLibrary.put(DicLibrary.DEFAULT,null);
+		DicLibrary.put(DicLibrary.DEFAULT, null);
 
 		String query = "数据分析";
 
 		String[] split = query.split(",");
 
-		HashSet<String> kws = new HashSet<>() ;
+		HashSet<String> kws = new HashSet<>();
 
 		for (String str : split) {
-			kws.add(str) ;
+			kws.add(str);
 			for (Term t : ToAnalysis.parse(str)) {
-				kws.add(t.getName()) ;
+				kws.add(t.getName());
 			}
 		}
 
-		String content =  "刘   鹏   gloud@126.com  @专注云计算\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n\n\n\n*\n\n\n\n\n\n\n大数据成为全球新热点\n数据来源：百度搜索量统计\n\n\n\n大数据现象\n\n\n\n\n大数据产生原因\n\n\n\n全球每秒钟发送2.9 百万封电子邮件，一分钟读一篇的话，足够一个人昼夜不息的读5.5 年…\n每天会有2.88 万个小时的视频上传到Youtube，足够一个人昼夜不息的观看3.3 年…\n推特上每天发布5 千万条消息，假设10 秒钟浏览一条信息，这些消息足够一个人昼夜不息的浏览16 年…\n每天亚马逊上将产生6.3 百万笔订单…\n每个月网民在Facebook 上要花费7 千亿分钟，被移动互联网使用者发送和接收的数据高达1.3EB…\nGoogle 上每天需要处理24PB的数据…\n在web 2.0的时代，人们从信息的被动接受者变成了主动创造者\nBig Data时代到来\nWeb 2.0时代\n\n\n\n新摩尔定律\n\n全球数据总量每18个月翻番。\n大数据已经成为一种自然资源\n大数据不被利用就是成本\n\n\n\n未来增长不可限量\n来源：IDC数字宇宙研究报告，2011.11\n据IDC预测，未来10年全球数据量将以40+%的速度增长，2020年全球数据量将达到35ZB （35,000,000PB），为2009年（0.8ZB）的44倍\n\n\n\n数据利用比例直降\n\n计算速度越来越快，企业却越来越笨。\n今天很多企业能弄懂7%的企业数据，但这个数字很快会下降到4%，然后继续螺旋式下降。\nIBM实体分析首席科学家Jeff Jonas\n\n\n\n数据使用率提升10%的影响\n\n\n\n\n预测2020年，大数据应用市场规模将达到近2600 亿美元\n大数据成为全球新的经济增长点\n\n\n\n各国政府高度重视\n美国：奥巴马政府3.29宣布“Big Data Research and Development Initiative”\n将投入超过2亿美元推动大数据提取、存储、分析、共享、可视化等领域的研究，并将其与历史上对超级计算和互联网的投资相提并论\n中国：工信部物联网十二五规划\n信息处理技术作为4 项关键技术创新工程之一被提出\n包括海量数据存储、数据挖掘等\n\n\n\nIT盛宴\n\n\n分析\n\n\n基础设施\n\n\nNoSQL/NewSQL\nDatabases\n\n\nHadoop Related\n\n\nMPP Databases\n\n\nCrowdsourcing\n\n\nCluster\nServices\n\n\nManagement/Monitoring\n\n\nStorage\n\n\nsecurity\n\n\nMonitoring\n\n\nData Visualization\n\n\n应用\n\n\nAnalytics Solutions\n\n\nSocial Media\n\n\nStatistical Computing\n\n\nSentiment Analysis\n\n\nLocation/People/Events\n\n\nIT Analytics\n\n\nReal-Time\n\n\nCrowdsourced Analytics\n\n\nSMB Analytics\n\n\n数据源\n\n\nAd Optimization\n\n\nPublisher\nTools\n\n\nMarketing\n\n\nIndustry Applications\n\n\n基础设施/分析\n\n\nData Marketplaces\n\n\nData Sources\n\n\nPersonal Data\n\n\n开源项目\n\n\nFramework\n\n\nProgrammability\n\n\nData Access\n\n\nCoordination/\nWorkflow\n\n\nReal-Time\n\n\nStatistical\nPackages\n\n\nMachine learning\n\n\n\n\n大数据是指无法在一定时间内用传统数据库软件工具对其内容进行抓取、管理和处理的数据集合\n什么是Big Data\n大数据的4V特征\n\n\n*\n\n大数据 = 海量数据 + 复杂类型的数据\n海量交易数据：\n企业内部的经营交易信息主要包括联机交易数据和联机分析数据，是结构化的、通过关系数据库进行管理和访问的静态、历史数据。通过这些数据，我们能了解过去发生了什么。\n大数据包括：\n交易数据和交互数据集在内的所有数据集\n海量交互数据：\n源于Facebook、Twitter、LinkedIn及其他来源的社交媒体数据构成。它包括了呼叫详细记录CDR、设备和传感器信息、GPS和地理定位映射数据、通过管理文件传输Manage File Transfer协议传送的海量图像文件、Web文本和点击流数据、科学信息、电子邮件等等。可以告诉我们未来会发生什么。\n海量数据处理：\n大数据的涌现已经催生出了设计用于数据密集型处理的架构。例如具有开放源码、在商品硬件群中运行的Apache Hadoop。\n大数据的构成\n\n\n\n大数据涉及的关键技术\n\n\n\n大数据的技术领域-分布式领域\n\n\n\n大数据的技术领域-数据分析与挖掘\n相关工具:\nSAS，R，Rhive/Rhadoop, Mahout，Xlib，OpenMPI…\n\n\n\n更多信息：http://www.cstor.cn\n刘   鹏  gloud@126.com\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n本PPT部份页面引自其他专家的PPT，在此致以衷心感谢！\n\n\n\n*\n\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n*";
+		String content = "刘   鹏   gloud@126.com  @专注云计算\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n\n\n\n*\n\n\n\n\n\n\n大数据成为全球新热点\n数据来源：百度搜索量统计\n\n\n\n大数据现象\n\n\n\n\n大数据产生原因\n\n\n\n全球每秒钟发送2.9 百万封电子邮件，一分钟读一篇的话，足够一个人昼夜不息的读5.5 年…\n每天会有2.88 万个小时的视频上传到Youtube，足够一个人昼夜不息的观看3.3 年…\n推特上每天发布5 千万条消息，假设10 秒钟浏览一条信息，这些消息足够一个人昼夜不息的浏览16 年…\n每天亚马逊上将产生6.3 百万笔订单…\n每个月网民在Facebook 上要花费7 千亿分钟，被移动互联网使用者发送和接收的数据高达1.3EB…\nGoogle 上每天需要处理24PB的数据…\n在web 2.0的时代，人们从信息的被动接受者变成了主动创造者\nBig Data时代到来\nWeb 2.0时代\n\n\n\n新摩尔定律\n\n全球数据总量每18个月翻番。\n大数据已经成为一种自然资源\n大数据不被利用就是成本\n\n\n\n未来增长不可限量\n来源：IDC数字宇宙研究报告，2011.11\n据IDC预测，未来10年全球数据量将以40+%的速度增长，2020年全球数据量将达到35ZB （35,000,000PB），为2009年（0.8ZB）的44倍\n\n\n\n数据利用比例直降\n\n计算速度越来越快，企业却越来越笨。\n今天很多企业能弄懂7%的企业数据，但这个数字很快会下降到4%，然后继续螺旋式下降。\nIBM实体分析首席科学家Jeff Jonas\n\n\n\n数据使用率提升10%的影响\n\n\n\n\n预测2020年，大数据应用市场规模将达到近2600 亿美元\n大数据成为全球新的经济增长点\n\n\n\n各国政府高度重视\n美国：奥巴马政府3.29宣布“Big Data Research and Development Initiative”\n将投入超过2亿美元推动大数据提取、存储、分析、共享、可视化等领域的研究，并将其与历史上对超级计算和互联网的投资相提并论\n中国：工信部物联网十二五规划\n信息处理技术作为4 项关键技术创新工程之一被提出\n包括海量数据存储、数据挖掘等\n\n\n\nIT盛宴\n\n\n分析\n\n\n基础设施\n\n\nNoSQL/NewSQL\nDatabases\n\n\nHadoop Related\n\n\nMPP Databases\n\n\nCrowdsourcing\n\n\nCluster\nServices\n\n\nManagement/Monitoring\n\n\nStorage\n\n\nsecurity\n\n\nMonitoring\n\n\nData Visualization\n\n\n应用\n\n\nAnalytics Solutions\n\n\nSocial Media\n\n\nStatistical Computing\n\n\nSentiment Analysis\n\n\nLocation/People/Events\n\n\nIT Analytics\n\n\nReal-Time\n\n\nCrowdsourced Analytics\n\n\nSMB Analytics\n\n\n数据源\n\n\nAd Optimization\n\n\nPublisher\nTools\n\n\nMarketing\n\n\nIndustry Applications\n\n\n基础设施/分析\n\n\nData Marketplaces\n\n\nData Sources\n\n\nPersonal Data\n\n\n开源项目\n\n\nFramework\n\n\nProgrammability\n\n\nData Access\n\n\nCoordination/\nWorkflow\n\n\nReal-Time\n\n\nStatistical\nPackages\n\n\nMachine learning\n\n\n\n\n大数据是指无法在一定时间内用传统数据库软件工具对其内容进行抓取、管理和处理的数据集合\n什么是Big Data\n大数据的4V特征\n\n\n*\n\n大数据 = 海量数据 + 复杂类型的数据\n海量交易数据：\n企业内部的经营交易信息主要包括联机交易数据和联机分析数据，是结构化的、通过关系数据库进行管理和访问的静态、历史数据。通过这些数据，我们能了解过去发生了什么。\n大数据包括：\n交易数据和交互数据集在内的所有数据集\n海量交互数据：\n源于Facebook、Twitter、LinkedIn及其他来源的社交媒体数据构成。它包括了呼叫详细记录CDR、设备和传感器信息、GPS和地理定位映射数据、通过管理文件传输Manage File Transfer协议传送的海量图像文件、Web文本和点击流数据、科学信息、电子邮件等等。可以告诉我们未来会发生什么。\n海量数据处理：\n大数据的涌现已经催生出了设计用于数据密集型处理的架构。例如具有开放源码、在商品硬件群中运行的Apache Hadoop。\n大数据的构成\n\n\n\n大数据涉及的关键技术\n\n\n\n大数据的技术领域-分布式领域\n\n\n\n大数据的技术领域-数据分析与挖掘\n相关工具:\nSAS，R，Rhive/Rhadoop, Mahout，Xlib，OpenMPI…\n\n\n\n更多信息：http://www.cstor.cn\n刘   鹏  gloud@126.com\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n本PPT部份页面引自其他专家的PPT，在此致以衷心感谢！\n\n\n\n*\n\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n*";
 
 		SummaryComputer sc = new SummaryComputer(200, true, null, content);
 
 		TagContent tc = new TagContent("<begin>", "<end>");
 
 
-		List<Keyword> list = new ArrayList<>() ;
+		List<Keyword> list = new ArrayList<>();
 		for (String s : kws) {
-			list.add(new Keyword(s, Math.pow(10,s.length())*100)) ;
+			list.add(new Keyword(s, Math.pow(10, s.length()) * 100));
 		}
 
 		System.out.println(list);
-
 
 
 		String tagContent = tc.tagContent(sc.toSummary(list));
 
 		System.out.println(tagContent);
 	}
+
 
 }

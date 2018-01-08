@@ -212,8 +212,8 @@ public class TestError {
 //		recognition = DicAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃");
 //		System.out.println(recognition);
 
-		DicLibrary.insert(DicLibrary.DEFAULT,"高清","pos",100000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"真机","describe",100000);
+		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"高清","pos",100000);
+		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"真机","describe",100000);
 
 		System.out.println(DicAnalysis.parse("高清真机"));
 

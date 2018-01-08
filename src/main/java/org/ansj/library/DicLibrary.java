@@ -65,6 +65,26 @@ public class DicLibrary {
 	}
 
 	/**
+	 * 关键词增加
+	 *
+	 * @param keyword 所要增加的关键词
+	 * @param nature 关键词的词性
+	 * @param freq 关键词的词频
+	 */
+	public static void insertOrCreate(String key, String keyword, String nature, int freq) {
+		Forest dic = get(key);
+		if(dic==null){
+			dic = new Forest() ;
+			put(key,key,dic);
+		}
+		String[] paramers = new String[2];
+		paramers[0] = nature;
+		paramers[1] = String.valueOf(freq);
+		Value value = new Value(keyword, paramers);
+		Library.insertWord(dic, value);
+	}
+
+	/**
 	 * 增加关键词
 	 *
 	 * @param keyword
