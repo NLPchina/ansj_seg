@@ -50,9 +50,9 @@ public class ExtractingTest {
 		Extracting extracting = new Extracting(lines) ;
 
 		//插入自定义词典
-		DicLibrary.insert(DicLibrary.DEFAULT,"糖尿病","bName",1000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"心脏病","bName",1000);
-		DicLibrary.insert(DicLibrary.DEFAULT,"感冒","bName",1000);
+		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"糖尿病","bName",1000);
+		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"心脏病","bName",1000);
+		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"感冒","bName",1000);
 
 		//进行分析
 		System.out.println(extracting.parse("糖尿病具有的并发症都有什么").getAllResult());
