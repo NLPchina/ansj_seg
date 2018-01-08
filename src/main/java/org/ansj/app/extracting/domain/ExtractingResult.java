@@ -30,8 +30,9 @@ public class ExtractingResult {
 		for (ExtractingTask task : taskResults) {
 			List<Term> tempList = new ArrayList<>();
 			for (List<Term> list : task.getList()) {
-				if (list == null)
+				if (list == null) {
 					continue RESULT;
+				}
 				for (Term term : list) {
 					tempList.add(term);
 				}

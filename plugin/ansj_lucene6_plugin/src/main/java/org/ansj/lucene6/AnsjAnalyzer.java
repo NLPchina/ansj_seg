@@ -132,8 +132,9 @@ public class AnsjAnalyzer extends Analyzer {
 			filters = new ArrayList<StopRecognition>();
 			for (String key : split) {
 				StopRecognition stop = StopLibrary.get(key.trim());
-				if (stop != null)
+				if (stop != null) {
 					filters.add(stop);
+				}
 			}
 		}
 
@@ -143,8 +144,9 @@ public class AnsjAnalyzer extends Analyzer {
 			synonyms = new ArrayList<SynonymsRecgnition>();
 			for (String key : split) {
 				SmartForest<List<String>> sf = SynonymsLibrary.get(key.trim());
-				if (sf != null)
+				if (sf != null) {
 					synonyms.add(new SynonymsRecgnition(sf));
+				}
 			}
 		}
 

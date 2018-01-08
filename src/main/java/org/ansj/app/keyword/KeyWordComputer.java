@@ -70,8 +70,9 @@ public class KeyWordComputer<T extends Analysis> {
 
         for (Term term : parse) {
             double weight = getWeight(term, content.length(), titleLength);
-            if (weight == 0)
-                continue;
+            if (weight == 0) {
+				continue;
+			}
 
             Keyword keyword = tm.get(term.getName());
 

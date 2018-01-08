@@ -32,8 +32,9 @@ public class TermUtil {
 	}
 
 	public static void termLink(Term from, Term to) {
-		if (from == null || to == null)
+		if (from == null || to == null) {
 			return;
+		}
 		from.setTo(to);
 		to.setFrom(from);
 	}

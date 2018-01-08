@@ -118,8 +118,9 @@ public class Graph {
 		final int length = terms.length - 1;
 		for (int i = 0; i < length; i++) {
 			maxTerm = getMaxTerm(i);
-			if (maxTerm == null)
+			if (maxTerm == null) {
 				continue;
+			}
 
 			maxTo = maxTerm.toValue();
 
@@ -188,11 +189,13 @@ public class Graph {
 		int maxTo = -1;
 		Term temp = null;
 		for (int i = 0; i < terms.length; i++) {
-			if (terms[i] == null)
+			if (terms[i] == null) {
 				continue;
+			}
 			maxTo = terms[i].toValue();
-			if (maxTo - i == 1 || i + 1 == terms.length)
+			if (maxTo - i == 1 || i + 1 == terms.length) {
 				continue;
+			}
 			for (int j = i; j < maxTo; j++) {
 				temp = terms[j];
 				if (temp != null && temp.toValue() <= maxTo && temp.getName().length() == 1) {
@@ -229,8 +232,9 @@ public class Graph {
 			do {
 				maxTo = term.toValue();
 				maxScore = term.score();
-				if (maxTo - i == 1 || i + 1 == terms.length)
+				if (maxTo - i == 1 || i + 1 == terms.length) {
 					continue;
+				}
 				boolean flag = true;// 可以删除
 				out:
 				for (int j = i; j < maxTo; j++) {

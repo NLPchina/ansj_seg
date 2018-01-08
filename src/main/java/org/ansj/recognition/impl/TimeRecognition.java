@@ -31,17 +31,20 @@ public class TimeRecognition implements Recognition {
 	private static final HashSet<String> TIME_START = new HashSet<>();
 
 	static {
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 10; i++) {
 			TIME_START.add(String.valueOf(i));
-		for (char c : "０１２３４５６７８９昨今前去当".toCharArray())
+		}
+		for (char c : "０１２３４５６７８９昨今前去当".toCharArray()) {
 			TIME_START.add(String.valueOf(c));
+		}
 		TIME_START.addAll(Arrays.asList("上午|下午|中午|清晨|早上|凌晨|近日|日前|不久前|星期".split("\\|")));
 	}
 
 	@Override
 	public void recognition(Result result) {
-		if (result.getTerms().isEmpty())
+		if (result.getTerms().isEmpty()) {
 			return;
+		}
 		String name = "";
 		String timeWord = "";
 		List<Term> terms = result.getTerms();
@@ -61,7 +64,7 @@ public class TimeRecognition implements Recognition {
 					break;
 				}
 			}
-			if (isStartedWithTime)
+			if (isStartedWithTime) {
 				for (int j = i; j < terms.size() && matchLength < 11; j++) { //向后最大找14个词匹配是否是时间词
 					Term term = terms.get(j);
 					name = term.getName();
@@ -75,6 +78,7 @@ public class TimeRecognition implements Recognition {
 					}
 					matchLength++;
 				}
+			}
 			if (isTime) {
 				Term ft = mergeList.pollFirst();
 				for (int k = 0; k < timeTermsLength - 1; k++) {

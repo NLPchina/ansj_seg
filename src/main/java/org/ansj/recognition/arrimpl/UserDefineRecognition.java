@@ -60,8 +60,9 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 			boolean flag = true;
 			for (int i = 0; i < length; i++) {
-				if (terms[i] == null)
+				if (terms[i] == null) {
 					continue;
+				}
 				if (branch == forest) {
 					flag = false;
 				} else {

@@ -52,8 +52,9 @@ public class NatureLibrary {
 			int p2 = 0;
 			while ((temp = reader.readLine()) != null) {
 				strs = temp.split(split);
-				if (strs.length != 4)
+				if (strs.length != 4) {
 					continue;
+				}
 
 				p0 = Integer.parseInt(strs[0]);
 				p1 = Integer.parseInt(strs[1]);
@@ -69,8 +70,9 @@ public class NatureLibrary {
 			NATURETABLE = new int[maxLength + 1][maxLength + 1];
 			int j = 0;
 			while ((temp = reader.readLine()) != null) {
-				if (StringUtil.isBlank(temp))
+				if (StringUtil.isBlank(temp)) {
 					continue;
+				}
 				strs = temp.split(split);
 				for (int i = 0; i < strs.length; i++) {
 					NATURETABLE[j][i] = Integer.parseInt(strs[i]);
