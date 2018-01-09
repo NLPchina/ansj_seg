@@ -226,6 +226,8 @@ public class SummaryComputer {
 			maxIndex = 0 ;
 			maxScore = -10000 ;
 
+
+
 			for (Integer begin : beginArr) {
 				double score = 0 ;
 				for (Triplet<Integer,Integer,Double> t : offset) {
@@ -235,6 +237,7 @@ public class SummaryComputer {
 				}
 				if(score>maxScore){
 					maxIndex = begin ;
+					maxScore = score ;
 				}
 			}
 
