@@ -86,7 +86,7 @@ public class SynonymsLibrary {
 				if (StringUtil.isBlank(temp)) {
 					continue;
 				}
-				String[] split = temp.split("\t");
+				String[] split = temp.split("\\s+");
 
 				List<String> list = new ArrayList<>();
 				for (String word : split) {
