@@ -37,7 +37,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 获取系统默认词典
-	 * 
+	 *
 	 * @return
 	 */
 	public static Forest get() {
@@ -49,7 +49,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 根据key获取
-	 * 
+	 *
 	 */
 	public static Forest get(String key) {
 
@@ -77,7 +77,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 加载
-	 * 
+	 *
 	 * @return
 	 */
 	private static synchronized Forest init(String key, KV<String, Forest> kv, boolean reload) {
@@ -98,7 +98,7 @@ public class AmbiguityLibrary {
 			while ((temp = br.readLine()) != null) {
 				if (StringUtil.isNotBlank(temp)) {
 					temp = StringUtil.trim(temp);
-					String[] split = temp.split("\t");
+					String[] split = temp.split("\\s+");
 					StringBuilder sb = new StringBuilder();
 					if (split.length % 2 != 0) {
 						LOG.error("init ambiguity  error in line :" + temp + " format err !");
@@ -122,7 +122,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 插入到树中呀
-	 * 
+	 *
 	 * @param key
 	 * @param split
 	 * @return
@@ -142,7 +142,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 插入到树种
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 */
@@ -153,7 +153,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 动态添加
-	 * 
+	 *
 	 * @param dicDefault
 	 * @param dicDefault2
 	 * @param dic2
@@ -169,7 +169,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 删除一个key
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */
@@ -184,7 +184,7 @@ public class AmbiguityLibrary {
 
 	/**
 	 * 刷新一个,将值设置为null
-	 * 
+	 *
 	 * @param key
 	 * @return
 	 */

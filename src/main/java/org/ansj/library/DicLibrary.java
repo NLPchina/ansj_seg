@@ -199,7 +199,7 @@ public class DicLibrary {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
 						temp = StringUtil.trim(temp);
-						strs = temp.split("\t");
+						strs = temp.split("\\s+");
 						strs[0] = strs[0].toLowerCase();
 						// 如何核心辞典存在那么就放弃
 						if (MyStaticValue.isSkipUserDefine && DATDictionary.getId(strs[0]) > 0) {

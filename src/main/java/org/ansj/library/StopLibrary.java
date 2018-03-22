@@ -135,7 +135,7 @@ public class StopLibrary {
 			try (BufferedReader br = IOUtil.getReader(PathToStream.stream(kv.getK()), "UTF-8")) {
 				while ((temp = br.readLine()) != null) {
 					if (StringUtil.isNotBlank(temp)) {
-						strs = temp.split("\t");
+						strs = temp.split("\\s+");
 
 						if (strs.length == 1) {
 							stopRecognition.insertStopWords(strs[0]);

@@ -111,7 +111,7 @@ public class DATDictionary {
 			float score;
 
 			while ((temp = reader.readLine()) != null) {
-				String[] split = temp.split("\t");
+				String[] split = temp.split("\\s+");
 				word = split[1];
 				score = ObjConver.getFloatValue(split[2]);
 				item = dat.getItem(word);
