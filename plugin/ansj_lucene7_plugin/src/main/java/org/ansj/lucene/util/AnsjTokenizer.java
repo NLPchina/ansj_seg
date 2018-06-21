@@ -34,6 +34,8 @@ public final class AnsjTokenizer extends Tokenizer {
 
 	private List<SynonymsRecgnition> synonyms; //同义词词典
 
+    private int finalOffset;
+
 	public AnsjTokenizer(Analysis ta, List<StopRecognition> stops, List<SynonymsRecgnition> synonyms) {
 		this.ta = ta;
 		this.stops = stops;
@@ -81,7 +83,7 @@ public final class AnsjTokenizer extends Tokenizer {
 				rName = term.getName();
 			}
 			position++;
-			offsetAtt.setOffset(term.getOffe(), term.getOffe() + term.getName().length());
+            offsetAtt.setOffset(correctOffset(term.getOffe()), finalOffset = correctOffset(term.getOffe() + term.getName().length()));
 			typeAtt.setType(term.getNatureStr());
 
 			positionAttr.setPositionIncrement(position);
@@ -105,6 +107,13 @@ public final class AnsjTokenizer extends Tokenizer {
 		}
 		return false;
 	}
+
+    @Override
+    public void end() throws IOException {
+        super.end();
+        // set final offset
+        offsetAtt.setOffset(finalOffset, finalOffset);
+    }
 
 	/**
 	 * 必须重载的方法，否则在批量索引文件时将会导致文件索引失败
