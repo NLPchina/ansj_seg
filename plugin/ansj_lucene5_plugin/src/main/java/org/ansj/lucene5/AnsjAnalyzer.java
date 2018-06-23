@@ -1,9 +1,11 @@
 package org.ansj.lucene5;
 
+import org.ansj.library.*;
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.splitWord.analysis.*;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -39,7 +41,6 @@ public class AnsjAnalyzer extends Analyzer {
 	private Map<String, String> args;
 
 	/**
-	 * @param filter 停用词
 	 */
 	public AnsjAnalyzer(Map<String, String> args) {
 		this.args = args;
@@ -68,8 +69,6 @@ public class AnsjAnalyzer extends Analyzer {
 	 * 获得一个tokenizer
 	 * 
 	 * @param reader
-	 * @param type
-	 * @param filter
 	 * @return
 	 */
 	public static Tokenizer getTokenizer(Reader reader, Map<String, String> args) {

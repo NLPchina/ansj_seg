@@ -1,9 +1,22 @@
 package org.ansj.test;
 
+import org.ansj.domain.Term;
+import org.ansj.library.AmbiguityLibrary;
 import org.ansj.library.DicLibrary;
+<<<<<<< HEAD
 import org.ansj.recognition.impl.UserDicNatureRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
+=======
+import org.ansj.library.SynonymsLibrary;
+import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.ansj.util.MyStaticValue;
+>>>>>>> ce4dd92f979b88c76c9fe7d16600fc426c0c6432
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
+
+import java.util.List;
 
 
 public class TestError {
@@ -217,6 +230,7 @@ public class TestError {
 //
 //		System.out.println(DicAnalysis.parse("高清真机"));
 
+<<<<<<< HEAD
 //		System.out.println(ToAnalysis.parse("在宴会上上了头条"));
 //		System.out.println(NlpAnalysis.parse("在宴会上上了头条"));
 //		System.out.println(DicAnalysis.parse("在宴会上上了头条"));
@@ -228,8 +242,32 @@ public class TestError {
 		System.out.println(DicLibrary.get().getWord("阿司匹林").getParam(0));
 
 		System.out.println(ToAnalysis.parse("我爱吃阿司匹林").recognition(new UserDicNatureRecognition()));
+=======
 
+//		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"弹幕墙","n",1000);
+//
+//		System.out.println(DicAnalysis.parse("进来教你弹幕墙制作O(∩_∩)O~_日常_生活_bilibili_哔哩哔哩"));
+//		System.out.println(NlpAnalysis.parse("进来教你弹幕墙制作O(∩_∩)O~_日常_生活_bilibili_哔哩哔哩"));
+//		System.out.println(ToAnalysis.parse("进来教你弹幕墙制作O(∩_∩)O~_日常_生活_bilibili_哔哩哔哩"));
 
+		AmbiguityLibrary.insert(AmbiguityLibrary.DEFAULT,"查", "a","本省","b");
+>>>>>>> ce4dd92f979b88c76c9fe7d16600fc426c0c6432
 
+		System.out.println(NlpAnalysis.parse("查本省内无此人"));
+		System.out.println(ToAnalysis.parse("查本省内无此人"));
+		System.out.println(DicAnalysis.parse("查本省内无此人"));
+		System.out.println(DicAnalysis.parse("发展中国家庭养猪事业"));
+		System.out.println(NlpAnalysis.parse("发展中国家庭养猪事业"));
+		System.out.println(ToAnalysis.parse("计划建立一个5万公顷面积的航天站"));
+		String test = "[科技]速度对比！小米6 大战 三星S8！贵不一定好 这种对比手段特别傻逼～真的。\n" +
+				"一点意义也没有～\n" +
+				"另外，好好练习你的普通发～";
+
+		for (Term term : NlpAnalysis.parse(test)) {
+			System.out.println(term.getName()+" : "+term.getNatureStr());
+		}
+
+		SynonymsLibrary.put(SynonymsLibrary.DEFAULT,SynonymsLibrary.DEFAULT,new SmartForest<List<String>>());
+		SynonymsLibrary.insert(SynonymsLibrary.DEFAULT, new String[] { "兰多", "兰少" });
 	}
 }

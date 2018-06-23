@@ -216,6 +216,7 @@ public class NlpAnalysis extends Analysis {
 		filter.add('—');
 		filter.add('-');
 		filter.add('－');
+		filter.add('～');
 
 		filter.add('—');
 		filter.add('《');
