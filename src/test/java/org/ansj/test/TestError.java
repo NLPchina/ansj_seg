@@ -1,8 +1,8 @@
 package org.ansj.test;
 
 import org.ansj.library.DicLibrary;
-import org.ansj.splitWord.analysis.DicAnalysis;
-import org.ansj.util.MyStaticValue;
+import org.ansj.recognition.impl.UserDicNatureRecognition;
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
 
@@ -199,7 +199,7 @@ public class TestError {
 //		DicLibrary.insert(DicLibrary.DEFAULT,"mmHg","danwei",10000);
 //		DicLibrary.insert(DicLibrary.DEFAULT,"℃","danwei",10000);
 
-		MyStaticValue.isQuantifierRecognition = false ;
+//		MyStaticValue.isQuantifierRecognition = false ;
 
 //		DicLibrary.insert(DicLibrary.DEFAULT,"mmol/L".toLowerCase(),"danwei",10000);
 //		DicLibrary.insert(DicLibrary.DEFAULT,"/HP".toLowerCase(),"danwei",10000);
@@ -212,11 +212,22 @@ public class TestError {
 //		recognition = DicAnalysis.parse("速度0.2mmol/L, Hg高88mmHg，体温为31.5℃");
 //		System.out.println(recognition);
 
-		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"高清","pos",100000);
-		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"真机","describe",100000);
+//		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"高清","pos",100000);
+//		DicLibrary.insertOrCreate(DicLibrary.DEFAULT,"真机","describe",100000);
+//
+//		System.out.println(DicAnalysis.parse("高清真机"));
 
-		System.out.println(DicAnalysis.parse("高清真机"));
+//		System.out.println(ToAnalysis.parse("在宴会上上了头条"));
+//		System.out.println(NlpAnalysis.parse("在宴会上上了头条"));
+//		System.out.println(DicAnalysis.parse("在宴会上上了头条"));
+//		System.out.println(BaseAnalysis.parse("在宴会上上了头条"));
 
+
+		DicLibrary.insert(DicLibrary.DEFAULT,"阿司匹林","drug",2000);
+
+		System.out.println(DicLibrary.get().getWord("阿司匹林").getParam(0));
+
+		System.out.println(ToAnalysis.parse("我爱吃阿司匹林").recognition(new UserDicNatureRecognition()));
 
 
 
