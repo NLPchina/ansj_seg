@@ -3,6 +3,7 @@ package org.ansj.ansj_lucene5_plug;
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.splitWord.Analysis;
+import org.ansj.splitWord.analysis.*;
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
@@ -38,7 +39,7 @@ public class AppTest {
 			parse(new ToAnalysis(reader), filters);
 			parse(new DicAnalysis(reader), filters);
 			parse(new NlpAnalysis(reader), filters);
-			parse(new BaseAnalysis(reader), filters);	
+			parse(new BaseAnalysis(reader), filters);
 		}
 	}
 
