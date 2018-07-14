@@ -57,7 +57,7 @@ public class StopRecognition implements Recognition {
 	/**
 	 * 批量增加停用词性 比如 增加nr 后.人名将不在结果中
 	 * 
-	 * @param stopWords
+	 * @param stopNatures
 	 */
 	public void insertStopNatures(String... stopNatures) {
 		for (String natureStr : stopNatures) {
@@ -68,7 +68,7 @@ public class StopRecognition implements Recognition {
 	/**
 	 * 增加正则表达式过滤
 	 * 
-	 * @param regex
+	 * @param regexes
 	 */
 	public void insertStopRegexes(String... regexes) {
 		for (String regex : regexes) {
@@ -113,8 +113,8 @@ public class StopRecognition implements Recognition {
 		}
 
 		if (regexList.size() > 0) {
-			for (Pattern stopwordPattern : regexList) {
-				if (stopwordPattern.matcher(term.getName()).matches()) {
+			for (Pattern stopWordPattern : regexList) {
+				if (stopWordPattern.matcher(term.getName()).matches()) {
 					return true;
 				}
 			}

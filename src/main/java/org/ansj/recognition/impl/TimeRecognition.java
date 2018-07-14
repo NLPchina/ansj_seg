@@ -75,7 +75,6 @@ public class TimeRecognition implements Recognition {
         if (result.getTerms().isEmpty()) {
             return;
         }
-        String name = "";
         StringBuilder timeWord = new StringBuilder();
         List<Term> terms = result.getTerms();
         LinkedList<Term> mergeList = new LinkedList<Term>();
@@ -97,7 +96,7 @@ public class TimeRecognition implements Recognition {
             if (isStartedWithTime) {
                 for (int j = i; j < terms.size() && matchLength < 11; j++) { //向后最大找14个词匹配是否是时间词
                     Term term = terms.get(j);
-                    name = term.getName();
+                    String name = term.getName();
                     timeWord.append(name);
                     Matcher matcher = TIME_PATTERN_ALL.matcher(timeWord);
                     mergeList.add(term);
