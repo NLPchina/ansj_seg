@@ -22,7 +22,7 @@ public class DicRecognition implements Recognition {
 
 	private static final long serialVersionUID = 7487741700410080896L;
 
-	private Forest[] forests = null;
+	private Forest[] forests;
 
 	private TermUtil.InsertTermType type = TermUtil.InsertTermType.REPLACE ;
 

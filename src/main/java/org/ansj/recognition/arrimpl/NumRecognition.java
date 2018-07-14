@@ -67,8 +67,8 @@ public class NumRecognition implements TermArrRecognition {
 	public void recognition(Graph graph) {
 		Term[] terms = graph.terms ;
 		int length = terms.length - 1;
-		Term to = null;
-		Term temp = null;
+		Term to;
+		Term temp;
 		for (int i = 0; i < length; i++) {
 			temp = terms[i];
 
@@ -81,27 +81,15 @@ public class NumRecognition implements TermArrRecognition {
 			}
 
             if (temp.getName().length() == 1) {
-                if (j_NUM.contains(temp.getName().charAt(0))) {
-                    to = temp.to();
-                    while (to.getName().length() == 1 && j_NUM.contains(to.getName().charAt(0))) {
-                        linkTwoTerms(terms, temp, to);
-                        to = to.to();
-                    }
-                }
+				doLink(terms, temp, j_NUM);
 
 				if(temp.getName().length()>1){
 					i-- ;
 					continue;
 				}
 
-                if (f_NUM.contains(temp.getName().charAt(0))) {
-                    to = temp.to();
-                    while (to.getName().length() == 1 && f_NUM.contains(to.getName().charAt(0))) {
-                        linkTwoTerms(terms, temp, to);
-                        to = to.to();
-                    }
-                }
-                if (temp.getName().length() > 1) {
+				doLink(terms, temp, f_NUM);
+				if (temp.getName().length() > 1) {
                     i--;
                     continue;
                 }
@@ -138,7 +126,18 @@ public class NumRecognition implements TermArrRecognition {
 
     }
 
-    private void linkTwoTerms(Term[] terms, Term temp, Term to) {
+	private void doLink(Term[] terms, Term temp, Set<Character> f_num) {
+		Term to;
+		if (f_num.contains(temp.getName().charAt(0))) {
+			to = temp.to();
+			while (to.getName().length() == 1 && f_num.contains(to.getName().charAt(0))) {
+				linkTwoTerms(terms, temp, to);
+				to = to.to();
+			}
+		}
+	}
+
+	private void linkTwoTerms(Term[] terms, Term temp, Term to) {
         temp.setName(temp.getName() + to.getName());
         Term origTo = terms[to.getOffe()];
         if (origTo.getName().length() > to.getName().length()) {//to的位置被别的词占用了

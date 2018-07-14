@@ -23,9 +23,9 @@ public class NewWordRecognition {
 
 	private StringBuilder sb = new StringBuilder();
 
-	private SmartForest<NewWord> forest = null;
+	private SmartForest<NewWord> forest;
 
-	private SmartForest<NewWord> branch = null;
+	private SmartForest<NewWord> branch;
 
 	// private int offe = -1;
 	// private int endOffe = -1;

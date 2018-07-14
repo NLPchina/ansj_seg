@@ -34,7 +34,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 	private SmartForest<String[]> branch = null;
 	private SmartForest<String[]> forest = null;
 
-	private InsertTermType type = InsertTermType.SKIP;
+	private InsertTermType type;
 
 	public UserDefineRecognition(InsertTermType type, Forest... forests) {
 		this.type = type;
@@ -58,17 +58,12 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 			int length = terms.length - 1;
 
-			boolean flag = true;
+			boolean flag;
 			for (int i = 0; i < length; i++) {
 				if (terms[i] == null) {
 					continue;
 				}
-				if (branch == forest) {
-					flag = false;
-				} else {
-					flag = true;
-				}
-
+				flag = branch != forest;
 				branch = termStatus(branch, terms[i]);
 				if (branch == null) {
 					if (offe != -1) {
@@ -121,9 +116,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 	private void makeNewTerm() {
 		StringBuilder sb = new StringBuilder();
 		for (int j = offe; j <= endOffe; j++) {
-			if (terms[j] == null) {
-				continue;
-			} else {
+			if (terms[j] != null) {
 				sb.append(terms[j].getName());
 			}
 		}
@@ -136,9 +129,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 		if (terms[offe].getRealNameIfnull() != null) { //后面增加了非原生graph的合并，所以需要补充realname
 			StringBuilder sb1 = new StringBuilder();
 			for (int j = offe; j <= endOffe; j++) {
-				if (terms[j] == null) {
-					continue;
-				} else {
+				if (terms[j] != null) {
 					sb1.append(terms[j].getRealName());
 				}
 			}
