@@ -19,9 +19,6 @@ import java.util.regex.Pattern;
  */
 public class TimeRecognition implements Recognition {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private static final Nature nature = new Nature("t");
     private static final String NUM = Matcher.quoteReplacement("[０１２３４５６７８９\\d]");
@@ -110,10 +107,12 @@ public class TimeRecognition implements Recognition {
             }
             if (isTime) {
                 Term ft = mergeList.pollFirst();
-                for (int k = 0; k < timeTermsLength - 1; k++) {
-                    ft.merageWithBlank(mergeList.get(k));
+                if (ft != null) {
+                    for (int k = 0; k < timeTermsLength - 1; k++) {
+                        ft.merageWithBlank(mergeList.get(k));
+                    }
+                    ft.setNature(nature);
                 }
-                ft.setNature(nature);
                 list.add(ft);
             } else {
                 list.add(termBase);
