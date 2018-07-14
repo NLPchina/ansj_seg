@@ -15,7 +15,9 @@ import java.util.Map;
  */
 public class PairRecognition implements Recognition {
 
-    private Nature nature;
+	private static final long serialVersionUID = 1L;
+
+	private Nature nature;
 
     private Map<String, String> ruleMap;
 

@@ -12,6 +12,8 @@ import org.ansj.domain.TermNatures;
  */
 public class EmailRecognition extends ExtractingRecognition {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final TermNatures EMAIL_T_N = new TermNatures(new TermNature("email", 1));
 
 	private static final Extracting EXTRACTING = new Extracting();

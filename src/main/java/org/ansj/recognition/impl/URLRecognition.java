@@ -10,6 +10,8 @@ import org.ansj.domain.TermNatures;
  */
 public class URLRecognition extends ExtractingRecognition {
 
+	private static final long serialVersionUID = 1L;
+	
 	private static final Extracting EXTRACTING = new Extracting();
 	private static final TermNatures URL_T_N = new TermNatures(new TermNature("url", 1));
 

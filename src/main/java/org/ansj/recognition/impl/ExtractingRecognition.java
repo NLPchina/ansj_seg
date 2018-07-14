@@ -16,7 +16,9 @@ import java.util.List;
  */
 public class ExtractingRecognition implements Recognition {
 
-    private Extracting extracting;
+	private static final long serialVersionUID = 1L;
+	
+	private Extracting extracting;
     private TermNatures termNatures;
 
     public ExtractingRecognition(Extracting extracting, TermNatures termNatures) {
@@ -40,7 +42,6 @@ public class ExtractingRecognition implements Recognition {
                 continue;
             }
 
-
             int beginOff = list.get(0).getOffe();
 
             int endOff = list.get(list.size() - 1).getOffe() + list.get(list.size() - 1).getName().length();
@@ -55,7 +56,7 @@ public class ExtractingRecognition implements Recognition {
 
             for (int i = 0; i < terms.size(); i++) {
                 Term term = terms.get(i);
-                if (term.getOffe() >= beginOff && term.getOffe() < endOff) {
+                if (sb != null && term.getOffe() >= beginOff && term.getOffe() < endOff) {
                     sb.append(term.getName());
                     if (term.getRealNameIfnull() != null) {
                         sbReal.append(term.getRealName());
@@ -71,7 +72,6 @@ public class ExtractingRecognition implements Recognition {
                         sbReal = null;
                     }
                     newList.add(term);
-
                 }
             }
             result.setTerms(newList);

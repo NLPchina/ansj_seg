@@ -20,7 +20,7 @@ public class UserDicNatureRecognition implements Recognition {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Forest[] forests = null;
+	private Forest[] forests;
 
 	public UserDicNatureRecognition() {
 		forests = new Forest[] { DicLibrary.get() };

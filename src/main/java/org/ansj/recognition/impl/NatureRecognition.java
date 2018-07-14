@@ -32,11 +32,11 @@ public class NatureRecognition implements Recognition {
 
 	private static final Forest SUFFIX_FOREST = new Forest();
 
-	private Forest[] forests = null;
+	private Forest[] forests;
 
 	static {
 		try (BufferedReader reader = MyStaticValue.getNatureClassSuffix()) {
-			String temp = null;
+			String temp;
 			while ((temp = reader.readLine()) != null) {
 				String[] split = temp.split("\t");
 				String word = split[0];
@@ -119,10 +119,10 @@ public class NatureRecognition implements Recognition {
 	 * @return
 	 */
 	public TermNatures getTermNatures(String word) {
-		String[] params = null;
+		String[] params;
 		// 获得词性 ， 先从系统辞典。在从用户自定义辞典
 		AnsjItem ansjItem = DATDictionary.getItem(word);
-		TermNatures tn = null;
+		TermNatures tn;
 
 		if (ansjItem != AnsjItem.NULL) {
 			tn = ansjItem.termNatures;
@@ -238,7 +238,7 @@ public class NatureRecognition implements Recognition {
 	 */
 	private void optimalRoot() {
 		NatureTerm to = end[0];
-		NatureTerm from = null;
+		NatureTerm from;
 		int index = natureTermTable.length - 1;
 		while ((from = to.from) != null && index > 0) {
 			terms.get(--index).setNature(from.termNature.nature);

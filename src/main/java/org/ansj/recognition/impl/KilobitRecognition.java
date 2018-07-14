@@ -11,6 +11,8 @@ import org.ansj.domain.TermNatures;
  */
 public class KilobitRecognition extends ExtractingRecognition {
 
+	private static final long serialVersionUID = 1L;
+
 	private static final TermNatures KILOBIT_T_N = new TermNatures(new TermNature("kilobit", 1));
 
 	private static final Extracting EXTRACTING = new Extracting();
