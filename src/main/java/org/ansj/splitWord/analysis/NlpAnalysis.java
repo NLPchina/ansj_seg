@@ -1,35 +1,30 @@
 package org.ansj.splitWord.analysis;
 
-import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.ansj.app.crf.SplitWord;
 import org.ansj.dic.LearnTool;
-import org.ansj.domain.Nature;
-import org.ansj.domain.NewWord;
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
-import org.ansj.recognition.arrimpl.AsianPersonRecognition;
-import org.ansj.recognition.arrimpl.ForeignPersonRecognition;
+import org.ansj.domain.*;
+import org.ansj.library.CrfLibrary;
 import org.ansj.recognition.arrimpl.NewWordRecognition;
 import org.ansj.recognition.arrimpl.NumRecognition;
+import org.ansj.recognition.arrimpl.PersonRecognition;
 import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.recognition.impl.NatureRecognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
-import org.ansj.util.MyStaticValue;
-import org.ansj.util.NameFix;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.util.MapCount;
 import org.nlpcn.commons.lang.util.WordAlert;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.Reader;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 自然语言分词,具有未登录词发现功能。建议在自然语言理解中用。搜索中不要用
@@ -39,13 +34,15 @@ import org.nlpcn.commons.lang.util.WordAlert;
  */
 public class NlpAnalysis extends Analysis {
 
+	private static final Log LOG = LogFactory.getLog(NlpAnalysis.class);
+
 	private LearnTool learn = null;
 
 	private static final String TAB = "\t";
 
 	private static final int CRF_WEIGHT = 6;
 
-	private SplitWord splitWord = MyStaticValue.getCRFSplitWord();
+	private SplitWord splitWord = CrfLibrary.get();
 
 	@Override
 	protected List<Term> getResult(final Graph graph) {
@@ -60,17 +57,12 @@ public class NlpAnalysis extends Analysis {
 
 				graph.walkPath();
 
-				learn.learn(graph, splitWord);
+				learn.learn(graph, splitWord ,forests);
 
 				// 姓名识别
-				if (graph.hasPerson && MyStaticValue.isNameRecognition) {
-					// 亚洲人名识别
-					new AsianPersonRecognition().recognition(graph.terms);
-					graph.walkPathByScore();
-					NameFix.nameAmbiguity(graph.terms);
-					// 外国人名识别
-					new ForeignPersonRecognition().recognition(graph.terms);
-					graph.walkPathByScore();
+				if (graph.hasPerson && isNameRecognition) {
+					// 人名识别
+					new PersonRecognition().recognition(graph);
 				}
 
 				if (splitWord != null) {
@@ -90,9 +82,10 @@ public class NlpAnalysis extends Analysis {
 						}
 					}
 
+					NatureRecognition natureRecognition = new NatureRecognition(forests);
 					for (String word : words) {
 
-						TermNatures termNatures = NatureRecognition.getTermNatures(word); // 尝试从词典获取词性
+						TermNatures termNatures = natureRecognition.getTermNatures(word); // 尝试从词典获取词性
 
 						Term term = null;
 
@@ -104,15 +97,9 @@ public class NlpAnalysis extends Analysis {
 						}
 
 						tempOff += word.length(); // 增加偏移量
-
-						if (term.isNewWord() && isRuleWord(word)) { // 如果word不对那么不要了
+						if (isRuleWord(word)) { // 如果word不对那么不要了
 							tempTerm = null;
 							continue;
-						}
-
-						if (term.isNewWord()) { // 尝试猜测词性
-							termNatures = NatureRecognition.guessNature(word);
-							term.updateTermNaturesAndNature(termNatures);
 						}
 
 						TermUtil.insertTerm(graph.terms, term, InsertTermType.SCORE_ADD_SORT);
@@ -135,32 +122,42 @@ public class NlpAnalysis extends Analysis {
 					}
 					graph.walkPath(mc.get());
 				} else {
-					MyStaticValue.LIBRARYLOG.warn("not find any crf model, make sure your config right? ");
+					LOG.warn("not find any crf model, make sure your config right? ");
 				}
 
 				// 数字发现
-				if (graph.hasNum && MyStaticValue.isNumRecognition) {
-					new NumRecognition().recognition(graph.terms);
+				if (isNumRecognition) {
+					new NumRecognition(isQuantifierRecognition).recognition(graph);
 				}
 
 				// 词性标注
 				List<Term> result = getResult();
 
 				// 用户自定义词典的识别
-				new UserDefineRecognition(InsertTermType.SCORE_ADD_SORT, forests).recognition(graph.terms);
+				new UserDefineRecognition(InsertTermType.SCORE_ADD_SORT, forests).recognition(graph);
 				graph.rmLittlePath();
 				graph.walkPathByScore();
 
 				// 进行新词发现
-				new NewWordRecognition(learn).recognition(graph.terms);
+				new NewWordRecognition(learn).recognition(graph);
 				graph.walkPathByScore();
 
 				// 优化后重新获得最优路径
 				result = getResult();
 
+
 				// 激活辞典
 				for (Term term : result) {
-					learn.active(term.getName());
+					if(term.isNewWord()) {
+						if("nw".equals(term.getNatureStr())) {
+							TermNatures termNatures = NatureRecognition.guessNature(term.getName());
+							if(!"nw".equals(termNatures.nature.natureStr)){
+								term.setNature(termNatures.nature);
+							}
+						}
+
+						learn.active(term.getName());
+					}
 				}
 
 				setRealName(graph, result);
@@ -169,13 +166,14 @@ public class NlpAnalysis extends Analysis {
 			}
 
 			private List<Term> getResult() {
-				
+
 				List<Term> result = new ArrayList<Term>();
 				int length = graph.terms.length - 1;
 				for (int i = 0; i < length; i++) {
 					if (graph.terms[i] == null) {
 						continue;
 					}
+					setIsNewWord(graph.terms[i]) ;
 					result.add(graph.terms[i]);
 				}
 				return result;
@@ -189,6 +187,7 @@ public class NlpAnalysis extends Analysis {
 
 	static {
 		filter.add(':');
+		filter.add(' ');
 		filter.add('：');
 		filter.add('　');
 		filter.add('，');
@@ -217,6 +216,7 @@ public class NlpAnalysis extends Analysis {
 		filter.add('—');
 		filter.add('-');
 		filter.add('－');
+		filter.add('～');
 
 		filter.add('—');
 		filter.add('《');
@@ -236,7 +236,7 @@ public class NlpAnalysis extends Analysis {
 			c = word.charAt(i);
 
 			if (c != '·') {
-				if (c < 256 || filter.contains(c) || (c = WordAlert.CharCover(word.charAt(i))) > 0) {
+				if ((c = WordAlert.CharCover(word.charAt(i))) < 256 || filter.contains(c) ) {
 					return true;
 				}
 			}
@@ -249,30 +249,16 @@ public class NlpAnalysis extends Analysis {
 		return this;
 	}
 
-	public NlpAnalysis setCrfModel(String key) {
-		this.splitWord = MyStaticValue.getCRFSplitWord(key);
-		return this;
-	}
-
 	public NlpAnalysis setLearnTool(LearnTool learn) {
 		this.learn = learn;
 		return this;
 	}
 
-	/**
-	 * 用户自己定义的词典
-	 * 
-	 * @param forest
-	 */
-	public NlpAnalysis(Forest... forests) {
-		if (forests == null) {
-			forests = new Forest[] { UserDefineLibrary.FOREST };
-		}
-		this.forests = forests;
+	public NlpAnalysis() {
+		super();
 	}
 
-	public NlpAnalysis(Reader reader, Forest... forests) {
-		this.forests = forests;
+	public NlpAnalysis(Reader reader) {
 		super.resetContent(new AnsjReader(reader));
 	}
 
@@ -281,7 +267,7 @@ public class NlpAnalysis extends Analysis {
 	}
 
 	public static Result parse(String str, Forest... forests) {
-		return new NlpAnalysis(forests).parseStr(str);
+		return new NlpAnalysis().setForests(forests).parseStr(str);
 	}
 
 }

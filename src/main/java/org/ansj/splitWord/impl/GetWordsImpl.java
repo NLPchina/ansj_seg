@@ -66,10 +66,18 @@ public class GetWordsImpl implements GetWords {
 					tempBaseValue = baseValue;
 					return str;
 				} else {
-					i = start;
-					start++;
-					end = 0;
-					baseValue = 0;
+					int startCharStatus = DATDictionary.getItem(chars[start]).getStatus();
+					if (startCharStatus == 1) { //如果start的词的status为1，则将start设为i；否则start加1
+						start=i;
+						i--;
+						end = 0;
+						baseValue = 0;
+					} else {
+						i = start;
+						start++;
+						end = 0;
+						baseValue = 0;
+					}
 					break;
 				}
 			case 2:
@@ -87,11 +95,6 @@ public class GetWordsImpl implements GetWords {
 				return DATDictionary.getItem(tempBaseValue).getName();
 			}
 
-		}
-		if (start++ != i) {
-			i = start;
-			baseValue = 0;
-			return allWords();
 		}
 		end = 0;
 		baseValue = 0;

@@ -1,54 +1,90 @@
 package org.ansj.recognition.impl;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
+import org.ansj.app.extracting.Extracting;
+import org.ansj.app.extracting.domain.ExtractingResult;
+import org.ansj.app.extracting.exception.RuleFormatException;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.domain.TermNature;
+import org.ansj.domain.TermNatures;
 import org.ansj.recognition.Recognition;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 电子邮箱抽取
- * 
- * @author ansj
  *
+ * @author ansj
  */
-public class EmailRecognition implements Recognition{
+public class EmailRecognition implements Recognition {
 
-	private static Map<String, String> FEATURE = new HashMap<String,String>();
+	private static final TermNatures EMAIL_T_N = new TermNatures(new TermNature("email", 1));
 
-	private static final String NOT_HEAD = "NOT";
-	private static final String NATURE_HEAD = "nature:";
-	private static final String ALL = "ALL";
+	private static final Extracting EXTRACTING = new Extracting();
 
 	static {
-		FEATURE.put("-", NOT_HEAD);
-		FEATURE.put("_", NOT_HEAD);
-		FEATURE.put(".", NOT_HEAD);
-		FEATURE.put(NATURE_HEAD + "en", ALL);
-		FEATURE.put(NATURE_HEAD + "m", ALL);
+		try {
+			EXTRACTING.addRuleStr("(:m|:en|.|-)[\\\\d+][[a-zA-Z]+][\\\\.][-]{1,50}(@)(:m|:en|.|-)[\\\\d+][[a-zA-Z]+][\\\\.][-]{1,50}");
+		} catch (RuleFormatException e) {
+			e.printStackTrace();
+		}
 
 	}
 
-	public void recognition(Result result) {
-		
-		List<Term> terms = result.getTerms() ;
 
-		for (Term term : terms) {
-			if (!"@".equals(term.getName())) {
+	@Override
+	public void recognition(Result result) {
+		ExtractingResult parse = EXTRACTING.parse(result);
+
+		for (List<Term> list : parse.findAll()) {
+
+			String name = list.get(list.size() - 1).getName();
+
+			while ("-".equals(name) || ".".equals(name)) {
+				list.remove(list.size() - 1);
+				name = list.get(list.size() - 1).getName();
+			}
+
+			if (list.size() == 1) {
 				continue;
 			}
 
-		}
 
-		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext();) {
-			Term term = (Term) iterator.next();
-			if (term.getName() == null) {
-				iterator.remove();
+			int beginOff = list.get(0).getOffe();
+
+			int endOff = list.get(list.size() - 1).getOffe() + list.get(list.size() - 1).getName().length();
+
+			List<Term> terms = result.getTerms();
+
+			StringBuilder sb = new StringBuilder();
+
+			StringBuilder sbReal = new StringBuilder();
+
+			List<Term> newList = new ArrayList<>();
+
+			for (int i = 0; i < terms.size(); i++) {
+				Term term = terms.get(i);
+				if (term.getOffe() >= beginOff && term.getOffe() < endOff) {
+					sb.append(term.getName());
+					if (term.getRealNameIfnull() != null) {
+						sbReal.append(term.getRealName());
+					}
+				} else {
+					if (sb != null && sb.length() > 0) {
+						Term newTerm = new Term(sb.toString(), beginOff, EMAIL_T_N);
+						if (sbReal.length() > 0) {
+							newTerm.setRealName(sbReal.toString());
+						}
+						newList.add(newTerm);
+						sb = null;
+						sbReal = null;
+					}
+					newList.add(term);
+
+				}
 			}
+			result.setTerms(newList);
 		}
-
 	}
 }

@@ -2,7 +2,6 @@ package org.ansj.recognition.impl;
 
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
-import org.nlpcn.commons.lang.tire.GetWord;
 
 public class UserDicNatureRecognitionTest {
 

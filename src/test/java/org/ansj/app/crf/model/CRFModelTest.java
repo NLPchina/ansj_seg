@@ -1,21 +1,16 @@
 package org.ansj.app.crf.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-
+import junit.framework.Assert;
 import org.ansj.CorpusTest;
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
 
-import junit.framework.Assert;
+import java.io.*;
+import java.util.List;
 
 public class CRFModelTest extends CorpusTest {
 
@@ -25,7 +20,7 @@ public class CRFModelTest extends CorpusTest {
 
 	private String testPath = "src/test/resources/corpus.txt";
 
-	private Model model = new CRFModel("test");
+	private Model model = new CRFModel();
 
 	@Before
 	public void before() throws Exception {
@@ -115,8 +110,9 @@ public class CRFModelTest extends CorpusTest {
 					System.out.println("example:" + temp_str);
 					System.out.println(
 							" result:" + paser.toString().replace("[", "").replace("]", "").replace(", ", "\t"));
+					System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 				}
-				System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
+
 				line_number++;
 			}
 			// 正确数/总词数

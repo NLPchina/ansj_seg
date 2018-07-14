@@ -1,14 +1,14 @@
 package org.ansj.recognition.impl;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.Recognition;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 基于规则的新词发现 jijiang feidiao
@@ -18,6 +18,11 @@ import org.ansj.recognition.Recognition;
  */
 public class BookRecognition implements Recognition {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private static final Nature nature = new Nature("book");
 
 	private static Map<String, String> ruleMap = new HashMap<String, String>();
@@ -26,6 +31,7 @@ public class BookRecognition implements Recognition {
 		ruleMap.put("《", "》");
 	}
 
+	@Override
 	public void recognition(Result result) {
 		List<Term> terms = result.getTerms() ;
 		String end = null;
@@ -61,7 +67,7 @@ public class BookRecognition implements Recognition {
 		}
 
 		if (mergeList != null) {
-			for (Term term : list) {
+			for (Term term : mergeList) {
 				list.add(term);
 			}
 		}

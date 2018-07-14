@@ -1,12 +1,16 @@
 package org.ansj.app.crf;
 
+import org.ansj.app.crf.pojo.Element;
+import org.nlpcn.commons.lang.util.WordAlert;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.ansj.app.crf.pojo.Element;
-import org.nlpcn.commons.lang.util.WordAlert;
-
 public class Config {
+
+	private static final Log LOG = LogFactory.getLog() ;
 
 	public String splitStr = "\\s+";
 
@@ -125,7 +129,7 @@ public class Config {
 				element.len = tempSb.length();
 				list.add(element);
 			} else {
-				System.out.println("err!");
+				LOG.error("err! status :"+status);
 			}
 		}
 

@@ -1,8 +1,8 @@
 package org.ansj.domain;
 
-import java.io.Serializable;
-
 import org.ansj.library.NatureLibrary;
+
+import java.io.Serializable;
 
 /**
  * 一个词里面会有一些词性
@@ -36,21 +36,6 @@ public class TermNature implements Serializable{
 	public TermNature(String natureStr, int frequency) {
 		this.nature = NatureLibrary.getNature(natureStr);
 		this.frequency = frequency;
-	}
-
-	public static TermNature[] setNatureStrToArray(String natureStr) {
-		
-		natureStr = natureStr.substring(1, natureStr.length() - 1);
-		String[] split = natureStr.split(",");
-		String[] strs = null;
-		Integer frequency = null;
-		TermNature[] all = new TermNature[split.length];
-		for (int i = 0; i < split.length; i++) {
-			strs = split[i].split("=");
-			frequency = Integer.parseInt(strs[1]);
-			all[i] = new TermNature(strs[0].trim(), frequency);
-		}
-		return all;
 	}
 
 	@Override

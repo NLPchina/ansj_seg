@@ -1,8 +1,8 @@
 package org.ansj.domain;
 
-import java.io.Serializable;
-
 import org.ansj.library.NatureLibrary;
+
+import java.io.Serializable;
 
 /**
  * 这里面封装了一些基本的词性.
@@ -29,6 +29,8 @@ public class Nature implements Serializable {
 	public static final Nature NRF = NatureLibrary.getNature("nrf");
 
 	public static final Nature NR = NatureLibrary.getNature("nr");
+
+	public static final Nature MQ = NatureLibrary.getNature("mq");
 
 	public static final Nature NULL = NatureLibrary.getNature("null");
 

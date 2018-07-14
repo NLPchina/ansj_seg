@@ -1,14 +1,19 @@
 package org.ansj.app.summary;
 
-import static org.junit.Assert.*;
+import org.ansj.app.keyword.Keyword;
+import org.ansj.domain.Result;
+import org.ansj.domain.Term;
+import org.ansj.library.DicLibrary;
+import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.util.IOUtil;
+import org.nlpcn.commons.lang.util.StringUtil;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import org.ansj.app.keyword.Keyword;
-import org.ansj.app.summary.pojo.Summary;
-import org.junit.Test;
-import org.nlpcn.commons.lang.util.StringUtil;
 
 public class TagContentTest {
 
@@ -17,8 +22,9 @@ public class TagContentTest {
 
 		String query = "信息公开 工作要点";
 
-		String content = "国务院办公厅关于印发\n" + "2015年政府信息公开工作要点的通知\n" + "国办发〔2015〕22号\n" + "\n" + "各省、自治区、直辖市人民政府，国务院各部委、各直属机构：\n" + "　　《2015年政府信息公开工作要点》已经国务院同意，现印发给你们，请结合实际认真贯彻落实。\n" + "\n"
-				+ "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　国务院办公厅\n" + "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　2015年4月3日\n" + "\n" + "　　（此件公开发布）\n" + "\n" + " \n" + "\n" + "2015年政府信息公开工作要点\n" + "\n"
+		String content = "国务院办公厅关于印发\n" + "2015年政府信息公开工作要点的通知\n" + "国办发〔2015〕22号\n" + "\n" + "各省、自治区、直辖市人民政府，国务院各部委、各直属机构：\n" + "　　《2015年政府信息公开工作要点》已经国务院同意，现印发给你们，请结合实际认真贯彻落实。\n"
+				+ "\n" + "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　国务院办公厅\n" + "　　　　　　　　　　　　　　　　　　　　　　　　　　　　　2015年4月3日\n" + "\n" + "　　（此件公开发布）\n" + "\n" + " \n" + "\n" + "2015年政府信息公开工作要点\n"
+				+ "\n"
 				+ "　　2015年是全面深化改革的关键之年，是全面推进依法治国的开局之年。做好今年政府信息公开工作的总体要求是：深入贯彻党的十八大和十八届二中、三中、四中全会精神，认真落实《中华人民共和国政府信息公开条例》（以下简称《条例》），紧紧围绕党和政府中心工作以及公众关切，推进重点领域信息公开，加强信息发布、解读和回应工作，强化制度机制和平台建设，不断增强政府信息公开实效，进一步提高政府公信力，使政府信息公开工作更好地服务于经济社会发展，促进法治政府、创新政府、廉洁政府和服务型政府建设。\n"
 				+ "　　一、推进重点领域信息公开\n" + "　　继续做好安全生产、就业、财政审计、科技管理和项目经费、价格和收费、信用等领域信息公开，进一步扩大公开范围，细化公开内容。同时，推进以下领域信息公开工作：\n"
 				+ "　　（一）推进行政权力清单公开。进一步推进国务院部门行政审批项目取消、下放以及非行政许可审批事项清理等信息的公开。推行地方各级政府工作部门权力清单制度，依法向社会公开政府部门的行政职权及其法律依据、实施主体、运行流程、监督方式等信息。对于承担的行政审批事项，均要发布服务指南，列明设定依据、申请条件、申请材料、基本流程、审批时限、收费依据及标准、审批决定证件、年检要求、注意事项等内容。除涉及国家秘密、商业秘密或个人隐私外，所有行政审批事项的受理、进展情况、结果等信息均应公开。（国务院审改办牵头落实）\n"
@@ -42,11 +48,9 @@ public class TagContentTest {
 				+ "　　各地区各部门要把政府信息公开工作纳入重要议事日程，与经济社会管理工作紧密结合，同步研究、同步部署、同步推进，主要负责同志要主动听取公开工作情况汇报，研究解决突出问题，同时明确一位负责同志分管公开工作。要理顺工作关系，减少职能交叉，加强专门机构建设和人员配备，统筹做好信息公开、政策解读、舆情处置、政府网站、政务微博微信和政府公报等工作，并在经费、设备等方面提供必要保障。把信息公开列入公务员培训科目，加大各级政府尤其是市、县级政府相关工作人员培训力度，不断提升工作能力和水平。\n"
 				+ "　　各地区各部门要制定本工作要点分解细化方案，明确分工，加强督导，确保各项任务落实到位。落实情况要纳入政府信息公开工作年度报告并向社会公布，接受公众监督。国务院办公厅适时对本工作要点落实情况进行督查，并组织开展第三方评估。";
 
-		
-		SummaryComputer sc = new SummaryComputer(300, true, null, content) ;
-		
-		TagContent tc = new TagContent("<begin>", "end");
-		
+		SummaryComputer sc = new SummaryComputer(300, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
 
 		String[] split = query.split(" ");
 
@@ -57,10 +61,464 @@ public class TagContentTest {
 				keywords.add(new Keyword(kw, 100.0d * kw.length()));
 			}
 		}
-		
+
 		String tagContent = tc.tagContent(sc.toSummary(keywords));
-		
+
 		System.out.println(tagContent);
 	}
+
+	@Test
+	public void test1() {
+
+		String query = "信息公开 工作要点";
+
+		String content = "信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开信息公开,信息公开?"
+				+ "sdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsdsdfsdfdslkfjsdklfjlsd?"
+				+ "信息公开 工作要点 信息公开 工作要点 信息公开 工作要点 ";
+
+		SummaryComputer sc = new SummaryComputer(15, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+
+		System.out.println(sc.toSummary(keywords).getSummary());
+
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
+
+
+	@Test
+	public void testVI() {
+
+		String query = "VI";
+
+		String content = "\n" +
+				"\\项目开发与服务中心\\VI部";
+
+		SummaryComputer sc = new SummaryComputer(15, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+
+		System.out.println(sc.toSummary(keywords).getSummary());
+
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
+
+	@Test
+	public void test2() {
+
+		String query = "孙明波";
+
+		String content = "　近年来，全市广大专业技术人员认真贯彻落实党的十七大精神，坚持以邓小平理论和“三个代表”重要思想为指导，深入贯彻落实科学发展观，积极投身经济建设、政治建设、文化建设和社会建设，勤奋工作，刻苦攻关，为全市经济社会发展作出了积极贡献，涌现出一批优秀专业技术人才典型。为激发全市广大专业技术人员创新创业，市委、市政府决定，授予丁洪斌等179名同志“青岛专业技术拔尖人才”称号（名单附后），并予以表彰。　　希望受到表彰的同志珍惜荣誉，再接再厉，再创佳绩。全市广大专业技术人员要向专业技术拔尖人才学习，立足本职，开拓进取，为把青岛建设成为富强文明和谐的现代化国际城市作出新的更大贡献。各级党委政府要牢固树立、全面落实科学发展观和人才观，坚定不移地实施“科教兴市”、“人才强市”战略，不断创新人才工作机制，改善人才工作环境，为优秀人才脱颖而出和更好地发挥聪明才智搭建良好平台，为推进“环湾保护、拥湾发展”战略的实施和实现青岛经济社会又好又快发展提供坚强的人才保障和智力支持。　　　　附件：　　2008年度青岛专业技术拔尖人才名单　　（按姓氏笔画排列）　　丁洪斌　青建集团股份公司总裁、工程技术应用研究员、国家一级注册建造师　　于万成　青岛市职业教育公共实训基地教育培训部主任、中学高级教师、数控高级技师　　于良民　中国海洋大学化学化工学院教授　　于俊生　青岛市海慈医疗集团副总院长、主任医师　　于雪初　青岛波尔旺肉业股份有限公司董事长、工程师　　马学真　青岛市肿瘤医院副院长、主任医师、教授　　王　玮　青岛市广播电视局副总编辑，青岛人民广播电台副台长、高级编辑　　王亻凡玉　青岛市普通教育教研室教研员、中学高级教师　　王少华　青岛市市立医院药学部主任、主任药师　　王圣诵　青岛大学法学院院长、教授　　王竹泉　中国海洋大学文科处处长、管理学院副院长、教授　　王志庆　青岛喜盈门双驼轮胎有限公司总经理、高级经济师　　王志斌　青岛大学医学院附属医院心脏超声科主任、主任医师、教授　　王均国　青岛市衡器管理所副所长、工程技术应用研究员　　王绍波　青岛大学美术学院院长、教授　　王金健　青岛高校软控股份有限公司常务副总裁、高级工程师　　王春波　青岛大学医学院人体机能学实验室主任、教授　　王洪仁　青岛双瑞防腐防污工程有限公司总经理助理、高级工程师　　王洪恩　青岛市公安局行动技术支队副调研员、高级工程师　　王振海　中共青岛市委党校副校长、青岛行政学院副院长　　王清印　中国水产科学研究院黄海水产研究所所长、研究员　　王斌贵　中国科学院海洋研究所研究员　　王新强　青岛市机关事务局东部管理中心副总经理、高级技师　　王德宝　青岛科技大学人事处副处长、副教授　　牛同和　胶南市珠海路小学教师、中学高级教师　　牛膺筠　青岛大学医学院附属医院主任医师、教授　　尹凤福　海尔集团技术研发中心绿色设计及资源再生技术研究所所长、高级工程师　　尹衍升　中国海洋大学材料科学与工程研究院院长、教授　　尹焕三　中共青岛市委党校正处级调研员、教授　　石中年　南车青岛四方机车车辆股份有限公司技术工程部副部长、高级工程师　　石兆胜　胶南市职业中专校长、胶南市职教中心主任、青岛电大胶南分校校长、中学高级教师　　左　华　青岛市环境保护科学研究院副院长、教授级高工　　左铁军　青岛市海青机械总厂厂长、高级工程师　　史文伯　海信科龙（广东）空调有限公司总经理助理兼特种空调事业部部长、工程师　　宁　征　青岛市实验幼儿园园长、中学高级教师　　邢泉生　青岛市妇女儿童医疗保健中心儿童医院副院长、主任医师　　吉中强　青岛市海慈医疗集团总院长、主任医师、教授　　吕佩师　青岛海尔洗衣机有限公司总工程师兼全球企划部部长、高级工程师　　曲月锋　青岛市优秀运动队高级教练　　曲立清　青岛国信发展（集团）有限公司国信海底隧道项目筹建处副总经理、研究员　　曲凯先　崂山区中韩街道办事处枯桃社区党委书记、居委会主任，兼任青岛市崂山区枯桃花卉实业有限公司董事长、总经理　　朱　中　青岛海信网络科技公司副总经理、高级工程师　　朱校斌　中国科学院海洋研究所研究员　　刘　晓　中国科学院海洋研究所研究员　　刘占杰　青岛海尔特种电器有限公司本部长、研究员　　刘玉霞　中国海洋大学基础教学中心艺术系副主任、教授　　刘光洲　青岛双瑞防腐防污工程有限公司研发部部长、高级工程师　　刘怀荣　青岛大学文学院副院长、教授　　刘国庆　胶南市畜牧科技指导站研究员　　刘学斌　青岛市公安局网络警察支队支队长、高级工程师　　刘增人　青岛大学鲁迅研究中心主任、教授　　刘德进　中交一航局第二工程有限公司总工程师、高级工程师　　关茜市　南区教育研究指导中心教研员、中学高级教师　　许振超　青岛港前湾集装箱码头有限责任公司工程技术部固机高级经理、高级技师　　孙　勇　青岛大学医学院药剂教研室主任、教授　　孙大庆　青岛市林木种苗站站长、高级工程师　　孙立荣　青岛大学医学院附属医院小儿科副主任兼小儿血液科主任、主任医师、教授　　孙先亮　青岛第二中学校长、中学高级教师　　孙明波　青岛啤酒股份有限公司总裁、工程技术应用研究员　　杜长河　青岛高校信息产业有限公司总裁、高级工程师　　杨为东　青岛即发集团控股有限公司总经理兼技术中心主任、工程师　　李　平　青岛市市政工程集团有限公司总工程师兼市政设计院院长、工程技术应用研究员　　李　杨　青岛市市立医院院长、主任医师　　李　明　青岛海湾集团有限公司总经理，兼任青岛海晶化工集团有限公司董事长、总经理、高级工程师　　李　娜　青岛大学医学院附属医院耳鼻喉科主任、主任医师　　李　琪　中国海洋大学水产学院常务副院长、教授　　李　群　青岛大学应用化学系主任兼应用化学研究所所长、特聘教授　　李卫国　青岛市优秀运动队高级教练兼国家羽毛球队领队、教练　　李文华　青岛市海慈医疗集团影像科主任、主任医师　　李宁毅　青岛大学医学院附属医院主任医师、教授　　李延团　中国海洋大学医药学院副院长、教授　　李成林　山东省海水养殖研究所科研计划与管理办公室主任、副研究员　　李自普　青岛大学医学院附属医院儿科副主任、主任医师、教授　　李志刚　即墨市第二十八中学校长、中学高级教师　　李美华　胶州市振华路小学教师、小学高级教师　　李建英　青岛供电公司调度处自动化班班长、高级工程师、高级技师　　李荣贵　青岛大学医学院生物系主任、教授　　李德爱　青岛市市立医院科研科主任、主任医师　　连新国　青岛市歌舞剧院院长、国家一级导演　　肖国林　青岛海洋地质研究所海洋油气与水合物资源室副主任、研究员　　肖建林　海信集团副总裁　　吴　平　青岛市京剧院名誉院长、国家一级演员　　吴力群　青岛大学医学院外科学教研室主任兼附属医院外科主任、肝胆外科主任、主任医师　　吴乐琴　青岛第二十一中学语文教研组组长、中学高级教师　　吴时国　中国科学院海洋研究所研究员　　邹云雯　青岛大学医学院附属医院骨科主任、主任医师、教授　　沙淑芬　双星集团有限责任公司总工程师、高级工程师　　宋林生　中国科学院海洋研究所研究员　　宋瑞兰　青岛第五十八中教师、中学高级教师　　宋德强　青岛市胶州建设集团有限公司工人、高级技师　　张　博　青岛颐中生物工程有限公司董事长、总经理、高级经济师　　张七一　青岛市市立医院副院长、主任医师　　张士璀　中国海洋大学生命科学与技术学部副主任、教授　　张元信　解放军第四○一医院手外科中心副主任、副主任医师　　张化新　青岛出版社科技出版中心总编辑、编审　　张正欣　青岛饮料集团有限公司董事长、总经理，兼青岛崂山矿泉水有限公司董事长、青岛华东葡萄酿酒有限公司总经理、高级工程师　　张永升　青岛地恩地机电科技股份有限公司董事长　　张志刚　青岛东佳纺机（集团）有限公司总工程师、工程师　　张国防　青岛明月海藻集团有限公司董事长、工程师　　张国辉　青岛市供水管理处处长、工程技术应用研究员　　张荣华　中国石油大学（华东）人文社会科学学院党委书记兼副院长、教授　　张健春　青岛海信电器股份有限公司产品开发部副总经理、高级工程师　　张爱国　青岛英派斯（集团）有限公司总裁、经济师　　张铁柱　青岛大学副校长兼车辆电子技术研究所所长、教授　　张增惠　青岛市体育运动学校田径项目国家级教练兼山东省田径队总教练　　张德奎　青岛市第八人民医院院长助理兼大外科主任、主任医师　　陆　玲　青岛市群众艺术馆文艺部主任、副研究馆员　　陈　戈　中国海洋大学信息科学与工程学院院长、教授　　陈守国　青岛国泰集团有限公司、青岛海生肿瘤医院董事长　　陈西广　中国海洋大学海洋生命学院海洋生物系主任、教授　　陈松林　中国水产科学研究院黄海水产研究所农业部海洋渔业资源可持续利用重点开放实验室常务副主任、研究员　　陈振德　青岛市农业科学研究院党委副书记兼副院长、研究员　　陈索斌　青岛金王集团董事长、高级经济师　　陈常乐　青岛碱业股份有限公司计量仪表处化工仪表与自动化高级技师　　陈维强　青岛海信网络科技股份有限公司总经理、高级工程师　　邵永春　青岛市农业科学研究院副研究员　　迟登亮　中国人民解放军第四八○八工厂轮机车间船舶钳工班长、高级技师　　武鹏崑　青岛首创瑞海水务有限公司总经理、高级工程师　　林　琪　青岛农业大学农学与植物保护学院院长、教授　　林凤章　青岛双桃精细化工（集团）有限公司总经理、高级工程师　　苗志敏　青岛大学医学院附属医院院长、主任医师、教授　　罗　兵　青岛大学医学院微生物学教研室主任、教授　　金显仕　中国水产科学研究院黄海水产研究所副所长、研究员　　金道谟　青岛海尔新材料研发有限公司总经理、高级工程师　　周云杰　海尔集团公司副总裁、高级工程师　　周岩冰　青岛大学医学院附属医院普外科主任、主任医师、教授　　单若冰　青岛市妇女儿童医疗保健中心儿童医院副院长兼新生儿科主任、主任医师　　郑永允　山东省海水养殖研究所副所长、研究员　　郑生春　青岛市勘察测绘研究院副院长、工程技术应用研究员　　建方方　青岛科技大学发展规划处处长、教授　　相佃国　青岛第六十六中学副校长、中学高级教师　　柳学周　中国水产科学研究院黄海水产研究所海水鱼类养殖与设施渔业研究室研究员　　赵东生　中国保险监督管理委员会青岛监管局人身险监管处处长　　赵君财　海信电器股份公司产品引入中心总监、工程师　　赵其圣　海信宽带多媒体技术股份有限公司光模块研发部部长、工程师　　赵铁军　青岛理工大学副校长、教授　　战文斌　中国海洋大学生命科学与技术学部副主任、教授　　修新红　青岛市妇女儿童医疗保健中心妇幼保健所妇保科主任、副主任医师　　逄增昌　青岛市疾病预防控制中心公共卫生顾问、主任医师　　宣世英　青岛市市立医院副院长、主任医师　　姜正俊　青岛云龙纺织机械有限公司董事长、总经理、高级工程师　　姚　军　中国石油大学（华东）石油工程学院院长、教授　　耿以龙　青岛市森林病虫害防治工作站站长　　贾庆鹏　青岛出版社副总编辑、编审　　贾维敏　青岛市胶州建设集团有限公司工人、高级技师　　夏延致　青岛大学纤维新材料与现代纺织国家重点实验室培育基地副主任兼阻燃纤维研究所所长、图书馆馆长、教授　　柴永森　青岛海尔通信有限公司本部长、高级工程师　　徐　建　青岛市胶州中心医院副院长、主任医师　　徐万珉　青岛市社科联党组书记、主席，社科院院长　　徐明振　胶州市农业局总农艺师、高级农艺师　　徐青峰　青岛大学纺织服装学院服装研究所所长、副教授　　徐恭藻　利群集团股份有限公司董事局主席、总裁、高级经济师　　徐殿平　青岛市优秀运动队副队长兼国家女子柔道队领队、国家级教练　　郭　峰　青岛理工大学机械工程学院摩擦学研究所副所长、教授　　郭　锐　南车青岛四方机车车辆股份有限公司首席制造师、钳工高级技师　　郭育晖　市北区教研电教室副主任、小学高级教师　　郭爱青　青岛第十五中学教研组长、中学高级教师　　高汝钦　青岛市卫生监督局局长、主任医师　　栾少湖　德衡律师集团事务所主任　　黄　倢　中国水产科学研究院黄海水产研究所海水养殖生物疾病控制与病原分子生物学实验室主任、研究员　　黄婷婷　青岛市农业科学研究院蔬菜研究所副所长、研究员　　黄　港　青岛市话剧院副院长、国家一级导演　　曹茂永　山东科技大学信息与电气工程学院院长、教授　　曹健伟　青岛海信电器股份有限公司多媒体研发中心专业技术委员会副主任、平台所所长、液晶所所长、工程师　　龚鲁阳　青岛市民族艺术剧院院长助理兼吕剧工作室主任、国家一级演员　　常德传　青岛港（集团）有限公司董事局主席、总裁、高级经济师　　傅　平　青岛市妇女儿童医疗保健中心妇幼保健所副所长、主任医师　　隋学礼　青岛创统科技集团有限公司董事长、总裁　　韩方希　青岛滨海学院院长、副教授　　韩珍德　胶州市向阳路小学校长、中学高级教师　　葛方明　青岛捷能汽轮机集团股份有限公司董事长、总经理、高级经济师　　葛玉钦　胶州市洋河农牧产品研究开发协会会长、高级农艺师　　董　蒨　青岛大学医学院附属医院副院长兼儿科研究所所长、教授　　董晓光　山东省眼科研究所党委书记兼常务副所长、研究员、教授　　喻子达　海尔集团公司副总裁、高级工程师　　翟广顺　青岛市教育科学研究所所长、研究员　　翟翌立　青岛海尔电子有限公司总工程师　　戴淑真　青岛大学医学院附属医院妇产科主任、教授　　魏立青　青岛市公安局刑警支队技术处五科科长、高级工程师";
+
+		SummaryComputer sc = new SummaryComputer(200, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
+
+	@Test
+	public void test4() {
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+
+		String content = "您好,         1986年出国留学,2008年回国后 发现户口被注销(本人不知情),当时出国时还没有办理身份证,去入户派出所查询,只有入户的信息,其他材料一概没有,甚至没有所谓的注销情况之类(据说期间材料被转过三个派出所,最大可能是派出所转移时候遗失.现在是几个派出所互相推,) ,    1,这种情况我如何恢复户籍??没有身份证在中国处处不方便..    2,我有国外永久居留,如恢复的话是否可以保留?        谢谢";
+
+		List<Keyword> keywords = new ArrayList<>();
+
+		keywords.add(new Keyword("中国", 2d));
+		keywords.add(new Keyword("信息", 2d));
+
+		SummaryComputer sc = new SummaryComputer(22, true, "", content);
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
+
+	@Test
+	public void englishWordTest() {
+		String query = "plasma";
+
+		String content = "Aerodynamic Control of High Performance Aircraft Using Pulsed Plasma Actuators";
+
+		SummaryComputer sc = new SummaryComputer(200, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+		String[] split = query.split(" ");
+
+		List<Keyword> keywords = new ArrayList<Keyword>();
+
+		for (String kw : split) {
+			if (!StringUtil.isBlank(kw)) {
+				keywords.add(new Keyword(kw, 100.0d * kw.length()));
+			}
+		}
+
+		String tagContent = tc.tagContent(sc.toSummary(keywords));
+
+		System.out.println(tagContent);
+	}
+
+
+	@Test
+	public void testHighlight() {
+
+		Forest forest = new Forest();
+		forest.add("nuclear", null);
+
+		System.out.println(forest.getWord("联系邮箱 ：Nuclear_net@163.com\n").getFrontWords());
+		;
+
+
+		String content = "中国核网\n" +
+				"         | 核行业必读的公众号\n" +
+				"       \n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"    \n" +
+				"   \n" +
+				"   \n" +
+				"    \n" +
+				"     \n" +
+				"      \n" +
+				"       人类未来殖民火星的日子，靠太阳能发电落伍了，美国太空总署（NASA）自 2015 年起启动名为“Kilopower”的计划后，便打算让核能站在火星能源的舞台中央。现在，该计划下制造的微型核分裂反应堆将正式送往美国能源部的内华达国家安全区进行一系列评估测试。\n" +
+				"\n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    ▲火星表面系统的概念图\n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    据悉，本月，美国宇航局（NASA）将开始在内达华州测试火星探测用“核动力装置”，该装置可以为火星表面上的宇航员提供动力。据报道，这种发电装置只有卫生纸卷铀大小，通过一个高效率的斯特林发动机转换成电力，最终以汽车发动机类似的方式进行高效工作。\n" +
+				"\n" +
+				"    NASA的空间技术任务理事会（STMD）已经为Kilopower项目提供了多年的资助。该项目的目标是开发一种“低成本、可扩展的裂变动力系统”，为太空任务提供动力。研究人员估计火星表面任务总共需要大约40kW的功率。根据美国宇航局的数据，这一数量的能源可以为“地球上的八座房屋”提供动力。1.9米（6.5英尺）高的Kilopower反应堆每个都设计为向航天器提供1-10 kW的电力。由于核裂变，有4个或5个Kilopower反应堆，NASA可以为一个火星殖民地提供动力，运行所有必要的设备来生产燃料，清洁空气和水，并对所有电池充电。\n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    “Kilopower测试计划将使我们相信这项技术已经可以用于太空的探索。”STMD公司NASA总部电力和能源首席技术专家Lee Mason说：“我们将分析模型，以验证硬件的运行情况。”位于田纳西州橡树岭的Y12国家安全中心正在为该系统的测试提供的反应堆堆芯做准备。Mason声称“拥有太空级裂变能的火星探险家将是游戏规则的改变者。” \n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    此前，NASA使用的Pu-238放射性同位素热电发电机（RTG）已经为好奇心，旅行者和卡西尼提供电力，但是它们只有110瓦。Mason也称：“放射性同位素热发电机（RTG）通常只能提供几百瓦左右的功率，而我们正在努力给太空任务提供一个非RTG的选项。这项新技术可以提供几千瓦，数百千瓦，甚至是兆瓦的电力。这也就是我们说的“Kilopower技术”。\n" +
+				"\n" +
+				"    Kilopower技术可在满足火星的电力需求同时，不受夜间或者由太阳光照引起沙尘暴的影响。不管在火星上的任何位置，包括可能存在冰层的北部高纬度地区，Kilopower技术都为火星表面提供高能量密度的电源，这将进一步扩大探测器在火星上可能的着陆点。且由于尺寸足够小，多个装置可以同时部署在一个火星着陆器上，且每个单元可独立完成火星表面任务。\n" +
+				"\n" +
+				"    “正在测试的反应堆技术可能适用于多个美国宇航局的任务，我们希望这是裂变反应堆开创太空探索的新模式的第一步”洛斯阿拉莫斯首席执行官、反应堆设计者大卫·波斯顿（David Poston）说。\n" +
+				"\n" +
+				"    NASA将与美国能源部（DOE）内华达州国家安全局合作评估这项裂变电源技术。测试原计划于今年9月份开始，但由于种种原因，推迟到11月份，自今年 11 月起到明年初，太空核反应堆将送往美国能源部辖下的内华达国家安全区（Nevada National Security Site）进行一系列测试，这项技术是否安全与可靠，将交由能源部的专业设施和洛斯阿拉莫斯国家实验室的工程师评估。测试完成后，美国宇航局将对该技术进行评估以研究其未来的计划。\n" +
+				"\n" +
+				"    不过，尽管 Kilopower 具潜在实用性，但要将数十个微型核反应堆送入火星仍引起相当人士的担忧，即便它们只是「小型」核反应堆、防故障系统保证几乎万无一失。外界认为，火星上的核反应堆发生灾难性事故的风险，就和日本福岛发生的核事故一样不可预测，也许内华达国家安全区的测试应展示出 Kilopower 系统如何处理全面系统性故障问题。\n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    参考来源：\n" +
+				"\n" +
+				"    \tNASA reveals 'nuclear engine' that could provide power to the first humans on Mars\n" +
+				"http://Nuclear-engines.html\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"     \n" +
+				"      \n" +
+				"       声明\n" +
+				"\n" +
+				"       以上内容由中国核网整理\n" +
+				"\n" +
+				"       转载请注明出处：“中国核网” \n" +
+				"\n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    近期热点\n" +
+				" \n" +
+				"   \n" +
+				"   \n" +
+				"    \n" +
+				"     \n" +
+				"      \n" +
+				"       \tNASA：重启热核火箭计划，核发动机或助推“火星之旅”\n" +
+				"\n" +
+				"\n" +
+				"\t华龙一号英国通用设计审查(GDA)正式进入第二阶段\n" +
+				"\n" +
+				"\n" +
+				"\t国际能源署：到2040年，核能将至少提供全球15%的电力\n" +
+				"\n" +
+				"\n" +
+				"\t西屋中国挑战：三门、海阳项目进展缓慢，暂无新签订单\n" +
+				"\n" +
+				"\n" +
+				"\t中核集团总经理钱智民:中美核能领域合作潜力非常大\n" +
+				"\n" +
+				"\n" +
+				"\n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    \n" +
+				"     \n" +
+				"      \n" +
+				"       汇集核能资讯\n" +
+				"\n" +
+				"       服务核能发展\n" +
+				"\n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"    \n" +
+				"     \n" +
+				"      \n" +
+				"       \n" +
+				"        \n" +
+				"         \n" +
+				"          \n" +
+				"         \n" +
+				"        \n" +
+				"       \n" +
+				"       \n" +
+				"        \n" +
+				"         \n" +
+				"         \n" +
+				"        \n" +
+				"       \n" +
+				"       \n" +
+				"        \n" +
+				"         \n" +
+				"           中·国·核·网\n" +
+				"\n" +
+				"         \n" +
+				"        \n" +
+				"       \n" +
+				"       \n" +
+				"        \n" +
+				"         \n" +
+				"        \n" +
+				"       \n" +
+				"       \n" +
+				"        \n" +
+				"         \n" +
+				"          联系邮箱 ：nuclear_net@163.com\n" +
+				"\n" +
+				"         \n" +
+				"        \n" +
+				"       \n" +
+				"      \n" +
+				"     \n" +
+				"    \n" +
+				"   \n" +
+				"  \n" +
+				" \n" +
+				" \n" +
+				"  \n" +
+				"   \n" +
+				"    ✬点击阅读原文查看更多资讯✬\n" +
+				"\n" +
+				"   \n" +
+				"  \n" +
+				" \n";
+
+
+		boolean single = true;
+
+		HashSet<String> kwSet = new HashSet<>();
+
+
+		Result nuclear = DicAnalysis.parse("nuclear");
+
+		for (Term t : nuclear) {
+			if (!",".equals(t.getName()) && (single || t.getName().length() > 0)) { //skip lenth 1
+				kwSet.add(t.getName());
+			}
+		}
+
+
+		if (kwSet == null || kwSet.size() == 0) {
+			kwSet.add("ANSJ_NOT_HAVE_CONTENT");
+		}
+
+		List<Keyword> keywords = new ArrayList<>();
+
+		for (String s : kwSet) {
+			keywords.add(new Keyword(s.toLowerCase(), s.length() * s.length() * 10));
+		}
+
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+
+		SummaryComputer sc = new SummaryComputer(100, true, null, content);
+
+
+		System.out.println(tc.tagContent(sc.toSummary(keywords)));
+		;
+
+
+		System.out.println("gine' that could provide power to the first humans on Mars http://www.dailymail.co.uk/sciencetech/article-508".length());
+
+	}
+
+
+	@Test
+	public void test3() {
+
+		DicLibrary.put(DicLibrary.DEFAULT, null);
+
+		String query = "数据分析";
+
+		String[] split = query.split(",");
+
+		HashSet<String> kws = new HashSet<>();
+
+		for (String str : split) {
+			kws.add(str);
+			for (Term t : ToAnalysis.parse(str)) {
+				kws.add(t.getName());
+			}
+		}
+
+		String content = "刘   鹏   gloud@126.com  @专注云计算\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n\n\n\n*\n\n\n\n\n\n\n大数据成为全球新热点\n数据来源：百度搜索量统计\n\n\n\n大数据现象\n\n\n\n\n大数据产生原因\n\n\n\n全球每秒钟发送2.9 百万封电子邮件，一分钟读一篇的话，足够一个人昼夜不息的读5.5 年…\n每天会有2.88 万个小时的视频上传到Youtube，足够一个人昼夜不息的观看3.3 年…\n推特上每天发布5 千万条消息，假设10 秒钟浏览一条信息，这些消息足够一个人昼夜不息的浏览16 年…\n每天亚马逊上将产生6.3 百万笔订单…\n每个月网民在Facebook 上要花费7 千亿分钟，被移动互联网使用者发送和接收的数据高达1.3EB…\nGoogle 上每天需要处理24PB的数据…\n在web 2.0的时代，人们从信息的被动接受者变成了主动创造者\nBig Data时代到来\nWeb 2.0时代\n\n\n\n新摩尔定律\n\n全球数据总量每18个月翻番。\n大数据已经成为一种自然资源\n大数据不被利用就是成本\n\n\n\n未来增长不可限量\n来源：IDC数字宇宙研究报告，2011.11\n据IDC预测，未来10年全球数据量将以40+%的速度增长，2020年全球数据量将达到35ZB （35,000,000PB），为2009年（0.8ZB）的44倍\n\n\n\n数据利用比例直降\n\n计算速度越来越快，企业却越来越笨。\n今天很多企业能弄懂7%的企业数据，但这个数字很快会下降到4%，然后继续螺旋式下降。\nIBM实体分析首席科学家Jeff Jonas\n\n\n\n数据使用率提升10%的影响\n\n\n\n\n预测2020年，大数据应用市场规模将达到近2600 亿美元\n大数据成为全球新的经济增长点\n\n\n\n各国政府高度重视\n美国：奥巴马政府3.29宣布“Big Data Research and Development Initiative”\n将投入超过2亿美元推动大数据提取、存储、分析、共享、可视化等领域的研究，并将其与历史上对超级计算和互联网的投资相提并论\n中国：工信部物联网十二五规划\n信息处理技术作为4 项关键技术创新工程之一被提出\n包括海量数据存储、数据挖掘等\n\n\n\nIT盛宴\n\n\n分析\n\n\n基础设施\n\n\nNoSQL/NewSQL\nDatabases\n\n\nHadoop Related\n\n\nMPP Databases\n\n\nCrowdsourcing\n\n\nCluster\nServices\n\n\nManagement/Monitoring\n\n\nStorage\n\n\nsecurity\n\n\nMonitoring\n\n\nData Visualization\n\n\n应用\n\n\nAnalytics Solutions\n\n\nSocial Media\n\n\nStatistical Computing\n\n\nSentiment Analysis\n\n\nLocation/People/Events\n\n\nIT Analytics\n\n\nReal-Time\n\n\nCrowdsourced Analytics\n\n\nSMB Analytics\n\n\n数据源\n\n\nAd Optimization\n\n\nPublisher\nTools\n\n\nMarketing\n\n\nIndustry Applications\n\n\n基础设施/分析\n\n\nData Marketplaces\n\n\nData Sources\n\n\nPersonal Data\n\n\n开源项目\n\n\nFramework\n\n\nProgrammability\n\n\nData Access\n\n\nCoordination/\nWorkflow\n\n\nReal-Time\n\n\nStatistical\nPackages\n\n\nMachine learning\n\n\n\n\n大数据是指无法在一定时间内用传统数据库软件工具对其内容进行抓取、管理和处理的数据集合\n什么是Big Data\n大数据的4V特征\n\n\n*\n\n大数据 = 海量数据 + 复杂类型的数据\n海量交易数据：\n企业内部的经营交易信息主要包括联机交易数据和联机分析数据，是结构化的、通过关系数据库进行管理和访问的静态、历史数据。通过这些数据，我们能了解过去发生了什么。\n大数据包括：\n交易数据和交互数据集在内的所有数据集\n海量交互数据：\n源于Facebook、Twitter、LinkedIn及其他来源的社交媒体数据构成。它包括了呼叫详细记录CDR、设备和传感器信息、GPS和地理定位映射数据、通过管理文件传输Manage File Transfer协议传送的海量图像文件、Web文本和点击流数据、科学信息、电子邮件等等。可以告诉我们未来会发生什么。\n海量数据处理：\n大数据的涌现已经催生出了设计用于数据密集型处理的架构。例如具有开放源码、在商品硬件群中运行的Apache Hadoop。\n大数据的构成\n\n\n\n大数据涉及的关键技术\n\n\n\n大数据的技术领域-分布式领域\n\n\n\n大数据的技术领域-数据分析与挖掘\n相关工具:\nSAS，R，Rhive/Rhadoop, Mahout，Xlib，OpenMPI…\n\n\n\n更多信息：http://www.cstor.cn\n刘   鹏  gloud@126.com\n中国云计算  www.chinacloud.cn\n中国大数据  www.thebigdata.cn\n本PPT部份页面引自其他专家的PPT，在此致以衷心感谢！\n\n\n\n*\n\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n\n*\n*";
+
+		SummaryComputer sc = new SummaryComputer(200, true, null, content);
+
+		TagContent tc = new TagContent("<begin>", "<end>");
+
+
+		List<Keyword> list = new ArrayList<>();
+		for (String s : kws) {
+			list.add(new Keyword(s, Math.pow(10, s.length()) * 100));
+		}
+
+		System.out.println(list);
+
+
+		String tagContent = tc.tagContent(sc.toSummary(list));
+
+		System.out.println(tagContent);
+	}
+
 
 }

@@ -1,33 +1,28 @@
 package org.ansj.splitWord;
 
-import static org.ansj.library.DATDictionary.IN_SYSTEM;
-import static org.ansj.library.DATDictionary.status;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.ansj.domain.Result;
-import org.ansj.domain.Term;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.domain.*;
+import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.DATDictionary;
+import org.ansj.library.DicLibrary;
 import org.ansj.splitWord.impl.GetWordsImpl;
 import org.ansj.util.AnsjReader;
 import org.ansj.util.Graph;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.tire.GetWord;
 import org.nlpcn.commons.lang.tire.domain.Forest;
+import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.nlpcn.commons.lang.util.WordAlert;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.*;
+
+import static org.ansj.library.DATDictionary.status;
 
 /**
  * 基本分词+人名识别
- * 
+ *
  * @author ansj
- * 
  */
 public abstract class Analysis {
 
@@ -43,7 +38,22 @@ public abstract class Analysis {
 
 	protected Forest[] forests = null;
 
-	private Forest ambiguityForest = UserDefineLibrary.ambiguityForest;
+	private Forest ambiguityForest = AmbiguityLibrary.get();
+
+	// 是否开启人名识别
+	protected boolean isNameRecognition = true;
+
+	// 是否开启数字识别
+	protected boolean isNumRecognition = true;
+
+	// 是否数字和量词合并
+	protected boolean isQuantifierRecognition = true;
+
+	// 是否显示真实词语
+	protected boolean isRealName = false;
+
+	// 是否标记新词
+	protected boolean isNewWord = true;
 
 	/**
 	 * 文档读取流
@@ -51,13 +61,21 @@ public abstract class Analysis {
 	private AnsjReader br;
 
 	protected Analysis() {
-	};
+		this.forests = new Forest[]{DicLibrary.get()};
+		this.isNameRecognition = MyStaticValue.isNameRecognition;
+		this.isNumRecognition = MyStaticValue.isNumRecognition;
+		this.isQuantifierRecognition = MyStaticValue.isQuantifierRecognition;
+		this.isRealName = MyStaticValue.isRealName;
+		this.isNewWord = MyStaticValue.isNewWord;
+	}
+
+	;
 
 	private LinkedList<Term> terms = new LinkedList<Term>();
 
 	/**
 	 * while 循环调用.直到返回为null则分词结束
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -71,15 +89,16 @@ public abstract class Analysis {
 		}
 
 		String temp = br.readLine();
-		offe = br.getStart();
 		while (StringUtil.isBlank(temp)) {
 			if (temp == null) {
+                offe = br.getStart();
 				return null;
 			} else {
 				temp = br.readLine();
 			}
 
 		}
+        offe = br.getStart();
 
 		// 歧异处理字符串
 
@@ -104,11 +123,15 @@ public abstract class Analysis {
 
 	/**
 	 * 一整句话分词,用户设置的歧异优先
-	 * 
+	 *
 	 * @param temp
 	 * @return
 	 */
 	private List<Term> analysisStr(String temp) {
+		if(temp==null || temp.length()==0){
+			return Collections.emptyList() ;
+		}
+
 		Graph gp = new Graph(temp);
 		int startOffe = 0;
 
@@ -127,9 +150,10 @@ public abstract class Analysis {
 				}
 			}
 		}
-		if (startOffe < gp.chars.length - 1) {
+		if (startOffe < gp.chars.length) {
 			analysis(gp, startOffe, gp.chars.length);
 		}
+		gp.rmLittlePath();
 		List<Term> result = this.getResult(gp);
 
 		return result;
@@ -141,99 +165,161 @@ public abstract class Analysis {
 		char[] chars = gp.chars;
 
 		String str = null;
-		char c = 0;
 		for (int i = startOffe; i < endOffe; i++) {
 			switch (status(chars[i])) {
-			case 0:
-				if (Character.isHighSurrogate(chars[i]) && (i + 1) < endOffe && Character.isLowSurrogate(chars[i + 1])) {
-					str = new String(Arrays.copyOfRange(chars, i, i + 2));
-					gp.addTerm(new Term(str, i, TermNatures.NULL));
-					i++;
-				} else {
-					gp.addTerm(new Term(String.valueOf(chars[i]), i, TermNatures.NULL));
-				}
-				break;
-			case 4:
-				start = i;
-				end = 1;
-				while (++i < endOffe && status(chars[i]) == 4) {
-					end++;
-				}
-				str = WordAlert.alertEnglish(chars, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.EN));
-				i--;
-				break;
-			case 5:
-				start = i;
-				end = 1;
-				while (++i < endOffe && status(chars[i]) == 5) {
-					end++;
-				}
-				str = WordAlert.alertNumber(chars, start, end);
-				gp.addTerm(new Term(str, start, TermNatures.M));
-				i--;
-				break;
-			default:
-				start = i;
-				end = i;
-				c = chars[start];
-				while (IN_SYSTEM[c] > 0) {
-					end++;
-					if (++i >= endOffe)
-						break;
-					c = chars[i];
-				}
+				case 4:
+					start = i;
+					end = 1;
+					while (++i < endOffe && status(chars[i]) == 4) {
+						end++;
+					}
+					str = new String(chars, start, end);
+					gp.addTerm(new Term(str, start, TermNatures.EN));
+					i--;
+					break;
+				case 5:
+					start = i;
+					end = 1;
+					while (++i < endOffe && status(chars[i]) == 5) {
+						end++;
+					}
+					str = new String(chars, start, end);
+					Term numTerm = new Term(str, start, TermNatures.M_ALB);
+					numTerm.termNatures().numAttr = NumNatureAttr.NUM;
+					gp.addTerm(numTerm);
+					i--;
+					break;
+				default:
+					start = i;
+					end = i;
 
-				if (start == end) {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-					continue;
-				}
+					int status = 0;
+					do {
+						end = ++i;
+						if (i >= endOffe) {
+							break;
+						}
+						status = status(chars[i]);
+					} while (status < 4);
 
-				gwi.setChars(chars, start, end);
-				while ((str = gwi.allWords()) != null) {
-					gp.addTerm(new Term(str, gwi.offe, gwi.getItem()));
-				}
+					if (status > 3) {
+						i--;
+					}
 
-				/**
-				 * 如果未分出词.以未知字符加入到gp中
-				 */
-				if (IN_SYSTEM[c] > 0 || status(c) > 3 || Character.isHighSurrogate(chars[i])) {
-					i -= 1;
-				} else {
-					gp.addTerm(new Term(String.valueOf(c), i, TermNatures.NULL));
-				}
+					gwi.setChars(chars, start, end);
+					int max = start;
+					while ((str = gwi.allWords()) != null) {
+						Term term = new Term(str, gwi.offe, gwi.getItem());
+						int len = term.getOffe() - max;
+						if (len > 0) {
+							for (; max < term.getOffe(); ) {
+								gp.addTerm(new Term(String.valueOf(chars[max]), max, TermNatures.NULL));
+								max++;
+							}
+						}
+						gp.addTerm(term);
+						max = term.toValue();
+					}
 
-				break;
+					int len = end - max;
+					if (len > 0) {
+						for (; max < end; ) {
+							String temp = String.valueOf(chars[max]);
+							AnsjItem item = DATDictionary.getItem(temp);
+							gp.addTerm(new Term(temp, max, item.termNatures));
+							max++;
+						}
+					}
+
+					break;
 			}
 		}
 	}
 
 	/**
 	 * 将为标准化的词语设置到分词中
-	 * 
-	 * @param gp
+	 *
+	 * @param graph
 	 * @param result
 	 */
 	protected void setRealName(Graph graph, List<Term> result) {
 
-		if (!MyStaticValue.isRealName) {
+		if (!isRealName) {
 			return;
 		}
 
-		String str = graph.realStr;
-
 		for (Term term : result) {
-			term.setRealName(str.substring(term.getOffe(), term.getOffe() + term.getName().length()));
+			term.setRealName(graph.str.substring(term.getOffe(),term.getOffe()+term.getName().length()));
 		}
 	}
 
 	/**
+	 * 标记这个词语是否是新词
+	 *
+	 * @param term
+	 */
+	protected void setIsNewWord(Term term) {
+
+		if (!isNewWord) {
+			return;
+		}
+
+		if (term.termNatures().id > 0) {
+			return;
+		}
+
+		int id = DATDictionary.getId(term.getName());
+
+		if (id > 0) {
+			return;
+		}
+
+		if (forests != null) {
+			for (int i = 0; i < forests.length; i++) {
+				if (forests[i] == null) {
+					continue;
+				}
+
+				SmartForest<String[]> branch = forests[i].getBranch(term.getName());
+
+				if (branch == null) {
+					continue;
+				}
+
+				if (branch.getStatus() > 1) {
+					return;
+				}
+			}
+		}
+
+		term.setNewWord(true);
+
+	}
+
+	/**
 	 * 一句话进行分词并且封装
+	 *
 	 * @param temp
 	 * @return
 	 */
 	public Result parseStr(String temp) {
 		return new Result(analysisStr(temp));
+	}
+
+	/**
+	 * 通过构造方法传入的reader直接获取到分词结果
+	 *
+	 * @return
+	 * @throws IOException
+	 */
+	public Result parse() throws IOException {
+		List<Term> list = new ArrayList<Term>();
+		Term temp = null;
+		while ((temp = next()) != null) {
+			list.add(temp);
+		}
+		Result result = new Result(list);
+		return result;
 	}
 
 	protected abstract List<Term> getResult(Graph graph);
@@ -244,7 +330,7 @@ public abstract class Analysis {
 
 	/**
 	 * 重置分词器
-	 * 
+	 *
 	 * @param br
 	 */
 	public void resetContent(AnsjReader br) {
@@ -275,4 +361,30 @@ public abstract class Analysis {
 		this.forests = forests;
 		return this;
 	}
+
+	public Analysis setIsNameRecognition(Boolean isNameRecognition) {
+		this.isNameRecognition = isNameRecognition;
+		return this;
+	}
+
+	public Analysis setIsNumRecognition(Boolean isNumRecognition) {
+		this.isNumRecognition = isNumRecognition;
+		return this;
+	}
+
+	public Analysis setIsQuantifierRecognition(Boolean isQuantifierRecognition) {
+		this.isQuantifierRecognition = isQuantifierRecognition;
+		return this;
+	}
+
+	public Analysis setIsRealName(boolean isRealName) {
+		this.isRealName = isRealName;
+		return this;
+	}
+
+	public Analysis setIsNewWord(boolean isNewWord) {
+		this.isNewWord = isNewWord;
+		return this;
+	}
+
 }

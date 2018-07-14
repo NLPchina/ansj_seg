@@ -1,25 +1,25 @@
 package org.ansj.library;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.HashMap;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.util.StringUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * 这里封装了词性和词性之间的关系.以及词性的索引.这是个好东西. 里面数组是从ict里面找来的. 不是很新.没有语料无法训练
- * 
+ *
  * @author ansj
- * 
+ *
  */
 public class NatureLibrary {
 
-	public static final Logger logger = LoggerFactory.getLogger(NatureLibrary.class);
+	private static final Log logger = LogFactory.getLog(NatureLibrary.class);
 
 	private static final int YI = 1;
 	private static final int FYI = -1;
@@ -52,8 +52,9 @@ public class NatureLibrary {
 			int p2 = 0;
 			while ((temp = reader.readLine()) != null) {
 				strs = temp.split(split);
-				if (strs.length != 4)
+				if (strs.length != 4) {
 					continue;
+				}
 
 				p0 = Integer.parseInt(strs[0]);
 				p1 = Integer.parseInt(strs[1]);
@@ -69,8 +70,9 @@ public class NatureLibrary {
 			NATURETABLE = new int[maxLength + 1][maxLength + 1];
 			int j = 0;
 			while ((temp = reader.readLine()) != null) {
-				if (StringUtil.isBlank(temp))
+				if (StringUtil.isBlank(temp)) {
 					continue;
+				}
 				strs = temp.split(split);
 				for (int i = 0; i < strs.length; i++) {
 					NATURETABLE[j][i] = Integer.parseInt(strs[i]);
@@ -84,7 +86,7 @@ public class NatureLibrary {
 
 	/**
 	 * 获得两个词性之间的频率
-	 * 
+	 *
 	 * @param from
 	 * @param to
 	 * @return
@@ -98,7 +100,7 @@ public class NatureLibrary {
 
 	/**
 	 * 获得两个term之间的频率
-	 * 
+	 *
 	 * @param fromTerm
 	 * @param toTerm
 	 * @return
@@ -114,7 +116,7 @@ public class NatureLibrary {
 
 	/**
 	 * 根据字符串得道词性.没有就创建一个
-	 * 
+	 *
 	 * @param natureStr
 	 * @return
 	 */

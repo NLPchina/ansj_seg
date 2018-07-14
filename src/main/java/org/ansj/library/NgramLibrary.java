@@ -2,6 +2,7 @@ package org.ansj.library;
 
 import org.ansj.domain.Term;
 import org.ansj.util.MyStaticValue;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 两个词之间的关联
@@ -13,7 +14,7 @@ public class NgramLibrary {
 	static {
 		long start = System.currentTimeMillis();
 		MyStaticValue.initBigramTables();
-		MyStaticValue.LIBRARYLOG.info("init ngram ok use time :{}", System.currentTimeMillis() - start);
+		LogFactory.getLog(NgramLibrary.class).info("init ngram ok use time :" + (System.currentTimeMillis() - start));
 	}
 
 	/**

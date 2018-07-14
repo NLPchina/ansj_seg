@@ -45,3 +45,6 @@ jrat.xml
 target/
 train_file/*
 /target/
+
+crf.model
+

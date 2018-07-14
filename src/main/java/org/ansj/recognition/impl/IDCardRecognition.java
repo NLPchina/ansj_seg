@@ -1,12 +1,12 @@
 package org.ansj.recognition.impl;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.ansj.domain.Nature;
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.recognition.Recognition;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * 基于规则的新词发现，身份证号码识别
@@ -15,8 +15,13 @@ import org.ansj.recognition.Recognition;
  * 
  */
 public class IDCardRecognition implements Recognition {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -32133440735240290L;
 	private static final Nature ID_CARD_NATURE = new Nature("idcard");
 
+	@Override
 	public void recognition(Result result) {
 
 		List<Term> terms = result.getTerms() ;
@@ -39,7 +44,7 @@ public class IDCardRecognition implements Recognition {
 		}
 
 		for (Iterator<Term> iterator = terms.iterator(); iterator.hasNext();) {
-			Term term = (Term) iterator.next();
+			Term term = iterator.next();
 			if (term.getName() == null) {
 				iterator.remove();
 			}

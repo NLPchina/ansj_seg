@@ -1,12 +1,12 @@
 package org.ansj.lucene.util;
 
-import static org.apache.lucene.util.RamUsageEstimator.NUM_BYTES_CHAR;
+import org.apache.lucene.util.ArrayUtil;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.lucene.util.ArrayUtil;
+import static org.apache.lucene.util.RamUsageEstimator.NUM_BYTES_CHAR;
 
 /**
  * 抄袭lucene的英文处理

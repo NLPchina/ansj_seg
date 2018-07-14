@@ -1,31 +1,28 @@
 package org.ansj.app.crf.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-
 import org.ansj.app.crf.Check;
 import org.ansj.app.crf.Model;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
 
+import java.io.*;
+import java.util.List;
+
 public class CRFppTxtModelTest {
 
-	private String modelPath = "/Users/sunjian/Documents/src/CRF++-0.58/test/model.txt";
+	private String modelPath = "src/test/resources/crf_txt.model";
 
 	private String testPath = "src/test/resources/corpus.txt";
 
-	private Model model = new CRFppTxtModel("CRFppModelTest");
+	private Model model = new CRFppTxtModel();
 
 	@Before
 	public void before() throws Exception {
 		if (!Check.checkFileExit(modelPath)) {
+			System.out.println(modelPath+" not found so skip!");
 			return;
 		}
 		model.loadModel(modelPath);
@@ -124,8 +121,9 @@ public class CRFppTxtModelTest {
 			if (error > 0) {
 				System.out.println("example:" + temp_str);
 				System.out.println(" result:" + paser.toString().replace("[", "").replace("]", "").replace(", ", "\t"));
+				System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			}
-			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
+
 			line_number++;
 		}
 		// 正确数/总词数

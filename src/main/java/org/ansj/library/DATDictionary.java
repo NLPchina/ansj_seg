@@ -1,31 +1,44 @@
 package org.ansj.library;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.ansj.dic.DicReader;
 import org.ansj.domain.AnsjItem;
+import org.ansj.domain.NumNatureAttr;
 import org.ansj.domain.PersonNatureAttr;
-import org.ansj.domain.TermNature;
-import org.ansj.domain.TermNatures;
-import org.ansj.library.name.PersonAttrLibrary;
+import org.ansj.domain.Term;
+import org.ansj.recognition.arrimpl.NumRecognition;
 import org.ansj.util.MyStaticValue;
 import org.nlpcn.commons.lang.dat.DoubleArrayTire;
 import org.nlpcn.commons.lang.dat.Item;
+import org.nlpcn.commons.lang.util.ObjConver;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class DATDictionary {
 
+	private static final Log LOG = LogFactory.getLog(DATDictionary.class);
+
 	/**
-	 * 所有在词典中出现的词,并且承担简繁体转换的任务.
+	 * 人名补充
 	 */
-	public static final char[] IN_SYSTEM = new char[65536];
+	private static final Map<String, PersonNatureAttr> PERSONMAP = new HashMap<>();
+
+	/**
+	 * 外国人名补充
+	 */
+	private static final Set<String> FOREIGNSET = new HashSet<>();
+
 
 	/**
 	 * 核心词典
 	 */
 	private static final DoubleArrayTire DAT = loadDAT();
+
 
 	/**
 	 * 数组长度
@@ -34,87 +47,110 @@ public class DATDictionary {
 
 	/**
 	 * 加载词典
-	 * 
+	 *
 	 * @return
 	 */
 	private static DoubleArrayTire loadDAT() {
+
 		long start = System.currentTimeMillis();
 		try {
 			DoubleArrayTire dat = DoubleArrayTire.loadText(DicReader.getInputStream("core.dic"), AnsjItem.class);
+
+			for (char c : NumRecognition.f_NUM) {
+				NumNatureAttr numAttr = ((AnsjItem) dat.getDAT()[c]).termNatures.numAttr;
+				if (numAttr == null || numAttr == NumNatureAttr.NULL) {
+					((AnsjItem) dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+				} else {
+					numAttr.setNum(true);
+				}
+			}
+
+			for (char c : NumRecognition.j_NUM) {
+				NumNatureAttr numAttr = ((AnsjItem) dat.getDAT()[c]).termNatures.numAttr;
+				if (numAttr == null || numAttr == NumNatureAttr.NULL) {
+					((AnsjItem) dat.getDAT()[c]).termNatures.numAttr = NumNatureAttr.NUM;
+				} else {
+					numAttr.setNum(true);
+				}
+			}
+
 			// 人名识别必备的
 			personNameFull(dat);
+
 			// 记录词典中的词语，并且清除部分数据
 			for (Item item : dat.getDAT()) {
 				if (item == null || item.getName() == null) {
 					continue;
-				}
-
-				if (item.getStatus() < 4) {
-					for (int i = 0; i < item.getName().length(); i++) {
-						IN_SYSTEM[item.getName().charAt(i)] = item.getName().charAt(i);
-					}
 				}
 				if (item.getStatus() < 2) {
 					item.setName(null);
 					continue;
 				}
 			}
-			// 特殊字符标准化
-			IN_SYSTEM['％'] = '%';
-			MyStaticValue.LIBRARYLOG.info("init core library ok use time :{}", System.currentTimeMillis() - start);
+			LOG.info("init core library ok use time : " + (System.currentTimeMillis() - start));
 			return dat;
 		} catch (InstantiationException e) {
-			MyStaticValue.LIBRARYLOG.warn("无法实例化", e);
+			LOG.warn("无法实例化", e);
 		} catch (IllegalAccessException e) {
-			MyStaticValue.LIBRARYLOG.warn("非法访问", e);
+			LOG.warn("非法访问", e);
 		} catch (NumberFormatException e) {
-			MyStaticValue.LIBRARYLOG.warn("数字格式异常", e);
+			LOG.warn("数字格式异常", e);
 		} catch (IOException e) {
-			MyStaticValue.LIBRARYLOG.warn("IO异常", e);
+			LOG.warn("IO异常", e);
 		}
 
 		return null;
 	}
 
 	private static void personNameFull(DoubleArrayTire dat) throws NumberFormatException, IOException {
-		HashMap<String, PersonNatureAttr> personMap = new PersonAttrLibrary().getPersonMap();
+		BufferedReader reader = null;
+		try {
+			reader = MyStaticValue.getPersonDicReader();
+			AnsjItem item = null;
+			String temp = null, word = null;
+			float score;
 
-		AnsjItem ansjItem = null;
-		// 人名词性补录
-		Set<Entry<String, PersonNatureAttr>> entrySet = personMap.entrySet();
-		char c = 0;
-		String temp = null;
-		for (Entry<String, PersonNatureAttr> entry : entrySet) {
-			temp = entry.getKey();
-
-			if (temp.length() == 1 && (ansjItem = (AnsjItem) dat.getDAT()[temp.charAt(0)]) == null) {
-				ansjItem = new AnsjItem();
-				ansjItem.setBase(c);
-				ansjItem.setCheck(-1);
-				ansjItem.setStatus((byte) 3);
-				ansjItem.setName(temp);
-				dat.getDAT()[temp.charAt(0)] = ansjItem;
-			} else {
-				ansjItem = dat.getItem(temp);
-			}
-
-			if (ansjItem == null) {
-				continue;
-			}
-
-			if ((ansjItem.termNatures) == null) {
-				if (temp.length() == 1 && temp.charAt(0) < 256) {
-					ansjItem.termNatures = TermNatures.NULL;
+			while ((temp = reader.readLine()) != null) {
+				String[] split = temp.split("\t");
+				word = split[1];
+				score = ObjConver.getFloatValue(split[2]);
+				item = dat.getItem(word);
+				if (item == null || item.getStatus() < 2) {
+					if (word.length() < 2 || word.charAt(0) == ':' || "BEGIN".equals(word) || "END".equals(word)) {
+						PersonNatureAttr pna = PERSONMAP.get(split[1]);
+						if (pna == null) {
+							pna = new PersonNatureAttr();
+						}
+						pna.set(temp.charAt(0), score);
+						PERSONMAP.put(word, pna);
+					}
 				} else {
-					ansjItem.termNatures = new TermNatures(TermNature.NR);
+					PersonNatureAttr personAttr = item.termNatures.personAttr;
+					if (personAttr == PersonNatureAttr.NULL) {
+						personAttr = new PersonNatureAttr();
+						item.termNatures.personAttr = personAttr;
+					}
+					personAttr.set(temp.charAt(0), score);
 				}
 			}
-			ansjItem.termNatures.setPersonNatureAttr(entry.getValue());
+		} finally {
+			reader.close();
+		}
+
+
+		try { //将外国人名放入到map中
+			reader = MyStaticValue.getForeignDicReader();
+			String temp = null;
+			while ((temp = reader.readLine()) != null) {
+				FOREIGNSET.add(temp);
+			}
+		} finally {
+			reader.close();
 		}
 	}
 
 	public static int status(char c) {
-		Item item = (AnsjItem) DAT.getDAT()[c];
+		Item item = DAT.getDAT()[c];
 		if (item == null) {
 			return 0;
 		}
@@ -123,7 +159,7 @@ public class DATDictionary {
 
 	/**
 	 * 判断一个词语是否在词典中
-	 * 
+	 *
 	 * @param word
 	 * @return
 	 */
@@ -143,7 +179,7 @@ public class DATDictionary {
 
 	public static AnsjItem getItem(String str) {
 		AnsjItem item = DAT.getItem(str);
-		if (item == null) {
+		if (item == null || item.getStatus() < 2) {
 			return AnsjItem.NULL;
 		}
 
@@ -153,5 +189,83 @@ public class DATDictionary {
 	public static int getId(String str) {
 		return DAT.getId(str);
 	}
+
+	/**
+	 * 取得人名补充
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static PersonNatureAttr person(String name) {
+		return PERSONMAP.get(name);
+	}
+
+	/**
+	 * 取得人名补充
+	 *
+	 * @param name
+	 * @return
+	 */
+	public static boolean foreign(String name) {
+		return FOREIGNSET.contains(name);
+	}
+
+	/**
+	 * 取得人名补充
+	 *
+	 * @param term
+	 * @return
+	 */
+	public static boolean foreign(Term term) {
+		String name = term.getName();
+
+		boolean contains = FOREIGNSET.contains(name);
+		if (contains) {
+			return contains;
+		}
+
+		if (!term.getNatureStr().startsWith("nr")) {
+			return false;
+		}
+
+		for (int i = 0; i < name.length(); i++) {
+			if (!FOREIGNSET.contains(String.valueOf(name.charAt(i)))) {
+				return false;
+			}
+		}
+		return true ;
+	}
+
+
+	public static void write2File(String path) throws IOException {
+		ObjectOutput oop = new ObjectOutputStream(new FileOutputStream(new File(path)));
+
+		oop.writeObject(DAT.getDAT());
+
+		oop.writeObject(PERSONMAP);
+
+		oop.writeObject(FOREIGNSET);
+
+		oop.flush();
+
+		oop.close();
+	}
+
+
+	public static DoubleArrayTire loadFromFile(String path) throws IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(new File(path)));
+
+		Item[] items = (Item[]) ois.readObject();
+
+		DoubleArrayTire dat = new DoubleArrayTire(items);
+
+
+		PERSONMAP.putAll(((Map<String, PersonNatureAttr>) ois.readObject()));
+
+		FOREIGNSET.addAll(((Set<String>) ois.readObject()));
+
+		return dat;
+	}
+
 
 }

@@ -1,43 +1,59 @@
 package org.ansj.util;
 
-import java.util.List;
-import java.util.Map;
-
 import org.ansj.domain.AnsjItem;
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNatures;
 import org.ansj.library.DATDictionary;
 import org.ansj.splitWord.Analysis.Merger;
 import org.ansj.util.TermUtil.InsertTermType;
+import org.nlpcn.commons.lang.util.WordAlert;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 最短路径
- * 
+ *
  * @author ansj
- * 
  */
 public class Graph {
 	public char[] chars = null;
-	public String realStr = null;
 	public Term[] terms = null;
 	protected Term end = null;
 	protected Term root = null;
-	protected static final String E = "末##末";
-	protected static final String B = "始##始";
+	protected static final String B = "BEGIN";
+	protected static final String E = "END";
 	// 是否有人名
 	public boolean hasPerson;
-	// 是否有数字
-	public boolean hasNum;
+
+	public boolean hasNumQua;
+
+	public String str ;
+
 
 	// 是否需有歧异
 
 	public Graph(String str) {
-		realStr = str;
-		this.chars = str.toCharArray();
+		this.str = str ;
+		this.chars = WordAlert.alertStr(str);
 		terms = new Term[chars.length + 1];
 		end = new Term(E, chars.length, AnsjItem.END);
 		root = new Term(B, -1, AnsjItem.BEGIN);
 		terms[chars.length] = end;
+	}
+
+	public Graph(Result result) {
+		Term last = result.get(result.size() - 1);
+		int beginOff = result.get(0).getOffe();
+		int len = last.getOffe() - beginOff + last.getName().length();
+		terms = new Term[len + 1];
+		end = new Term(E, len, AnsjItem.END);
+		root = new Term(B, -1, AnsjItem.BEGIN);
+		terms[len] = end;
+		for (Term term : result) {
+			terms[term.getOffe() - beginOff] = term;
+		}
 	}
 
 	/**
@@ -49,17 +65,17 @@ public class Graph {
 
 	/**
 	 * 增加一个词语到图中
-	 * 
+	 *
 	 * @param term
 	 */
 	public void addTerm(Term term) {
-		// 是否有数字
-		if (!hasNum && term.termNatures().numAttr.numFreq > 0) {
-			hasNum = true;
-		}
 		// 是否有人名
-		if (!hasPerson && term.termNatures().personAttr.flag) {
+		if (!hasPerson && term.termNatures().personAttr.isActive()) {
 			hasPerson = true;
+		}
+
+		if (!hasNumQua && term.termNatures().numAttr.isQua()) {
+			hasNumQua = true;
 		}
 		TermUtil.insertTerm(terms, term, InsertTermType.REPLACE);
 
@@ -67,7 +83,7 @@ public class Graph {
 
 	/**
 	 * 取得最优路径的root Term
-	 * 
+	 *
 	 * @return
 	 */
 	protected Term optimalRoot() {
@@ -99,11 +115,12 @@ public class Graph {
 		Term maxTerm = null;
 		// 是否有交叉
 		boolean flag = false;
-		int length = terms.length - 1;
+		final int length = terms.length - 1;
 		for (int i = 0; i < length; i++) {
 			maxTerm = getMaxTerm(i);
-			if (maxTerm == null)
+			if (maxTerm == null) {
 				continue;
+			}
 
 			maxTo = maxTerm.toValue();
 
@@ -111,13 +128,13 @@ public class Graph {
 			 * 对字数进行优化.如果一个字.就跳过..两个字.且第二个为null则.也跳过.从第二个后开始
 			 */
 			switch (maxTerm.getName().length()) {
-			case 1:
-				continue;
-			case 2:
-				if (terms[i + 1] == null) {
-					i = i + 1;
+				case 1:
 					continue;
-				}
+				case 2:
+					if (terms[i + 1] == null) {
+						i = i + 1;
+						continue;
+					}
 			}
 
 			/**
@@ -143,20 +160,13 @@ public class Graph {
 				for (int j = i + 1; j < maxTo; j++) {
 					terms[j] = null;
 				}
-				// FIXME: 这里理论上得设置。但是跑了这么久，还不发生错误。应该是不依赖于双向链接。需要确认下。这段代码是否有用
-				// //将下面的to的from设置回来
-				// temp = terms[i+maxTerm.getName().length()] ;
-				// do{
-				// temp.setFrom(maxTerm) ;
-				// }while((temp=temp.next())!=null) ;
-
 			}
 		}
 	}
 
 	/**
 	 * 得道最到本行最大term,也就是最右面的term
-	 * 
+	 *
 	 * @param i
 	 * @return
 	 */
@@ -179,11 +189,13 @@ public class Graph {
 		int maxTo = -1;
 		Term temp = null;
 		for (int i = 0; i < terms.length; i++) {
-			if (terms[i] == null)
+			if (terms[i] == null) {
 				continue;
+			}
 			maxTo = terms[i].toValue();
-			if (maxTo - i == 1 || i + 1 == terms.length)
+			if (maxTo - i == 1 || i + 1 == terms.length) {
 				continue;
+			}
 			for (int j = i; j < maxTo; j++) {
 				temp = terms[j];
 				if (temp != null && temp.toValue() <= maxTo && temp.getName().length() == 1) {
@@ -220,10 +232,12 @@ public class Graph {
 			do {
 				maxTo = term.toValue();
 				maxScore = term.score();
-				if (maxTo - i == 1 || i + 1 == terms.length)
+				if (maxTo - i == 1 || i + 1 == terms.length) {
 					continue;
+				}
 				boolean flag = true;// 可以删除
-				out: for (int j = i; j < maxTo; j++) {
+				out:
+				for (int j = i; j < maxTo; j++) {
 					temp = terms[j];
 					if (temp == null) {
 						continue;
@@ -245,16 +259,27 @@ public class Graph {
 		}
 	}
 
-	public void walkPathByScore() {
+	/**
+	 * 默认按照最大分数作为路径
+	 */
+	public void walkPathByScore(){
+		walkPathByScore(true);
+	}
+
+	/**
+	 * 路径方式
+	 * @param asc true 最大路径，false 最小路径
+	 */
+	public void walkPathByScore(boolean asc) {
 		Term term = null;
 		// BEGIN先行打分
-		mergerByScore(root, 0);
+		mergerByScore(root, 0, asc);
 		// 从第一个词开始往后打分
 		for (int i = 0; i < terms.length; i++) {
 			term = terms[i];
 			while (term != null && term.from() != null && term != end) {
 				int to = term.toValue();
-				mergerByScore(term, to);
+				mergerByScore(term, to, asc);
 				term = term.next();
 			}
 		}
@@ -267,7 +292,7 @@ public class Graph {
 
 	/**
 	 * 干涉性增加相对权重
-	 * 
+	 *
 	 * @param relationMap
 	 */
 	public void walkPath(Map<String, Double> relationMap) {
@@ -288,11 +313,7 @@ public class Graph {
 
 	/**
 	 * 具体的遍历打分方法
-	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
+	 *
 	 * @param to
 	 */
 	private void merger(Term fromTerm, int to, Map<String, Double> relationMap) {
@@ -317,20 +338,14 @@ public class Graph {
 
 	/**
 	 * 根据分数
-	 * 
-	 * @param i
-	 *            起始位置
-	 * @param j
-	 *            起始属性
-	 * @param to
 	 */
-	private void mergerByScore(Term fromTerm, int to) {
+	private void mergerByScore(Term fromTerm, int to, boolean asc) {
 		Term term = null;
 		if (terms[to] != null) {
 			term = terms[to];
 			while (term != null) {
 				// 关系式to.set(from)
-				term.setPathSelfScore(fromTerm);
+				term.setPathSelfScore(fromTerm, asc);
 				term = term.next();
 			}
 		}

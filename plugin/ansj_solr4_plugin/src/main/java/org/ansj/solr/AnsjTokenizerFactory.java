@@ -1,16 +1,5 @@
 package org.ansj.solr;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.splitWord.analysis.IndexAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
@@ -19,6 +8,10 @@ import org.apache.lucene.analysis.util.TokenizerFactory;
 import org.apache.lucene.util.AttributeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class AnsjTokenizerFactory extends TokenizerFactory {
 

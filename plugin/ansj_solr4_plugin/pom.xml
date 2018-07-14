@@ -19,7 +19,7 @@
 		<dependency>
 			<groupId>org.ansj</groupId>
 			<artifactId>ansj_lucene4_plug</artifactId>
-			<version>3.0</version>
+			<version>5.0.2</version>
 		</dependency>
 	</dependencies>
 </project>

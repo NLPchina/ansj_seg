@@ -1,26 +1,21 @@
 package org.ansj.app.crf;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.zip.GZIPOutputStream;
-
 import org.ansj.app.crf.model.CRFModel;
 import org.ansj.app.crf.model.CRFppTxtModel;
 import org.ansj.app.crf.model.WapitiCRFModel;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.MapCount;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
+
+import java.io.*;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.zip.GZIPOutputStream;
 
 public abstract class Model {
 
-	public final Logger logger = LoggerFactory.getLogger("CRF");
-
-	protected String name;
+	public static final Log logger = LogFactory.getLog(Model.class);
 
 	protected Config config;
 
@@ -29,10 +24,6 @@ public abstract class Model {
 	protected float[][] status = new float[Config.TAG_NUM][Config.TAG_NUM];
 
 	public int allFeatureCount = 0;
-
-	public Model(String name) {
-		this.name = name;
-	};
 
 	/**
 	 * 判断当前数据流是否是本实例
@@ -50,24 +41,34 @@ public abstract class Model {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Model load(String name, String modelPath) throws Exception {
-		Model model = new CRFModel(name);
+	public static Model load(String modelPath) throws Exception {
+		Model model = new CRFModel();
 		if (model.checkModel(modelPath)) {
-			model.loadModel(modelPath);
-			return model;
+			return model.loadModel(modelPath);
 		}
-		model = new CRFppTxtModel(name);
+		model = new CRFppTxtModel();
 
 		if (model.checkModel(modelPath)) {
-			model.loadModel(modelPath);
-			return model;
+			return model.loadModel(modelPath);
 		}
-		model = new WapitiCRFModel(name);
+		model = new WapitiCRFModel();
 		if (model.checkModel(modelPath)) {
-			model.loadModel(modelPath);
-			return model;
+			return model.loadModel(modelPath);
 		}
 		throw new Exception("I did not know what type of model by file " + modelPath);
+	}
+
+	/**
+	 * 模型读取
+	 * 
+	 * @param path
+	 * @return
+	 * @return
+	 * @throws Exception
+	 */
+	public static Model load(Class<? extends Model> c, InputStream is) throws Exception {
+		Model model = c.newInstance();
+		return model.loadModel(is);
 	}
 
 	/**
@@ -75,7 +76,9 @@ public abstract class Model {
 	 * 
 	 * @throws Exception
 	 */
-	public abstract void loadModel(String modelPath) throws Exception;
+	public abstract Model loadModel(String modelPath) throws Exception;
+
+	public abstract Model loadModel(InputStream is) throws Exception;
 
 	/**
 	 * 获得特征所在权重数组
@@ -94,10 +97,6 @@ public abstract class Model {
 		}
 		return sf.getParam();
 	}
-
-	public String getName() {
-		return this.name;
-	};
 
 	public Config getConfig() {
 		return this.config;
@@ -125,12 +124,10 @@ public abstract class Model {
 		if (tempW.length == 4) {
 			name = "U";
 		}
-		name += "*" + ((int) cs.charAt(cs.length() - 1) - Config.FEATURE_BEGIN + 1) + ":"
-				+ cs.substring(0, cs.length() - 1);
+		name += "*" + (cs.charAt(cs.length() - 1) - Config.FEATURE_BEGIN + 1) + ":" + cs.substring(0, cs.length() - 1);
 		for (int i = 0; i < tempW.length; i++) {
 			if (tempW[i] != 0) {
-				System.out.println(
-						name + "\t" + Config.getTagName(i / 4 - 1) + "\t" + Config.getTagName(i % 4) + "\t" + tempW[i]);
+				System.out.println(name + "\t" + Config.getTagName(i / 4 - 1) + "\t" + Config.getTagName(i % 4) + "\t" + tempW[i]);
 			}
 
 		}
@@ -172,9 +169,9 @@ public abstract class Model {
 			oos.writeInt(0);
 			oos.flush();
 		} catch (FileNotFoundException e) {
-			logger.warn("文件没有找到",e);
+			logger.warn("文件没有找到", e);
 		} catch (IOException e) {
-			logger.warn("IO异常",e);
+			logger.warn("IO异常", e);
 		}
 	}
 }

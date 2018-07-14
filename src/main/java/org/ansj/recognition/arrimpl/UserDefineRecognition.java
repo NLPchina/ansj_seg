@@ -3,28 +3,28 @@ package org.ansj.recognition.arrimpl;
 import org.ansj.domain.Term;
 import org.ansj.domain.TermNature;
 import org.ansj.domain.TermNatures;
-import org.ansj.library.UserDefineLibrary;
+import org.ansj.library.DicLibrary;
 import org.ansj.recognition.TermArrRecognition;
+import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.ansj.util.TermUtil.InsertTermType;
 import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.nlpcn.commons.lang.util.logging.Log;
+import org.nlpcn.commons.lang.util.logging.LogFactory;
 
 /**
  * 用户自定义词典.又称补充词典
- * 
+ *
  * @author ansj
- * 
  */
 public class UserDefineRecognition implements TermArrRecognition {
 
-	public final Logger logger = LoggerFactory.getLogger(getClass());
+	public static final Log logger = LogFactory.getLog(UserDefineRecognition.class);
 
 	private Term[] terms = null;
 
-	private Forest[] forests = { UserDefineLibrary.FOREST };
+	private Forest[] forests = {DicLibrary.get()};
 
 	private int offe = -1;
 	private int endOffe = -1;
@@ -44,10 +44,11 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 	}
 
-	public void recognition(Term[] terms) {
-		this.terms = terms;
+	@Override
+	public void recognition(Graph graph) {
+		this.terms = graph.terms;
 		for (Forest forest : forests) {
-			if (forest == null) {
+			if (forest == null || forest.branches==null) {
 				continue;
 			}
 			reset();
@@ -59,8 +60,9 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 			boolean flag = true;
 			for (int i = 0; i < length; i++) {
-				if (terms[i] == null)
+				if (terms[i] == null) {
 					continue;
+				}
 				if (branch == forest) {
 					flag = false;
 				} else {
@@ -111,7 +113,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 		try {
 			return Integer.parseInt(str);
 		} catch (NumberFormatException e) {
-			logger.warn("{}不是一个数字", str, e);
+			logger.warn(str + "不是一个数字", e);
 			return def;
 		}
 	}
@@ -125,10 +127,25 @@ public class UserDefineRecognition implements TermArrRecognition {
 				sb.append(terms[j].getName());
 			}
 		}
+
 		TermNatures termNatures = new TermNatures(new TermNature(tempNature, tempFreq));
 		Term term = new Term(sb.toString(), offe, termNatures);
 		term.selfScore(-1 * tempFreq);
 		TermUtil.insertTerm(terms, term, type);
+
+		if (terms[offe].getRealNameIfnull() != null) { //后面增加了非原生graph的合并，所以需要补充realname
+			StringBuilder sb1 = new StringBuilder();
+			for (int j = offe; j <= endOffe; j++) {
+				if (terms[j] == null) {
+					continue;
+				} else {
+					sb1.append(terms[j].getRealName());
+				}
+			}
+			term.setRealName(sb1.toString());
+		}
+
+
 	}
 
 	/**
@@ -144,7 +161,7 @@ public class UserDefineRecognition implements TermArrRecognition {
 
 	/**
 	 * 传入一个term 返回这个term的状态
-	 * 
+	 *
 	 * @param branch
 	 * @param term
 	 * @return

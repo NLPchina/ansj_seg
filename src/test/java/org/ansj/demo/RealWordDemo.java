@@ -1,7 +1,5 @@
 package org.ansj.demo;
 
-import java.util.List;
-
 import org.ansj.domain.Result;
 import org.ansj.domain.Term;
 import org.ansj.splitWord.analysis.ToAnalysis;
@@ -21,7 +19,7 @@ public class RealWordDemo {
 
 		// 保证方式
 		MyStaticValue.isRealName = true ;
-		parse = ToAnalysis.parse("Hello word是每个程序员必经之路");
+		parse = ToAnalysis.parse("Hello Word是每个程序员必经之路");
 		for (Term term : parse) {
 			System.out.print(term.getRealName()+" ");
 		}

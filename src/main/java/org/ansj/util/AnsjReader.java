@@ -32,8 +32,9 @@ public class AnsjReader extends Reader {
 	 */
 	public AnsjReader(Reader in, int sz) {
 		super(in);
-		if (sz <= 0)
+		if (sz <= 0) {
 			throw new IllegalArgumentException("Buffer size <= 0");
+		}
 		this.in = in;
 		cb = new char[sz];
 	}
@@ -51,13 +52,15 @@ public class AnsjReader extends Reader {
 
 	/** Checks to make sure that the stream has not been closed */
 	private void ensureOpen() throws IOException {
-		if (in == null)
+		if (in == null) {
 			throw new IOException("Stream closed");
+		}
 	}
 
 	/**
 	 * 为了功能的单一性我还是不实现了
 	 */
+	@Override
 	public int read(char cbuf[], int off, int len) throws IOException {
 		throw new IOException("AnsjBufferedReader not support this interface! ");
 	}
@@ -198,10 +201,12 @@ public class AnsjReader extends Reader {
 
 	}
 
+	@Override
 	public void close() throws IOException {
 		synchronized (lock) {
-			if (in == null)
+			if (in == null) {
 				return;
+			}
 			try {
 				in.close();
 			} finally {

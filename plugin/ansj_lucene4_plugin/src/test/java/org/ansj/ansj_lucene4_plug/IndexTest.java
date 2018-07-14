@@ -1,11 +1,5 @@
 package org.ansj.ansj_lucene4_plug;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.util.Date;
-import java.util.HashSet;
-
 import org.ansj.library.UserDefineLibrary;
 import org.ansj.lucene.util.PorterStemmer;
 import org.ansj.lucene4.AnsjAnalysis;
@@ -17,11 +11,7 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.index.DirectoryReader;
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.*;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -36,6 +26,12 @@ import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.util.Date;
+import java.util.HashSet;
 
 public class IndexTest {
 

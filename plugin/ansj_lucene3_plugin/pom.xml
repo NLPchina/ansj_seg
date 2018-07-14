@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 	<artifactId>ansj_lucene3_plug</artifactId>
-	<version>3.0</version>
+	<version>5.0.2</version>
 	<packaging>jar</packaging>
 	<name>ansj_lucene3_plug</name>
 

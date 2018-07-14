@@ -1,17 +1,13 @@
 package org.ansj.app.crf.model;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.List;
-
 import org.ansj.app.crf.Check;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
 import org.junit.Test;
 import org.nlpcn.commons.lang.util.StringUtil;
+
+import java.io.*;
+import java.util.List;
 
 public class WapitiCRFModelTest {
 
@@ -24,9 +20,10 @@ public class WapitiCRFModelTest {
 	@Before
 	public void init() throws Exception {
 		if (!Check.checkFileExit(modelPath)) {
+			System.out.println(modelPath+" not found so skip!");
 			return;
 		}
-		model = new WapitiCRFModel("test");
+		model = new WapitiCRFModel();
 		model.loadModel(modelPath);
 	}
 
@@ -58,7 +55,7 @@ public class WapitiCRFModelTest {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(testPath)));
 
-		WapitiCRFModel model = new WapitiCRFModel("test");
+		WapitiCRFModel model = new WapitiCRFModel();
 
 		model.loadModel(modelPath);
 
@@ -125,8 +122,9 @@ public class WapitiCRFModelTest {
 			if (error > 0) {
 				System.out.println("example:" + temp_str);
 				System.out.println(" result:" + paser.toString().replace("[", "").replace("]", "").replace(", ", "\t"));
+				System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
 			}
-			System.out.println("[" + line_number + "]---准确率P:--" + ((double) success / paser.size()));
+
 			line_number++;
 		}
 		// 正确数/总词数

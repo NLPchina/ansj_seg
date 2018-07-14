@@ -1,17 +1,13 @@
 package org.ansj.app.crf.model;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipException;
-
 import org.ansj.app.crf.Config;
 import org.ansj.app.crf.Model;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
 import org.nlpcn.commons.lang.util.IOUtil;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipException;
 
 /**
  * 加载ansj格式的crfmodel,目前此model格式是通过crf++ 或者wapiti生成的
@@ -23,16 +19,16 @@ public class CRFModel extends Model {
 
 	public static final String version = "ansj1";
 
-	public CRFModel(String name) {
-		super(name);
+	@Override
+	public CRFModel loadModel(String modelPath) throws Exception {
+		try (InputStream is = IOUtil.getInputStream(modelPath)) {
+			loadModel(is);
+			return this;
+		}
 	}
 
 	@Override
-	public void loadModel(String modelPath) throws Exception {
-		loadModel(IOUtil.getInputStream(modelPath));
-	}
-
-	public void loadModel(InputStream is) throws Exception {
+	public CRFModel loadModel(InputStream is) throws Exception {
 		long start = System.currentTimeMillis();
 		try (ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(is))) {
 			ois.readUTF();
@@ -56,8 +52,9 @@ public class CRFModel extends Model {
 					featureTree.add(name, value);
 				}
 			} while (win == 0 || size == 0);
-			logger.info("load crf model ok ! use time :{}", System.currentTimeMillis() - start);
+			logger.info("load crf model ok ! use time :" + (System.currentTimeMillis() - start));
 		}
+		return this;
 	}
 
 	@Override
@@ -69,7 +66,7 @@ public class CRFModel extends Model {
 				return true;
 			}
 		} catch (ZipException ze) {
-			logger.warn("解压异常", ze);
+			logger.debug("解压异常", ze);
 		} catch (FileNotFoundException e) {
 			logger.warn("文件没有找到", e);
 		} catch (IOException e) {
