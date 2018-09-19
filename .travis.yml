@@ -5,9 +5,8 @@ jdk:
 
 before_install:
   # update to java 8
-  - wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.deb && sudo dpkg -i --force-confnew elasticsearch-6.4.0.deb
   - sudo git clone https://github.com/NLPchina/nlp-lang.git
-  - sudo cd nlp-lang
+  - sudo cd ./nlp-lang
   - sudo mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
 
 install:
