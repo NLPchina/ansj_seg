@@ -4,9 +4,9 @@ jdk:
   - oraclejdk8
 
 before_install:
-  # update to java 8
   - sudo git clone https://github.com/NLPchina/nlp-lang.git
-  - sudo cd ./nlp-lang
+  - ls
+  - cd ./nlp-lang
   - sudo mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
 
 install:
