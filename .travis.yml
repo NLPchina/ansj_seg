@@ -7,7 +7,8 @@ before_install:
   - sudo git clone https://github.com/NLPchina/nlp-lang.git
   - ls
   - cd ./nlp-lang
-  - sudo mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
+  - cd ..
 
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
