@@ -31,6 +31,7 @@ public class NumRecognition implements TermArrRecognition {
 		j_NUM.add('千');
 		j_NUM.add('万');
 		j_NUM.add('亿');
+		j_NUM.add('○');
 
 		f_NUM.add('零');
 		f_NUM.add('壹');
