@@ -54,7 +54,7 @@ public class TimeRecognition implements Recognition {
         StringBuilder allPat = new StringBuilder();
         for (String s : TIME_PATTERNS) {
             allPat.append('(').append(
-                    s.replaceAll("NUM", NUM).replaceAll("TIME_SFM", TIME_SFM).replaceAll("TIME_APM", TIME_APM))
+                    s.replaceAll("TIME_APM", TIME_APM).replaceAll("TIME_SFM", TIME_SFM).replaceAll("NUM", NUM))
                     .append(")|");
         }
         TIME_PATTERN_ALL = Pattern.compile(allPat.substring(0, allPat.length() - 1));
