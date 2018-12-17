@@ -3,13 +3,18 @@ package org.ansj.test;
 import org.ansj.domain.Term;
 import org.ansj.library.AmbiguityLibrary;
 import org.ansj.library.DicLibrary;
+import org.ansj.recognition.impl.BookRecognition;
 import org.ansj.recognition.impl.UserDicNatureRecognition;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.library.SynonymsLibrary;
 import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.util.MyStaticValue;
 import org.junit.Test;
+import org.nlpcn.commons.lang.tire.domain.Forest;
 import org.nlpcn.commons.lang.tire.domain.SmartForest;
+import org.nlpcn.commons.lang.tire.domain.Value;
+import org.nlpcn.commons.lang.tire.library.Library;
 
 import java.util.List;
 
@@ -261,5 +266,20 @@ public class TestError {
 
 		SynonymsLibrary.put(SynonymsLibrary.DEFAULT,SynonymsLibrary.DEFAULT,new SmartForest<List<String>>());
 		SynonymsLibrary.insert(SynonymsLibrary.DEFAULT, new String[] { "兰多", "兰少" });
+
+
+		DicLibrary.put(DicLibrary.DEFAULT,DicLibrary.DEFAULT,new Forest());
+
+		System.out.println(ToAnalysis.parse("崔永元炮轰范冰冰").getTerms().toString());
+
+		Value value = new Value("特朗普", "xname", "10000");
+		Library.insertWord(DicLibrary.get(), value);
+
+
+
+		List<Term> terms = DicAnalysis.parse("不特朗普").getTerms();
+		for(Term term: terms){
+			System.out.println(term.getName() + "\t" + term.getNatureStr());
+		}
 	}
 }

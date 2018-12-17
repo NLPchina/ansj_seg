@@ -74,7 +74,6 @@ public class TermNatures implements Serializable {
 	 */
 	public TermNatures(String natureStr, int id) {
 		this.id = id;
-		this.termNatures = termNatures;
 
 		//{n=2707,q=0,q_mq=0,r=0,v=1}
 

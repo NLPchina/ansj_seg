@@ -123,7 +123,7 @@ public class TermUtil {
 		}
 		Term term = new Term(sb.toString(), tempList.get(0).getOffe(), tns);
 
-		termLink(tempList.get(0),tempList.get(0).to());
+		termLink(tempList.get(0).from(), term);
 		termLink(term,tempList.get(tempList.size()-1).to());
 
 		insertTermNum(terms, term);
