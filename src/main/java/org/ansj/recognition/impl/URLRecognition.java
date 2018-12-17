@@ -17,7 +17,7 @@ public class URLRecognition extends ExtractingRecognition {
 
 	static {
 		try {
-			EXTRACTING.addRuleStr("(http://|https://)(:en|:m|-|\\.|/)[[\\\\x00-\\\\xff]+]{1,100}");
+			EXTRACTING.addRuleStr("(http://|https://|ftp://)(:en|:m|:mq|-|\\.|/|?|%|=|&)[[\\\\x00-\\\\xff]+]{1,1000}");
 		} catch (RuleFormatException e) {
 			e.printStackTrace();
 		}
