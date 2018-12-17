@@ -168,6 +168,7 @@ public abstract class Model {
 			oos.writeInt(0);
 			oos.writeInt(0);
 			oos.flush();
+			oos.close();
 		} catch (FileNotFoundException e) {
 			logger.warn("文件没有找到", e);
 		} catch (IOException e) {
