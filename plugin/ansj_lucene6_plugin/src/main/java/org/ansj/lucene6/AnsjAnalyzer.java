@@ -167,7 +167,7 @@ public class AnsjAnalyzer extends Analyzer {
 		}
 
 		if (StringUtil.isNotBlank(temp = args.get("isRealName"))) { //是否保留原字符
-			analysis.setIsRealName(Boolean.valueOf(temp));
+			analysis.setIsRealName(Boolean.parseBoolean(temp));
 		}
 
 		return new AnsjTokenizer(analysis, filters, synonyms);
