@@ -87,7 +87,7 @@ public class PersonRecognition implements TermArrRecognition {
 
         //0B 1C 2D 3E 4K 5L 6M 7X 8Y 9Z 10A
 
-        nodes = new PersonNode[terms.length + 1][11];
+        nodes = new PersonNode[terms.length + 1][11];//应该是+2 吧? TODO
 
         beginOff = terms[0].getOffe();
 
@@ -317,7 +317,7 @@ public class PersonRecognition implements TermArrRecognition {
         nodes[0][4] = new PersonNode(4, "B", -Math.log(begin.getK()));
         nodes[0][10] = new PersonNode(10, "B", -Math.log(begin.getA()));
 
-        PersonNatureAttr end = DATDictionary.person("END");
+        PersonNatureAttr end = DATDictionary.person("END"); //TODO: 这里是term.length+1 吧
         nodes[terms.length][5] = new PersonNode(5, "E", -Math.log(end.getL()));
         nodes[terms.length][6] = null;
         nodes[terms.length][10] = new PersonNode(10, "E", -Math.log(end.getA()));
@@ -349,7 +349,7 @@ public class PersonRecognition implements TermArrRecognition {
 
             int len = first.getName().length();
 
-            if (len == 1 || len == 3) {//这里写死了只支持2-3个字的拆分
+            if (len == 1 || len > 3) {//这里写死了只支持2-3个字的拆分
                 continue;
             }
 

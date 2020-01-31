@@ -9,6 +9,7 @@ import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
 import org.ansj.recognition.arrimpl.UserDefineRecognition;
 import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.ansj.util.Graph;
 import org.ansj.util.TermUtil;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -99,7 +100,30 @@ public class Extracting {
 		}
 
 		Result terms = DicAnalysis.parse(content, myForests);
+		return parse(terms, false);
+	}
 
+	/**
+	 * 传入文本分词并抽取
+	 * @param content 需要分析的文本
+	 * @param forests 对文本分词加载的词典
+	 * @return 抽取结果集
+	 */
+	public ExtractingResult parseWithToAnalysis(String content, Forest... forests) {
+		Forest[] myForests = null;
+		if (forests == null) {
+			myForests = new Forest[]{ruleIndex.getForest()};
+		} else if (forests.length == 0) {
+			myForests = new Forest[]{ruleIndex.getForest(), DicLibrary.get()};
+		} else {
+			myForests = new Forest[forests.length + 1];
+			myForests[0] = ruleIndex.getForest();
+			for (int i = 0; i < forests.length; i++) {
+				myForests[i + 1] = forests[i];
+			}
+		}
+
+		Result terms = ToAnalysis.parse(content, myForests);
 		return parse(terms, false);
 	}
 

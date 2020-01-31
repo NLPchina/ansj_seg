@@ -56,43 +56,43 @@ public class GetWordsImpl implements GetWords {
 			charHashCode = chars[i];
 			end++;
 			switch (getStatement()) {
-			case 0:
-				if (baseValue == chars[i]) {
-					str = String.valueOf(chars[i]);
-					offe = i;
-					start = ++i;
-					end = 0;
-					baseValue = 0;
-					tempBaseValue = baseValue;
-					return str;
-				} else {
-					int startCharStatus = DATDictionary.getItem(chars[start]).getStatus();
-					if (startCharStatus == 1) { //如果start的词的status为1，则将start设为i；否则start加1
-						start=i;
-						i--;
+				case 0:
+					if (baseValue == chars[i]) {
+						str = String.valueOf(chars[i]);
+						offe = i;
+						start = ++i;
 						end = 0;
 						baseValue = 0;
+						tempBaseValue = baseValue;
+						return str;
 					} else {
-						i = start;
-						start++;
-						end = 0;
-						baseValue = 0;
+						int startCharStatus = DATDictionary.getItem(chars[start]).getStatus();
+						if (startCharStatus == 1) { //如果start的词的status为1，则将start设为i；否则start加1
+							start = i;
+							i--;
+							end = 0;
+							baseValue = 0;
+						} else {
+							i = start;
+							start++;
+							end = 0;
+							baseValue = 0;
+						}
+						break;
 					}
-					break;
-				}
-			case 2:
-				i++;
-				offe = start;
-				tempBaseValue = baseValue;
-				return DATDictionary.getItem(tempBaseValue).getName();
-			case 3:
-				offe = start;
-				start++;
-				i = start;
-				end = 0;
-				tempBaseValue = baseValue;
-				baseValue = 0;
-				return DATDictionary.getItem(tempBaseValue).getName();
+				case 2:
+					i++;
+					offe = start;
+					tempBaseValue = baseValue;
+					return DATDictionary.getItem(tempBaseValue).getName();
+				case 3:
+					offe = start;
+					start++;
+					i = start;
+					end = 0;
+					tempBaseValue = baseValue;
+					baseValue = 0;
+					return DATDictionary.getItem(tempBaseValue).getName();
 			}
 
 		}
@@ -104,21 +104,24 @@ public class GetWordsImpl implements GetWords {
 
 	/**
 	 * 根据用户传入的c得到单词的状态. 0.代表这个字不在词典中 1.继续 2.是个词但是还可以继续 3.停止已经是个词了
-	 * 
+	 *
 	 * @param c
 	 * @return
 	 */
 	private int getStatement() {
 		checkValue = baseValue;
 		baseValue = DATDictionary.getItem(checkValue).getBase() + charHashCode;
-		if (baseValue < DATDictionary.arrayLength && (DATDictionary.getItem(baseValue).getCheck() == checkValue || DATDictionary.getItem(baseValue).getCheck() == -1)) {
-			return DATDictionary.getItem(baseValue).getStatus();
+		if (baseValue < DATDictionary.arrayLength) {
+			AnsjItem temp = DATDictionary.getItem(baseValue);
+			if (temp.getCheck() == checkValue || temp.getCheck() == -1) {
+				return DATDictionary.getItem(baseValue).getStatus();
+			}
 		}
 		return 0;
 	}
 
 	public AnsjItem getItem() {
- 		return DATDictionary.getItem(tempBaseValue);
+		return DATDictionary.getItem(tempBaseValue);
 	}
 
 	@Override

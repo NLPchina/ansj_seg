@@ -2,7 +2,9 @@ package org.ansj.app.extracting;
 
 import org.ansj.app.extracting.domain.ExtractingResult;
 import org.ansj.app.extracting.exception.RuleFormatException;
+import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
+import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Test;
 
@@ -75,5 +77,38 @@ public class ExtractingTest {
 		System.out.println(extracting.parse("清华大学负责人孙健先生").getAllResult());
 		System.out.println(extracting.parse("清华大学啊啊啊负责人孙健先生").getAllResult());
 		System.out.println(extracting.parse("本期计提坏账准备金额2138030.52元；本期收回或转回坏账准备金额0.00元").getAllResult());
+	}
+
+	@Test
+	public void test2() throws RuleFormatException {
+		List<String> lines = new ArrayList<>() ;
+
+		//填写规则 可以写多条
+
+		lines.add("(是很)(:a)(:u)\t特定:0;副词:1;形容词:2");
+		lines.add("(:n)(:d)(:a)\t副词:0;形容词:1;名词:2");
+		lines.add("(:d)(:a)(:u)(:n)\td:0;副词:1;形容词:2;名词:3");
+
+
+		Extracting extracting = new Extracting(lines) ;
+
+
+		System.out.println(ToAnalysis.parse("我这里有很优美的环境"));
+		System.out.println(ToAnalysis.parse("我这里环境很优美"));
+		System.out.println(ToAnalysis.parse("我这里的环境是很优美的"));
+
+		System.out.println("------------------------------------------------------------");
+
+		printRule(extracting.parseWithToAnalysis("我这里有很优美的环境").findAll());
+		printRule(extracting.parseWithToAnalysis("我这里环境很优美").findAll());
+		printRule(extracting.parseWithToAnalysis("我这里的环境是很优美的").findAll());
+
+
+	}
+
+	private void printRule(List<List<Term>> list) {
+		for (List<Term> terms : list) {
+			System.out.println(terms);
+		}
 	}
 }
