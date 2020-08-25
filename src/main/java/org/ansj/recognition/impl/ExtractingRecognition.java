@@ -54,7 +54,7 @@ public class ExtractingRecognition implements Recognition {
             len += list.size() - 2;
         }
         List<Term> terms = result.getTerms();
-        List<Term> newList = new ArrayList<>(terms.size() - len);
+        List<Term> newList = new ArrayList<>();
         cur = extracted.poll();
         StringBuilder sb = new StringBuilder();
         StringBuilder sbReal = new StringBuilder();
