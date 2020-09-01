@@ -13,4 +13,11 @@ public class ConfigTest {
 		System.out.println(wordAlert);
 	}
 
+	@Test
+	public void setTemplateTest() {
+		int[][] template = {{-2}, {-1}, {0}, {1}, {2}};
+		Config Config = new Config(template);
+		int[][] template1 = {{-2}, {-1}};
+		Config.setTemplate(template1);
+	}
 }

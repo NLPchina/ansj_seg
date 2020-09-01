@@ -15,6 +15,8 @@ public class WapitiCRFModelTest {
 
 	private String testPath = "src/test/resources/corpus.txt";
 
+	private String testPath1 = "src/test/resources/corpus1.txt";
+
 	private WapitiCRFModel model = null;
 
 	@Before
@@ -139,4 +141,73 @@ public class WapitiCRFModelTest {
 		br.close();
 	}
 
+	@Test
+	public void loadModelInputStringTest() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		wapitiCRFModel.loadModel(modelPath);
+	}
+
+	@Test
+	public void loadModelInputStringTest1() throws Exception {
+		if (!Check.checkFileExit(testPath)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			wapitiCRFModel.loadModel(testPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStringTest2() throws Exception {
+		if (!Check.checkFileExit(testPath1)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			wapitiCRFModel.loadModel(testPath1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStreamTest() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		wapitiCRFModel.loadModel(modelPath);
+	}
+
+	@Test
+	public void loadModelInputStreamTest1() throws Exception {
+		if (!Check.checkFileExit(testPath)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			wapitiCRFModel.loadModel(testPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStreamTest2() throws Exception {
+		if (!Check.checkFileExit(testPath1)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			wapitiCRFModel.loadModel(testPath1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -17,6 +17,8 @@ public class CRFppTxtModelTest {
 
 	private String testPath = "src/test/resources/corpus.txt";
 
+	private String testPath1 = "src/test/resources/corpus1.txt";
+
 	private Model model = new CRFppTxtModel();
 
 	@Before
@@ -138,4 +140,73 @@ public class CRFppTxtModelTest {
 		br.close();
 	}
 
+	@Test
+	public void loadModelInputStringTest() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		CRFppTxtModel.loadModel(modelPath);
+	}
+
+	@Test
+	public void loadModelInputStringTest1() throws Exception {
+		if (!Check.checkFileExit(testPath)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		try {
+			CRFppTxtModel.loadModel(testPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStringTest2() throws Exception {
+		if (!Check.checkFileExit(testPath1)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		try {
+			CRFppTxtModel.loadModel(testPath1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStreamTest() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		CRFppTxtModel.loadModel(modelPath);
+	}
+
+	@Test
+	public void loadModelInputStreamTest1() throws Exception {
+		if (!Check.checkFileExit(testPath)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		try {
+			CRFppTxtModel.loadModel(testPath);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void loadModelInputStreamTest2() throws Exception {
+		if (!Check.checkFileExit(testPath1)) {
+			return;
+		}
+		CRFppTxtModel CRFppTxtModel = new CRFppTxtModel();
+		try {
+			CRFppTxtModel.loadModel(testPath1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

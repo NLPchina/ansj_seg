@@ -39,4 +39,30 @@ public class ModelTest {
 //
 //	}
 
+	@Test
+	public void test() throws Exception {
+		Model model = Model.load("src/main/resources/crf.model");
+		System.out.println(new SplitWord(model).cut("结婚的和尚未结婚的"));
+
+		String path = "/Users/sunjian/Documents/src/CRF++-0.58/test/model.txt";
+
+		if (Check.checkFileExit(path)) {
+			model = Model.load(path);
+			System.out.println(new SplitWord(model).cut("结婚的和尚未结婚的"));
+		}
+
+		path = "/Users/sunjian/Documents/src/Wapiti/test/model.dat";
+		if (Check.checkFileExit(path)) {
+			model = Model.load("/Users/sunjian/Documents/src/Wapiti/test/model.dat");
+			System.out.println(new SplitWord(model).cut("结婚的和尚未结婚的"));
+		}
+
+	}
+
+	@Test
+	public void printFeatureTreeTest() throws Exception {
+		String cs = "ABCD";
+		float[] tempW = {1f, 2f, 3f, 4f};
+		Model.printFeatureTree(cs, tempW);
+	}
 }
