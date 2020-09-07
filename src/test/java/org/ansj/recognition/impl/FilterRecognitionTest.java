@@ -7,6 +7,9 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * 停用词测试
  * @author Ansj
@@ -53,4 +56,34 @@ public class FilterRecognitionTest {
 		System.out.println(terms.recognition(StopLibrary.get()));
 	}
 
+	@Test
+	public void insertStopWordsTest() {
+		String str = "我的小鸡鸡丢了!";
+		Result parse = ToAnalysis.parse(str);
+		System.out.println(parse);
+		StopRecognition fitler = new StopRecognition();
+		Collection<String> filterWords = new ArrayList<>();
+		filterWords.add("我");
+		fitler.insertStopWords(filterWords);
+		Result modifResult = parse.recognition(fitler);
+		for (Term term : modifResult) {
+			Assert.assertNotSame(term.getName(), "我");
+		}
+		System.out.println(modifResult);
+	}
+
+	@Test
+	public void clearTest() {
+		String str = "我的小鸡鸡丢了!";
+		Result parse = ToAnalysis.parse(str);
+		System.out.println(parse);
+		StopRecognition fitler = new StopRecognition();
+		fitler.insertStopRegexes("小.*?");
+		fitler.clear();
+		Result modifResult = parse.recognition(fitler);
+		for (Term term : modifResult) {
+			Assert.assertNotSame(term.getName(), "小鸡鸡");
+		}
+		System.out.println(modifResult);
+	}
 }
