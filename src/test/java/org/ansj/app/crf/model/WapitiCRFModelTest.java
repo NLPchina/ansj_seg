@@ -1,5 +1,6 @@
 package org.ansj.app.crf.model;
 
+import junit.framework.Assert;
 import org.ansj.app.crf.Check;
 import org.ansj.app.crf.SplitWord;
 import org.junit.Before;
@@ -14,6 +15,8 @@ public class WapitiCRFModelTest {
 	private String modelPath = "/Users/sunjian/Documents/src/Wapiti/test/model.dat";
 
 	private String testPath = "src/test/resources/corpus.txt";
+
+	private String testPath1 = "src/test/resources/corpus1.txt";
 
 	private WapitiCRFModel model = null;
 
@@ -139,4 +142,51 @@ public class WapitiCRFModelTest {
 		br.close();
 	}
 
+	@Test
+	public void loadModelInputStringTest() throws Exception {
+		if (!Check.checkFileExit(modelPath)) {
+			Assert.assertFalse(Check.checkFileExit(modelPath));
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			WapitiCRFModel WapitiCRFModel2= wapitiCRFModel.loadModel(modelPath);
+			Assert.assertEquals(wapitiCRFModel,WapitiCRFModel2);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			Assert.assertEquals(e.getMessage(),"err tag named 1 in model null");
+		}
+	}
+
+	@Test
+	public void loadModelInputStringTest1() throws Exception {
+		if (!Check.checkFileExit(testPath)) {
+			Assert.assertFalse(Check.checkFileExit(testPath));
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			WapitiCRFModel WapitiCRFModel2= wapitiCRFModel.loadModel(testPath);
+			Assert.assertEquals(wapitiCRFModel,WapitiCRFModel2);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			Assert.assertEquals(e.getMessage(),"1");
+		}
+	}
+
+	@Test
+	public void checkModelString() throws Exception {
+		if (!Check.checkFileExit(testPath1)) {
+			return;
+		}
+		WapitiCRFModel wapitiCRFModel = new WapitiCRFModel();
+		try {
+			boolean checkModel = wapitiCRFModel.checkModel(testPath1);
+			Assert.assertFalse(checkModel);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
