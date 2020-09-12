@@ -4,11 +4,14 @@ import org.ansj.app.extracting.domain.ExtractingResult;
 import org.ansj.app.extracting.exception.RuleFormatException;
 import org.ansj.domain.Term;
 import org.ansj.library.DicLibrary;
-import org.ansj.splitWord.analysis.DicAnalysis;
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.junit.Assert;
 import org.junit.Test;
+import org.nlpcn.commons.lang.util.IOUtil;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,5 +113,31 @@ public class ExtractingTest {
 		for (List<Term> terms : list) {
 			System.out.println(terms);
 		}
+	}
+
+	@Test
+	public void ExtractingReader() throws IOException, RuleFormatException {
+		InputStream is = LexicalTest.class.getResourceAsStream("/rule.txt");
+		Reader reader = IOUtil.getReader(is, "utf-8");
+		Extracting extracting = new Extracting(reader);
+
+		ExtractingResult result = null;
+
+
+		result = extracting.parse("2017年2月12日是一个特殊的日子");
+
+		System.out.println(result.getAllResult().toString());
+		Assert.assertEquals(result.getAllResult().toString(), "[]");
+
+		result = extracting.parse("2017年2月12日是一个特殊的日子，我出生于1985年8月28日");
+
+		System.out.println(result.getAllResult().toString());
+		Assert.assertEquals(result.getAllResult().toString(), "[]");
+
+
+		result = extracting.parse("清华大学负责人孙健先生");
+
+		System.out.println(result.getAllResult().toString());
+		Assert.assertEquals(result.getAllResult().toString(), "[]");
 	}
 }
