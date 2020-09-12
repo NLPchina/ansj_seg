@@ -64,5 +64,45 @@ public class ConfigTest {
         System.out.println(wordAlert);
         Assert.assertEquals(wordAlert, 0);
     }
+
+    @Test
+    public void getTagName0() {
+        int tag = 0;
+        char tagName = Config.getTagName(tag);
+        System.out.println(tagName);
+        Assert.assertEquals(tagName, 'S');
+    }
+
+    @Test
+    public void getTagName1() {
+        int tag = 1;
+        char tagName = Config.getTagName(tag);
+        System.out.println(tagName);
+        Assert.assertEquals(tagName, 'B');
+    }
+
+    @Test
+    public void getTagName2() {
+        int tag = 2;
+        char tagName = Config.getTagName(tag);
+        System.out.println(tagName);
+        Assert.assertEquals(tagName, 'M');
+    }
+
+    @Test
+    public void getTagName3() {
+        int tag = 3;
+        char tagName = Config.getTagName(tag);
+        System.out.println(tagName);
+        Assert.assertEquals(tagName, 'E');
+    }
+
+    @Test
+    public void getTagName4() {
+        int tag = 4;
+        char tagName = Config.getTagName(tag);
+        System.out.println(tagName);
+        Assert.assertEquals(tagName, '?');
+    }
 }
 
