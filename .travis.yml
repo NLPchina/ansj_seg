@@ -4,12 +4,11 @@ jdk:
   - openjdk8
 
 before_install:
-  - cd /home/travis/build/NLPchina/
   - sudo git clone https://github.com/NLPchina/nlp-lang.git
   - sudo chmod -R 777 nlp-lang
   - cd ./nlp-lang
   - mvn clean compile package install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
-  - cd /home/travis/build/NLPchina/ansj_seg
+  - cd ..
 
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -Dgpg.skip=true
