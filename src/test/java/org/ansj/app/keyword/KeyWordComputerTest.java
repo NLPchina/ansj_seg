@@ -1,7 +1,10 @@
 package org.ansj.app.keyword;
 
 import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.List;
 
 public class KeyWordComputerTest {
 
@@ -12,7 +15,13 @@ public class KeyWordComputerTest {
         System.out.println(kwc.computeArticleTfidf(content));
     }
 
-
-
-
+    @Test
+    public void test1() {
+        KeyWordComputer keyWordComputer = new KeyWordComputer();
+        keyWordComputer.setAnalysisType(new NlpAnalysis());
+        keyWordComputer = new KeyWordComputer(1);
+        List<Keyword> list = keyWordComputer.computeArticleTfidf("", "");
+        System.out.println(list);
+        Assert.assertTrue(list.size() == 0);
+    }
 }
