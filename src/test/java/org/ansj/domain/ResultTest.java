@@ -1,6 +1,7 @@
 package org.ansj.domain;
 
 import org.ansj.splitWord.analysis.ToAnalysis;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -32,4 +33,10 @@ public class ResultTest {
 		System.out.println(ToAnalysis.parse("分词结果！").toStringWithOutNature("\t"));
 	}
 
+	@Test
+	public void test1() {
+		Result result = new Result(null);
+		System.out.println(result.toStringWithOutNature("a"));
+		Assert.assertEquals(result.toStringWithOutNature("a"), "");
+	}
 }
