@@ -47,6 +47,11 @@ public class AnsjAnalyzer extends Analyzer {
 		this.args = args;
 	}
 
+	public AnsjAnalyzer(ReuseStrategy reuseStrategy, Map<String, String> args) {
+		super(reuseStrategy);
+		this.args = args;
+	}
+
 	public AnsjAnalyzer(TYPE type, String dics) {
 		this.args = new HashMap<String, String>();
 		args.put("type", type.name());
