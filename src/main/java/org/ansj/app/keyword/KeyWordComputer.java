@@ -1,11 +1,17 @@
 package org.ansj.app.keyword;
 
+import org.ansj.domain.Result;
 import org.ansj.domain.Term;
+import org.ansj.recognition.Recognition;
 import org.ansj.splitWord.Analysis;
 import org.ansj.splitWord.analysis.NlpAnalysis;
 import org.nlpcn.commons.lang.util.StringUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
 public class KeyWordComputer<T extends Analysis> {
 
@@ -32,6 +38,7 @@ public class KeyWordComputer<T extends Analysis> {
 
     private int nKeyword = 5;
 
+    private Recognition[] recognitions;
 
     public KeyWordComputer() {
     }
@@ -40,6 +47,9 @@ public class KeyWordComputer<T extends Analysis> {
         this.analysisType = analysisType;
     }
 
+    public void setRecognition(Recognition... recognitions) {
+        this.recognitions = recognitions;
+    }
 
     /**
      * 返回关键词个数
@@ -64,7 +74,12 @@ public class KeyWordComputer<T extends Analysis> {
     private List<Keyword> computeArticleTfidf(String content, int titleLength) {
         Map<String, Keyword> tm = new HashMap<String, Keyword>();
 
-        List<Term> parse = analysisType.parseStr(content).getTerms();
+        Result parse = analysisType.parseStr(content);
+        if (recognitions != null) {
+            for (Recognition recognition : recognitions) {
+                parse.recognition(recognition);
+            }
+        }
         //FIXME: 这个依赖于用户自定义词典的词性,所以得需要另一个方法..
 //		parse = FilterModifWord.updateNature(parse) ;
 
