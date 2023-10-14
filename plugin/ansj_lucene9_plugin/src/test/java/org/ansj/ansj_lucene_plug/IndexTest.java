@@ -44,6 +44,7 @@ public class IndexTest {
 
 		System.out.println("start: " + (new Date()));
 		long before = System.currentTimeMillis();
+		ts.reset();
 		while (ts.incrementToken()) {
 			System.out.println(ts.getAttribute(CharTermAttribute.class));
 		}
@@ -65,6 +66,7 @@ public class IndexTest {
 
 		System.out.println("start: " + (new Date()));
 		long before = System.currentTimeMillis();
+		ts.reset();
 		while (ts.incrementToken()) {
 			System.out.println(ts.getAttribute(CharTermAttribute.class));
 		}
@@ -85,6 +87,7 @@ public class IndexTest {
 
 		System.out.println("start: " + (new Date()));
 		long before = System.currentTimeMillis();
+		ts.reset();
 		while (ts.incrementToken()) {
 			System.out.println(ts.getAttribute(CharTermAttribute.class));
 		}
