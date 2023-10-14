@@ -1,11 +1,19 @@
 package org.ansj.lucene9;
 
-import org.ansj.library.*;
+import org.ansj.library.AmbiguityLibrary;
+import org.ansj.library.CrfLibrary;
+import org.ansj.library.DicLibrary;
+import org.ansj.library.StopLibrary;
+import org.ansj.library.SynonymsLibrary;
 import org.ansj.lucene.util.AnsjTokenizer;
 import org.ansj.recognition.impl.StopRecognition;
 import org.ansj.recognition.impl.SynonymsRecgnition;
 import org.ansj.splitWord.Analysis;
-import org.ansj.splitWord.analysis.*;
+import org.ansj.splitWord.analysis.BaseAnalysis;
+import org.ansj.splitWord.analysis.DicAnalysis;
+import org.ansj.splitWord.analysis.IndexAnalysis;
+import org.ansj.splitWord.analysis.NlpAnalysis;
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.Tokenizer;
 import org.nlpcn.commons.lang.tire.domain.Forest;
@@ -14,9 +22,7 @@ import org.nlpcn.commons.lang.util.StringUtil;
 import org.nlpcn.commons.lang.util.logging.Log;
 import org.nlpcn.commons.lang.util.logging.LogFactory;
 
-import java.io.BufferedReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +37,7 @@ public class AnsjAnalyzer extends Analyzer {
 	 * @author ansj
 	 *
 	 */
-	public static enum TYPE {
+	public enum TYPE {
 		base_ansj, index_ansj, query_ansj, dic_ansj, nlp_ansj
 	}
 
@@ -64,11 +70,8 @@ public class AnsjAnalyzer extends Analyzer {
 	}
 
 	@Override
-	protected TokenStreamComponents createComponents(String text) {
-		BufferedReader reader = new BufferedReader(new StringReader(text));
-		Tokenizer tokenizer = null;
-		tokenizer = getTokenizer(reader, this.args);
-		return new TokenStreamComponents(tokenizer);
+	protected TokenStreamComponents createComponents(String fieldName) {
+		return new TokenStreamComponents(getTokenizer(null, this.args));
 	}
 
 	/**
