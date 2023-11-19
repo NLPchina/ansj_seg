@@ -10,7 +10,7 @@ import org.junit.Test;
  * DESC: 千分位格式数字识别单元测试
  *
  * @author baicaixiaozhan
- * @since v1.0.0
+ * @since v5.1.6
  */
 public class ThousandsSeparatorRecognitionTest {
 
